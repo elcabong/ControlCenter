@@ -95,12 +95,13 @@ nav ul li:hover > ul,nav ul li:hover > #room-menu ul,#room-menu ul:hover { displ
   text-decoration: none;
   display: block;
   float: left;
-  font-size: 25px;
+  font-size: 22px;
   height: 35px;
   padding:5px 15px;
   position: relative;
   text-shadow: rgba(0,0,0,.5) 0px 1px 0px;
   outline:0;
+  line-height:150%;
 }
 
 .panel.selected {  border-bottom:2px solid #0099ff !important; }
@@ -134,7 +135,7 @@ a.title:hover {  color:rgb(204,204,204) !important; }
 
 #workspace { margin-left:0px; }
 
-ul.sortable > li > a:first-child { width: 125px; }
+ul.sortable > li > a:first-child { width: 105px; }
 
 
 /*-------RIGHT SIDE MENU SPECIFIC------*/
@@ -152,7 +153,7 @@ ul.sortable > li > a:first-child { width: 125px; }
 
 #room-menu { float:left;padding-bottom:5px; }
 
-#multiples { float:left;width:190px;padding-right:5px;margin-left:-50px; }
+#multiples { float:left;#width:200px;margin-left:-50px; }
 
 #multiples li a { padding:0px 15px;margin:6.5px 0; }
 
@@ -201,5 +202,13 @@ ul.sortable > li > a:first-child { width: 125px; }
 .item {
 	overflow: scroll;
 	-webkit-overflow-scrolling:touch;
+}
+}
+
+
+@media all and (max-width: 800px) {
+#loading {
+  position:absolute;
+  right:35px;
 }
 }
