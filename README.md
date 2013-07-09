@@ -10,5 +10,6 @@ Required:
 2. Copy all files to the web server directory eg /var/www/MediaCenter/
 3. Copy and Rename /var/www/MediaCenter/config/config-example.ini   to   /var/www/MediaCenter/config/config.ini
 4. edit config.ini to suit needs
+5. browse to your http://webserver/MediaCenter/
 
 
