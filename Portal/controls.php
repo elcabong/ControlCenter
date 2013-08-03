@@ -30,32 +30,9 @@ while(!$found1){
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<title>Media Center</title>
 	<link rel='stylesheet' type='text/css' href='../css/room.css'>
-	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>-->
 	<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.scrollTo.js"></script>
 	<script type="text/javascript" src="../js/scripts.js"></script>
-	   <script type="text/javascript">
-$(document).ready(function(){
-//	$(window).resize(function () {	resizePanel(); });
-	
-	window.onresize = function(event) {
-//	function resizePanel() {
-
-		width = $(window).width();
-		height = $(window).height();
-
-		mask_width = width * $('.item').length;
-		mask_height = height * .94;
-		mask_dif = height * .10;
-			
-		$('#wrapper, .item').css({width: width, height: height});
-		//$('#mask').css({width: mask_width, height: mask_height});
-		//$('#mask').css({height: mask_height, top: mask_dif});
-		//$('#mask').css({width: mask_width, height: height});
-		$('#wrapper').scrollTo($('a.selected').attr('href'), 0);
-	}
-//});	
-	   </script>
 	<script type="text/javascript">
 	function logout(){
 		    var xmlhttp;

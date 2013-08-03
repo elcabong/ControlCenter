@@ -25,7 +25,7 @@ while(!$found1){
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=.70, maximum-scale=.70, minimum-scale=.70, target-densitydpi=medium-dpi" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi" />
 	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<title>Media Center</title>

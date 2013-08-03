@@ -185,9 +185,13 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #wrapper { width:100%;position:absolute;top:50px;left:0;bottom:0;overflow:hidden; }
 
-#mask { height:100%;width:200%;top:6%; }
+/*#mask { height:100%;width:200%;top:6%; }
 
-.item { width:50%;height:100%;float:left; }
+.item { width:50%;height:100%;float:left; } */
+
+#mask { height:100%;width:100%;top:50px; }
+
+.item { width:100%;height:100%;float:left; }
 	
 .content {	width:100%;height:100%;margin:0 auto;position:relative; }
 

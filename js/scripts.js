@@ -11,7 +11,7 @@ $(document).ready(function() {
 			$('iframe.' + hash).attr('src',$('iframe.' + hash).attr('data-src'));
 		}
 		iframe.src = iframe.src;
-		$('#wrapper').scrollTo(iframe, 800);
+		$('#wrapper').scrollTo(iframe, 0);
 		var myLi = thechild.parent();
 		if(myLi.hasClass("sortable")) {
 			$("li.sortable").each(function () {
@@ -68,7 +68,8 @@ $(document).ready(function() {
 				$(this).removeClass('unloaded');
 				$(this).addClass('selected'); }
 		
-		$('#wrapper').scrollTo($(this).attr('href'), 800);		
+		$('#wrapper').scrollTo($(this).attr('href'), 0);
+		currentview = $(this);
 
 		var myLi = $(this).parent();
 		if(myLi.hasClass("sortable")) {
@@ -89,7 +90,7 @@ $(document).ready(function() {
 		$('a.panel').removeClass('selected');
 		$('.navsettings.panel').addClass('selected');
 		
-		$('#wrapper').scrollTo($(this).attr('href'), 800);		
+		$('#wrapper').scrollTo($(this).attr('href'), 0);		
 		return false;
 	});	
 	
@@ -106,20 +107,27 @@ $(document).ready(function() {
 	//}
 	setTimeout(refreshRooms, 2500);
 	}
-
-	
 refreshRooms();
 
-
-
-//$("#room-menu").load("./room-chooser.php", function() { document.getElementById('loading').style.display='none'; });
-								setTimeout(func, 5000);
-								function func() {
-									document.getElementById('loading').style.display='none';	
-								}
+	setTimeout(func, 5000);
+	function func() {
+		document.getElementById('loading').style.display='none';	
+	}
 });	
 
 	function changeroom(newroom) {
 		document.getElementById('loading').style.display='block';
 		$("#room-menu").load("./room-chooser.php?newroom="+newroom, function() {  } );
 	}
+	
+	
+var resizeTimer;
+$(window).resize(function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(reSizeWindow, 120);
+});
+
+function reSizeWindow() {
+    theselectedpanel = $('a.panel.selected').attr('href');
+	$('#wrapper').scrollTo(theselectedpanel, 0);
+};

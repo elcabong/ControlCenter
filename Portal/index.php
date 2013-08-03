@@ -4,7 +4,13 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
     header("Location: login.php");
     exit; }
 
-$roomnum = (!empty($_GET['room']))?$_GET['room']:$HOMEROOMU;
+	
+//may need to set cookie for room for this to work properly	
+if($_SESSION['room']) {
+$roomnum = $_SESSION['room'];
+} elseif(!empty($_GET['room'])) {
+$roomnum = $_GET['room']; 
+} else { $roomnum = $HOMEROOMU; }
 $_SESSION['room'] = $roomnum;
 
 require_once "mobile_device_detect.php";
