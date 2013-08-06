@@ -21,23 +21,23 @@ $roomnum = $_SESSION['room']; }
 		$ROOMNUM = "ROOM$roomnum"."N";
 		echo "<a href='#' class='title'>${$ROOMNUM}</a>";
 		echo "<ul>";
+			$thisroom = 0;
 			$i = 1;
 			while($i<=$TOTALROOMS) {
 				$ROOMXBMC = "ROOM$i"."XBMC";
 				$ROOMNUM = "ROOM$i"."N";
 				$theperm = "USRPR$i";
-				$theroom = $_SESSION['room'];
-				if($i == $theroom) {$thisroom = 1;} else {$thisroom = 0;}
 				if(!empty(${$ROOMXBMC}) && ($ADMINP == "1" or ${$theperm} == "1")){
 					$xbmcmachine = pingAddress(${$ROOMXBMC});
 					echo "<li>";
-					if($thisroom) {
+					if($i == $_SESSION['room']) {
 					echo "<a class='selected' href='#' onclick=\"changeroom('$i');\">${$ROOMNUM}</a></li>"; 				
+					$thisroom = 1;
 					} else {
 					echo "<a href='#' onclick=\"changeroom('$i');\">${$ROOMNUM}</a></li>"; 
 					}
 				}
-			$i++; }	
+			$i++; }
 		echo "</ul>";
 
 $ROOMXBMC = "ROOM$roomnum"."XBMC";

@@ -82,7 +82,7 @@ while(!$found1){
 			</ul>
 		</nav>
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
-		<? //<li><a href='#maraschino' class='panel selected' title='maraschino'><img src="../config/Programs/Maraschino.png" height='35px'></a></li>?>
+		<? /*<li><a href='#maraschinoadmin' class='panel unloaded' title='maraschinoadmin'><img src="../config/Programs/MaraschinoAdmin.png" height='35px'></a></li> */?>
 		<li><a href='#XBMC' class='panel selected' title='XBMC'><img src="../config/Programs/XBMC.png" height='35px'></a></li>
 		<li><a href='#XBMCawxi' class='panel unloaded' title='XBMCawxi'><img src="../config/Programs/XBMC.png" height='35px'></a></li>
 			<?php
@@ -106,10 +106,9 @@ while(!$found1){
 		</nav><? } ?>
 	</div>
 </div>
-<!--
 <div id='nav-menu'>
 	<nav>
-		<?php /*
+		<?php
 			$navlist = 0;
 			if($navlist == '1') {
 				echo "<ul>";
@@ -118,6 +117,7 @@ while(!$found1){
 				if($dnavlinkcount + $navlinkcount > 1) { $navgroups = '1';}
 				if(!empty($dnavlink)) {
 					foreach( $dnavlink as $navlinklabel => $navlinkpath) {
+					if($navlinklabel == "MaraschinoAdmin") {
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
 							$filename = "../config/Programs/".$navlinklabel.".png";
@@ -141,7 +141,7 @@ while(!$found1){
 						echo "<li><a href='#".$navlinklabel."' class='main panel' title='$navlinklabel'>".$linkto."</a></li>";
 						}
 						if($navgroups =='1' && $navlinkpath != "title"){ echo "</li>";}
-					}
+					}}
 				}
 					if(!empty($navlink)){
 						foreach( $navlink as $navlinklabel => $navlinkpath) {
@@ -164,6 +164,7 @@ while(!$found1){
 				if($dnavlinkcount + $navlinkcount > 1) { $navgroups = '1';}
 				if(!empty($dnavlink)) {
 					foreach( $dnavlink as $navlinklabel => $navlinkpath) {
+					if($navlinklabel == "MaraschinoAdmin") {
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
 								$filename = "../config/Programs/".$navlinklabel.".png";
@@ -190,7 +191,7 @@ while(!$found1){
 						echo "<a href='#".$navlinklabel."' class='main panel unloaded' title='$navlinklabel'>".$linkto."</a>";
 						}
 					}
-				}
+				}} /*
 				if(!empty($navlink)){
 						foreach( $navlink as $navlinklabel => $navlinkpath) {
 						if($navlinkpath == "title") {
@@ -220,25 +221,25 @@ while(!$found1){
 						}
 					}
 				}
-
+*/
 
 
 
 
 			}
-	*/	?>
+		?>
 		</ul>
 	</nav>
-</div> -->
+</div>
 <div class="clear"></div>	
 </div>
 <div id="wrapper" scrolling="auto">
 	<div id="mask">
-	<?//	<div id="maraschino" class="item">
-		//	<div class="content">
-		//		<iframe id='maraschino 1' width='100%' height='100%' scrolling='auto'>Sorry your browser does not support frames or is currently not set to accept them.</iframe>
-		//	</div>
-		//</div> ?>
+		<? /*<div id="maraschinoadmin" class="item">
+			<div class="content">
+				<iframe id='maraschinoadmin 1' src="http://192.168.3.217:7000/mobile/" width='100%' height='100%' scrolling='auto'>Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+		</div>
+		</div> */?>
 		<div id="XBMC" class="item">
 			<div class="content">
 				<?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; ?>
@@ -250,17 +251,18 @@ while(!$found1){
 				<iframe id='XBMCawxi 1' class='XBMCawxi' data-src="<?echo ${$ROOMXBMC};?>/addons/webinterface.awxi/" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
-		<?php /*
+		<?php 
 		if(!empty($dnavlink)) {
 			foreach( $dnavlink as $navlinklabel => $navlinkpath) {
-					if($navlinkpath != "title") {
-				echo "<div id='$navlinklabel' class='item'>";
-				echo "<div class='content'>";
-		       	 	echo "<iframe id='$navlinklabel 1' class='$navlinklabel' data-src='".$navlinkpath."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
-				echo "</div>";
-				echo "</div>";
-			}}
-		}
+				if($navlinkpath != "title") {
+					if($navlinklabel == "MaraschinoAdmin") {
+						echo "<div id='$navlinklabel' class='item'>";
+						echo "<div class='content'>";
+						echo "<iframe id='$navlinklabel 1' class='$navlinklabel' data-src='".$navlinkpath."mobile/' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
+						echo "</div>";
+						echo "</div>";
+			}}}
+		}  /*
 			if(!empty($navlink)){
 				foreach( $navlink as $navlinklabel => $navlinkpath) {
 					if($navlinkpath != "title") {

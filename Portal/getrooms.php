@@ -10,18 +10,15 @@
 			}
 			require "$thepath/config.php";
 			if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
-				//header("Location: login.php");
 				echo "<script type='text/javascript'>logout();</script>";				
 				exit; }	
 			$i = 1;
 			$theroom = $_SESSION['room'];
-			$XBMC = "XBMC";
 			while($i<=$TOTALROOMS) {
-				$ROOMXT = "ROOM$i";
-				$ROOMXBMC = $ROOMXT.$XBMC;
+				$ROOMXBMC = "ROOM$i"."XBMC";
 				$ROOMXBMCM = $ROOMXBMC."M";
 				$theperm = "USRPR$i";
-				if($i == $theroom) {$thisroom = 1;} else {$thisroom = 0;}
+			//	if($i == $theroom) {$thisroom = 1;} else {$thisroom = 0;}
 				if(!empty(${$ROOMXBMC}) && ($ADMINP == "1" or ${$theperm} == "1")){
 					$xbmcmachine = pingAddress(${$ROOMXBMC});
 					echo "<li>";

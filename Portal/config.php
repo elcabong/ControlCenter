@@ -154,7 +154,7 @@ function pingAddress($ip) {
          $ip = strtok(str_replace($d, '', $ip),':');
       }
    }
-    $pingresult = exec("/bin/ping -c2 -w2 $ip", $outcome, $status);  
+    $pingresult = exec("/bin/ping -c1 -w1 $ip", $outcome, $status);  
     if ($status==0) {
     $status = "alive";
     } else {

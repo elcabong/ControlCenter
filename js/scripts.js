@@ -100,14 +100,10 @@ $(document).ready(function() {
 	//rrtimer = setTimeout(refreshRooms, 5000);
 	//if($('#roomList').css('display') == 'block') {
 		$("#roomList").load("./getrooms.php");
-	/*	var protocol = window.location.protocol;
-		var path = document.location.href;
-		var dir = path.substring(path.indexOf('/', 1)+2, path.lastIndexOf('/'));
-		$("#roomList").load("http://"+dir+"/getrooms.php >*", function() { if(document.getElementById('loading').style.display != 'none') { document.getElementById('loading').style.display='none'; } });*/
 	//}
-	setTimeout(refreshRooms, 2500);
+	setTimeout(refreshRooms, 3500);
 	}
-refreshRooms();
+	setTimeout(refreshRooms, 1000);
 
 	setTimeout(func, 5000);
 	function func() {

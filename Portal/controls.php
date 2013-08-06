@@ -28,6 +28,7 @@ while(!$found1){
 	<meta name='viewport' content="width=device-width,height:window-height, initial-scale=.9, maximum-scale=.9, minimum-scale=.9, user-scalable=auto" />
 	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Media Center</title>
 	<link rel='stylesheet' type='text/css' href='../css/room.css'>
 	<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
