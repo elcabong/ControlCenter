@@ -44,6 +44,11 @@ $ROOMXBMC = "ROOM$roomnum"."XBMC";
 $xbmcip = ${$ROOMXBMC};
 ?>
 <script type="text/javascript">
+		setTimeout(func, 5000);
+		function func() {
+			document.getElementById('loading').style.display='none';	
+		}
+		
 		var iframe2 = document.getElementById('XBMC 1');
 		if(iframe2.src != '<? echo $xbmcip; ?>') {
 			iframe2.setAttribute('src','<? echo $xbmcip; ?>');
@@ -51,13 +56,9 @@ $xbmcip = ${$ROOMXBMC};
 			iframe2.src = iframe2.src; }
 
 		var iframe3 = document.getElementById('XBMCawxi 1');
+		iframe3.setAttribute('data-src','<? echo $xbmcip; ?>/addons/webinterface.awxi/');
 		if(iframe3.hasAttribute('src')) {
-			iframe3.setAttribute('src','');
-			iframe3.src = iframe3.src; }
-			iframe3.setAttribute('data-src','<? echo $xbmcip; ?>/addons/webinterface.awxi/');			
-
-		setTimeout(func, 5000);
-		function func() {
-			document.getElementById('loading').style.display='none';	
-		}
+			iframe3.setAttribute('src','<? echo $xbmcip; ?>/addons/webinterface.awxi/');
+			iframe3.src = iframe3.data-src; }
+		
 </script>
