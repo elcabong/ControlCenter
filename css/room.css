@@ -90,7 +90,7 @@ nav ul li:hover > ul,nav ul li:hover > #room-menu ul,#room-menu ul:hover { displ
 
 #nav-menu li,#nav-menu2 li ,#multiples li { display: inline;float: left;margin:0; }
 
-#nav-menu li a,#nav-menu2 li a,#multiples li a {
+#nav-menu ul a,#nav-menu li a,#nav-menu2 li a,#multiples li a {
   color: #ccc;
   text-decoration: none;
   display: block;
@@ -211,6 +211,9 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 
 @media all and (max-width: 800px) {
+
+	#nav-menu { margin:5px 0 0 10px; }
+
 #loading {
   position:absolute;
   right:35px;
