@@ -212,8 +212,6 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 @media all and (max-width: 800px) {
 
-	#nav-menu { margin:5px 0 0 10px; }
-
 #loading {
   position:absolute;
   right:35px;
