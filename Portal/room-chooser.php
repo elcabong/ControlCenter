@@ -13,10 +13,31 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
     header("Location: login.php");
     exit; }
 
+/*echo $_COOKIE["currentRoom$usernumber"];
+echo 1111;
+echo $_COOKIE['currentRoom1'];*/
+	/*
+if(isset($_COOKIE['currentRoom'])) {
+$roomnum = $_COOKIE['currentRoom'];
+$_SESSION['room'] = $roomnum; } else {
 if(!$_SESSION['room'] || !empty($_GET['newroom'])) {
 $roomnum = (!empty($_GET['newroom']))?$_GET['newroom']:$HOMEROOMU; 
 $_SESSION['room'] = $roomnum; } else {
-$roomnum = $_SESSION['room']; }
+$roomnum = $_SESSION['room']; } }*/
+
+if(isset($_COOKIE["currentRoom$usernumber"])) {
+$roomnum = $_COOKIE["currentRoom$usernumber"];
+$theperm = "USRPR$roomnum";
+if(${$theperm} == "1") {
+$_SESSION['room'] = $roomnum; } }
+
+if(!$_SESSION['room']) {
+$roomnum = $HOMEROOMU; 
+$_SESSION['room'] = $roomnum; } else {
+$roomnum = $_SESSION['room']; } 
+
+
+
 
 		$ROOMNUM = "ROOM$roomnum"."N";
 		echo "<a href='#' class='title'>${$ROOMNUM}</a>";
@@ -31,10 +52,10 @@ $roomnum = $_SESSION['room']; }
 					$xbmcmachine = pingAddress(${$ROOMXBMC});
 					echo "<li>";
 					if($i == $_SESSION['room']) {
-					echo "<a class='selected' href='#' onclick=\"changeroom('$i');\">${$ROOMNUM}</a></li>"; 				
+					echo "<a class='selected' href='#' onclick=\"changeroom('$i','$usernumber');\">${$ROOMNUM}</a></li>"; 				
 					$thisroom = 1;
 					} else {
-					echo "<a href='#' onclick=\"changeroom('$i');\">${$ROOMNUM}</a></li>"; 
+					echo "<a href='#' onclick=\"changeroom('$i','$usernumber');\">${$ROOMNUM}</a></li>"; 
 					}
 				}
 			$i++; }

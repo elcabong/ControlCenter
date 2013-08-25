@@ -1,12 +1,14 @@
 <?php
 
+$thepath = dirname(dirname($_SERVER['PHP_SELF']));
+
 ini_set('session.gc_maxlifetime', 86400);
 ini_set('session.gc_probability', 1);
 ini_set('session.gc_divisor', 100	);
 ini_set('session.save_path', '/var/www/MediaCenter/sessions');
 ini_set('session.cookie_lifetime', 86400);
  session_start();
-
+/*
 $found = false;
 $path = './MediaCenter/index.html';
 while(!$found){	
@@ -15,7 +17,7 @@ while(!$found){
                 $thepath = $path;
 	}
 	else{ $path= '../'.$path; }
-}
+}*/
 
 if (!$_SESSION['usernumber']) {
 	if (!$_GET['user']) {
@@ -71,14 +73,14 @@ while(!$found2){
 
 	if(!empty($rooms)){
 		$c = 1;
-		foreach( $rooms as $roomlabel => $roomvars) {
+		foreach( $rooms as $roomlabel => $gnavlinks) {
 			$ROOMXBMC = "ROOM$c"."XBMC";
 			$ROOMXBMCM = "$ROOMXBMC"."M";
 			$ROOMname = "ROOM$c"."N";
-			$roomvars = explode(",",$roomvars);
-			${$ROOMname} = $roomvars[0];
-			${$ROOMXBMC} = $roomvars[1];
-			if($roomvars[2] != '') { ${$ROOMXBMCM} = $roomvars[2]; } else { ${$ROOMXBMCM} = 0; }
+			$gnavlinks = explode(",",$gnavlinks);
+			${$ROOMname} = $gnavlinks[0];
+			${$ROOMXBMC} = $gnavlinks[1];
+			if($gnavlinks[2] != '') { ${$ROOMXBMCM} = $gnavlinks[2]; } else { ${$ROOMXBMCM} = 0; }
 			$c++;
 		}
 	}
@@ -111,7 +113,7 @@ while(!$found2){
      $authpassword           = $AUTH_PASS              = $Config2->get('PASSWORD',"USER$usernumber");
 	 if($AUTH_PASS) { $AUTH_ON = 1; } else { $AUTH_ON = 0; }
 	 $authsecured            = $AUTH_ON;
-     $DEFAULTNAV              = $Config2->get("NAVGROUPACCESS","USER$usernumber");
+     $NAVGROUPS              = $Config2->get("NAVGROUPACCESS","USER$usernumber");
      $GLOBAL_USER_PASS    = filter_var($Config2->get('AUTHENTICATION','GLOBAL'), FILTER_VALIDATE_BOOLEAN);
      $GLOBAL_IP           = $Config2->get('URL','GLOBAL');
      $GLOBAL_USER         = $Config2->get('USERNAME','GLOBAL');;
@@ -129,22 +131,41 @@ while(!$found2){
 		          }
 		      }
 
-		  $dnavlinkcount = '0';
-		  $dnavlink;	
-          $z = str_ireplace(' ', '', $DEFAULTNAV);
+		  $gnavlinkcount = '0';
+		  $gnavlink;	
+          $z = str_ireplace(' ', '', $NAVGROUPS);
 	  $y = explode(",",$z);
               foreach ($y as $n) {
           $x = $Config2->get("NAVGROUP$n");
           if(!empty($x)) {
               foreach ($x as $k=>$e) {
                   $k = str_ireplace('_', ' ', $k);
-                  $dnavlink["$k"]         = "$e";
+                  $gnavlink["$k"]         = "$e";
 				  if($e == 'title') {
-				  $dnavlinkcount ++;	}
+				  $gnavlinkcount ++;	}
 		          }
 		      }
 		}
 
+		
+		/*  this can move to controls and pull names there
+	if(!empty($gnavlink)){
+		$c = 1;
+		foreach( $gnavlink as $gnav => $gnavlinks) {
+			$gnavlinks = explode(",",$gnavlinks);
+			
+			${$ROOMname} = $gnavlinks[0];
+			${$ROOMXBMC} = $gnavlinks[1];
+			if($gnavlinks[2] != '') { ${$ROOMXBMCM} = $gnavlinks[2]; } else { ${$ROOMXBMCM} = 0; }
+			$c++;
+		}
+	}		
+		*/
+		
+		
+		
+		
+		
 ?>
 <?
 function pingAddress($ip) {

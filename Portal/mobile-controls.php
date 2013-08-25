@@ -8,6 +8,7 @@ $theperm = "USRPR$theroom";
 if (${$theperm}!="1" && $ADMINP!="1" or $theroom>$TOTALROOMS) {
     header("Location: index.php");
 	exit; }
+$thispath = dirname(dirname($_SERVER['PHP_SELF']));		
 	/*
 /////////////////////////////////////////
 $found1 = false;
@@ -49,7 +50,7 @@ while(!$found1){
 			{
 			  if(xmlhttp.responseText)
 			  {
-			    window.top.document.location.href = "/";
+			    window.top.document.location.href = "<?echo $thispath;?>";
 			    alert("Logout successful");
 			  }
 			}
@@ -93,7 +94,7 @@ while(!$found1){
 				$count = $count + ${$user}; 
 				$c++;
 			}
-			if(($count) > 1 or ($ADMINP) > 0 ) {
+			if(($count) > 0 or ($ADMINP) > 0 ) {
 			echo "<div id='multiples'>";
 			?>
 		<nav>		
@@ -114,9 +115,9 @@ while(!$found1){
 				echo "<ul>";
 				$navgroups = '0';
 				$tempc = 0;
-				if($dnavlinkcount + $navlinkcount > 1) { $navgroups = '1';}
-				if(!empty($dnavlink)) {
-					foreach( $dnavlink as $navlinklabel => $navlinkpath) {
+				if($gnavlinkcount + $navlinkcount > 1) { $navgroups = '1';}
+				if(!empty($gnavlink)) {
+					foreach( $gnavlink as $navlinklabel => $navlinkpath) {
 					if($navlinklabel == "MaraschinoAdmin") {
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
@@ -161,9 +162,9 @@ while(!$found1){
 				echo "<ul class='sortable'>";
 				$navgroups = '0';
 				$tempc = 0;
-				if($dnavlinkcount + $navlinkcount > 1) { $navgroups = '1';}
-				if(!empty($dnavlink)) {
-					foreach( $dnavlink as $navlinklabel => $navlinkpath) {
+				if($gnavlinkcount + $navlinkcount > 1) { $navgroups = '1';}
+				if(!empty($gnavlink)) {
+					foreach( $gnavlink as $navlinklabel => $navlinkpath) {
 					if($navlinklabel == "MaraschinoAdmin") {
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
@@ -252,8 +253,8 @@ while(!$found1){
 			</div>
 		</div>
 		<?php 
-		if(!empty($dnavlink)) {
-			foreach( $dnavlink as $navlinklabel => $navlinkpath) {
+		if(!empty($gnavlink)) {
+			foreach( $gnavlink as $navlinklabel => $navlinkpath) {
 				if($navlinkpath != "title") {
 					if($navlinklabel == "MaraschinoAdmin") {
 						echo "<div id='$navlinklabel' class='item'>";
