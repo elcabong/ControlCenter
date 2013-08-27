@@ -23,11 +23,13 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
 		exit;
 } } }
  ?>
+<!DOCTYPE html>
 <html>
 <head>
-<title>Media Center</title>
+<title>Control Center Authentication</title>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=.9, maximum-scale=.9, minimum-scale=.9, target-densitydpi=medium-dpi" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi" />
 <link rel="shortcut icon" href="favicon.ico" />
 <link rel="stylesheet" type="text/css" href="../css/front.css" />
 </head>
@@ -38,7 +40,7 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
 <form action="login.php" method="post">
     <table width=259 cellpadding=3 cellspacing=0 id=1>
       <tr>
-        <td align=center colspan=2 height=25><h2>Media Center Authentication</h2></td>
+        <td align=center colspan=2 height=25><h2>Authentication</h2></td>
 <? if($_SESSION['attempt'] > 0) { ?>
 	<tr>
 	<td align=center colspan=4 height=25><br>Invalid Password. Try Again.</td>

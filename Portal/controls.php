@@ -30,7 +30,7 @@ while(!$found1){
 	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Media Center</title>
+	<title>Control Center</title>
 	<link rel='stylesheet' type='text/css' href='../css/room.css'>
 	<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.scrollTo.js"></script>
