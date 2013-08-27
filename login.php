@@ -24,7 +24,7 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	$u++;
 	}
 } else {
-	echo "<br><h2>Media Center User Selection</h2>";
+	echo "<br><h2>Control Center User Selection</h2>";
 	echo "<br>";
 	$u = 1;
 	while($u<=$HOWMANYUSERS) {
