@@ -13,18 +13,6 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
     header("Location: login.php");
     exit; }
 
-/*echo $_COOKIE["currentRoom$usernumber"];
-echo 1111;
-echo $_COOKIE['currentRoom1'];*/
-	/*
-if(isset($_COOKIE['currentRoom'])) {
-$roomnum = $_COOKIE['currentRoom'];
-$_SESSION['room'] = $roomnum; } else {
-if(!$_SESSION['room'] || !empty($_GET['newroom'])) {
-$roomnum = (!empty($_GET['newroom']))?$_GET['newroom']:$HOMEROOMU; 
-$_SESSION['room'] = $roomnum; } else {
-$roomnum = $_SESSION['room']; } }*/
-
 if(isset($_COOKIE["currentRoom$usernumber"])) {
 $roomnum = $_COOKIE["currentRoom$usernumber"];
 $theperm = "USRPR$roomnum";
@@ -35,9 +23,6 @@ if(!$_SESSION['room']) {
 $roomnum = $HOMEROOMU; 
 $_SESSION['room'] = $roomnum; } else {
 $roomnum = $_SESSION['room']; } 
-
-
-
 
 		$ROOMNUM = "ROOM$roomnum"."N";
 		echo "<a href='#' class='title'>${$ROOMNUM}</a>";

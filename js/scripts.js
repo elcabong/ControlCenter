@@ -96,11 +96,7 @@ $(document).ready(function() {
 	
 	
 	function refreshRooms() {
-	//clearTimout(rrtimer);
-	//rrtimer = setTimeout(refreshRooms, 5000);
-	//if($('#roomList').css('display') == 'block') {
-		$("#roomList").load("./getrooms.php");
-	//}
+	$("#roomList").load("./getrooms.php");
 	setTimeout(refreshRooms, 3500);
 	}
 	setTimeout(refreshRooms, 1000);
@@ -117,7 +113,6 @@ $(document).ready(function() {
 		var expire = new Date();
 		expire.setTime(today.getTime() + 3600000*24*5);
 		document.cookie="currentRoom"+usernumber+"="+ escape(newroom) + ";expires="+expire.toGMTString()+";path=/";
-		/*document.cookie = 'ppkcookie2=another test; expires=Fri, 3 Aug 2014 20:47:11 UTC; path=/';*/
 		$("#room-menu").load("./room-chooser.php?newroom="+newroom, function() {  } );
 	}
 	

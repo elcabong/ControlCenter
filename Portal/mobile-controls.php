@@ -32,7 +32,6 @@ while(!$found1){
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">	
 	<title>Control Center</title>
 	<link rel='stylesheet' type='text/css' href='../css/room.css'>
-	<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>-->
 	<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.scrollTo.js"></script>
 	<script type="text/javascript" src="../js/scripts.js"></script>
@@ -68,17 +67,9 @@ while(!$found1){
 			<ul>
 				<li><a href='#Settings' class='navsettings panel' title='Settings' style="margin-bottom:3px;border-bottom:2px solid rgba(0, 0, 0, 0);"><img src="../media/gear.png" style="margin:7px 0 0;width:20px !important;"></a>
 					<ul>
-						<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li>
+						<? //<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li>?>
 						<li><a href="#">&nbsp;</a></li>
-						<?php
-						$mainurl="http://".$_SERVER['HTTP_HOST'];
-						if ($authsecured) {
-						  echo "<li><a href='#' onclick=\"logout();\"/>Logout</a></li>";
-						}
-						if (!$authsecured) {
-						  echo "<li><a href='$mainurl' target=\"_top\" />Logout</a></li>";
-						}
-						?>
+						<li><a href='#' onclick=\"logout();\"/>Logout</a></li>
 					</ul>
 				</li>
 			</ul>

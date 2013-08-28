@@ -69,18 +69,7 @@ while(!$found1){
 					<ul>
 						<? //<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li> ?>
 						<li><a href="#">&nbsp;</a></li>
-						<?php
-						
-						 echo "<li><a href='#' onclick=\"logout();\"/>Logout</a></li>";
-						/*
-						$mainurl="http://".$_SERVER['HTTP_HOST'];
-						if ($authsecured) {
-						  echo "<li><a href='#' onclick=\"logout();\"/>Logout</a></li>";
-						}
-						if (!$authsecured) {
-						  echo "<li><a href='$mainurl' target=\"_top\" />Logout</a></li>";
-						}*/
-						?>
+						<li><a href='#' onclick=\"logout();\"/>Logout</a></li>
 					</ul>
 				</li>
 			</ul>

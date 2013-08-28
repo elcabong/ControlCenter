@@ -48,29 +48,16 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
 	<td align=center height=25>&nbsp; &nbsp;</td>
 <? } ?>
 <tr>
-      <input type="hidden" name="user" value="<?php echo $authusername; ?>">
-        <td align=left>&nbsp; &nbsp;Username:</td>
-<td align=center>
-         <?php echo $authusername; ?>
-        </td>
-<!--<td align=center>
-          <input type='text' name="user" size=15 value="<?php //echo $authusername; ?>" />
-        </td>
--->
+    <input type="hidden" name="user" value="<?php echo $authusername; ?>">
+    <td align=left>&nbsp; &nbsp;Username:</td>
+	<td align=center><?php echo $authusername; ?></td>
 <tr>
-        <td align=left>&nbsp; &nbsp;Password:</td>
-<td align=center>
-         <input type='password' name="password" size=15 />
-        </td>
-
+	<td align=left>&nbsp; &nbsp;Password:</td>
+	<td align=center><input type='password' name="password" size=15 /></td>
 <tr>
-        <td align=center colspan=2>&nbsp;</td>
-
+	<td align=center colspan=2>&nbsp;</td>
 <tr>
-<td align=center colspan=2>
-         <input type='submit' value='Log in' />
-        </td>
-
+<td align=center colspan=2><input type='submit' value='Log in' /></td>
 </table>
 </form>
 <br>
