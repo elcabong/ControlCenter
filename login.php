@@ -1,5 +1,8 @@
 <?php
 require('./Portal/config.php');
+	if($_SESSION['usernumber'] != "choose") {
+    header("Location: ./Portal/index.php");
+    exit;}
 echo "<html>";
 echo "<head>";
 echo "<title>Control Center User Selection</title>";
@@ -9,6 +12,14 @@ echo "<link rel='stylesheet' type='text/css' href='./css/front.css' />";
 echo "<body background='./media/background.png'>";
 echo "<center>";
 require_once "./Portal/mobile_device_detect.php";
+if(strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_AGENT'],'webview')) {
+	$therealip = $_SERVER['SERVER_ADDR'];
+	$theip = str_replace(".","","$therealip");
+	$theapp =  "./androidapps/ControlCenter-$theip.apk";
+	if(file_exists($theapp)) {
+		echo "<br><a href='$theapp'><h3>Download the Android App</h3></a>";
+	}
+}
 if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	echo "<br><h2>Control Center<br><br> User Selection</h2>";
 	echo "<br>";

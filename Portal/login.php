@@ -61,7 +61,7 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
 </table>
 </form>
 <br>
-<h2><a href="../index.html">Back to User Selection</a></h2>
+<h2><a href="logout.php">Back to User Selection</a></h2>
 </center>
 </body>
 </html>

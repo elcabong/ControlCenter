@@ -8,26 +8,19 @@ ini_set('session.gc_divisor', 100	);
 ini_set('session.save_path', '/var/www/MediaCenter/sessions');
 ini_set('session.cookie_lifetime', 86400);
  session_start();
-/*
-$found = false;
-$path = './MediaCenter/index.html';
-while(!$found){	
-	if(file_exists($path)){ 
-		$found = true;
-                $thepath = $path;
-	}
-	else{ $path= '../'.$path; }
-}*/
-
+ 
 if (!$_SESSION['usernumber']) {
 	if (!$_GET['user']) {
 	    header("Location: $thepath");
     	    exit;
-	}}
-
-if ($_GET['user']) {
-   $_SESSION['usernumber'] = $_GET['user']; }
-   $usernumber = $_SESSION['usernumber'];
+	} else {
+   $_SESSION['usernumber'] = $_GET['user'];
+   $usernumber = $_SESSION['usernumber']; }
+} else {
+	if ($_GET['user'] && $_GET['user']!="choose") {
+		$_SESSION['usernumber'] = $_GET['user']; }
+		$usernumber = $_SESSION['usernumber'];
+}
 
 $found1 = false;
 $path1 = './lib/class.settings.php';

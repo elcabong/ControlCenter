@@ -8,7 +8,6 @@ $theperm = "USRPR$theroom";
 if (${$theperm}!="1" && $ADMINP!="1" or $theroom>$TOTALROOMS) {
     header("Location: index.php");
 	exit; }
-$thispath = dirname(dirname($_SERVER['PHP_SELF']));
 	/*
 /////////////////////////////////////////
 $found1 = false;
@@ -35,30 +34,6 @@ while(!$found1){
 	<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.scrollTo.js"></script>
 	<script type="text/javascript" src="../js/scripts.js"></script>
-	<script type="text/javascript">
-	function logout(){
-		    var xmlhttp;
-		    if (window.XMLHttpRequest)
-		      {
-			xmlhttp=new XMLHttpRequest();
-		      } else {
-			xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-		      }
-		    xmlhttp.onreadystatechange=function()
-		      {
-			if (xmlhttp.readyState==4 && xmlhttp.status==200)
-			{
-			  if(xmlhttp.responseText)
-			  {
-			    window.top.document.location.href = "<?echo $thispath;?>";
-			    alert("Logout successful");
-			  }
-			}
-		      }
-		    xmlhttp.open("GET","logout.php",true);
-		    xmlhttp.send();
-		    }
-	</script>
 </head>
 <body>
 <div id='header' class="nav-menu-z">
@@ -69,7 +44,8 @@ while(!$found1){
 					<ul>
 						<? //<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li> ?>
 						<li><a href="#">&nbsp;</a></li>
-						<li><a href='#' onclick=\"logout();\"/>Logout</a></li>
+						<? //<li><a href='#' onclick=\"logout();\"/>Logout</a></li>?>
+						<li><a href='logout.php' />Logout</a></li>
 					</ul>
 				</li>
 			</ul>
