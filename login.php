@@ -20,6 +20,13 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_
 		echo "<br><a href='$theapp'><h3>Download the Android App</h3></a>";
 	}
 }
+if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPod'))) { ?>
+	<script type="text/javascript" src="./js/add2home.js"></script>
+	<link rel='stylesheet' type='text/css' href='./css/add2home.css' />
+	<script type="text/javascript">
+	var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
+	</script><?
+}
 if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	echo "<br><h2>Control Center<br><br> User Selection</h2>";
 	echo "<br>";

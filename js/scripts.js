@@ -107,14 +107,7 @@ $(document).ready(function() {
 	}
 });	
 
-	function changeroom(newroom,usernumber) {
-		document.getElementById('loading').style.display='block';
-		var today = new Date();
-		var expire = new Date();
-		expire.setTime(today.getTime() + 3600000*24*5);
-		document.cookie="currentRoom"+usernumber+"="+ escape(newroom) + ";expires="+expire.toGMTString()+";path=/";
-		$("#room-menu").load("./room-chooser.php?newroom="+newroom, function() {  } );
-	}
+
 	
 	
 var resizeTimer;

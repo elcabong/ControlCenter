@@ -25,7 +25,7 @@ $_SESSION['room'] = $roomnum; } else {
 $roomnum = $_SESSION['room']; } 
 
 		$ROOMNUM = "ROOM$roomnum"."N";
-		echo "<a href='#' class='title'>${$ROOMNUM}</a>";
+		echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUM}</a>";
 		echo "<ul>";
 			$thisroom = 0;
 			$i = 1;
@@ -50,6 +50,15 @@ $ROOMXBMC = "ROOM$roomnum"."XBMC";
 $xbmcip = ${$ROOMXBMC};
 ?>
 <script type="text/javascript">
+	function changeroom(newroom,usernumber) {
+		document.getElementById('loading').style.display='block';
+		var today = new Date();
+		var expire = new Date();
+		expire.setTime(today.getTime() + 3600000*24*5);
+		document.cookie="currentRoom"+usernumber+"="+ escape(newroom) + ";expires="+expire.toGMTString()+";path=/";
+		$("#room-menu").load("./room-chooser.php?newroom="+newroom);
+	}
+
 		setTimeout(func, 5000);
 		function func() {
 			document.getElementById('loading').style.display='none';	
