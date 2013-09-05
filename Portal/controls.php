@@ -47,7 +47,8 @@ while(!$found1){
 			<ul>
 				<li><a href='#Settings' class='navsettings panel' title='Settings' style="margin-bottom:3px;border-bottom:2px solid rgba(0, 0, 0, 0);"><img src="../media/gear.png" style="margin:7px 0 0;width:20px !important;"></a>
 					<ul>
-						<? //<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li> ?>
+						<li><a href="#" class="title"><?echo $USERNAMES[$usernumber];?></a></li>
+						<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li>
 						<li><a href="#">&nbsp;</a></li>
 						<? //<li><a href='#' onclick=\"logout();\"/>Logout</a></li>?>
 						<li><a href='logout.php' />Logout</a></li>
@@ -243,13 +244,11 @@ while(!$found1){
 				} }
 			}
 		?>
-		<? /*
 		<div id="Settings" class="item">
 			<div class="content">
-				<iframe id='Settings 1' data-src='./settings.php' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+				<iframe id='Settings 1' class='Settings' data-src='./settings.php' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
-		*/ ?>
 	</div>
 </div>
 </body>

@@ -87,6 +87,12 @@ $(document).ready(function() {
         var href = $(this).attr('href');
 		if(href == '#') { return false; }		
 
+		href = href.replace(/#/g, "" );
+		var iframe = document.getElementById(href + ' 1');
+		if (!iframe.src) {
+			$('iframe.' + href).attr('src',$('iframe.' + href).attr('data-src'));
+		}		
+		
 		$('a.panel').removeClass('selected');
 		$('.navsettings.panel').addClass('selected');
 		

@@ -225,7 +225,7 @@ class ConfigMagik{
 		}
 		
 		// config-header
-		$content .= ";MediaFrontPage Settings";
+		$content .= ";Control Center Settings";
 		$content .= "; Last modified: ".date('d M Y H:i s')."\n";
 		
 		// check if there are sections to process

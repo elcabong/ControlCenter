@@ -10,7 +10,6 @@ echo "<meta name='viewport' content='width=device-width, initial-scale=1, maximu
 echo "<meta name='apple-mobile-web-app-capable' content='yes' />";
 echo "<link rel='stylesheet' type='text/css' href='./css/front.css' />";
 echo "<body background='./media/background.png'>";
-echo "<center>";
 require_once "./Portal/mobile_device_detect.php";
 if(strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_AGENT'],'webview')) {
 	$therealip = $_SERVER['SERVER_ADDR'];
@@ -27,22 +26,7 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 	var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
 	</script><?
 }
-echo "<div id='tiles'>";/*
-if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
-	echo "<br><h2>Control Center<br><br> User Selection</h2>";
-	echo "<br>";
-	$u = 1;
-	while($u<=$HOWMANYUSERS) {
-	$filename = "./config/Users/user$u.jpg";
-	if (file_exists($filename)) {
-	$theuserpic = "$filename";
-	} else {
-	$theuserpic = "./config/Users/user-default.jpg";   
-	}
-	echo "<a href='./Portal/index.php?user=$u'><img src='$theuserpic' title='User $u' width=60%  style='margin:10px;'/><span>$USERNAMES[$u]</span></a>";
-	$u++;
-	}
-} else {*/
+	echo "<div id='tiles'>";
 	echo "<br><h2 class='container right'>Control Center</h2><h2  class='container left'> User Selection</h2>";
 	echo "<br><br><br>";
 	$u = 1;
@@ -57,8 +41,7 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	echo "<a href='./Portal/index.php?user=$u' class='container'><img src='$theuserpic' class='image' /><span class='text'>$USERNAMES[$u]</span></a>";
 	$u++;
 	}
-/*}*/
-echo "</div></center>";
+echo "</div>";
 echo "</head>";
 echo "</body>";
 echo "</html>";

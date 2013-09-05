@@ -7,7 +7,7 @@ $config = new ConfigMagik('../config/config.ini', true, true);
   }
 
 if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
-  if(!is_writeable('config.ini')){
+  if(!is_writeable('../config/config.ini')){
     echo 'Could not write to config.ini';
     return false;
   }
@@ -38,7 +38,7 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
         if(!isset($_GET[$title]) && ($config->get($title, $section_name) !== NULL)){
           $title = urlencode($title);
           try{
-            $config = new ConfigMagik('config.ini', true, true);
+            $config = new ConfigMagik('../config/config.ini', true, true);
             $config->removeKey($title, $section_name);  //$title removed;
             $config->save();
           } catch(Exception $e){
@@ -66,27 +66,15 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
   <link href="../css/room.css" rel="stylesheet" type="text/css">
   <link href="../css/settings.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
-  <script type="text/javascript" src="js/fisheye-iutil.min.js"></script>
+  <script type="text/javascript" src="../js/fisheye-iutil.min.js"></script>
   <script type="text/javascript" src="../js/settings.js"></script>
   <link rel="stylesheet" type="text/css" href="css/widget.css">
   <link rel="stylesheet" type="text/css" href="css/static_widget.css">
-  <script src="js/jquery.scrollTo-1.4.2-min.js" type="text/javascript"></script>
-  <script src="js/jquery.localscroll-1.2.7-min.js" type="text/javascript"></script>
-  <script src="js/jquery.serialScroll-1.2.2-min.js" type="text/javascript"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>  
-  <link rel="stylesheet" type="text/css" href="css/jquery.pnotify.default.css">
-  <link rel="stylesheet" type="text/css" href="css/UI/jquery-ui-1.8.14.custom.css">
-  <script src="js/jquery.pnotify.js" type="text/javascript"></script>
-  <script type="text/javascript" src="js/jquery.tipsy.js"></script>
-  <link rel="stylesheet" href="css/tipsy.css" type="text/css" />
-  <script type='text/javascript'>
-  $(function() {
-    $('input').tipsy({gravity: 'w', fade: true});
-    $('img').tipsy({fade: true, gravity: 'n'});  
-  });
-  </script>
+  <link rel="stylesheet" type="text/css" href="../css/jquery.pnotify.default.css">
+  <link rel="stylesheet" type="text/css" href="../css/UI/jquery-ui-1.8.14.custom.css">
+  <script src="../js/jquery.pnotify.js" type="text/javascript"></script>
 </head>
-
 <body style="overflow: hidden;">
   <center>
     <div style="width:90%; height:95%;" class="widget">
