@@ -36,11 +36,10 @@ function redirect(){
 <br>
 <table class="widget" width=400 cellpadding=0 cellspacing=0>
 <tr>
-  <td align=center colspan=2 height=25><div class="widget-head">Welcome to the Control Center</div></td>
+  <td align=center colspan=2 height=25 style="padding:0;"><div class="widget-head">Welcome to the Control Center</div></td>
 <tr>
 <td align=centre><br>
-  If you have no text below,<br>
-  your PHP is not working.<br>
+  If you have no text below, your PHP is not working.<br>
   <br>
   <?php if(false){
 }
@@ -128,7 +127,7 @@ if (file_exists('layout.php')){
 echo '</table>';
 if($redirect){
   echo "<p>Congratulations! Everything seems to be in working order.</p>";
-  echo "<p><input type='button' onclick=\"window.location = './Portal/index.php';\" value='CONTINUE' /></p>";
+  echo "<p><input type='button' onclick=\"window.location = './index.html';\" value='CONTINUE' /></p>";
   if (file_exists('firstrun.php')){
     unlink('firstrun.php');
   }

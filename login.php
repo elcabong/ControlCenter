@@ -1,4 +1,5 @@
 <?php
+if (file_exists('firstrun.php')){header('Location: servercheck.php');exit;}
 require('./Portal/config.php');
 	if($_SESSION['usernumber'] != "choose") {
     header("Location: ./Portal/index.php");
@@ -10,13 +11,12 @@ echo "<meta name='viewport' content='width=device-width, initial-scale=1, maximu
 echo "<meta name='apple-mobile-web-app-capable' content='yes' />";
 echo "<link rel='stylesheet' type='text/css' href='./css/front.css' />";
 echo "<body background='./media/background.png'>";
-require_once "./Portal/mobile_device_detect.php";
 if(strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_AGENT'],'webview')) {
 	$therealip = $_SERVER['SERVER_ADDR'];
 	$theip = str_replace(".","","$therealip");
 	$theapp =  "./androidapps/ControlCenter-$theip.apk";
 	if(file_exists($theapp)) {
-		echo "<br><a href='$theapp'><h3>Download the Android App</h3></a>";
+		echo "<center><br><a href='$theapp'><h3>Download the Android App</h3></a></center>";
 	}
 }
 if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_AGENT'],'iPad') || strstr($_SERVER['HTTP_USER_AGENT'],'iPod'))) { ?>

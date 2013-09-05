@@ -35,7 +35,8 @@ table {
 	text-align:left;
 }
 td {
-	vertical-align:top;
+	vertical-align:bottom;
+	padding:0 0 5px 15px;
 }
 label {
 	margin-right:5px;

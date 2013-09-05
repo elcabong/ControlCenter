@@ -1,5 +1,5 @@
 <?php
-require '../lib/class.settings.php';//require 'lib/class.github.php';
+require '../lib/class.settings.php';require '../lib/class.github.php';
 $config = new ConfigMagik('../config/config.ini', true, true);
     if(!is_writeable('../config/config.ini')){
     echo 'Could not write to config.ini';
@@ -54,6 +54,10 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
     return true;
   }
 } else {
+require './config.php';
+if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
+    header("Location: login.php");
+    exit;}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <!--
@@ -86,7 +90,7 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
         <ul class="navigation">
           <li><a href="#ABOUT">About</a></li>
           <li><a href="#GLOBAL">General</a></li>
-          <li><a href="#PROGRAMS">Programs</a></li>
+       <!--   <li><a href="#PROGRAMS">Programs</a></li>
           <li><a href="#SEARCH">Search Widget</a></li>
           <li><a href="#TRAKT">Trakt.tv</a></li>
           <li><a href="#NAVBAR">Nav Bar</a></li>
@@ -95,7 +99,7 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
           <li><a href="#MESSAGE">Message Widget</a></li>
           <li><a href="#SECURITY">Security</a></li>
           <li><a href="#MODS">CSS Mods</a></li>
-          <li><a href="#RSS">RSS Feeds</a></li>
+          <li><a href="#RSS">RSS Feeds</a></li>-->
           <li><a href="#ROOMS">Room List</a></li>
         </ul>
       <!-- element with overflow applied -->
@@ -135,23 +139,23 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
                 <tr align="left">
                   <td>Last Updated</td>
                   <td>
-                  <?php/*
-                    $github = new GitHub('gugahoi','mediafrontpage');
+                  <?php
+                    $github = new GitHub('elcabong','MediaCenter-Portal');
                     $date   = $github->getInfo();
-                    echo $date['pushed_at'];*/
+                    echo $date['pushed_at'];
                   ?>
                   </td>
                 </tr>
                 <tr align="left">
                   <td>
-                    <?php/*
+                    <?php
                       $commit = $github->getCommits();
                       $commitNo = $commit['0']['sha'];
                       $currentVersion = $config->get('version','ADVANCED');
                       echo "Version </td><td><a href='https://github.com/gugahoi/mediafrontpage/commit/".$currentVersion."' target='_blank'>".$currentVersion.'</a>';
                       if($commitNo != $currentVersion){
                         echo "\t<a href='#' onclick='updateVersion();' title='".$commitNo." - Description: ".$commit['0']['commit']['message']."'>***UPDATE Available***</a>";
-                      }*/
+                      }
                     ?>
                   </td>
                 </tr>
@@ -186,7 +190,7 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
                 </table>
               <input type="button" title="Save these Settings" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" onClick="updateSettings('GLOBAL');" />
             </div>
-            <div id="PROGRAMS" class="panel">
+          <!--  <div id="PROGRAMS" class="panel">
               <table cellspacing="30px">
                 <tr>
                   <td><a href="#XBMC" title="XBMC"><img src="media/Programs/XBMC.png" style="opacity:0.4;filter:alpha(opacity=40)" onMouseOver="this.style.opacity=1;this.filters.alpha.opacity=100" onMouseOut="this.style.opacity=0.4;this.filters.alpha.opacity=40" /></a></td>
@@ -778,7 +782,7 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
               <br />
               <br />
               <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Save" onclick="updateAlternative('RSS');" />
-            </div>
+            </div> -->
             <div id="ROOMS" class="panel">
               <h3>Room List</h3>
               <p align="justify" style="width: 500px;">Info about room choice.</p>

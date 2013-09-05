@@ -9,7 +9,7 @@ ini_set('session.save_path', '/var/www/MediaCenter/sessions');
 ini_set('session.cookie_lifetime', 86400);
  session_start();
  
-if (!$_SESSION['usernumber']) {
+if (!$_SESSION['usernumber'] || $_SESSION['usernumber'] == "choose") {
 	if (!$_GET['user']) {
 	    header("Location: $thepath");
     	    exit;
