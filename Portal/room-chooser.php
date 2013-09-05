@@ -37,10 +37,10 @@ $roomnum = $_SESSION['room']; }
 					$xbmcmachine = pingAddress(${$ROOMXBMC});
 					echo "<li>";
 					if($i == $_SESSION['room']) {
-					echo "<a class='selected' href='#' onclick=\"changeroom('$i','$usernumber');\">${$ROOMNUM}</a></li>"; 				
+					echo "<a class='selected changeroom' href='#' newroom=\"$i\" >${$ROOMNUM}</a></li>"; 				
 					$thisroom = 1;
 					} else {
-					echo "<a href='#' onclick=\"changeroom('$i','$usernumber');\">${$ROOMNUM}</a></li>"; 
+					echo "<a class='changeroom' href='#' newroom=\"$i\" >${$ROOMNUM}</a></li>"; 
 					}
 				}
 			$i++; }
@@ -50,6 +50,12 @@ $ROOMXBMC = "ROOM$roomnum"."XBMC";
 $xbmcip = ${$ROOMXBMC};
 ?>
 <script type="text/javascript">
+	$('a.changeroom').click(function () {
+        var thenewroom = $(this).attr('newroom');
+		changeroom(thenewroom,<?echo $usernumber; ?>);
+		return false;
+	});	
+
 	function changeroom(newroom,usernumber) {
 		document.getElementById('loading').style.display='block';
 		var today = new Date();
@@ -63,7 +69,7 @@ $xbmcip = ${$ROOMXBMC};
 		function func() {
 			document.getElementById('loading').style.display='none';	
 		}
-		
+
 		var iframe2 = document.getElementById('XBMC 1');
 		if(iframe2.src != '<? echo $xbmcip; ?>') {
 			iframe2.setAttribute('src','<? echo $xbmcip; ?>');
@@ -75,5 +81,4 @@ $xbmcip = ${$ROOMXBMC};
 		if(iframe3.hasAttribute('src')) {
 			iframe3.setAttribute('src','<? echo $xbmcip; ?>/addons/webinterface.awxi/');
 			iframe3.src = iframe3.data-src; }
-		
 </script>

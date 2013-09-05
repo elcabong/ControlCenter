@@ -27,7 +27,7 @@ var addToHome = (function (w) {
 			returningVisitor: false,	// Show the balloon to returning visitors only (setting this to true is highly recommended)
 			animationIn: 'drop',		// drop || bubble || fade
 			animationOut: 'fade',		// drop || bubble || fade
-			startDelay: 2000,			// 2 seconds from page load before the balloon appears
+			startDelay: 1000,			// 1 seconds from page load before the balloon appears
 			lifespan: 15000,			// 15 seconds before it is automatically destroyed
 			bottomOffset: 14,			// Distance of the balloon from bottom
 			expire: 0,					// Minutes to wait before showing the popup again (0 = always displayed)

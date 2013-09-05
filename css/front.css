@@ -57,3 +57,50 @@ a:hover {
 a:visited {
 	color:#FF9522;
 }
+
+#tiles {
+   overflow: hidden;
+    margin: 0 auto;
+    width: 90%;
+    text-align: center;
+	padding-bottom:20px;
+}
+
+.container
+{
+    display:inline-block;
+    height: 250px;
+    width: 200px;
+	max-width:80%;
+    margin: 5px;
+	position:relative;
+}
+
+h2.container { height:auto; }
+
+.image
+{
+    position:absolute;
+    left:0;
+    top:0;
+	width:100%;
+	height:100%;
+}
+.text
+{
+    z-index:100;
+    position:absolute;    
+    color:#eee;
+    font-size:24px;
+    font-weight:bold;
+    width:100%;
+	left:0px;
+	padding:10px 0;
+	background-color:rgba(0,0,0,.65);
+}
+a:hover .text { color:rgb(0, 153, 255); }
+
+@media all and (min-width: 475px) {
+.right { text-align:right; }
+.left { text-align:left; }
+}

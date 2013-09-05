@@ -44,9 +44,13 @@ while(!$found2){
 
 
 	$u = 1;
+	$USERNAMES = array("none");
 	while($u>0) {
 		if($Config2->get('USERNAME',"USER$u")) {
 			$HOWMANYUSERS = $u;
+			$USERNAME = "USERNAME$u";
+			${$USERNAME} = $Config2->get('USERNAME',"USER$u");
+			array_push($USERNAMES,${$USERNAME});
 			$u++;
 		} else { $u = -5; }
 	}

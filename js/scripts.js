@@ -105,11 +105,23 @@ $(document).ready(function() {
 	function func() {
 		document.getElementById('loading').style.display='none';	
 	}
+	
+	$(".clearcover").click(function () {
+		$("ul.children").fadeOut(300); //Close filters drop-downs if user taps ANYWHERE in the page
+		$(".clearcover").fadeOut(300);
+	});	
+
+$("nav").children() // select your element (supports CSS selectors)
+    .hover(function(){ // trigger the mouseover event
+        $(".clearcover") // select the element to show (can be anywhere)
+            .show(); // show the element
+    }, function(){ // trigger the mouseout event
+        $(".clearcover") // select the same element
+            .hide(); // hide it
+    });
+	
 });	
 
-
-	
-	
 var resizeTimer;
 $(window).resize(function() {
     clearTimeout(resizeTimer);

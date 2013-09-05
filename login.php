@@ -27,6 +27,7 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 	var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
 	</script><?
 }
+echo "<div id='tiles'>";/*
 if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	echo "<br><h2>Control Center<br><br> User Selection</h2>";
 	echo "<br>";
@@ -38,12 +39,12 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	} else {
 	$theuserpic = "./config/Users/user-default.jpg";   
 	}
-	echo "<a href='./Portal/index.php?user=$u'><img src='$theuserpic' title='User $u' width=60%  style='margin:10px;'/></a>";
+	echo "<a href='./Portal/index.php?user=$u'><img src='$theuserpic' title='User $u' width=60%  style='margin:10px;'/><span>$USERNAMES[$u]</span></a>";
 	$u++;
 	}
-} else {
-	echo "<br><h2>Control Center User Selection</h2>";
-	echo "<br>";
+} else {*/
+	echo "<br><h2 class='container right'>Control Center</h2><h2  class='container left'> User Selection</h2>";
+	echo "<br><br><br>";
 	$u = 1;
 	while($u<=$HOWMANYUSERS) {
 	$filename = "./config/Users/user$u.jpg";
@@ -53,11 +54,11 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	$theuserpic = "./config/Users/user-default.jpg";   
 	}
 	$authusername = $Config2->get('USERNAME',"USER$u");
-	echo "<a href='./Portal/index.php?user=$u'><img src='$theuserpic' title='$authusername' style='max-width: 22%;margin:10px 10px;' height=40% /></a>";
+	echo "<a href='./Portal/index.php?user=$u' class='container'><img src='$theuserpic' class='image' /><span class='text'>$USERNAMES[$u]</span></a>";
 	$u++;
 	}
-}
-echo "</center>";
+/*}*/
+echo "</div></center>";
 echo "</head>";
 echo "</body>";
 echo "</html>";
