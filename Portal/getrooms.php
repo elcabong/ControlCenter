@@ -10,8 +10,8 @@
 			}
 			require "$thepath/config.php";
 			if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
-				echo "<script type='text/javascript'>logout();</script>";				
-				exit; }	
+				header("Location: login.php");
+				exit; }
 			$i = 1;
 			$theroom = $_SESSION['room'];
 			while($i<=$TOTALROOMS) {

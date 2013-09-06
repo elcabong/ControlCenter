@@ -47,9 +47,9 @@ while(!$found1){
 			<ul>
 				<li><a href='#Settings' class='navsettings panel' title='Settings' style="margin-bottom:3px;border-bottom:2px solid rgba(0, 0, 0, 0);"><img src="../media/gear.png" style="margin:7px 0 0;width:20px !important;"></a>
 					<ul>
-						<? //<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li>?>
+						<li><a href="#" class="title"><?echo $USERNAMES[$usernumber];?></a></li>
+						<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li>
 						<li><a href="#">&nbsp;</a></li>
-						<? //<li><a href='#' onclick=\"logout();\"/>Logout</a></li>?>
 						<li><a href='logout.php' />Logout</a></li>
 					</ul>
 				</li>
@@ -200,6 +200,9 @@ while(!$found1){
 
 
 
+
+
+
 			}
 		?>
 		</ul>
@@ -223,7 +226,7 @@ while(!$found1){
 		</div>
 		<div id="XBMCawxi" class="item">
 			<div class="content">
-				<iframe id='XBMCawxi 1' class='XBMCawxi' data-src="<?echo ${$ROOMXBMC};?>/addons/webinterface.awxi/" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+				<iframe id='XBMCawxi 1' class='XBMCawxi' data-src="<?echo ${$ROOMXBMC};?>/addons/webinterface.jquerymobile/" width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
 		<?php 

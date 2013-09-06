@@ -9,19 +9,6 @@ ini_set('session.save_path', '/var/www/MediaCenter/sessions');
 ini_set('session.cookie_lifetime', 86400);
  session_start();
  
-if (!$_SESSION['usernumber'] || $_SESSION['usernumber'] == "choose") {
-	if (!$_GET['user']) {
-	    header("Location: $thepath");
-    	    exit;
-	} else {
-   $_SESSION['usernumber'] = $_GET['user'];
-   $usernumber = $_SESSION['usernumber']; }
-} else {
-	if ($_GET['user'] && $_GET['user']!="choose") {
-		$_SESSION['usernumber'] = $_GET['user']; }
-		$usernumber = $_SESSION['usernumber'];
-}
-
 $found1 = false;
 $path1 = './lib/class.settings.php';
 while(!$found1){	
@@ -45,6 +32,7 @@ while(!$found2){
 
 	$u = 1;
 	$USERNAMES = array("none");
+	$HOWMANYUSERS = 0;
 	while($u>0) {
 		if($Config2->get('USERNAME',"USER$u")) {
 			$HOWMANYUSERS = $u;
@@ -55,6 +43,22 @@ while(!$found2){
 		} else { $u = -5; }
 	}
 
+if($HOWMANYUSERS > 0) {
+	if (!$_SESSION['usernumber'] || $_SESSION['usernumber'] == "choose") {
+		if (!$_GET['user']) {
+			header("Location: $thepath");
+				exit;
+		} else {
+	   $_SESSION['usernumber'] = $_GET['user'];
+	   $usernumber = $_SESSION['usernumber']; }
+	} else {
+		if ($_GET['user'] && $_GET['user']!="choose") {
+			$_SESSION['usernumber'] = $_GET['user']; }
+			$usernumber = $_SESSION['usernumber'];
+	}
+}
+	
+	
           $rooms;
 	  	  $TOTALROOMS = 0;
           $x = $Config2->get('ROOMS');

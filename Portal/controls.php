@@ -50,7 +50,6 @@ while(!$found1){
 						<li><a href="#" class="title"><?echo $USERNAMES[$usernumber];?></a></li>
 						<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li>
 						<li><a href="#">&nbsp;</a></li>
-						<? //<li><a href='#' onclick=\"logout();\"/>Logout</a></li>?>
 						<li><a href='logout.php' />Logout</a></li>
 					</ul>
 				</li>
@@ -92,6 +91,7 @@ while(!$found1){
 				if($gnavlinkcount + $navlinkcount > 1) { $navgroups = '1';}
 				if(!empty($gnavlink)) {
 					foreach( $gnavlink as $navlinklabel => $navlinkpath) {
+
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
 							$filename = "../config/Programs/".$navlinklabel.".png";
@@ -116,6 +116,7 @@ while(!$found1){
 						}
 						if($navgroups =='1' && $navlinkpath != "title"){ echo "</li>";}
 					}
+
 				}
 					if(!empty($navlink)){
 						foreach( $navlink as $navlinklabel => $navlinkpath) {
@@ -138,6 +139,7 @@ while(!$found1){
 				if($gnavlinkcount + $navlinkcount > 1) { $navgroups = '1';}
 				if(!empty($gnavlink)) {
 					foreach( $gnavlink as $navlinklabel => $navlinkpath) {
+
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
 								$filename = "../config/Programs/".$navlinklabel.".png";
@@ -165,6 +167,7 @@ while(!$found1){
 						}
 					}
 				}
+
 				if(!empty($navlink)){
 						foreach( $navlink as $navlinklabel => $navlinkpath) {
 						if($navlinkpath == "title") {
@@ -194,6 +197,14 @@ while(!$found1){
 						}
 					}
 				}
+
+
+
+
+
+
+
+
 			}
 		?>
 		</ul>
@@ -211,6 +222,7 @@ while(!$found1){
 			</div>
 		</div>
 		*/?>
+
 		<div id="XBMC" class="item">
 			<div class="content">
 				<?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; ?>
@@ -219,13 +231,14 @@ while(!$found1){
 		</div>
 		<div id="XBMCawxi" class="item">
 			<div class="content">
-				<iframe id='XBMCawxi 1' class='XBMCawxi' data-src="<?echo ${$ROOMXBMC};?>/addons/webinterface.awxi/" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+				<iframe id='XBMCawxi 1' class='XBMCawxi' data-src="<?echo ${$ROOMXBMC};?>/addons/webinterface.jquerymobile/" width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
 		<?php
 		if(!empty($gnavlink)) {
 			foreach( $gnavlink as $navlinklabel => $navlinkpath) {
 					if($navlinkpath != "title") {
+
 				echo "<div id='$navlinklabel' class='item'>";
 				echo "<div class='content'>";
 		       	 	echo "<iframe id='$navlinklabel 1' class='$navlinklabel' data-src='".$navlinkpath."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
@@ -233,6 +246,8 @@ while(!$found1){
 				echo "</div>";
 			}}
 		}
+
+
 			if(!empty($navlink)){
 				foreach( $navlink as $navlinklabel => $navlinkpath) {
 					if($navlinkpath != "title") {
@@ -244,11 +259,13 @@ while(!$found1){
 				} }
 			}
 		?>
+
 		<div id="Settings" class="item">
 			<div class="content">
 				<iframe id='Settings 1' class='Settings' data-src='./settings.php' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
+
 	</div>
 </div>
 </body>
