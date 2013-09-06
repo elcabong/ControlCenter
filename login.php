@@ -1,5 +1,5 @@
 <?php
-if (file_exists('firstrun.php')){header('Location: servercheck.php');exit;}
+if (file_exists('./config/firstrun.php')){header('Location: servercheck.php');exit;}
 require('./Portal/config.php');
 	if($_SESSION['usernumber'] != "choose") {
     header("Location: ./Portal/index.php");

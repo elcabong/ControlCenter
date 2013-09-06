@@ -128,8 +128,8 @@ echo '</table>';
 if($redirect){
   echo "<p>Congratulations! Everything seems to be in working order.</p>";
   echo "<p><input type='button' onclick=\"window.location = './index.html';\" value='CONTINUE' /></p>";
-  if (file_exists('firstrun.php')){
-    unlink('firstrun.php');
+  if (file_exists('./config/firstrun.php')){
+    unlink('./config/firstrun.php');
   }
 } else {
   echo "<p>It looks like some problems were found, please fix them then <input type=\"button\" value=\"reload\" onClick=\"window.location.reload()\"> the page.</p>";
