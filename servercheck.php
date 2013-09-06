@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>MediaFrontPage Server Check</title>
+<title>Control Center Server Check</title>
 <script type="text/javascript">
 function redirect(){
   window.location = 'login.php?user=choose';
@@ -79,8 +79,8 @@ if (file_exists('./config/config.ini')){
     }
 	} else { echo "<tr><td>Config found. </td><td><img src='media/green-tick.png' height='15px'/></td></tr>"; }
 }else{
-  if(file_exists('default-config.ini')){
-    if(copy("default-config.ini", "config.ini")){
+  if(file_exists('./config/config-example.ini')){
+    if(copy("./config/config-example.ini", "./config/config.ini")){
       echo "<tr><td>Config created successfully";
       echo "</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
     }
