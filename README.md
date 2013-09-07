@@ -15,7 +15,7 @@ sudo mkdir /var/www/MediaCenter
   
 1. Download "    git clone git://github.com/elcabong/MediaCenter-Portal.git /var/www/MediaCenter/    "
 2. run "   sudo chmod -R 777 /var/www/MediaCenter/config   "
-2.5 run "    sudo chown -R www-data:www-data /var/www/MediaCenter/sessions     "
+2.5 run "    sudo chown -R www-data:www-data /var/www/MediaCenter/sessions     " 
 3. browse to your http://webserver/MediaCenter/
 4. edit /var/www/MediaCenter/config/config.ini to suit needs  (will eventually be configurable via UI after servercheck page)
 
