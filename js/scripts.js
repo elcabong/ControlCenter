@@ -130,7 +130,7 @@ $("nav").children() // select your element (supports CSS selectors)
 		$(".clearcover").hide(); 
 	}
  
-	$("#clearcover").touchwipe({
+	$(".clearcover").touchwipe({
 		 wipeUp: function() { hideclearcover(); },
 		 wipeDown: function() { hideclearcover(); },
 		 wipeLeft: function() { hideclearcover(); },
