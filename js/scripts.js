@@ -125,6 +125,20 @@ $("nav").children() // select your element (supports CSS selectors)
         $(".clearcover") // select the same element
             .hide(); // hide it
     });
+
+	function hideclearcover() {
+		$(".clearcover").hide(); 
+	}
+ 
+	$("#clearcover").touchwipe({
+		 wipeUp: function() { hideclearcover(); },
+		 wipeDown: function() { hideclearcover(); },
+		 wipeLeft: function() { hideclearcover(); },
+		 wipeRight: function() { hideclearcover(); },
+		 min_move_x: 3,
+		 min_move_y: 3,	 
+		 //preventDefaultEvents: true
+	});
 	
 });	
 
