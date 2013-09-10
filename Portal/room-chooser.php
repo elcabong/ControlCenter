@@ -34,7 +34,6 @@ $roomnum = $_SESSION['room']; }
 				$ROOMNUM = "ROOM$i"."N";
 				$theperm = "USRPR$i";
 				if(!empty(${$ROOMXBMC}) && ($ADMINP == "1" or ${$theperm} == "1")){
-					$xbmcmachine = pingAddress(${$ROOMXBMC});
 					echo "<li>";
 					if($i == $_SESSION['room']) {
 					echo "<a class='selected changeroom' href='#' newroom=\"$i\" >${$ROOMNUM}</a></li>"; 				
