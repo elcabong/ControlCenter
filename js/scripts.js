@@ -100,7 +100,6 @@ $(document).ready(function() {
 		return false;
 	});	
 	
-	
 	function refreshRooms() {
 	$("#roomList").load("./getrooms.php");
 	setTimeout(refreshRooms, 3500);
