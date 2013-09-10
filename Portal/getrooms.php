@@ -24,25 +24,22 @@
 					echo "</li>";
 					}
 			$i++; }
-			?>
-			<script>
-			function wakemachine(mac) {
-				$.ajax(
-					{
-						   type: "POST",
-						   url: "wol-check.php?m="+mac+"",
-						   data: 0, // data to send to above script page if any
-						   cache: false,
-
-						   success: function(response)
-						   {
-								// need to retry ping until successful or hit a set limit, then display none
-						   
-								setTimeout(func, 35000);
-								function func() {
-									document.getElementById('loading').style.display='none';	
-								}
-						   }
-					 });				
-			}
-			</script>
+?>
+<script>
+	function wakemachine(mac) {
+		$.ajax({
+			   type: "POST",
+			   url: "wol-check.php?m="+mac+"",
+			   data: 0, // data to send to above script page if any
+			   cache: false,
+			   success: function(response)
+			{
+				// need to retry ping until successful or hit a set limit, then display none
+				setTimeout(func, 35000);
+				function func() {
+					document.getElementById('loading').style.display='none';	
+				}
+		   }
+		});				
+	}
+</script>
