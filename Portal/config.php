@@ -180,12 +180,19 @@ function pingAddress($ip) {
          $ip = strtok(str_replace($d, '', $ip),':');
       }
    }
-    $pingresult = exec("/bin/ping -c1 -w1 $ip", $outcome, $status);  
-    if ($status==0) {
-    $status = "alive";
-    } else {
-    $status = "dead";
-    }
+	if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
+		$pingresult = exec("ping -n 1 $ip", $output, $status);
+		if (strpos($output[2],'unreachable') !== false) {
+		   $status = "dead";
+		} else { $status = "alive"; }
+		// echo 'This is a server using Windows!';
+	} else {
+		$pingresult = exec("/bin/ping -c1 -w1 $ip", $outcome, $status);
+		// echo 'This is a server not using Windows!';
+		if ($status == "0") {
+		$status = "alive";
+		} else { $status = "dead"; }
+	}	
     return $status;
 }
 ?>
