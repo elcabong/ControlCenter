@@ -1,4 +1,4 @@
-			<?
+<?
 			$found = false;
 			$path = 'Portal';
 			while(!$found){	
@@ -13,12 +13,10 @@
 				header("Location: login.php");
 				exit; }
 			$i = 1;
-			$theroom = $_SESSION['room'];
 			while($i<=$TOTALROOMS) {
 				$ROOMXBMC = "ROOM$i"."XBMC";
 				$ROOMXBMCM = $ROOMXBMC."M";
 				$theperm = "USRPR$i";
-			//	if($i == $theroom) {$thisroom = 1;} else {$thisroom = 0;}
 				if(!empty(${$ROOMXBMC}) && ($ADMINP == "1" or ${$theperm} == "1")){
 					$xbmcmachine = pingAddress(${$ROOMXBMC});
 					echo "<li>";
@@ -26,25 +24,22 @@
 					echo "</li>";
 					}
 			$i++; }
-			?>
-			<script>
-			function wakemachine(mac) {
-				$.ajax(
-					{
-						   type: "POST",
-						   url: "wol-check.php?m="+mac+"",
-						   data: 0, // data to send to above script page if any
-						   cache: false,
-
-						   success: function(response)
-						   {
-								// need to retry ping until successful or hit a set limit, then display none
-						   
-								setTimeout(func, 35000);
-								function func() {
-									document.getElementById('loading').style.display='none';	
-								}
-						   }
-					 });				
-			}
-			</script>
+?>
+<script>
+	function wakemachine(mac) {
+		$.ajax({
+			   type: "POST",
+			   url: "wol-check.php?m="+mac+"",
+			   data: 0, // data to send to above script page if any
+			   cache: false,
+			   success: function(response)
+			{
+				// need to retry ping until successful or hit a set limit, then display none
+				setTimeout(func, 35000);
+				function func() {
+					document.getElementById('loading').style.display='none';	
+				}
+		   }
+		});				
+	}
+</script>

@@ -100,7 +100,6 @@ $(document).ready(function() {
 		return false;
 	});	
 	
-	
 	function refreshRooms() {
 	$("#roomList").load("./getrooms.php");
 	setTimeout(refreshRooms, 3500);
@@ -136,7 +135,7 @@ $("nav").children() // select your element (supports CSS selectors)
 		 wipeLeft: function() { hideclearcover(); },
 		 wipeRight: function() { hideclearcover(); },
 		 min_move_x: 3,
-		 min_move_y: 3,	 
+		 min_move_y: 3 
 		 //preventDefaultEvents: true
 	});
 	

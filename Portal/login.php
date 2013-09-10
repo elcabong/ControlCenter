@@ -1,5 +1,5 @@
 <?php require_once('config.php');
-if($_GET['user']=='choose') {
+if(isset($_GET['user']) && $_GET['user'] =='choose') {
 header( "refresh: 0; url=../login.php?user=choose" );
 exit;
 }
@@ -45,7 +45,7 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
     <table width=259 cellpadding=3 cellspacing=0 id=1>
       <tr>
         <td align=center colspan=2 height=25><h2>Authentication</h2></td>
-<? if($_SESSION['attempt'] > 0) { ?>
+<? if(isset($_SESSION['attempt']) && $_SESSION['attempt'] > 0) { ?>
 	<tr>
 	<td align=center colspan=4 height=25><br>Invalid Password. Try Again.</td>
 	<tr>
