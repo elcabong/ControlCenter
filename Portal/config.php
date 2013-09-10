@@ -171,11 +171,6 @@ if($HOWMANYUSERS > 0) {
 		}
 	}		
 		*/
-		
-		
-		
-		
-		
 ?>
 <?
 function pingAddress($ip) {
