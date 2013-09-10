@@ -1,13 +1,22 @@
 <?php
-
 $thepath = dirname(dirname($_SERVER['PHP_SELF']));
+
+$found2 = false;
+$path2 = './sessions';
+while(!$found2){
+	if(file_exists($path2)){ 
+		$found2 = true;
+		$sessionsloc = $path2;
+	}
+	else{ $path2= '../'.$path2; }
+}
 
 ini_set('session.gc_maxlifetime', 86400);
 ini_set('session.gc_probability', 1);
 ini_set('session.gc_divisor', 100	);
-ini_set('session.save_path', '/var/www/MediaCenter/sessions');
+ini_set('session.save_path', "$sessionsloc");
 ini_set('session.cookie_lifetime', 86400);
- session_start();
+if(!isset($_SESSION)){session_start();}
  
 $found1 = false;
 $path1 = './lib/class.settings.php';
@@ -21,7 +30,7 @@ while(!$found1){
 
 $found2 = false;
 $path2 = './config/config.ini';
-while(!$found2){	
+while(!$found2){
 	if(file_exists($path2)){ 
 		$found2 = true;
 		$Config2 = new ConfigMagik( $path2, true, true);
@@ -52,7 +61,7 @@ if($HOWMANYUSERS > 0) {
 	   $_SESSION['usernumber'] = $_GET['user'];
 	   $usernumber = $_SESSION['usernumber']; }
 	} else {
-		if ($_GET['user'] && $_GET['user']!="choose") {
+		if (isset($_GET['user']) && $_GET['user']!="choose") {
 			$_SESSION['usernumber'] = $_GET['user']; }
 			$usernumber = $_SESSION['usernumber'];
 	}
@@ -81,7 +90,7 @@ if($HOWMANYUSERS > 0) {
 			$gnavlinks = explode(",",$gnavlinks);
 			${$ROOMname} = $gnavlinks[0];
 			${$ROOMXBMC} = $gnavlinks[1];
-			if($gnavlinks[2] != '') { ${$ROOMXBMCM} = $gnavlinks[2]; } else { ${$ROOMXBMCM} = 0; }
+			if(isset($gnavlinks[2]) && $gnavlinks[2] != '') { ${$ROOMXBMCM} = $gnavlinks[2]; } else { ${$ROOMXBMCM} = 0; }
 			$c++;
 		}
 	}
@@ -162,11 +171,6 @@ if($HOWMANYUSERS > 0) {
 		}
 	}		
 		*/
-		
-		
-		
-		
-		
 ?>
 <?
 function pingAddress($ip) {
