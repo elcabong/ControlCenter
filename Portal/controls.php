@@ -3,6 +3,7 @@ require_once 'config.php';
 if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
     header("Location: login.php");
     exit;}
+require_once 'controls-include.php';
 $theroom = $_SESSION['room'];
 $theperm = "USRPR$theroom";
 if (${$theperm}!="1" && $ADMINP!="1" or $theroom>$TOTALROOMS) {
