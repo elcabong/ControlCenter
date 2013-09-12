@@ -159,10 +159,11 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                   <td>
                     <?php
                       $commit = $github->getCommits();
+					  if(isset($branchname)) {
+					  $commitNo = $commit['sha'];
+					  } else {
                       $commitNo = $commit['0']['sha'];
-					  echo print_r($commit['0']['1']['sha']);
-					  echo print_r($commit['sha']);
-					  echo $commitNo."/commitNo/";
+					  }
 						if (file_exists($filename)) {
 							$data = file($filename);
 							$line = $data[count($data)-1];
