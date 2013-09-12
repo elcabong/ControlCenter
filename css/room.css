@@ -45,7 +45,7 @@ ul, li { margin: 0; }
 
 a:link { color:rgb(102, 102, 102); }
 
-a:hover { color:#0099ff; }
+a:hover { color:#0099ff !important; }
 
 a:visited { color:rgb(102, 102, 102); }
 
@@ -166,7 +166,7 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #nav-menu2 > nav > ul > li { width:50px !important;position: relative;right:40px;text-align:center; }
 
-#navsettings > ul > li > ul { right:100px;position:relative;position:absolute;top:50px;right:0; }
+#navsettings > ul > li > ul { right:100px;position:relative;position:absolute;top:48px;right:0; }
   
 #nav-menu2 > nav ul li ul a { background:url(../media/bgNav.png);width:90px; }
 

@@ -19,7 +19,7 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
 		$_SESSION['attempt']++;
 		if($_SESSION['attempt'] > 2) {
 		$_SESSION['attempt'] = 0;
-		header( "refresh: 0; url=../login.php?user=choose" );
+		header( "refresh: 0; url=./logout.php" );
 		exit;
 } } }
  ?>
@@ -31,7 +31,7 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-<link rel="shortcut icon" href="favicon.ico" />
+	<link rel="icon" type="image/png" href="./favicon.ico">
 <link rel="stylesheet" type="text/css" href="../css/front.css" />
 	<script type="text/javascript">
 	var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
