@@ -52,13 +52,14 @@ while(!$found2){
 
 if($HOWMANYUSERS > 0) {
 	if (!isset($_SESSION['usernumber']) || $_SESSION['usernumber'] == "choose") {
-		if (!$_GET['user']) {
+		if(isset($_POST['usernumber'])) { $_SESSION['usernumber'] = $_POST['usernumber']; }
+		elseif (!$_GET['user']) {
 			$thepath = dirname(dirname($_SERVER['PHP_SELF']));
 			header("Location: $thepath");
 				exit;
 		} else {
-	   $_SESSION['usernumber'] = $_GET['user'];
-	   $usernumber = $_SESSION['usernumber']; }
+	   $_SESSION['usernumber'] = $_GET['user']; }
+	   $usernumber = $_SESSION['usernumber'];
 	} else {
 		if (isset($_GET['user']) && $_GET['user']!="choose") {
 			$_SESSION['usernumber'] = $_GET['user']; }

@@ -36,8 +36,10 @@ table {
 }
 td {
 	vertical-align:bottom;
-	padding:0 0 5px 15px;
+	#padding:0 0 5px 15px;
 }
+.userpick > table { width:100%; }
+.userpick > table > tbody > tr > td { padding:0; }
 label {
 	margin-right:5px;
 }
@@ -48,6 +50,7 @@ ul, li {
 }
 a {
 	text-decoration: none;
+	outline: 0;
 }
 a:link {
 	color:#FF9522;
@@ -99,7 +102,7 @@ h2.container { height:auto; }
 	padding:10px 0;
 	background-color:rgba(0,0,0,.65);
 }
-a:hover .text { color:rgb(0, 153, 255); }
+a:hover .text { color:rgb(0, 153, 255);background-color:rgba(0,0,0,0); }
 
 @media all and (min-width: 475px) {
 .right { text-align:right; }

@@ -3,14 +3,18 @@ if (file_exists('./config/firstrun.php')){header('Location: servercheck.php');ex
 require('./Portal/config.php');
 	if($_SESSION['usernumber'] != "choose") {
     header("Location: ./Portal/index.php");
-    exit;}
-echo "<html>";
-echo "<head>";
-echo "<title>Control Center User Selection</title>";
-echo "<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no' />";
-echo "<meta name='apple-mobile-web-app-capable' content='yes' />";
-echo "<link rel='stylesheet' type='text/css' href='./css/front.css' />";
-echo "<body background='./media/background.png'>";
+    exit;} ?>
+<!DOCTYPE html>	
+<html>
+<head>
+<title>Control Center User Selection</title>
+<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no' />
+<meta name='apple-mobile-web-app-capable' content='yes' />
+<link rel='stylesheet' type='text/css' href='./css/front.css' />
+	<link rel="icon" type="image/png" href="./favicon.ico">
+<script type='text/javascript' src='./js/jquery-1.10.1.min.js'></script>
+<body background='./media/background.png'>
+<?
 if(strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_AGENT'],'webview')) {
 	$therealip = $_SERVER['SERVER_ADDR'];
 	$theip = str_replace(".","","$therealip");
@@ -25,7 +29,21 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 	<script type="text/javascript">
 	var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
 	</script><?
-}
+} ?>
+	<script type="text/javascript">
+$(document).ready(function(){
+    $('a.container').hover(function(){
+		$(this).children("div").slideDown();
+        $(this).find('span').animate({top: '215px'}, 450);
+		$(this).find('span').style.backgroundColor="rgba(0,0,0,0)";
+    }, function(){
+        $(this).find('span').animate({top: '0'}, 350);
+		$(this).children("div").slideUp();
+    });
+
+});	
+	</script>
+<?
 	echo "<div id='tiles'>";
 	echo "<br><h2 class='container right'>Control Center</h2><h2  class='container left'> User Selection</h2>";
 	echo "<br><br><br>";
@@ -38,7 +56,37 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 	$theuserpic = "./config/Users/user-default.jpg";   
 	}
 	$authusername = $Config2->get('USERNAME',"USER$u");
-	echo "<a href='./Portal/index.php?user=$u' class='container'><img src='$theuserpic' class='image' /><span class='text'>$USERNAMES[$u]</span></a>";
+     $authpassword           = $AUTH_PASS              = $Config2->get('PASSWORD',"USER$u");
+	 if($AUTH_PASS) { $AUTH_ON = 1; } else { $AUTH_ON = 0; }
+	 $authsecured            = $AUTH_ON;
+	if ($authsecured) { ?>
+	  <a href='#' class='container' id='user$u'><div id='login$u' style='display:none;background-color:rgba(0, 0, 0, 0.65);height:100%;width:100%;z-index:2;position:absolute;'>
+		<form action='./Portal/login.php' method='post' class='userpick'>
+		<table id=<?echo $u;?>>
+		  <tr>
+			<td align=center colspan=2 height=25><h2>Authentication</h2></td>
+			<tr>
+			<input type='hidden' name='user' value=<? echo "$authusername";?>>
+			<input type='hidden' name='usernumber' value=<? echo "$u";?>>
+			<td align=center>Password:</td>
+			<tr>
+			<td align=center><input type='password' name='password' size=15 /></td>
+			<tr>
+			<td align=center colspan=2>&nbsp;</td>
+			<tr>
+		<td align=center colspan=2><input type='submit' value='Log in' /></td>
+		</table>
+		</form>
+	<? } else {
+	 echo "<a href='./Portal/index.php?user=$u' class='container' id='user$u'><div id='login$u' style='display:none;background-color:rgba(0, 0, 0, 0.65);height:100%;width:100%;z-index:2;position:absolute;'>";?>
+		<div class='userpick'>
+		<table id=<?echo $u;?>>
+		  <tr>
+			<td align=center colspan=2 height=25><h2>Click to Login</h2></td>
+		</table>
+		</div>	 
+	<? }
+	echo "</div><img src='$theuserpic' class='image' /><span class='text'>$USERNAMES[$u]</span></a>";
 	$u++;
 	}
 echo "</div>";
