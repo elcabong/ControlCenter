@@ -36,7 +36,6 @@ table {
 }
 td {
 	vertical-align:bottom;
-	#padding:0 0 5px 15px;
 }
 .userpick > table { width:100%; }
 .userpick > table > tbody > tr > td { padding:0; }
@@ -61,7 +60,6 @@ a:hover {
 a:visited {
 	color:#FF9522;
 }
-
 #tiles {
    overflow: hidden;
     margin: 0 auto;
@@ -69,7 +67,6 @@ a:visited {
     text-align: center;
 	padding-bottom:20px;
 }
-
 .container
 {
     display:inline-block;
@@ -79,9 +76,8 @@ a:visited {
     margin: 5px;
 	position:relative;
 }
-
+a.container > div { background-color:rgba(0, 0, 0, 0.65);height:40px;width:100%;z-index:2;position:absolute;overflow:hidden; }
 h2.container { height:auto; }
-
 .image
 {
     position:absolute;
@@ -100,9 +96,9 @@ h2.container { height:auto; }
     width:100%;
 	left:0px;
 	padding:10px 0;
-	background-color:rgba(0,0,0,.65);
+	bottom:0;
 }
-a:hover .text { color:rgb(0, 153, 255);background-color:rgba(0,0,0,0); }
+a:hover .text { color:rgb(0, 153, 255); }
 
 @media all and (min-width: 475px) {
 .right { text-align:right; }

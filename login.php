@@ -11,7 +11,7 @@ require('./Portal/config.php');
 <meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no' />
 <meta name='apple-mobile-web-app-capable' content='yes' />
 <link rel='stylesheet' type='text/css' href='./css/front.css' />
-	<link rel="icon" type="image/png" href="./favicon.ico">
+<link rel="icon" type="image/png" href="./favicon.ico">
 <script type='text/javascript' src='./js/jquery-1.10.1.min.js'></script>
 <body background='./media/background.png'>
 <?
@@ -31,17 +31,14 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 	</script><?
 } ?>
 	<script type="text/javascript">
-$(document).ready(function(){
-    $('a.container').hover(function(){
-		$(this).children("div").slideDown();
-        $(this).find('span').animate({top: '215px'}, 450);
-		$(this).find('span').style.backgroundColor="rgba(0,0,0,0)";
-    }, function(){
-        $(this).find('span').animate({top: '0'}, 350);
-		$(this).children("div").slideUp();
-    });
+	$(document).ready(function(){
+		$('a.container').hover(function(){
+			$(this).children("div").delay(150).animate({height:'100%'},550);
+		}, function(){
+			$(this).children("div").animate({height:'40px'},450);
+		});
 
-});	
+	});	
 	</script>
 <?
 	echo "<div id='tiles'>";
@@ -60,9 +57,9 @@ $(document).ready(function(){
 	 if($AUTH_PASS) { $AUTH_ON = 1; } else { $AUTH_ON = 0; }
 	 $authsecured            = $AUTH_ON;
 	if ($authsecured) { ?>
-	  <a href='#' class='container' id='user$u'><div id='login$u' style='display:none;background-color:rgba(0, 0, 0, 0.65);height:100%;width:100%;z-index:2;position:absolute;'>
+	  <a href='#' class='container' id='user$u'><div id='login$u' class='locked'>
 		<form action='./Portal/login.php' method='post' class='userpick'>
-		<table id=<?echo $u;?>>
+		<table id=<?echo $u;?>><br><br>
 		  <tr>
 			<td align=center colspan=2 height=25><h2>Authentication</h2></td>
 			<tr>
@@ -78,15 +75,15 @@ $(document).ready(function(){
 		</table>
 		</form>
 	<? } else {
-	 echo "<a href='./Portal/index.php?user=$u' class='container' id='user$u'><div id='login$u' style='display:none;background-color:rgba(0, 0, 0, 0.65);height:100%;width:100%;z-index:2;position:absolute;'>";?>
+	 echo "<a href='./Portal/index.php?user=$u' class='container' id='user$u'><div id='login$u'>";?>
 		<div class='userpick'>
-		<table id=<?echo $u;?>>
+		<table id=<?echo $u;?>><br><br>
 		  <tr>
 			<td align=center colspan=2 height=25><h2>Click to Login</h2></td>
 		</table>
 		</div>	 
 	<? }
-	echo "</div><img src='$theuserpic' class='image' /><span class='text'>$USERNAMES[$u]</span></a>";
+	echo "<span class='text'>$USERNAMES[$u]</span></div><img src='$theuserpic' class='image' /></a>";
 	$u++;
 	}
 echo "</div>";
