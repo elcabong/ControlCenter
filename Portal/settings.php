@@ -116,7 +116,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
             <div id="ABOUT" class="panel">
               <table cellpadding="5px">
                 <tr>
-                  <img src="media/mfp.png" />
+                 <?// <img src="media/mfp.png" /> ?>
                 </tr>
                 <tr>
                   <td colspan="2">
@@ -141,9 +141,17 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                   <td>Last Updated</td>
                   <td>
                   <?php
-                    $github = new GitHub('elcabong','MediaCenter-Portal');
-                    $date   = $github->getInfo();
-                    echo $date['pushed_at'];
+						$filename = '../.git/logs/HEAD';						
+						$branchname = "";
+						if (file_exists($filename)) {
+							$stringfromfile = file('../.git/HEAD', FILE_USE_INCLUDE_PATH);
+							$stringfromfile = $stringfromfile[0]; //get the string from the array
+							$explodedstring = explode("/", $stringfromfile); //seperate out by the "/" in the string
+							$branchname = $explodedstring[2]; //get the one that is always the branch name
+						}
+					if(isset($branchname)) { $github = new GitHub('elcabong','MediaCenter-Portal', $branchname); } else { $github = new GitHub('elcabong','MediaCenter-Portal'); }
+                    $date = $github->getInfo();
+                    echo $date;
                   ?>
                   </td>
                 </tr>
@@ -152,7 +160,14 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                     <?php
                       $commit = $github->getCommits();
                       $commitNo = $commit['0']['sha'];
-                      $currentVersion = $config->get('version','ADVANCED');
+						if (file_exists($filename)) {
+							$data = file($filename);
+							$line = $data[count($data)-1];
+							$curver = explode(" ",$line);
+							$currentVersion = $curver[1];
+						} else {
+							$currentVersion = $config->get('version','ADVANCED');
+						}
                       echo "Version </td><td><a href='https://github.com/elcabong/MediaCenter-Portal/commit/".$currentVersion."' target='_blank'>".$currentVersion.'</a>';
                       if($commitNo != $currentVersion){
                         echo "<br><a href='#' onclick='updateVersion();' title='".$commitNo." - Description: ".$commit['0']['commit']['message']."'>***UPDATE Available***</a>";
