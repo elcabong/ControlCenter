@@ -154,7 +154,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 					if(isset($branchname)) {
 					   echo $date['name']; //['author']['date'];
 					   //echo $date['commit']['1']['date'];
-					   echo print_r{$date};
+					   echo print_r($date);
 					} else {
                        echo $date['pushed_at'];
 					}
