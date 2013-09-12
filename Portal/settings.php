@@ -151,7 +151,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						}
 					if(isset($branchname)) { $github = new GitHub('elcabong','MediaCenter-Portal', $branchname); } else { $github = new GitHub('elcabong','MediaCenter-Portal'); }
                     $date = $github->getInfo();
-                    echo $date;
+                    echo $date['pushed_at'];
                   ?>
                   </td>
                 </tr>
