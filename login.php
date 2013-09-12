@@ -1,5 +1,5 @@
 <?php
-if (file_exists('./config/firstrun.php')){header('Location: servercheck.php');exit;}
+if (file_exists('./config/firstrun.php')) { header('Location: servercheck.php');exit; }
 require('./Portal/config.php');
 	if($_SESSION['usernumber'] != "choose") {
     header("Location: ./Portal/index.php");
@@ -32,12 +32,19 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 } ?>
 	<script type="text/javascript">
 	$(document).ready(function(){
+	/*  OPTION 1
 		$('a.container').hover(function(){
 			$(this).children("div").delay(150).animate({height:'100%'},550);
 		}, function(){
 			$(this).children("div").animate({height:'40px'},450);
+		});*/	
+	
+		$('a.container').click(function(){
+			$(this).children("div.locked").delay(150).animate({height:'100%'},550);
 		});
-
+		$('a.container').hover(function(){	}, function(){
+			$(this).children("div.locked").animate({height:'40px'},450);
+		});		
 	});	
 	</script>
 <?
