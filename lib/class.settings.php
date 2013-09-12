@@ -72,8 +72,8 @@ class ConfigMagik{
 	*/
 	function get( $key=null, $section=null){
 		// if section was passed, change the PROCESS_SECTION-switch (FIX: 11/08/2004 BennyZaminga)
-		if ( $section) $this->PROCESS_SECTIONS = true;
-		else           $this->PROCESS_SECTIONS = false;
+		if ( $section) { $this->PROCESS_SECTIONS = true; }
+		else { $this->PROCESS_SECTIONS = false; }
 		// get requested value
 		if ( $this->PROCESS_SECTIONS) {
 			$value = $this->VARS[$section][$key];

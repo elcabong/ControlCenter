@@ -105,6 +105,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
           <li><a href="#MESSAGE">Message Widget</a></li>
           <li><a href="#SECURITY">Security</a></li>
           <li><a href="#MODS">CSS Mods</a></li>-->
+          <li><a href="#USERS">User List</a></li>
           <li><a href="#ROOMS">Room List</a></li>
          <li><a href="#ADMINGROUPS">Admin Groups</a></li> 
          <li><a href="#NAVGROUPS">NAV Groups</a></li>
@@ -116,7 +117,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
             <div id="ABOUT" class="panel">
               <table cellpadding="5px">
                 <tr>
-                  <img src="media/mfp.png" />
+                 <?// <img src="media/mfp.png" /> ?>
                 </tr>
                 <tr>
                   <td colspan="2">
@@ -141,9 +142,22 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                   <td>Last Updated</td>
                   <td>
                   <?php
-                    $github = new GitHub('elcabong','MediaCenter-Portal');
-                    $date   = $github->getInfo();
-                    echo $date['pushed_at'];
+						$filename = '../.git/logs/HEAD';						
+						$branchname = "";
+						if (file_exists($filename)) {
+							$stringfromfile = file('../.git/HEAD', FILE_USE_INCLUDE_PATH);
+							$stringfromfile = $stringfromfile[0]; //get the string from the array
+							$explodedstring = array_filter(array_map('trim',explode('/',$stringfromfile)));
+							$branchname = $explodedstring[2]; //get the one that is always the branch name
+						}
+					if(isset($branchname) && $branchname != "master") { $github = new GitHub('elcabong','MediaCenter-Portal', $branchname); } else { $github = new GitHub('elcabong','MediaCenter-Portal'); }
+                    $date = $github->getInfo();
+					if(isset($branchname)) {
+					 //  echo $date['name']; //['author']['date'];
+					   echo $date['commit']['commit']['author']['date'];
+					} else {
+                       echo $date['pushed_at'];
+					}
                   ?>
                   </td>
                 </tr>
@@ -151,8 +165,19 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                   <td>
                     <?php
                       $commit = $github->getCommits();
+					  if(isset($branchname)) {
+					  $commitNo = $commit['sha'];
+					  } else {
                       $commitNo = $commit['0']['sha'];
-                      $currentVersion = $config->get('version','ADVANCED');
+					  }
+						if (file_exists($filename)) {
+							$data = file($filename);
+							$line = $data[count($data)-1];
+							$curver = explode(" ",$line);
+							$currentVersion = $curver[1];
+						} else {
+							$currentVersion = $config->get('version','ADVANCED');
+						}
                       echo "Version </td><td><a href='https://github.com/elcabong/MediaCenter-Portal/commit/".$currentVersion."' target='_blank'>".$currentVersion.'</a>';
                       if($commitNo != $currentVersion){
                         echo "<br><a href='#' onclick='updateVersion();' title='".$commitNo." - Description: ".$commit['0']['commit']['message']."'>***UPDATE Available***</a>";
@@ -191,12 +216,57 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                 </table>
               <input type="button" title="Save these Settings" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" onClick="updateSettings('GLOBAL');" />
             </div>
+            <div id="USERS" class="panel">
+              <h3>User List</h3>
+              <p align="justify" style="width: 500px;">This is where you configure user accounts.
+					<br>Required fields are:  USERNAME, HOMEROOM, and ROOM# =1 for thier homeroom #
+					<br>Additional fields include: NAVGROUPACCESS  comma separated list of Nav Group numbers
+					<br>ADMIN = 1  means access to everything unless ROOM# = 0  here
+					<br>ADMIN = #  means access to the rooms in the ADMINGROUP# unless ROOM# = 0 here
+					<br>The ip you set for the xbmc machine in that room. if the port is anything but 80 you must include the :port# after the ip address ie:  "http://192.168.3.1:8080"
+					<br>PASSWORD  when not blank will password protect this user account
+					</p>
+              <table id="table_users">
+                <?php
+				$u=1;
+				while($u>0) {
+					if($config->get("USER$u")) {
+					echo "<span id=\"USER$u\"><table id=\"table_user$u\"><tr><td>USER$u</td><td></td></tr>";
+					$x = $config->get("USER$u");	 
+					foreach ($x as $title=>$url){
+					  echo "<tr>
+							  <td>";
+							  if(substr($title,0,4) != "ROOM") {
+								  echo "<input size='20' name='title' value='".urldecode(str_ireplace('_', ' ', $title))."' class='readonly' readonly/>";
+							  } else {
+								  echo "<input size='20' name='title' value='".urldecode(str_ireplace('_', ' ', $title))."'/>";
+							  }
+							  echo "</td>
+							  <td>
+								<input size='20' name='VALUE' value='$url'/>
+							  </td>
+							</tr>";
+					}
+					 		echo "</table><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick=\"addRowToTable('user$u', 20, 20);\" />
+							  <input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='REMOVE' onclick=\"removeRowToTable('user$u');\" />
+							  <input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick=\"updateSettings('user$u');\" /><br><br><br></span>";
+						$u++;					
+					 } else { $u = -5; }
+			  }				
+                ?>
+              </table>
+              <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="ADD" onclick="addRowToTable('rooms', 20, 55);" />
+              <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="REMOVE" onclick="removeRowToTable('rooms');" />
+              <br />
+              <br />
+              <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Save" onclick="updateSettings('USERS');" />
+            </div>
             <div id="ROOMS" class="panel">
               <h3>Room List</h3>
-              <p align="justify" style="width: 500px;">;this is where you name and point to your xbmc locations
-					; the room name, ip are required and mac address is needed for WOL..  the format is: ROOM# = "room name,http://ip,mac"
-					;the ip you set for the xbmc machine in that room. if the port is anything but 80 you must include
-					; the :port# after the ip address ie:  "http://192.168.3.1:8080"
+              <p align="justify" style="width: 500px;">This is where you name and point to your xbmc locations
+					<br>The room name, ip are required and mac address is needed for WOL.
+					<br>The format is: ROOM# = "room name,http://ip,mac"
+					<br>The ip you set for the xbmc machine in that room. if the port is anything but 80 you must include the :port# after the ip address ie:  "http://192.168.3.1:8080"
 					</p>
               <table id="table_rooms">
                 <tr>
@@ -221,18 +291,18 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
               <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="REMOVE" onclick="removeRowToTable('rooms');" />
               <br />
               <br />
-              <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Save" onclick="updateAlternative('ROOMS');" />
+              <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Save" onclick="updateSettings('ROOMS');" />
             </div>
 			<div id="ADMINGROUPS" class="panel">
               <h3>Admin Groups</h3>
-              <p align="justify" style="width: 500px;">;the [ADMINGROUP#] are for grouping room permissions for users.
-				;if ADMIN = "1" in the [user#] section, that user will have access to all rooms listed above.
-				;if ADMIN = "2" in the [user#] section, that user will have access to the rooms specified in [ADMINGROUP2] below
-				;you can add as many [ADMINGROUP#] as you need.  they will follow the same format as [USERPERM#] section in each [USER#] section
-				;each user can only be assigned to 1 goup
-				;the rooms listed above are numbered and will be refered to as ROOM#  where # is its number of lines from the top of the list
-				;you can skip room numbers in the [ADMINGROUP#] sections, all rooms not defined will be set to 0
-				;do not add anything to [ADMINGROUP1]. this is the full admin setting and no changes will be made if anything is here.</p>
+              <p align="justify" style="width: 500px;">ADMINGROUPs are for grouping room permissions for users.
+				<Br>If ADMIN = "1" in the [user#] section, that user will have access to all rooms available.
+				<br>If ADMIN = "2" in the [user#] section, that user will have access to the rooms specified in [ADMINGROUP2] below
+				<br>There can be an infinite number of ADMINGROUPs.  they will follow the same format as [USERPERM#] section in each [USER#] section
+				<br>Each user can only be assigned to 1 goup
+				<br>The rooms listed above are numbered and will be refered to as ROOM#  where # is its number of lines from the top of the list
+				<br>you can skip room numbers in the [ADMINGROUP#] sections, all rooms not defined will be set to 0
+				<br>do not add anything to [ADMINGROUP1]. this is the full admin setting and no changes will be made if anything is here.</p>
               <table id="table_admingroups">
                 <?php
 				$u=2;
@@ -253,7 +323,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 					}
 					 		echo "</table><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick=\"addRowToTable('admingroup$u', 20, 20);\" />
 							  <input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='REMOVE' onclick=\"removeRowToTable('admingroup$u');\" />
-							  <input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick=\"updateAlternative('ADMINGROUP$u');\" /><br><br><br></span>";
+							  <input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick=\"updateSettings('ADMINGROUP$u');\" /><br><br><br></span>";
 						$u++;					
 					 } else { $u = -5; }
 			  }
@@ -264,7 +334,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
               <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="REMOVE" onclick="removeRowToTable('admingroups');" />
               <br />
               <br />
-              <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Save" onclick="updateAlternative('ADMINGROUPS');" />
+              <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Save" onclick="updateSettings('ADMINGROUPS');" />
             </div>			
 			<div id="NAVGROUPS" class="panel">
               <h3>NAV Groups</h3>
@@ -297,14 +367,17 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 							  <td>
 								<input size='20' name='title' value='".urldecode(str_ireplace('_', ' ', $title))."'/>
 							  </td>
-							  <td>
-								<input size='55' name='VALUE' value='$url'/>
-							  </td>
-							</tr>";
+							  <td>";
+								if($url=="title") {
+									echo "<input size='55' name='VALUE' value='$url' class='readonly' readonly/>"; 
+								} else {
+									echo "<input size='55' name='VALUE' value='$url'/>"; 
+								}
+							  echo "</td></tr>";
 					}
 					 		echo "</table><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick=\"addRowToTable('navgroup$u', 20, 55);\" />
 							  <input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='REMOVE' onclick=\"removeRowToTable('navgroup$u');\" />
-							  <input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick=\"updateAlternative('NAVGROUP$u');\" /><br><br><br></span>";
+							  <input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick=\"updateSettings('NAVGROUP$u');\" /><br><br><br></span>";
 						$u++;					
 					 } else { $u = -5; }
 			  }
@@ -315,7 +388,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
               <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="REMOVE" onclick="removeRowToTable('navgroups');" />
               <br />
               <br />
-              <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Save" onclick="updateAlternative('NAVGROUPS');" />
+              <input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Save" onclick="updateSettings('NAVGROUPS');" />
             </div>
           </div>
         </div>

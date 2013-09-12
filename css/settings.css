@@ -59,3 +59,7 @@ ul.navigation a:focus {
 .hide {
     display: none;
 }
+input.readonly {
+	background-color:rgb(200,200,200);
+	border-color:rgb(200,200,200);
+}
