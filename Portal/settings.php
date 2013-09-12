@@ -153,6 +153,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                     $date = $github->getInfo();
 					if(isset($branchname)) {
 					   echo $date['name']; //['author']['date'];
+					   echo $date['commit']['1']['date'];
 					} else {
                        echo $date['pushed_at'];
 					}
