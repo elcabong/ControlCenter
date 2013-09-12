@@ -152,7 +152,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 					if(isset($branchname) && $branchname != "master") { $github = new GitHub('elcabong','MediaCenter-Portal', $branchname); } else { $github = new GitHub('elcabong','MediaCenter-Portal'); }
                     $date = $github->getInfo();
 					if(isset($branchname)) {
-					   echo $date['commit']['author']['date'];
+					   echo $date['commit']; //['author']['date'];
 					} else {
                        echo $date['pushed_at'];
 					}
