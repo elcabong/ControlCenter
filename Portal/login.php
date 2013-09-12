@@ -19,7 +19,7 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
 		$_SESSION['attempt']++;
 		if($_SESSION['attempt'] > 2) {
 		$_SESSION['attempt'] = 0;
-		header( "refresh: 0; url=../login.php?user=choose" );
+		header( "refresh: 0; url=./logout.php" );
 		exit;
 } } }
  ?>
