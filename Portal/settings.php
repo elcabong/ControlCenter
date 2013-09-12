@@ -146,12 +146,12 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						if (file_exists($filename)) {
 							$stringfromfile = file('../.git/HEAD', FILE_USE_INCLUDE_PATH);
 							$stringfromfile = $stringfromfile[0]; //get the string from the array
-							$explodedstring = explode("/", $stringfromfile); //seperate out by the "/" in the string
+							$explodedstring = array_filter(array_map('trim',explode('/',$stringfromfile)));
 							$branchname = $explodedstring[2]; //get the one that is always the branch name
 						}
-					if(isset($branchname)) { $github = new GitHub('elcabong','MediaCenter-Portal', $branchname); } else { $github = new GitHub('elcabong','MediaCenter-Portal'); }
+					if(isset($branchname) && $branchname != "master") { $github = new GitHub('elcabong','MediaCenter-Portal', $branchname); } else { $github = new GitHub('elcabong','MediaCenter-Portal'); }
                     $date = $github->getInfo();
-                    echo $date['pushed_at'];
+                   echo $date['pushed_at'];
                   ?>
                   </td>
                 </tr>
@@ -160,6 +160,9 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                     <?php
                       $commit = $github->getCommits();
                       $commitNo = $commit['0']['sha'];
+					  echo print_r($commit['0']['1']['sha']);
+					  echo print_r($commit['sha']);
+					  echo $commitNo."/commitNo/";
 						if (file_exists($filename)) {
 							$data = file($filename);
 							$line = $data[count($data)-1];
