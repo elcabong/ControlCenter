@@ -59,9 +59,9 @@ while(!$found1){
 			</ul>
 		</nav>
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
-		<? /*<li><a href='#maraschinoadmin' class='panel unloaded' title='maraschinoadmin'><img src="../config/Programs/MaraschinoAdmin.png" height='35px'></a></li> */?>
-		<li><a href='#XBMC' class='panel selected' title='XBMC'><img src="../config/Programs/XBMC.png" height='35px'></a></li>
-		<li><a href='#XBMCawxi' class='panel unloaded' title='XBMCawxi'><img src="../config/Programs/XBMC.png" height='35px'></a></li>
+		<? /*<li><a href='#maraschinoadmin' class='panel unloaded' title='maraschinoadmin'><img src="../media/Programs/MaraschinoAdmin.png" height='35px'></a></li> */?>
+		<li><a href='#XBMC' class='panel selected' title='XBMC'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
+		<li><a href='#XBMCawxi' class='panel unloaded' title='XBMCawxi'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
 			<?php
 			$c = 1;
 			$count = 0;
@@ -97,7 +97,7 @@ while(!$found1){
 					if($navlinklabel == "MaraschinoAdmin") {
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
-							$filename = "../config/Programs/".$navlinklabel.".png";
+							$filename = "../media/Programs/".$navlinklabel.".png";
 							if (file_exists($filename)) {
 								$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 							} else {
@@ -109,7 +109,7 @@ while(!$found1){
 							echo "<ul>";
 							}
 						} else {
-						$filename = "../config/Programs/".$navlinklabel.".png";
+						$filename = "../media/Programs/".$navlinklabel.".png";
 						if (file_exists($filename)) {
 							$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 						} else {
@@ -123,7 +123,7 @@ while(!$found1){
 					if(!empty($navlink)){
 						foreach( $navlink as $navlinklabel => $navlinkpath) {
 							if($navlinklabel != "title") {
-							$filename = "../config/Programs/".$navlinklabel.".png";
+							$filename = "../media/Programs/".$navlinklabel.".png";
 							if (file_exists($filename)) {
 								$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 							} else {
@@ -144,7 +144,7 @@ while(!$found1){
 					if($navlinklabel == "MaraschinoAdmin") {
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
-								$filename = "../config/Programs/".$navlinklabel.".png";
+								$filename = "../media/Programs/".$navlinklabel.".png";
 								if (file_exists($filename)) {
 									$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 								} else {
@@ -159,7 +159,7 @@ while(!$found1){
 								}
 							}
 						} else {
-						$filename = "../config/Programs/".$navlinklabel.".png";
+						$filename = "../media/Programs/".$navlinklabel.".png";
 						if (file_exists($filename)) {
 							$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 						} else {
@@ -173,7 +173,7 @@ while(!$found1){
 						foreach( $navlink as $navlinklabel => $navlinkpath) {
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
-								$filename = "../config/Programs/".$navlinklabel.".png";
+								$filename = "../media/Programs/".$navlinklabel.".png";
 								if (file_exists($filename)) {
 									$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 								} else {
@@ -188,7 +188,7 @@ while(!$found1){
 								}
 							}
 						} else {
-						$filename = "../config/Programs/".$navlinklabel.".png";
+						$filename = "../media/Programs/".$navlinklabel.".png";
 						if (file_exists($filename)) {
 							$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 						} else {

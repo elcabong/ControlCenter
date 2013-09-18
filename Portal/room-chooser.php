@@ -12,7 +12,7 @@
 if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
     header("Location: login.php");
     exit; }
-require_once 'controls-include.php';
+require_once './controls-include.php';
 if(isset($_COOKIE["currentRoom$usernumber"])) {
 $roomnum = $_COOKIE["currentRoom$usernumber"];
 $theperm = "USRPR$roomnum";

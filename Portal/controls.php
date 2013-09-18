@@ -59,9 +59,9 @@ while(!$found1){
 			</ul>
 		</nav>
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
-		<? //<li><a href='#maraschino' class='panel selected' title='maraschino'><img src="../config/Programs/Maraschino.png" height='35px'></a></li>?>
-		<li><a href='#XBMC' class='panel selected' title='XBMC'><img src="../config/Programs/XBMC.png" height='35px'></a></li>
-		<li><a href='#XBMCawxi' class='panel unloaded' title='XBMCawxi'><img src="../config/Programs/XBMC.png" height='35px'></a></li>
+		<? //<li><a href='#maraschino' class='panel selected' title='maraschino'><img src="../media/Programs/Maraschino.png" height='35px'></a></li>?>
+		<li><a href='#XBMC' class='panel selected' title='XBMC'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
+		<li><a href='#XBMCawxi' class='panel unloaded' title='XBMCawxi'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
 			<?php
 			$c = 1;
 			$count = 0;
@@ -97,7 +97,7 @@ while(!$found1){
 
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
-							$filename = "../config/Programs/".$navlinklabel.".png";
+							$filename = "../media/Programs/".$navlinklabel.".png";
 							if (file_exists($filename)) {
 								$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 							} else {
@@ -109,7 +109,7 @@ while(!$found1){
 							echo "<ul>";
 							}
 						} else {
-						$filename = "../config/Programs/".$navlinklabel.".png";
+						$filename = "../media/Programs/".$navlinklabel.".png";
 						if (file_exists($filename)) {
 							$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 						} else {
@@ -124,7 +124,7 @@ while(!$found1){
 					if(!empty($navlink)){
 						foreach( $navlink as $navlinklabel => $navlinkpath) {
 							if($navlinklabel != "title") {
-							$filename = "../config/Programs/".$navlinklabel.".png";
+							$filename = "../media/Programs/".$navlinklabel.".png";
 							if (file_exists($filename)) {
 								$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 							} else {
@@ -145,7 +145,7 @@ while(!$found1){
 
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
-								$filename = "../config/Programs/".$navlinklabel.".png";
+								$filename = "../media/Programs/".$navlinklabel.".png";
 								if (file_exists($filename)) {
 									$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 								} else {
@@ -160,7 +160,7 @@ while(!$found1){
 								}
 							}
 						} else {
-						$filename = "../config/Programs/".$navlinklabel.".png";
+						$filename = "../media/Programs/".$navlinklabel.".png";
 						if (file_exists($filename)) {
 							$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 						} else {
@@ -175,7 +175,7 @@ while(!$found1){
 						foreach( $navlink as $navlinklabel => $navlinkpath) {
 						if($navlinkpath == "title") {
 							if($navgroups == '1'){
-								$filename = "../config/Programs/".$navlinklabel.".png";
+								$filename = "../media/Programs/".$navlinklabel.".png";
 								if (file_exists($filename)) {
 									$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 								} else {
@@ -190,7 +190,7 @@ while(!$found1){
 								}
 							}
 						} else {
-						$filename = "../config/Programs/".$navlinklabel.".png";
+						$filename = "../media/Programs/".$navlinklabel.".png";
 						if (file_exists($filename)) {
 							$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
 						} else {
@@ -225,7 +225,6 @@ while(!$found1){
 			</div>
 		</div>
 		*/?>
-
 		<div id="XBMC" class="item">
 			<div class="content">
 				<?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; ?>
@@ -262,7 +261,6 @@ while(!$found1){
 				} }
 			}
 		?>
-
 		<div id="Settings" class="item">
 			<div class="content">
 				<iframe id='Settings 1' class='Settings' data-src='./settings.php' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>

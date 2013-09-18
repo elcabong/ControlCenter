@@ -26,6 +26,8 @@ while(!$found1){
 	else{ $path1= '../'.$path1; }
 }
 
+$configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
+
 $found2 = false;
 $path2 = './config/config.ini';
 while(!$found2){
@@ -36,6 +38,7 @@ while(!$found2){
 	else{ $path2= '../'.$path2; }
 }
 
+/*  outdated
 	$u = 1;
 	$USERNAMES = array("none");
 	$HOWMANYUSERS = 0;
@@ -49,24 +52,33 @@ while(!$found2){
 			$u++;
 		} else { $u = -5; }
 	}
+*/
 
-if($HOWMANYUSERS > 0) {
-	if (!isset($_SESSION['usernumber']) || $_SESSION['usernumber'] == "choose") {
-		if(isset($_POST['usernumber'])) { $_SESSION['usernumber'] = $_POST['usernumber']; }
-		elseif (!$_GET['user']) {
-			$thepath = dirname(dirname($_SERVER['PHP_SELF']));
-			header("Location: $thepath");
-				exit;
-		} else {
-	   $_SESSION['usernumber'] = $_GET['user']; }
-	   $usernumber = $_SESSION['usernumber'];
-	} else {
-		if (isset($_GET['user']) && $_GET['user']!="choose") {
-			$_SESSION['usernumber'] = $_GET['user']; }
-			$usernumber = $_SESSION['usernumber'];
-	}
-}
 
+	try {
+		$sql = "SELECT * FROM users";
+		$userid = 0;
+		$USERNAMES = array("none");
+		$HOWMANYUSERS = 0;
+		foreach ($configdb->query($sql) as $row)
+			{
+			$userid = $row['userid'];
+			$HOWMANYUSERS++;
+			$USERNAME = "USERNAME$userid";
+			${$USERNAME} = $row['username'];
+			array_push($USERNAMES,${$USERNAME});
+			}
+	} catch(PDOException $e)
+		{
+		echo $e->getMessage();
+		}
+
+$thepath = dirname(dirname($_SERVER['PHP_SELF']));
+if ($HOWMANYUSERS == 0) { header('Location: ' . $thepath . '/servercheck.php');exit; }		
+
+
+//updated to this point, will need to remove reference to config.ini above when done
+		
           $rooms;
 	  	  $TOTALROOMS = 0;
           $x = $Config2->get('ROOMS');
@@ -92,12 +104,39 @@ if($HOWMANYUSERS > 0) {
 		}
 	}
 
+
+//updated	
+	if($HOWMANYUSERS > 0) {
+			if (!isset($_SESSION['usernumber']) || $_SESSION['usernumber'] == "choose") {
+				if(isset($_POST['usernumber'])) { $_SESSION['usernumber'] = $_POST['usernumber']; }
+				elseif (!$_GET['user']) {
+					header("Location: $thepath");
+						exit;
+				} else {
+			   $_SESSION['usernumber'] = $_GET['user']; }
+			   $usernumber = $_SESSION['usernumber'];
+			} else {
+				if (isset($_GET['user']) && $_GET['user']!="choose") {
+					$_SESSION['usernumber'] = $_GET['user']; }
+					$usernumber = $_SESSION['usernumber'];
+			}
+		}	
+	
 if($usernumber != "choose") {
-     $authusername           = $AUTH_USERNAME          = $Config2->get('USERNAME',"USER$usernumber");
-     $authpassword           = $AUTH_PASS              = $Config2->get('PASSWORD',"USER$usernumber");
-	 if($AUTH_PASS) { $AUTH_ON = 1; } else { $AUTH_ON = 0; }
-	 $authsecured            = $AUTH_ON;
-     $NAVGROUPS              = $Config2->get("NAVGROUPACCESS","USER$usernumber");
+		try {
+		$sql = "SELECT * FROM users WHERE userid = $usernumber LIMIT 1";
+			foreach ($configdb->query($sql) as $row) {
+				$authusername           = $AUTH_USERNAME          = $row['username'];
+				 if(isset($row['password'])) { $authpassword           = $AUTH_PASS              = $row['password']; }
+				 if($AUTH_PASS) { $AUTH_ON = 1; } else { $AUTH_ON = 0; }
+				 $authsecured            = $AUTH_ON;
+				 if(isset($row['navgroupaccess'])) { $NAVGROUPS              = $row['navgroupaccess']; }
+			}	 
+		} catch(PDOException $e)
+			{
+			echo $e->getMessage();
+			}
+			 
 }
    //  $GLOBAL_USER_PASS    = filter_var($Config2->get('AUTHENTICATION','GLOBAL'), FILTER_VALIDATE_BOOLEAN);
    //  $GLOBAL_IP           = $Config2->get('URL','GLOBAL');

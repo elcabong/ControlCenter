@@ -12,7 +12,7 @@
 			if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
 				header("Location: login.php");
 				exit; }
-			require_once 'controls-include.php';	
+require_once './controls-include.php';	
 			$i = 1;
 			while($i<=$TOTALROOMS) {
 				ip;

@@ -1,5 +1,6 @@
 <?php
-if (file_exists('./config/firstrun.php')) { header('Location: servercheck.php');exit; }
+if (file_exists('./config/firstrun.php') || !file_exists('./sessions/config.db')) { header('Location: servercheck.php');exit; }
+
 require('./Portal/config.php');
 	if($_SESSION['usernumber'] != "choose") {
     header("Location: ./Portal/index.php");
@@ -51,48 +52,49 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 	echo "<div id='tiles'>";
 	echo "<br><h2 class='container right'>Control Center</h2><h2  class='container left'> User Selection</h2>";
 	echo "<br><br><br>";
-	$u = 1;
-	while($u<=$HOWMANYUSERS) {
-	$filename = "./config/Users/user$u.jpg";
-	if (file_exists($filename)) {
-	$theuserpic = "$filename";
-	} else {
-	$theuserpic = "./config/Users/user-default.jpg";   
-	}
-	$authusername = $Config2->get('USERNAME',"USER$u");
-     $authpassword           = $AUTH_PASS              = $Config2->get('PASSWORD',"USER$u");
-	 if($AUTH_PASS) { $AUTH_ON = 1; } else { $AUTH_ON = 0; }
-	 $authsecured            = $AUTH_ON;
-	if ($authsecured) { ?>
-	  <a href='#' class='container' id='user$u'><div id='login$u' class='locked'>
-		<form action='./Portal/login.php' method='post' class='userpick'>
-		<table id=<?echo $u;?>><br><br>
-		  <tr>
-			<td align=center colspan=2 height=25><h2>Authentication</h2></td>
-			<tr>
-			<input type='hidden' name='user' value=<? echo "$authusername";?>>
-			<input type='hidden' name='usernumber' value=<? echo "$u";?>>
-			<td align=center>Password:</td>
-			<tr>
-			<td align=center><input type='password' name='password' size=15 /></td>
-			<tr>
-			<td align=center colspan=2>&nbsp;</td>
-			<tr>
-		<td align=center colspan=2><input type='submit' value='Log in' /></td>
-		</table>
-		</form>
-	<? } else {
-	 echo "<a href='./Portal/index.php?user=$u' class='container' id='user$u'><div id='login$u'>";?>
-		<div class='userpick'>
-		<table id=<?echo $u;?>><br><br>
-		  <tr>
-			<td align=center colspan=2 height=25><h2>Click to Login</h2></td>
-		</table>
-		</div>	 
-	<? }
-	echo "<span class='text'>$USERNAMES[$u]</span></div><img src='$theuserpic' class='image' /></a>";
-	$u++;
-	}
+	try {
+		$sql = "SELECT * FROM users";
+		foreach ($configdb->query($sql) as $row) {
+			$u = $row['userid'];
+			$filename = "./media/Users/user$u.jpg";
+			if (file_exists($filename)) {
+				$theuserpic = "$filename";
+			} else {
+				$theuserpic = "./media/Users/user-default.jpg";   
+			}
+			if (isset($row['password'])) { ?>
+			  <a href='#' class='container' id='user$u'><div id='login$u' class='locked'>
+				<form action='./Portal/login.php' method='post' class='userpick'>
+				<table id=<?echo $u;?>><br><br>
+				  <tr>
+					<td align=center colspan=2 height=25><h2>Authentication</h2></td>
+					<tr>
+					<input type='hidden' name='user' value=<? echo $row['username'];?>>
+					<input type='hidden' name='usernumber' value=<? echo "$u";?>>
+					<td align=center>Password:</td>
+					<tr>
+					<td align=center><input type='password' name='password' size=15 /></td>
+					<tr>
+					<td align=center colspan=2>&nbsp;</td>
+					<tr>
+				<td align=center colspan=2><input type='submit' value='Log in' /></td>
+				</table>
+				</form>
+			<? } else {
+			 echo "<a href='./Portal/index.php?user=$u' class='container' id='user$u'><div id='login$u'>";?>
+				<div class='userpick'>
+				<table id=<?echo $u;?>><br><br>
+				  <tr>
+					<td align=center colspan=2 height=25><h2>Click to Login</h2></td>
+				</table>
+				</div>	 
+			<? }
+			echo "<span class='text'>" . $row['username'] . "</span></div><img src='$theuserpic' class='image' /></a>";
+		}
+	} catch(PDOException $e)
+		{
+			echo $e->getMessage();
+		}
 echo "</div>";
 echo "</head>";
 echo "</body>";

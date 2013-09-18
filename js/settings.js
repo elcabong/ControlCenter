@@ -13,7 +13,6 @@ $(document).ready(function() {
 	// to remove the default scrollbars that will appear
 	var $scroll = $('#slider .scroll').css('overflow', 'hidden'); // handle nav selection
 
-
 	function selectNav() {
 		$(this).parents('ul:first').find('a').removeClass('selected').end().end().addClass('selected');
 	}
@@ -50,7 +49,9 @@ $(document).ready(function() {
 		// easing - can be used with the easing plugin: 
 		// http://gsgd.co.uk/sandbox/jquery/easing/
 		easing: 'swing'
-	}; // apply serialScroll to the slider - we chose this plugin because it 
+	};
+
+/*	// apply serialScroll to the slider - we chose this plugin because it 
 	// supports// the indexed next and previous scroll along with hooking 
 	// in to our navigation.
 	$('#slider').serialScroll(scrollOptions); // now apply localScroll to hook any other arbitrary links to trigger 
@@ -60,8 +61,20 @@ $(document).ready(function() {
 	// very first page load.  We don't always need this, but it ensures
 	// the positioning is absolutely spot on when the pages loads.
 	scrollOptions.duration = 1;
-	$.localScroll.hash(scrollOptions);
+	$.localScroll.hash(scrollOptions);*/
+	blinkFont();	
 });
+
+function blinkFont()
+{
+  document.getElementById("blink").style.color="#ff9522";
+  setTimeout("setblinkFont()",1000);
+}
+function setblinkFont()
+{
+  document.getElementById("blink").style.color="";
+  setTimeout("blinkFont()",1000);
+}
 
 function updateSettings(section) {
 	var contents = document.getElementById(section).getElementsByTagName('input'); //$("#result").html(contents);
@@ -88,10 +101,12 @@ function updateSettings(section) {
 		} else if (contents[i].name != '') {
 			params = params + '&' + contents[i].name + '=' + encodeURIComponent(value);
 		}
-	} 
-	ajaxRequest(params, section);
+	}
+	var newsection = section.split('-');
+	//alert(params +","+ newsection[0]);
+	ajaxRequest(params,newsection[0]);
 }
-
+/*
 function updateAlternative(section) {
 	var contents = document.getElementById(section).getElementsByTagName('input');
 	var params = 'section=' + section;
@@ -102,8 +117,8 @@ function updateAlternative(section) {
 	}
 	ajaxRequest(params);
 }
-
-function ajaxRequest(params){
+*/
+function ajaxRequest(params,section){
 	//alert(params);
 	$.ajax({
 		type: 'GET',
@@ -114,13 +129,20 @@ function ajaxRequest(params){
 						pnotify_title: 'Settings Saved',
 						pnotify_opacity: .5
 					});
+				setTimeout(function(){
+				var frame=document.getElementsByTagName("Settings")[0];
+				var innerDoc = (frame.contentDocument)  ? frame.contentDocument  : frame.contentWindow.document;
+				alert(innderDoc);
+				//alert($('#Settings .content .Settings').src);
+				//document.getElementsByTagName("Settings").
+				//$('#Settings .content .Settings').contentDocument.location.reload(true);
+				}, 1500);
 			} else {
 			  $.pnotify({
 				  pnotify_title: 'Error!',
 				  pnotify_text: data,
-				  pnotify_type: 'error'
+				  pnotify_type: 'error',
 			  });
-
 			}
 		},
 		error: function() { // failed request; give feedback to user
@@ -128,7 +150,7 @@ function ajaxRequest(params){
 		}
 	});
 }
-
+/*
 function addRowToTable(section, size1, size2) {
 	var tbl = document.getElementById('table_' + section);
 	var lastRow = tbl.rows.length; // if there's no header row in the table, then iteration = lastRow + 1
@@ -160,7 +182,7 @@ function saveAll() {
 		i++;
 	}
 }
-
+*/
 function updateVersion(){
 	$.ajax({
 		type: 'GET',

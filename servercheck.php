@@ -7,6 +7,7 @@ function redirect(){
 }
 </script>
 <link href="css/front.css" rel="stylesheet" type="text/css" />
+	<link rel="icon" type="image/png" href="./favicon.ico">
 <style type="text/css">
 .widget {
   border:1px solid black;
@@ -39,7 +40,6 @@ function redirect(){
   <td align=center colspan=2 height=25 style="padding:0;"><div class="widget-head">Welcome to the Control Center</div></td>
 <tr>
 <td align=centre><br>
-  If you have no text below, your PHP is not working.<br>
   <br>
   <?php if(false){
 }
@@ -95,39 +95,63 @@ if (file_exists('./config/config.ini')){
     $redirect = false;
   }
 }
-/*
 echo "<tr><td>";
-if (file_exists('layout.php')){
+$configdb = new PDO('sqlite:./sessions/config.db');
+if (file_exists('./sessions/config.db')){
   $valid = true;
-  echo "layout.php found";
-  if(!is_writable('layout.php')){
-    if(@chmod("layout.php", 0777)){
+  echo "Settings DB found";
+  if(!is_writable('./sessions/config.db')){
+    if(@chmod("./sessions/config.db", 0777)){
       echo "";
     }else{
-      echo ", could not be written. Please CHMOD it.";
+      echo ", could not be written. Check folder permissions.";
       $redirect = false;
       $valid = false;
     }
-  }
+  } else {
+  
+  
+
+  // write db tables here if they dont exist
+  $query = "CREATE TABLE IF NOT EXISTS users (userid integer PRIMARY KEY AUTOINCREMENT, username text UNIQUE NOT NULL, password text, navgroupaccess string, homeroom integer, roomgroupaccess string, roomaccess string, roomdeny string)";
+  $execquery = $configdb->exec($query);
+  $query = "CREATE TABLE IF NOT EXISTS rooms (roomid integer PRIMARY KEY AUTOINCREMENT, roomname text UNIQUE NOT NULL, ip text NOT NULL, mac text)";
+  $execquery = $configdb->exec($query);
+  $query = "CREATE TABLE IF NOT EXISTS roomgroups (roomgroupid integer PRIMARY KEY AUTOINCREMENT, roomgroupname text UNIQUE, roomaccess string, roomdeny string)";
+  $execquery = $configdb->exec($query);
+  $query = "CREATE TABLE IF NOT EXISTS navigation (navid integer PRIMARY KEY AUTOINCREMENT, navname text UNIQUE NULL, navip text, navgroup integer NOT NULL, navgrouptitle integer, mobile text)";
+  $execquery = $configdb->exec($query);
+
+  
+
+/*
+  $configdb->exec("INSERT INTO users (username) VALUES ('testuser2')");
+echo "boom";
+*/
+	$totalusernum = 0;
+    $sql = "SELECT * FROM users LIMIT 1";
+    foreach ($configdb->query($sql) as $row)
+        {
+		if(isset($row['userid'])) {
+		$totalusernum ++;
+        }}
+
+
+
+
+
   echo ($valid)?"</td><td><img src='media/green-tick.png' height='15px'/></td></tr>":"</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
-}else{
-  $valid = true;
-  if(file_exists("default-layout.php")){
-    if(copy("default-layout.php", "layout.php")){
-      echo "Layout created successfully. ";
-    }
-  }
-  else{
-    echo "Layout could not be created please redownload MFP. ";
-    $redirect = false;
-    $valid = false;
-  }
-  echo ($valid)?"</td><td><img src='media/green-tick.png' height='15px'/></td></tr>":"</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
-} */
+} } else{
+    echo "sqlite db could not be created.  ensure sqlite3 is enabled.";
+}
 echo '</table>';
 if($redirect){
   echo "<p>Congratulations! Everything seems to be in working order.</p>";
-  echo "<p><input type='button' onclick=\"window.location = './index.html';\" value='CONTINUE' /></p>";
+  if($totalusernum > 0) {
+	echo "<p><input type='button' onclick=\"window.location = './index.html';\" value='CONTINUE' /></p>";
+  } else {
+	echo "<p><input type='button' onclick=\"window.location = './Portal/setup.php?setup=first';\" value='Setup Users and Configure' /></p>";
+  }
   if (file_exists('./config/firstrun.php')){
     unlink('./config/firstrun.php');
   }
