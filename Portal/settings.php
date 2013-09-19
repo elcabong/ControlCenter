@@ -33,13 +33,13 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
 			if($section_unique == "new") {
 				$configdb->exec("INSERT INTO users ($vararray) VALUES ($valuearray)");
 			} else {
-				$configdb->exec("UPDATE users SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4],$vararraye[5]=$valuearraye[5] WHERE userid=$section_unique");
+				$configdb->exec("UPDATE users SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4],$vararraye[5]=$valuearraye[5],$vararraye[6]=$valuearraye[6] WHERE userid=$section_unique");
 			}
 		} else if($section_name == "rooms") {
 			if($section_unique == "new") {
 				$configdb->exec("INSERT INTO rooms ($vararray) VALUES ($valuearray)");
 			} else {
-				$configdb->exec("UPDATE rooms SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2] WHERE roomid=$section_unique");
+				$configdb->exec("UPDATE rooms SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3] WHERE roomid=$section_unique");
 			}
 		} else if($section_name == "roomgroups") {
 			if($section_unique == "new") {
@@ -93,20 +93,33 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
   <link rel="stylesheet" type="text/css" href="../css/UI/jquery-ui-1.8.14.custom.css">
   <link href="../css/room.css" rel="stylesheet" type="text/css">
   <link href="../css/settings.css" rel="stylesheet" type="text/css">
+  <link href="../css/chosen.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" type="text/css" href="../css/jquery.pnotify.default.css">
   <script src="../js/jquery.pnotify.js" type="text/javascript"></script>
   <script src="../js/dropzone.js"></script>
-    <script type="text/javascript">
+  <script src="../js/chosen.jquery.min.js"></script>
+  <script src="../js/chosen.proto.min.js"></script>
+  <script src="../js/ui.dropdownchecklist-1.4-min.js"></script>
+	<script type="text/javascript">
 		if (window.navigator.standalone) {
 			var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
 		}
+		
+function resetpage() {
+				setTimeout(function(){
+				alert('fired');
+				var settings = $("#Settings 1")[0].GetAttribute('src');    //document.getElementById("Settings 1");
+				alert(settings);
+				document.getElementById("#Settings 1").contentDocument.location.reload(true);
+				}, 1500);
+}				
 	</script>
 </head>
 <body style="overflow: hidden;">
   <center>
     <div style="width:90%; height:95%;" class="widget">
       <div class="widget-head">
-        <h3>Settings</h3>
+        <h3>Settings</h3><a onclick="resetpage()">Reset me</a>
       </div>
           <br />
       <div id="slider">
@@ -239,13 +252,53 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 			  </tr></table>
                 <?php
 				try {
+					$sql = "SELECT * FROM rooms";
+					$roomlist = '';
+					foreach ($configdb->query($sql) as $row)
+						{
+						$roomlist .= "<option value=".$row['roomid'].">".$row['roomname']."</option>";
+						}
+				} catch(PDOException $e)
+					{
+					echo $e->getMessage();
+					}						
+				try {
 					$sql = "SELECT * FROM users";
 					$userid = 0;
 					foreach ($configdb->query($sql) as $row)
 						{
 						$userid = $row['userid'];
+						if(isset($row['homeroom'])) {
+								$sql2 = "SELECT * FROM rooms WHERE roomid = ".$row['homeroom'];
+								foreach ($configdb->query($sql2) as $row2) {
+								$thehomeroom = "<option selected='selected' value=".$row2['roomid'].">".$row2['roomname']."</option>"; 
+								}
+						} else {
+							$thehomeroom = "<option selected='selected'>GOTO Room List</option>";
+						}
+						if(isset($row['roomaccess']) && $row['roomaccess'] != '') {
+								$theroomaccess = '';
+								$sql3 = "SELECT * FROM rooms WHERE roomid IN (".$row['roomaccess'].")";
+								foreach ($configdb->query($sql3) as $row3) {
+								$theroomaccess .= "<option selected='selected' value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
+								}
+								$sql3 = "SELECT * FROM rooms WHERE roomid NOT IN (".$row['roomaccess'].")";
+								foreach ($configdb->query($sql3) as $row3) {
+								$therooms .= "<option value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
+								}
+						} else {
+							$theroomaccess = '';
+							$therooms = '';
+							$therooms = $roomlist;
+						}
 						echo "<table id='users-$userid'>";
-						echo "<tr><td><input size='10' name='username' value='" . $row['username'] . "'></td><td><input size='10' type='password' name='password' value=" . $row['password'] . "></td><td><input size='10' name='navgroupaccess' value=" . $row['navgroupaccess'] . "></td><td><input size='10' name='homeroom' value=" . $row['homeroom'] . "></td><td><input size='10' name='roomgroupaccess' value=" . $row['roomgroupaccess'] . "></td><td><input size='10' name='roomaccess' value=" . $row['roomaccess'] . "></td><td><input size='10' name='roomdeny' value=" . $row['roomdeny'] . "></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /></td></tr>";
+						echo "<tr><td><input size='10' name='username' value='" . $row['username'] . "'></td>
+										<td><input size='10' type='password' name='password' value=" . $row['password'] . "></td>
+										<td><input size='10' name='navgroupaccess' value=" . $row['navgroupaccess'] . "></td>
+										<td><select name='homeroom'>".$thehomeroom.$roomlist."</select></td><td><input size='10' name='roomgroupaccess' value=" . $row['roomgroupaccess'] . "></td>
+										<td><select class='chosen-select multiple' id='roomaccess$userid' data-placeholder='Allow Overrides' multiple='multiple'>".$theroomaccess.$therooms."</select><input size='10' class='roomaccess$userid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td>
+										<td><input size='10' name='roomdeny' value=" . $row['roomdeny'] . "></td>
+										<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /></td></tr>";
 						echo "</table>";
 						}
 				} catch(PDOException $e)
@@ -253,7 +306,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 					echo $e->getMessage();
 					}
 				echo "<table id='users-new'>";	
-				echo "<tr><td><input size='10' name='username' value=''></td><td><input size='10' type='password' name='password' value=''></td><td><input size='10' name='navgroupaccess' value=''></td><td><input size='10' name='roomgroupaccess' value=''></td><td><input size='10' name='homeroom' value=''></td><td><input size='10' name='roomaccess' value=''></td><td><input size='10' name='roomdeny' value=''></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"users-new\");' /></td></tr>";
+				echo "<tr><td><input size='10' name='username' value=''></td><td><input size='10' type='password' name='password' value=''></td><td><input size='10' name='navgroupaccess' value=''></td><td><select name='homeroom'><option selected='selected'>Homeroom</option>".$roomlist."</select></td><td><input size='10' name='roomgroupaccess' value=''></td><td><input size='10' name='roomaccess' value=''></td><td><input size='10' name='roomdeny' value=''></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"users-new\");' /></td></tr>";
 				echo "</table>";
 				echo "<br><br><br>";
 				try {
@@ -277,13 +330,19 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
             </div>
             <div id="ROOMS" class="panel">
               <h3>Room List</h3>
-              <table id="table_rooms" class="headers">
-			  <tr>
-			  <td>roomname<span>The name you want to appear for this room</span></td>
-			  <td>ip<span>http://ip:port of this xbmc machine</span></td>
-			  <td>mac<span>optional mac address, only needed for wake on lan</span></td>
-			  <td></td></tr></table>
+			    <p>These Rooms are different xbmc machines or other network items you can control from a web interface</p>
+				<p align="justify" style="width: 700px;">
+				    <b>Title:</b>  The title of the room or device
+	<br><br><b>MAC:</b>  This optional input is for the MAC Address and is used to WOL the device if available.
+	<br><br><b>IP1:</b>  A control web interface such as the webinterface plugins for xbmc ie  http://ip:port  or   http://username:pass@ip:port 
+	<br><br><b>IP2:</b>  An optional second control web interface such as the webinterface plugins for xbmc ie  http://ip:port  or   http://username:pass@ip:port 
+				<br>
+				</p>			  
                 <?php
+				echo "<table id='rooms-new'>";
+				echo "<tr><td></td><td class='title'>Title</td><td><input size='10' name='roomname' value=''></td><td class='title'>MAC</td><td><input size='20' name='mac' value=''></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"rooms-new\");' /></td></tr>";
+				echo "<tr><td></td><td class='title'>IP1</td><td  colspan=4><input size='60' name='ip1' value=''></td></tr><tr><td></td><td class='title'>IP2</td><td colspan=4><input size='60' name='ip2' value=''></td></tr>";
+				echo "</table><br><br><br>";
 				try {
 					$sql = "SELECT * FROM rooms";
 					$roomid = 0;
@@ -291,17 +350,14 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						{
 						$roomid = $row['roomid'];
 						echo "<table id='rooms-$roomid'>";
-						echo "<tr><td>" . $row['roomid'] . "</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td><td><input size='10' name='ip' value=" . $row['ip'] . "></td><td><input size='10' name='mac' value=" . $row['mac'] . "></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"rooms-$roomid\");' /></td></tr>";
-						echo "</table>";
+						echo "<tr><td class='orange'>" . $row['roomid'] . "</td><td class='title'>Title</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td><td class='title'>MAC</td><td><input size='20' name='mac' value=" . $row['mac'] . "></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"rooms-$roomid\");' /></td></tr>";
+						echo "<tr><td></td><td class='title'>IP1</td><td colspan=4><input size='60' name='ip1' value='" . $row['ip1'] . "'></td></tr><tr><td></td><td class='title'>IP2</td><td colspan=4><input size='60' name='ip2' value=" . $row['ip2'] . "></td></tr>";
+						echo "</table><br><br>";
 						}
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();
 					}
-				echo "<table id='rooms-new'>";
-				$nextroomid = 1 + $roomid;
-				echo "<tr><td>" . $nextroomid . "</td><td><input size='10' name='roomname' value=''></td><td><input size='10' name='ip' value=''></td><td><input size='10' name='mac' value=''></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"rooms-new\");' /></td></tr>";
-				echo "</table>";
                 ?>
            </div>
 			<div id="ROOMGROUPS" class="panel">
@@ -336,19 +392,22 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
             </div>			
 			<div id="NAVIGATION" class="panel">
               <h3>Navigation</h3>
-              <table id="table_navgroups" class="headers">
-			  <tr>
-			  <td style="width:190px;"></td>
-			  <td>navigationtitle<span>title to display for this page link</span></td>
-			  <td>linkip<span>full ip to link.  can include username and password:  http://name:pass@ip:port</span></td>
-			  <td>navgroup#<span>the group this link is associated with</span></td>
-			  <td>navgrouptitle<span>optional title for the navgroup# assigned to this entry.  other options will be ignored if this has anything</span></td>
-			  <td>mobile<span>if set to 1 then this link will be available on mobie, or you can include a mobile address to use. ie: http://m.ip:port</span></td>
-			  <td></td>
-			  </tr></table>
+			    <p>These links will be available in the upper left menu</p>
+				<p align="justify" style="width: 700px;">
+				    <b>Title:</b>  The title of the link unless an icon of the same name (image.png) is uploaded.
+	<br><br><b>Full IP:</b>  The complete address to the link.  Can include username and password which is masked in the browser unless the source is viewed when those pages have already been accessed.  ie:  http://name:pass@ip:port
+	<br><br><b>M IP:</b>  Adds this link to the mobile specific site. set to 1 if the ip source scales on its own, or specify the full address here of the mobile site.  ie  http://m.ip:port  or   http://ip:port/m/ 
+	<br><br><b>NG #:</b>  This number represents the navigation group this link will be in.  this number goes in the user settings under "navgroups"
+	<br><br><b>NG Title:</b>  Set to 1 if this entry is the title for the group.  if set to 1, then the IP entries are ignored.   <br>
+				</p>
                 <?php
+				echo "<table id='navigation-new'>";
+				echo "<tr><td>&nbsp;</td><td>&nbsp;</td><td class='title'>Title</td><td><input size='40' name='navname' value=''></td><td class='title'>NG #</td><td><input size='1' name='navgroup' value=''></td></tr>";
+				echo "<tr><td><img src='../media/Programs/ProgramDefault.png' height='50'><img src='../media/Programs/ProgramDefault.png' height='50'></td><td><img src='../media/Programs/ProgramDefault.png' height='50'></td><td class='title'>Full IP</td><td><input size='40' name='navip' value=''></td><td class='title'>NG TItle</td><td><input size='1' name='navgrouptitle' value=''></td></tr>";
+				echo "<tr><td>&nbsp;</td><td>&nbsp;</td><td class='title'>M IP</td><td><input size='40' name='mobile' value=''></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"navigation-new\");' /></td></tr>";
+				echo "</table><br><br>";
 				try {
-					$sql = "SELECT * FROM navigation";
+					$sql = "SELECT * FROM navigation ORDER BY navgroup, navgrouptitle ASC";
 					$navid = 0;
 					foreach ($configdb->query($sql) as $row)
 						{
@@ -359,18 +418,16 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 							} else {
 							$theprogrampic = "../media/Programs/ProgramDefault.png";
 							}
-						echo "<table id='navigation-$navid'>";							
-						echo "<tr><td><form action=\"upload.php?program=" . $row['navname'] . "\" class='dropzone' id='program" . $row['navname'] . "' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;'></form><img src=" . $theprogrampic ." height='25'></td><td>" . $navid . "</td><td><input size='10' name='navname' value=" . $row['navname'] . "></td><td><input size='10' name='navip' value=" . $row['navip'] . "></td><td><input size='10' name='navgroup' value=" . $row['navgroup'] . "></td><td><input size='10' name='navgrouptitle' value=" . $row['navgrouptitle'] . "></td><td><input size='10' name='mobile' value=" . $row['mobile'] . "></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /></td></tr>";
-						echo "</table>";
+						echo "<br><table id='navigation-$navid'>";
+						echo "<tr><td></td><td></td><td class='title'>Title</td><td><input size='40' name='navname' value=" . $row['navname'] . "></td><td class='title'>NG #</td><td><input size='1' name='navgroup' value=" . $row['navgroup'] . "></td></tr>";
+						echo "<tr><td><form action=\"upload.php?program=" . $row['navname'] . "\" class='dropzone' id='program" . $row['navname'] . "' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;width:100px;'></form></td><td><img src=" . $theprogrampic ." style='position:relative;height:50px;'></td><td class='title'>Full IP</td><td><input size='40' name='navip' value=" . $row['navip'] . "></td></td><td class='title'>NG TItle</td><td><input size='1' name='navgrouptitle' value=" . $row['navgrouptitle'] . "></td></tr>";
+						echo "<tr><td></td><td></td></td><td class='title'>M IP</td><td><input size='40' name='mobile' value=" . $row['mobile'] . "></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /></td></tr>";
+						echo "</table><br><br>";
 						}
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();
 					}
-				echo "<table id='navigation-new'>";
-				$nextnavgroupid = 1 + $navid;				
-				echo "<tr><td><img src='../media/Programs/ProgramDefault.png' height='25' width='190'></td><td>" . $nextnavgroupid . "</td><td><input size='10' name='navname' value=''></td><td><input size='10' name='navip' value=''></td><td><input size='10' name='navgroup' value=''></td><td><input size='10' name='navgrouptitle' value=''></td><td><input size='10' name='mobile' value=''></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"navigation-new\");' /></td></tr>";
-				echo "</table>";
                 ?>
            </div>
           </div>

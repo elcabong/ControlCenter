@@ -26,6 +26,9 @@ while(!$found1){
 	else{ $path1= '../'.$path1; }
 }
 
+
+$thepath = dirname(dirname($_SERVER['PHP_SELF']));
+if (!file_exists($sessionsloc . "/config.db")) { header('Location: ' . $thepath . '/servercheck.php');exit; }
 $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 
 $found2 = false;
@@ -73,7 +76,6 @@ while(!$found2){
 		echo $e->getMessage();
 		}
 
-$thepath = dirname(dirname($_SERVER['PHP_SELF']));
 if ($HOWMANYUSERS == 0) { header('Location: ' . $thepath . '/servercheck.php');exit; }		
 
 

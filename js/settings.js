@@ -62,7 +62,10 @@ $(document).ready(function() {
 	// the positioning is absolutely spot on when the pages loads.
 	scrollOptions.duration = 1;
 	$.localScroll.hash(scrollOptions);*/
-	blinkFont();	
+	$(".chosen-select").chosen(
+		//placeholder_text_multiple: "Allow Overrides"
+		);
+	blinkFont();
 });
 
 function blinkFont()
@@ -75,6 +78,14 @@ function setblinkFont()
   document.getElementById("blink").style.color="";
   setTimeout("blinkFont()",1000);
 }
+
+$("select.multiple").change(function(){
+    var theid = $(this).attr("id");
+    var selMulti = $.map($("select#"+theid+" option:selected"), function (el, i) {
+		return $(el).val();
+    });
+     $("."+theid).val(selMulti.join(","));
+});
 
 function updateSettings(section) {
 	var contents = document.getElementById(section).getElementsByTagName('input'); //$("#result").html(contents);
@@ -102,6 +113,16 @@ function updateSettings(section) {
 			params = params + '&' + contents[i].name + '=' + encodeURIComponent(value);
 		}
 	}
+	//alert(params);
+	var contents = document.getElementById(section).getElementsByTagName('select');
+	for (i = 0; i < contents.length; i++) {
+	var thecontents = '&' + contents[i].name + '=' + escape(contents[i++].value);
+//	alert(thecontents);
+		//if (contents[i].name != '') {
+			params += thecontents;
+		//}
+	}	
+	//alert(params);
 	var newsection = section.split('-');
 	//alert(params +","+ newsection[0]);
 	ajaxRequest(params,newsection[0]);
@@ -130,12 +151,7 @@ function ajaxRequest(params,section){
 						pnotify_opacity: .5
 					});
 				setTimeout(function(){
-				var frame=document.getElementsByTagName("Settings")[0];
-				var innerDoc = (frame.contentDocument)  ? frame.contentDocument  : frame.contentWindow.document;
-				alert(innderDoc);
-				//alert($('#Settings .content .Settings').src);
-				//document.getElementsByTagName("Settings").
-				//$('#Settings .content .Settings').contentDocument.location.reload(true);
+				document.getElementById("#Settings 1").contentDocument.location.reload(true);
 				}, 1500);
 			} else {
 			  $.pnotify({
@@ -208,4 +224,5 @@ function updateVersion(){
 			alert("Error saving settings.");
 		}
 	});
-}
+}	
+			

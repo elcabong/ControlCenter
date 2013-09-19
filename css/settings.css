@@ -109,3 +109,8 @@ h2.container { height:auto; }
 div:hover > .text { color:rgb(0, 153, 255); }
 #NAVIGATION > table > tbody > tr > td > form { float:left; }
 #NAVIGATION > table > tbody > tr > td > img { float:right; }
+.dz-success { position:absolute;background-color:rgba(0,0,0,.4);margin:0 25%;padding:0 5 5; }
+.dz-success-mark, .dz-error-mark, .dz-filename, .dz-size { display:none; }
+.title { text-align:right; }
+.orange { color:#FF9522; }
+.blue { color:rgb(0, 153, 255); }

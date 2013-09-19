@@ -109,25 +109,16 @@ if (file_exists('./sessions/config.db')){
       $valid = false;
     }
   } else {
-  
-  
-
   // write db tables here if they dont exist
   $query = "CREATE TABLE IF NOT EXISTS users (userid integer PRIMARY KEY AUTOINCREMENT, username text UNIQUE NOT NULL, password text, navgroupaccess string, homeroom integer, roomgroupaccess string, roomaccess string, roomdeny string)";
   $execquery = $configdb->exec($query);
-  $query = "CREATE TABLE IF NOT EXISTS rooms (roomid integer PRIMARY KEY AUTOINCREMENT, roomname text UNIQUE NOT NULL, ip text NOT NULL, mac text)";
+  $query = "CREATE TABLE IF NOT EXISTS rooms (roomid integer PRIMARY KEY AUTOINCREMENT, roomname text UNIQUE NOT NULL, ip1 text NOT NULL, ip2 text, mac text)";
   $execquery = $configdb->exec($query);
   $query = "CREATE TABLE IF NOT EXISTS roomgroups (roomgroupid integer PRIMARY KEY AUTOINCREMENT, roomgroupname text UNIQUE, roomaccess string, roomdeny string)";
   $execquery = $configdb->exec($query);
   $query = "CREATE TABLE IF NOT EXISTS navigation (navid integer PRIMARY KEY AUTOINCREMENT, navname text UNIQUE NULL, navip text, navgroup integer NOT NULL, navgrouptitle integer, mobile text)";
   $execquery = $configdb->exec($query);
 
-  
-
-/*
-  $configdb->exec("INSERT INTO users (username) VALUES ('testuser2')");
-echo "boom";
-*/
 	$totalusernum = 0;
     $sql = "SELECT * FROM users LIMIT 1";
     foreach ($configdb->query($sql) as $row)
@@ -135,11 +126,6 @@ echo "boom";
 		if(isset($row['userid'])) {
 		$totalusernum ++;
         }}
-
-
-
-
-
   echo ($valid)?"</td><td><img src='media/green-tick.png' height='15px'/></td></tr>":"</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 } } else{
     echo "sqlite db could not be created.  ensure sqlite3 is enabled.";
