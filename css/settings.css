@@ -77,14 +77,18 @@ td > span { display:none;position:absolute;background-color:black;padding:5px;z-
 td:hover > span { display:block; }
 .container
 {
-    display:inline-block;
-    height: 250px;
-    width: 200px;
+   # display:inline-block;
+    height: 150px;
+    width: 100px;
 	max-width:80%;
     margin: 5px;
 	position:relative;
+	float:left;
+	clear:both;
+	margin-left:15px;
 }
-.container > span { background-color:rgba(0, 0, 0, 0.65);height:40px;width:100%;z-index:2;position:absolute;overflow:hidden; }
+.container > span { background-color:rgba(0, 0, 0, 0.65);width:100%;z-index:2;position:absolute;overflow:hidden; }
+.container > form > input { display:none; }
 h2.container { height:auto; }
 .image
 {
@@ -114,3 +118,4 @@ div:hover > .text { color:rgb(0, 153, 255); }
 .title { text-align:right; }
 .orange { color:#FF9522; }
 .blue { color:rgb(0, 153, 255); }
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] { padding:0 !important;min-width:95px;margin:2.5px !important; }

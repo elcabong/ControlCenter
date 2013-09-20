@@ -218,18 +218,18 @@ while(!$found1){
 	<div id="mask">
 		<? /*<div id="maraschinoadmin" class="item">
 			<div class="content">
-				<iframe id='maraschinoadmin 1' src="http://192.168.3.217:7000/mobile/" width='100%' height='100%' scrolling='auto'>Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+				<iframe id='maraschinoadminf' src="http://192.168.3.217:7000/mobile/" width='100%' height='100%' scrolling='auto'>Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 		</div>
 		</div> */?>
 		<div id="XBMC" class="item">
 			<div class="content">
 				<?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; ?>
-				<iframe id='XBMC 1' class='XBMC' src="<?echo ${$ROOMXBMC};?>" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+				<iframe id='XBMCf' class='XBMC' src="<?echo ${$ROOMXBMC};?>" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
 		<div id="XBMCawxi" class="item">
 			<div class="content">
-				<iframe id='XBMCawxi 1' class='XBMCawxi' data-src="<?echo ${$ROOMXBMC};?>/addons/webinterface.jquerymobile/" width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+				<iframe id='XBMCawxif' class='XBMCawxi' data-src="<?echo ${$ROOMXBMC};?>/addons/webinterface.jquerymobile/" width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
 		<?php 
@@ -239,7 +239,7 @@ while(!$found1){
 					if($navlinklabel == "MaraschinoAdmin") {
 						echo "<div id='$navlinklabel' class='item'>";
 						echo "<div class='content'>";
-						echo "<iframe id='$navlinklabel 1' class='$navlinklabel' data-src='".$navlinkpath."mobile/' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
+						echo "<iframe id='".$navlinklabel."f' class='$navlinklabel' data-src='".$navlinkpath."mobile/' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
 						echo "</div>";
 						echo "</div>";
 			}}}
@@ -249,7 +249,7 @@ while(!$found1){
 					if($navlinkpath != "title") {
 					echo "<div id='$navlinklabel' class='item'>";
 					echo "<div class='content'>";
-			       	 	echo "<iframe id='$navlinklabel 1' class='$navlinklabel' data-src='".$navlinkpath."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
+			       	 	echo "<iframe id='".$navlinklabel."f' class='$navlinklabel' data-src='".$navlinkpath."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
 					echo "</div>";
 					echo "</div>";		
 				} }
@@ -257,7 +257,7 @@ while(!$found1){
 	*/	?>
 	<!--	<div id="Settings" class="item">
 			<div class="content">
-				<iframe id='Settings 1' src='./settings.php' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+				<iframe id='Settingsf' src='./settings.php' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>	-->	
 	</div>

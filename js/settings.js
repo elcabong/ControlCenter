@@ -62,9 +62,10 @@ $(document).ready(function() {
 	// the positioning is absolutely spot on when the pages loads.
 	scrollOptions.duration = 1;
 	$.localScroll.hash(scrollOptions);*/
-	$(".chosen-select").chosen(
+	$(".chosen-select").chosen({
+		width: "95%"
 		//placeholder_text_multiple: "Allow Overrides"
-		);
+		});
 	blinkFont();
 });
 
@@ -116,31 +117,17 @@ function updateSettings(section) {
 	//alert(params);
 	var contents = document.getElementById(section).getElementsByTagName('select');
 	for (i = 0; i < contents.length; i++) {
-	var thecontents = '&' + contents[i].name + '=' + escape(contents[i++].value);
-//	alert(thecontents);
-		//if (contents[i].name != '') {
+		if (contents[i].name != '') {
+			var thecontents = '&' + contents[i].name + '=' + escape(contents[i++].value);
+			//alert(thecontents);
 			params += thecontents;
-		//}
+		}
 	}	
 	//alert(params);
 	var newsection = section.split('-');
-	//alert(params +","+ newsection[0]);
 	ajaxRequest(params,newsection[0]);
 }
-/*
-function updateAlternative(section) {
-	var contents = document.getElementById(section).getElementsByTagName('input');
-	var params = 'section=' + section;
-	for (i = 0; i < contents.length; i++) {
-		if (contents[i].name == 'TITLE' && contents[i].value !='') {
-			params = params + '&' + escape(contents[i++].value) + '=' + encodeURIComponent(contents[i].value);
-		}
-	}
-	ajaxRequest(params);
-}
-*/
 function ajaxRequest(params,section){
-	//alert(params);
 	$.ajax({
 		type: 'GET',
 		url: "settings.php?" + params,
@@ -151,7 +138,7 @@ function ajaxRequest(params,section){
 						pnotify_opacity: .5
 					});
 				setTimeout(function(){
-				document.getElementById("#Settings 1").contentDocument.location.reload(true);
+				window.location.reload(true);
 				}, 1500);
 			} else {
 			  $.pnotify({

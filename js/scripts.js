@@ -6,7 +6,7 @@ $(document).ready(function() {
 		var thechild = $("a.panel[title="+hash+"]");
 		thechild.addClass('selected');
 		thechild.removeClass('unloaded');
-		var iframe = document.getElementById(hash+' 1');
+		var iframe = document.getElementById(hash+'f');
 		if (!iframe.src) {
 			$('iframe.' + hash).attr('src',$('iframe.' + hash).attr('data-src'));
 		}
@@ -52,7 +52,7 @@ $(document).ready(function() {
 		if(href == '#') { return false; }		
 				
 		href = href.replace(/#/g, "" );
-		var iframe = document.getElementById(href + ' 1');
+		var iframe = document.getElementById(href + 'f');
 		if (!iframe.src) {
 			$('iframe.' + href).attr('src',$('iframe.' + href).attr('data-src'));
 		}
@@ -60,7 +60,7 @@ $(document).ready(function() {
 		if ($(this).hasClass('selected')) {
                 	var href = $(this).attr('href');
 		        href = href.replace(/#/g, "" );
-			var iframe = document.getElementById(href + ' 1');
+			var iframe = document.getElementById(href + 'f');
 			iframe.src = iframe.src;
 		        return false; 
                 } else {
@@ -88,7 +88,7 @@ $(document).ready(function() {
 		if(href == '#') { return false; }		
 
 		href = href.replace(/#/g, "" );
-		var iframe = document.getElementById(href + ' 1');
+		var iframe = document.getElementById(href + 'f');
 		if (!iframe.src) {
 			$('iframe.' + href).attr('src',$('iframe.' + href).attr('data-src'));
 		}		

@@ -33,7 +33,7 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
 			if($section_unique == "new") {
 				$configdb->exec("INSERT INTO users ($vararray) VALUES ($valuearray)");
 			} else {
-				$configdb->exec("UPDATE users SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4],$vararraye[5]=$valuearraye[5],$vararraye[6]=$valuearraye[6] WHERE userid=$section_unique");
+				$configdb->exec("UPDATE users SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4],$vararraye[5]=$valuearraye[5] WHERE userid=$section_unique");
 			}
 		} else if($section_name == "rooms") {
 			if($section_unique == "new") {
@@ -119,7 +119,7 @@ function resetpage() {
   <center>
     <div style="width:90%; height:95%;" class="widget">
       <div class="widget-head">
-        <h3>Settings</h3><a onclick="resetpage()">Reset me</a>
+        <h3>Settings</h3>
       </div>
           <br />
       <div id="slider">
@@ -239,17 +239,16 @@ function resetpage() {
             </div> -->
             <div id="USERS" class="panel">
               <h3>User List</h3>
-              <table id="table_users" class="headers">
-			  <tr>
-			  <td>username<span>the login username</span></td>
-			  <td>password<span>The user password. If blank, auth will be disabled for this user.</span></td>
-			  <td>navgroups<span>What navigation groups does this user have access to. ie:  1,3,4</span></td>
-			  <td>homeroom<span>What room will this user default to.</span></td>
-			  <td>roomgroups<span>What rooms groups this user has access to.  if 1, user has access to all rooms.</span></td>
-			  <td>roomallow<span>individual override to allow rooms</span></td>
-			  <td>roomdeny<span>individual override to deny rooms</span></td>
-			  <td></td>
-			  </tr></table>
+				<p align="justify" style="width: 500px;">
+				    <b>Username:</b>  The username/login name for each user
+	<br><br><b>Password:</b>  Optional.  if not set auth is disabled for this user
+	<br><br><b>Navigation:</b>  Adds Navigation set(s) for the user which are available in the upper left menu bar 
+	<br><br><b>Homeroom:</b>  The default room that this user will will log into unless they logout in another room (set with cookie, so device specific)
+	<br><br><b>R Groups:</b> Set a configured room group for this user 
+	<br><br><b>Allow:</b>  can add access to rooms, overrides room group access
+	<br><br><b>Deny:</b>  can remove access to rooms, overrides room group access and the allow option
+	<br><br><b>Icon:</b>  After users are created, drag a .jpg image into the designated area to assign each user avatar.<br>
+				</p>			  
                 <?php
 				try {
 					$sql = "SELECT * FROM rooms";
@@ -261,13 +260,41 @@ function resetpage() {
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();
-					}						
+					}
+				try {
+					$sql5 = "SELECT * FROM roomgroups";
+					$roomgrouplist = '';
+					foreach ($configdb->query($sql5) as $row5)
+						{
+						$roomgrouplist .= "<option value=".$row5['roomgroupid'].">".$row5['roomgroupname']."</option>";
+						}
+				} catch(PDOException $e)
+					{
+					echo $e->getMessage();
+					}
+							$setnavgroups = '';
+							$thenavgroups = '';
+							$sql4 = "SELECT * FROM navigation WHERE navgrouptitle = '1'";
+							foreach ($configdb->query($sql4) as $row4) {
+							$allnavgroups .= "<option value=".$row4['navgroup'].">".$row4['navname']."</option>"; }
+						echo "<table id='users-new'>";	
+						echo "<tr><td class='title'>Username</td><td><input size='10' name='username' value=''></td>
+									<td class='title'>Password</td><td><input size='10' type='password' name='password' value=''></td>
+									<td class='title'>Navigation</td><td><select class='chosen-select multiple' id='navgroupaccessnew' data-placeholder='Add Navigation' multiple='multiple'>".$allnavgroups."</select><input size='10' class='navgroupaccessnew' type='hidden' name='navgroupaccess' value=''></td>
+									<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"users-new\");' /></td><tr>
+								<tr><td class='title'>Homeroom</td><td><select name='homeroom'><option selected='selected'>Homeroom</option>".$roomlist."</select></td>
+									<td class='title'>Allow</td><td colspan=4><select class='chosen-select multiple' id='roomaccessnew' data-placeholder='Allow Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomaccessnew' type='hidden' name='roomaccess' value=''></td></tr>
+								<tr><td class='title'>R Groups</td><td><select name='roomgroupaccess'><option selected='selected'>Group Access</option>".$roomgrouplist."></td>
+									<td class='title'>Deny</td><td colspan=4><select class='chosen-select multiple' id='roomdenynew' data-placeholder='Deny Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomdenynew' type='hidden' name='roomdeny' value=''></td></tr>";
+						echo "</table>";
+						echo "<br><br><br>";
 				try {
 					$sql = "SELECT * FROM users";
 					$userid = 0;
 					foreach ($configdb->query($sql) as $row)
 						{
 						$userid = $row['userid'];
+						$thehomeroom = '';
 						if(isset($row['homeroom'])) {
 								$sql2 = "SELECT * FROM rooms WHERE roomid = ".$row['homeroom'];
 								foreach ($configdb->query($sql2) as $row2) {
@@ -276,40 +303,85 @@ function resetpage() {
 						} else {
 							$thehomeroom = "<option selected='selected'>GOTO Room List</option>";
 						}
+						$theroomgroup = '';
+						if(isset($row['roomgroupaccess']) && $row['roomgroupaccess']!='') {
+								$sql2 = "SELECT * FROM roomgroups WHERE roomgroupid = ".$row['roomgroupaccess'];
+								foreach ($configdb->query($sql2) as $row2) {
+								$theroomgroup = "<option selected='selected' value=".$row2['roomgroupid'].">".$row2['roomgroupname']."</option>"; 
+								}
+						} else {
+							$theroomgroup = "<option selected='selected'>Group Access</option>";
+						}						
+						$theroomaccess = '';
+						$theallowrooms ='';
 						if(isset($row['roomaccess']) && $row['roomaccess'] != '') {
-								$theroomaccess = '';
 								$sql3 = "SELECT * FROM rooms WHERE roomid IN (".$row['roomaccess'].")";
 								foreach ($configdb->query($sql3) as $row3) {
 								$theroomaccess .= "<option selected='selected' value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
 								}
 								$sql3 = "SELECT * FROM rooms WHERE roomid NOT IN (".$row['roomaccess'].")";
 								foreach ($configdb->query($sql3) as $row3) {
-								$therooms .= "<option value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
+								$theallowrooms .= "<option value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
 								}
 						} else {
 							$theroomaccess = '';
-							$therooms = '';
-							$therooms = $roomlist;
+							$theallowrooms = '';
+							$theallowrooms = $roomlist;
 						}
+						$theroomdeny = '';
+						$thedenyrooms = '';
+						if(isset($row['roomdeny']) && $row['roomdeny'] != '') {
+								$sql3 = "SELECT * FROM rooms WHERE roomid IN (".$row['roomdeny'].")";
+								foreach ($configdb->query($sql3) as $row3) {
+								$theroomdeny .= "<option selected='selected' value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
+								}
+								$sql3 = "SELECT * FROM rooms WHERE roomid NOT IN (".$row['roomdeny'].")";
+								foreach ($configdb->query($sql3) as $row3) {
+								$thedenyrooms .= "<option value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
+								}
+						} else {
+							$theroomdeny = '';
+							$thedenyrooms = '';
+							$thedenyrooms = $roomlist;
+						}
+						if(isset($row['navgroupaccess']) && $row['navgroupaccess'] != '') {
+								$setnavgroups = '';
+								$sql4 = "SELECT * FROM navigation WHERE navgroup IN (".$row['navgroupaccess'].") AND navgrouptitle = '1'";
+								foreach ($configdb->query($sql4) as $row4) {
+								$setnavgroups .= "<option selected='selected' value=".$row4['navgroup'].">".$row4['navname']."</option>"; 
+								}
+								$sql4 = "SELECT * FROM navigation WHERE navgroup NOT IN (".$row['navgroupaccess'].") AND navgrouptitle = '1'";
+								foreach ($configdb->query($sql4) as $row4) {
+								$thenavgroups .= "<option value=".$row4['navgroup'].">".$row4['navname']."</option>"; 
+								}
+						} else {
+							$setnavgroups = '';
+							$thenavgroups = '';
+							$thenavgroups = $allnavgroups;
+						}
+						$filename = "../media/Users/user$userid.jpg";
+						if (file_exists($filename)) {
+						$theuserpic = "$filename";
+						} else {
+						$theuserpic = "../media/Users/user-default.jpg";   
+						}
+						echo "<div class='container'><form action='upload.php?user=$userid' class='dropzone' id='user$userid' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;'><input type='file' name='user$userid' /></form><span class='text'>" . $row['username'] . "</span><img src='$theuserpic' class='image' /></div>";
 						echo "<table id='users-$userid'>";
-						echo "<tr><td><input size='10' name='username' value='" . $row['username'] . "'></td>
-										<td><input size='10' type='password' name='password' value=" . $row['password'] . "></td>
-										<td><input size='10' name='navgroupaccess' value=" . $row['navgroupaccess'] . "></td>
-										<td><select name='homeroom'>".$thehomeroom.$roomlist."</select></td><td><input size='10' name='roomgroupaccess' value=" . $row['roomgroupaccess'] . "></td>
-										<td><select class='chosen-select multiple' id='roomaccess$userid' data-placeholder='Allow Overrides' multiple='multiple'>".$theroomaccess.$therooms."</select><input size='10' class='roomaccess$userid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td>
-										<td><input size='10' name='roomdeny' value=" . $row['roomdeny'] . "></td>
-										<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /></td></tr>";
-						echo "</table>";
+						echo "<tr><td class='title'>Username</td><td><input size='10' name='username' value='" . $row['username'] . "'></td>
+										<td class='title'>Password</td><td><input size='10' type='password' name='password' value=" . $row['password'] . "></td>
+										<td class='title'>Navigation</td><td><select class='chosen-select multiple' id='navgroupaccess$userid' data-placeholder='Add Navigation' multiple='multiple'>".$setnavgroups.$thenavgroups."</select><input size='10' class='navgroupaccess$userid' type='hidden' name='navgroupaccess' value=" . $row['navgroupaccess'] . "></td>
+										<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /></td></tr>
+								  <tr><td class='title'>Homeroom</td><td><select name='homeroom'>".$thehomeroom.$roomlist."</select></td>
+										<td class='title'>Allow</td><td colspan=4><select class='chosen-select multiple' id='roomaccess$userid' data-placeholder='Allow Overrides' multiple='multiple'>".$theroomaccess.$theallowrooms."</select><input size='10' class='roomaccess$userid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td></tr>
+									<tr><td class='title'>R Groups</td><td><select name='roomgroupaccess'>".$theroomgroup.$roomgrouplist."></td>
+										<td class='title'>Deny</td><td colspan=4><select class='chosen-select multiple' id='roomdeny$userid' data-placeholder='Deny Overrides' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomdeny$userid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td></tr>";
+						echo "</table><br><br><br>";
 						}
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();
 					}
-				echo "<table id='users-new'>";	
-				echo "<tr><td><input size='10' name='username' value=''></td><td><input size='10' type='password' name='password' value=''></td><td><input size='10' name='navgroupaccess' value=''></td><td><select name='homeroom'><option selected='selected'>Homeroom</option>".$roomlist."</select></td><td><input size='10' name='roomgroupaccess' value=''></td><td><input size='10' name='roomaccess' value=''></td><td><input size='10' name='roomdeny' value=''></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"users-new\");' /></td></tr>";
-				echo "</table>";
-				echo "<br><br><br>";
-				try {
+			/*	try {
 					foreach ($configdb->query($sql) as $row)
 						{
 						$userid = $row['userid'];
@@ -324,20 +396,20 @@ function resetpage() {
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();
-					}				
+					}		*/		
 				?>
 			<br><br>	
             </div>
             <div id="ROOMS" class="panel">
               <h3>Room List</h3>
 			    <p>These Rooms are different xbmc machines or other network items you can control from a web interface</p>
-				<p align="justify" style="width: 700px;">
+				<p align="justify" style="width: 500px;">
 				    <b>Title:</b>  The title of the room or device
 	<br><br><b>MAC:</b>  This optional input is for the MAC Address and is used to WOL the device if available.
 	<br><br><b>IP1:</b>  A control web interface such as the webinterface plugins for xbmc ie  http://ip:port  or   http://username:pass@ip:port 
 	<br><br><b>IP2:</b>  An optional second control web interface such as the webinterface plugins for xbmc ie  http://ip:port  or   http://username:pass@ip:port 
 				<br>
-				</p>			  
+				</p>
                 <?php
 				echo "<table id='rooms-new'>";
 				echo "<tr><td></td><td class='title'>Title</td><td><input size='10' name='roomname' value=''></td><td class='title'>MAC</td><td><input size='20' name='mac' value=''></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"rooms-new\");' /></td></tr>";
@@ -350,8 +422,8 @@ function resetpage() {
 						{
 						$roomid = $row['roomid'];
 						echo "<table id='rooms-$roomid'>";
-						echo "<tr><td class='orange'>" . $row['roomid'] . "</td><td class='title'>Title</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td><td class='title'>MAC</td><td><input size='20' name='mac' value=" . $row['mac'] . "></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"rooms-$roomid\");' /></td></tr>";
-						echo "<tr><td></td><td class='title'>IP1</td><td colspan=4><input size='60' name='ip1' value='" . $row['ip1'] . "'></td></tr><tr><td></td><td class='title'>IP2</td><td colspan=4><input size='60' name='ip2' value=" . $row['ip2'] . "></td></tr>";
+						echo "<tr><td class='title'>Title</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td><td class='title'>MAC</td><td><input size='20' name='mac' value=" . $row['mac'] . "></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"rooms-$roomid\");' /></td></tr>";
+						echo "<tr><td class='title'>IP1</td><td colspan=4><input size='60' name='ip1' value='" . $row['ip1'] . "'></td></tr><tr><td class='title'>IP2</td><td colspan=4><input size='60' name='ip2' value=" . $row['ip2'] . "></td></tr>";
 						echo "</table><br><br>";
 						}
 				} catch(PDOException $e)
@@ -361,44 +433,88 @@ function resetpage() {
                 ?>
            </div>
 			<div id="ROOMGROUPS" class="panel">
-              <h3>Room Groups</h3>
+              <h3>Room Permission Groups</h3>
+			    <p>Create a group of permissions for easy multiple user permissions.  Individual permissions override these.</p>			  
+				<p align="justify" style="width: 500px;">
+				  <b>G Name:</b> the name of the permission group
+	<br><br><b>Allow:</b>  gives this group access to the room
+	<br><br><b>Deny:</b>  removes group access to this room<br>
+				</p>					  
               <table id="table_admingroups" class="headers">
 			  <tr>
-			  <td>roomgroupname<span>the name for this group, ie: admin   or   downloads</span></td>
-			  <td>roomallow<span>room numbers allowed for this group.  ie:  1,3,4,5</span></td>
-			  <td>roomdeny<span>optional room numbers denied for this group.  ie: 2,6</span></td>
+			  <td>G Name</td>
+			  <td>Allow</td>
+			  <td>Deny</td>
 			  <td></td>
 			  </tr></table>
                 <?php
+				echo "<table id='roomgroups-new'>";
+				echo "<tr><td><input size='10' name='roomgroupname' value=''></td>
+									<td colspan=2><select class='chosen-select multiple' id='roomgroupaccessnew' data-placeholder='Allow Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomgroupaccessnew' type='hidden' name='roomaccess' value=''></td>
+									<td colspan=2><select class='chosen-select multiple' id='roomgroupdenynew' data-placeholder='Deny Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomgroupdenynew' type='hidden' name='roomdeny' value=''></td>
+								<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"roomgroups-new\");' /></td></tr>";
+				echo "</table><br><br><br>";
 				try {
 					$sql = "SELECT * FROM roomgroups";
 					$roomid = 0;
 					foreach ($configdb->query($sql) as $row)
 						{
-						$roomid = $row['roomgroupid'];
-						echo "<table id='roomgroups-$roomid'>";						
-						echo "<tr><td>" . $roomid . "</td><td><input size='10' name='roomgroupname' value=" . $row['roomgroupname'] . "></td><td><input size='10' name='roomaccess' value=" . $row['roomaccess'] . "></td><td><input size='10' name='roomdeny' value=" . $row['roomdeny'] . "></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"roomgroups-$roomid\");' /></td></tr>";
-						echo "</table>";
+							$theroomaccess = '';
+							$theallowrooms ='';
+							if(isset($row['roomaccess']) && $row['roomaccess'] != '') {
+									$sql3 = "SELECT * FROM rooms WHERE roomid IN (".$row['roomaccess'].")";
+									foreach ($configdb->query($sql3) as $row3) {
+									$theroomaccess .= "<option selected='selected' value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
+									}
+									$sql3 = "SELECT * FROM rooms WHERE roomid NOT IN (".$row['roomaccess'].")";
+									foreach ($configdb->query($sql3) as $row3) {
+									$theallowrooms .= "<option value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
+									}
+							} else {
+								$theroomaccess = '';
+								$theallowrooms = '';
+								$theallowrooms = $roomlist;
+							}
+							$theroomdeny = '';
+							$thedenyrooms = '';
+							if(isset($row['roomdeny']) && $row['roomdeny'] != '') {
+									$sql3 = "SELECT * FROM rooms WHERE roomid IN (".$row['roomdeny'].")";
+									foreach ($configdb->query($sql3) as $row3) {
+									$theroomdeny .= "<option selected='selected' value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
+									}
+									$sql3 = "SELECT * FROM rooms WHERE roomid NOT IN (".$row['roomdeny'].")";
+									foreach ($configdb->query($sql3) as $row3) {
+									$thedenyrooms .= "<option value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
+									}
+							} else {
+								$theroomdeny = '';
+								$thedenyrooms = '';
+								$thedenyrooms = $roomlist;
+							}						
+							$roomid = $row['roomgroupid'];
+							echo "<table id='roomgroups-$roomid'>";						
+							echo "<tr><td><input size='10' name='roomgroupname' value=" . $row['roomgroupname'] . "></td>
+										<td colspan=1><select class='chosen-select multiple' id='roomgroupaccess$roomid' data-placeholder='Allow Overrides' multiple='multiple'>".$theroomaccess.$theallowrooms."</select><input size='10' class='roomgroupaccess$roomid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td>
+										<td colspan=1><select class='chosen-select multiple' id='roomgroupdeny$roomid' data-placeholder='Deny Overrides' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomgroupdeny$roomid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td>
+										<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"roomgroups-$roomid\");' /></td></tr>";
+							echo "</table>";
 						}
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();
 					}
-				echo "<table id='roomgroups-new'>";
-				$nextroomgroupid = 1 + $roomid;
-				echo "<tr><td>" . $nextroomgroupid . "</td><td><input size='10' name='roomgroupname' value=''></td><td><input size='10' name='roomaccess' value=''></td><td><input size='10' name='roomdeny' value=''></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"roomgroups-new\");' /></td></tr>";
-				echo "</table>";
 				?>
             </div>			
 			<div id="NAVIGATION" class="panel">
               <h3>Navigation</h3>
 			    <p>These links will be available in the upper left menu</p>
-				<p align="justify" style="width: 700px;">
+				<p align="justify" style="width: 500px;">
 				    <b>Title:</b>  The title of the link unless an icon of the same name (image.png) is uploaded.
 	<br><br><b>Full IP:</b>  The complete address to the link.  Can include username and password which is masked in the browser unless the source is viewed when those pages have already been accessed.  ie:  http://name:pass@ip:port
 	<br><br><b>M IP:</b>  Adds this link to the mobile specific site. set to 1 if the ip source scales on its own, or specify the full address here of the mobile site.  ie  http://m.ip:port  or   http://ip:port/m/ 
 	<br><br><b>NG #:</b>  This number represents the navigation group this link will be in.  this number goes in the user settings under "navgroups"
-	<br><br><b>NG Title:</b>  Set to 1 if this entry is the title for the group.  if set to 1, then the IP entries are ignored.   <br>
+	<br><br><b>NG Title:</b>  Set to 1 if this entry is the title for the group.  if set to 1, then the IP entries are ignored.  Otherwise leave blank.  
+	<br><br><b>Icon:</b>  Drag a .png image to the designated area to replace the Title in the top navigation bar   <br>
 				</p>
                 <?php
 				echo "<table id='navigation-new'>";
