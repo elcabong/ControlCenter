@@ -30,7 +30,7 @@
 		return $arrayt;
 	}
 	$roomgroupaccess = '';
-	if(isset($ROOMGROUPA) && $ROOMGROUPA !="" || $ROOMGROUPA != "0") {
+	if(isset($ROOMGROUPA) && ($ROOMGROUPA !="" || $ROOMGROUPA != "0")) {
 		try {
 		$sql = "SELECT * FROM roomgroups WHERE roomgroupid = $ROOMGROUPA LIMIT 1";
 			foreach ($configdb->query($sql) as $row) {
@@ -42,7 +42,7 @@
 			echo $e->getMessage();
 			}		
 	}
-	if($roomgroupaccess != '' ) {
+	if(isset($roomgroupaccess) && $roomgroupaccess != '' ) {
 		if(isset($roomgroupdeny) && $roomgroupdeny !='') {
 			$roomgroupdenyarray = explode(',', $roomgroupdeny);
 			foreach ($roomgroupdenyarray as $denyroom) {
@@ -60,7 +60,7 @@
 			$roomgroupaccess = $roomaccess;
 		}
 	}
-	if($roomgroupaccess != '' ) {
+	if(isset($roomgroupaccess) && $roomgroupaccess != '' ) {
 		if(isset($roomdeny) && $roomdeny !='') {
 			$roomdenyarray = explode(',', $roomdeny);
 			foreach ($roomdenyarray as $denyroom) {
@@ -74,7 +74,7 @@
 		${$theperm} = "0";
 		$y++;
 	}
-	if($roomgroupaccess != '' ) {
+	if(isset($roomgroupaccess) && $roomgroupaccess != '' ) {
 		$roomgroupaccessarray = explode(',', $roomgroupaccess);
 		foreach ($roomgroupaccessarray as $allowroom) {
 			$theperm = "USRPR$allowroom";

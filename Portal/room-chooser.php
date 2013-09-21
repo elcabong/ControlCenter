@@ -1,29 +1,20 @@
 ﻿<?php
-			$found = false;
-			$path = 'Portal';
-			while(!$found){
-				if(file_exists($path)){
-					$found = true;
-							$thepath = $path;
-				}
-				else{ $path= '../'.$path; }
-			}
-			require_once "$thepath/config.php";
+	require_once "./config.php";
 	if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
-    header("Location: login.php");
-    exit; }
-echo "fuck1";
-	require_once "$thepath/controls-include.php";
-	echo "fuck";
-if(isset($_COOKIE["currentRoom$usernumber"])) {
-$roomnum = $_COOKIE["currentRoom$usernumber"];
-$theperm = "USRPR$roomnum";
-if(${$theperm} == "1") {
-$_SESSION['room'] = $roomnum; } }
-if(!$_SESSION['room']) {
-$roomnum = $HOMEROOMU;
-$_SESSION['room'] = $roomnum; } else {
-$roomnum = $_SESSION['room']; }
+		header("Location: login.php");
+		exit;
+	}
+	require_once "./controls-include.php";
+	
+	if(isset($_COOKIE["currentRoom$usernumber"])) {
+	$roomnum = $_COOKIE["currentRoom$usernumber"];
+	$theperm = "USRPR$roomnum";
+	if(${$theperm} == "1") {
+	$_SESSION['room'] = $roomnum; } }
+	if(!$_SESSION['room']) {
+	$roomnum = $HOMEROOMU;
+	$_SESSION['room'] = $roomnum; } else {
+	$roomnum = $_SESSION['room']; }
 
 		$ROOMNUMBER = "ROOM$roomnum"."N";
 		echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUMBER}</a>";
@@ -46,10 +37,10 @@ $roomnum = $_SESSION['room']; }
 			$i++; }
 		echo "</ul>";
 
-$ROOMXBMC = "ROOM$roomnum"."XBMC";
-$ROOMXBMC2 = $ROOMXBMC."2";
-$xbmcip = ${$ROOMXBMC};
-$xbmcip2 = ${$ROOMXBMC2};
+	$ROOMXBMC = "ROOM$roomnum"."XBMC";
+	$ROOMXBMC2 = $ROOMXBMC."2";
+	$xbmcip = ${$ROOMXBMC};
+	$xbmcip2 = ${$ROOMXBMC2};
 ?>
 <script type="text/javascript">
 	$('a.changeroom').click(function () {
@@ -64,7 +55,7 @@ $xbmcip2 = ${$ROOMXBMC2};
 		var expire = new Date();
 		expire.setTime(today.getTime() + 3600000*24*5);
 		document.cookie="currentRoom"+usernumber+"="+ escape(newroom) + ";expires="+expire.toGMTString()+";path=/";
-		$("#room-menu").load("$thepath/room-chooser.php");
+		$("#room-menu").load("./room-chooser.php");
 	}
 		
 		var t;

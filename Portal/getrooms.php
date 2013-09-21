@@ -15,7 +15,7 @@
 require_once './controls-include.php';	
 			$i = 1;
 			while($i<=$TOTALROOMS) {
-				ip;
+				$ip;
 				$ROOMXBMC = "ROOM$i"."XBMC";
 				$ROOMXBMCM = $ROOMXBMC."M";
 				$theperm = "USRPR$i";

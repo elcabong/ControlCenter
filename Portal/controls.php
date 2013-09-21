@@ -181,7 +181,7 @@ while(!$found1){
 										echo "</li>";
 										echo "<li id=".$tempc." class='sortable secondary clear hidden'><a href='#' class='main panel title' title='$navtitle'>".$linkto."</a>";
 									} else {
-										echo "<li id=".$tempc." class='sortable clear'><a href='#' class='main panel title' title='$navltitle'>".$linkto."</a>";
+										echo "<li id=".$tempc." class='sortable clear'><a href='#' class='main panel title' title='$navtitle'>".$linkto."</a>";
 									}
 								}
 							} else {
