@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 			$found = false;
 			$path = 'Portal';
-			while(!$found){	
-				if(file_exists($path)){ 
+			while(!$found){
+				if(file_exists($path)){
 					$found = true;
 							$thepath = $path;
 				}
@@ -12,34 +12,35 @@
 	if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
     header("Location: login.php");
     exit; }
-require_once "$thepath/controls-include.php";
+echo "fuck1";
+	require_once "$thepath/controls-include.php";
+	echo "fuck";
 if(isset($_COOKIE["currentRoom$usernumber"])) {
 $roomnum = $_COOKIE["currentRoom$usernumber"];
 $theperm = "USRPR$roomnum";
 if(${$theperm} == "1") {
 $_SESSION['room'] = $roomnum; } }
-
 if(!$_SESSION['room']) {
-$roomnum = $HOMEROOMU; 
+$roomnum = $HOMEROOMU;
 $_SESSION['room'] = $roomnum; } else {
 $roomnum = $_SESSION['room']; }
 
-		$ROOMNUM = "ROOM$roomnum"."N";
-		echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUM}</a>";
+		$ROOMNUMBER = "ROOM$roomnum"."N";
+		echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUMBER}</a>";
 		echo "<ul>";
 			$thisroom = 0;
 			$i = 1;
 			while($i<=$TOTALROOMS) {
 				$ROOMXBMC = "ROOM$i"."XBMC";
-				$ROOMNUM = "ROOM$i"."N";
+				$ROOMNUMBER = "ROOM$i"."N";
 				$theperm = "USRPR$i";
 				if(!empty(${$ROOMXBMC}) && ${$theperm} == "1"){
 					echo "<li>";
 					if($i == $_SESSION['room']) {
-					echo "<a class='selected changeroom' href='#' newroom=\"$i\" >${$ROOMNUM}</a></li>"; 				
+					echo "<a class='selected changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a></li>"; 				
 					$thisroom = 1;
 					} else {
-					echo "<a class='changeroom' href='#' newroom=\"$i\" >${$ROOMNUM}</a></li>"; 
+					echo "<a class='changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a></li>"; 
 					}
 				}
 			$i++; }
@@ -63,9 +64,7 @@ $xbmcip2 = ${$ROOMXBMC2};
 		var expire = new Date();
 		expire.setTime(today.getTime() + 3600000*24*5);
 		document.cookie="currentRoom"+usernumber+"="+ escape(newroom) + ";expires="+expire.toGMTString()+";path=/";
-	//	alert("goodtohere");
 		$("#room-menu").load("$thepath/room-chooser.php");
-	//	alert("this fired for some reason");
 	}
 		
 		var t;

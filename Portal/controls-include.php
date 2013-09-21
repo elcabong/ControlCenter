@@ -18,7 +18,7 @@
 			unset($parts[$i]);
 		}
 		return implode(',', $parts);
-	}			
+	}		
 	function addToString($str, $item) {
 		$parts = explode(',', $str);
 		$addtoarray = '';
@@ -80,5 +80,5 @@
 			$theperm = "USRPR$allowroom";
 			${$theperm} = "1";
 		}
-	}	
+	}
 ?>
