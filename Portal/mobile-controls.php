@@ -6,7 +6,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 require_once 'controls-include.php';	
 $theroom = $_SESSION['room'];
 $theperm = "USRPR$theroom";
-if (${$theperm}!="1" && $ADMINP!="1" or $theroom>$TOTALROOMS) {
+if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
     header("Location: index.php");
 	exit; }	
 	/*
@@ -70,7 +70,7 @@ while(!$found1){
 				$count = $count + ${$user}; 
 				$c++;
 			}
-			if(($count) > 0 or ($ADMINP) > 0 ) {
+			if(($count) > 0) {
 			echo "<div id='multiples'>";
 			?>
 		<nav>		

@@ -9,10 +9,10 @@
 				else{ $path= '../'.$path; }
 			}
 			require_once "$thepath/config.php";
-if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
+	if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
     header("Location: login.php");
     exit; }
-require_once './controls-include.php';
+require_once "$thepath/controls-include.php";
 if(isset($_COOKIE["currentRoom$usernumber"])) {
 $roomnum = $_COOKIE["currentRoom$usernumber"];
 $theperm = "USRPR$roomnum";
@@ -22,7 +22,7 @@ $_SESSION['room'] = $roomnum; } }
 if(!$_SESSION['room']) {
 $roomnum = $HOMEROOMU; 
 $_SESSION['room'] = $roomnum; } else {
-$roomnum = $_SESSION['room']; } 
+$roomnum = $_SESSION['room']; }
 
 		$ROOMNUM = "ROOM$roomnum"."N";
 		echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUM}</a>";
@@ -33,7 +33,7 @@ $roomnum = $_SESSION['room']; }
 				$ROOMXBMC = "ROOM$i"."XBMC";
 				$ROOMNUM = "ROOM$i"."N";
 				$theperm = "USRPR$i";
-				if(!empty(${$ROOMXBMC}) && ($ADMINP == "1" or ${$theperm} == "1")){
+				if(!empty(${$ROOMXBMC}) && ${$theperm} == "1"){
 					echo "<li>";
 					if($i == $_SESSION['room']) {
 					echo "<a class='selected changeroom' href='#' newroom=\"$i\" >${$ROOMNUM}</a></li>"; 				
@@ -46,7 +46,9 @@ $roomnum = $_SESSION['room']; }
 		echo "</ul>";
 
 $ROOMXBMC = "ROOM$roomnum"."XBMC";
+$ROOMXBMC2 = $ROOMXBMC."2";
 $xbmcip = ${$ROOMXBMC};
+$xbmcip2 = ${$ROOMXBMC2};
 ?>
 <script type="text/javascript">
 	$('a.changeroom').click(function () {
@@ -61,7 +63,9 @@ $xbmcip = ${$ROOMXBMC};
 		var expire = new Date();
 		expire.setTime(today.getTime() + 3600000*24*5);
 		document.cookie="currentRoom"+usernumber+"="+ escape(newroom) + ";expires="+expire.toGMTString()+";path=/";
-		$("#room-menu").load("./room-chooser.php?newroom="+newroom);
+	//	alert("goodtohere");
+		$("#room-menu").load("$thepath/room-chooser.php");
+	//	alert("this fired for some reason");
 	}
 		
 		var t;
@@ -71,15 +75,15 @@ $xbmcip = ${$ROOMXBMC};
 			document.getElementById('loading').style.display='none';	
 		}
 
-		var iframe2 = document.getElementById('XBMC 1');
+		var iframe2 = document.getElementById('ROOMCONTROL1f');
 		if(iframe2.src != '<? echo $xbmcip; ?>') {
 			iframe2.setAttribute('src','<? echo $xbmcip; ?>');
 			iframe2.setAttribute('data-src','<? echo $xbmcip; ?>');
 			iframe2.src = iframe2.src; }
 
-		var iframe3 = document.getElementById('XBMCawxi 1');
-		iframe3.setAttribute('data-src','<? echo $xbmcip; ?>/addons/webinterface.jquerymobile/');
+		var iframe3 = document.getElementById('ROOMCONTROL2f');
+		iframe3.setAttribute('data-src','<? echo $xbmcip2; ?>');
 		if(iframe3.hasAttribute('src')) {
-			iframe3.setAttribute('src','<? echo $xbmcip; ?>/addons/webinterface.jquerymobile/');
+			iframe3.setAttribute('src','<? echo $xbmcip2; ?>');
 			iframe3.src = iframe3.data-src; }
 </script>

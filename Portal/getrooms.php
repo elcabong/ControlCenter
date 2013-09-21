@@ -19,7 +19,7 @@ require_once './controls-include.php';
 				$ROOMXBMC = "ROOM$i"."XBMC";
 				$ROOMXBMCM = $ROOMXBMC."M";
 				$theperm = "USRPR$i";
-				if(!empty(${$ROOMXBMC}) && ($ADMINP == "1" or ${$theperm} == "1")){
+				if(!empty(${$ROOMXBMC}) && ${$theperm} == "1"){
 					$ip = ${$ROOMXBMC};
 				   $disallowed = array('http://', 'https://');
 				   foreach($disallowed as $d) {

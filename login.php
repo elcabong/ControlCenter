@@ -62,7 +62,7 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 			} else {
 				$theuserpic = "./media/Users/user-default.jpg";   
 			}
-			if (isset($row['password'])) { ?>
+			if (isset($row['password']) && $row['password']!='') { ?>
 			  <a href='#' class='container' id='user$u'><div id='login$u' class='locked'>
 				<form action='./Portal/login.php' method='post' class='userpick'>
 				<table id=<?echo $u;?>><br><br>

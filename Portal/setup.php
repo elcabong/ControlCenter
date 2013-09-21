@@ -61,7 +61,7 @@ $configdb = new PDO('sqlite:../sessions/config.db');
 	<div id="mask">
 		<div id="Settings" class="item">
 			<div class="content">
-				<iframe id="Settings 1" class='Settings' src='./settings.php<? if($_GET['setup']) { echo "?setup=".$_GET['setup']; }?>' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+				<iframe id="Settingsf" class='Settings' src='./settings.php<? if($_GET['setup']) { echo "?setup=".$_GET['setup']; }?>' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
 	</div>

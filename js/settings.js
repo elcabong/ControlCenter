@@ -51,17 +51,6 @@ $(document).ready(function() {
 		easing: 'swing'
 	};
 
-/*	// apply serialScroll to the slider - we chose this plugin because it 
-	// supports// the indexed next and previous scroll along with hooking 
-	// in to our navigation.
-	$('#slider').serialScroll(scrollOptions); // now apply localScroll to hook any other arbitrary links to trigger 
-	// the effect
-	$.localScroll(scrollOptions); // finally, if the URL has a hash, move the slider in to position, 
-	// setting the duration to 1 because I don't want it to scroll in the
-	// very first page load.  We don't always need this, but it ensures
-	// the positioning is absolutely spot on when the pages loads.
-	scrollOptions.duration = 1;
-	$.localScroll.hash(scrollOptions);*/
 	$(".chosen-select").chosen({
 		width: "95%"
 		//placeholder_text_multiple: "Allow Overrides"
@@ -153,39 +142,6 @@ function ajaxRequest(params,section){
 		}
 	});
 }
-/*
-function addRowToTable(section, size1, size2) {
-	var tbl = document.getElementById('table_' + section);
-	var lastRow = tbl.rows.length; // if there's no header row in the table, then iteration = lastRow + 1
-	var iteration = lastRow;
-	var row = tbl.insertRow(lastRow); // left cell
-	var cellLeft = row.insertCell(0);
-	var el = document.createElement('input');
-	el.type = 'text';
-	el.name = 'TITLE';
-	el.size = size1;
-	cellLeft.appendChild(el); // select cell
-	var cellRightSel = row.insertCell(1);
-	var sel = document.createElement('input');
-	sel.name = 'VALUE';
-	sel.type = 'text';
-	sel.size = size2;
-	cellRightSel.appendChild(sel);
-}
-function removeRowToTable(section) {
-	var tbl = document.getElementById('table_' + section);
-	var lastRow = tbl.rows.length;
-	if (lastRow > 1) tbl.deleteRow(lastRow - 1);
-}
-function saveAll() {
-	var i = 0;
-	while (i < tabs.length) {
-		updateSettings(tabs[i]);
-		alert(tabs[i] + ' saved');
-		i++;
-	}
-}
-*/
 function updateVersion(){
 	$.ajax({
 		type: 'GET',
@@ -212,4 +168,3 @@ function updateVersion(){
 		}
 	});
 }	
-			

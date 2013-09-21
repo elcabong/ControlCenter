@@ -99,20 +99,10 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
   <script src="../js/dropzone.js"></script>
   <script src="../js/chosen.jquery.min.js"></script>
   <script src="../js/chosen.proto.min.js"></script>
-  <script src="../js/ui.dropdownchecklist-1.4-min.js"></script>
 	<script type="text/javascript">
 		if (window.navigator.standalone) {
 			var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
 		}
-		
-function resetpage() {
-				setTimeout(function(){
-				alert('fired');
-				var settings = $("#Settings 1")[0].GetAttribute('src');    //document.getElementById("Settings 1");
-				alert(settings);
-				document.getElementById("#Settings 1").contentDocument.location.reload(true);
-				}, 1500);
-}				
 	</script>
 </head>
 <body style="overflow: hidden;">
@@ -137,9 +127,6 @@ function resetpage() {
           <div class="scrollContainer">
             <div id="ABOUT" class="panel">
               <table cellpadding="5px">
-                <tr>
-                 <?// <img src="media/mfp.png" /> ?>
-                </tr>
                 <tr>
                   <td colspan="2">
                     <p align="justify" style="width: 500px;padding-bottom: 20px;">
@@ -174,7 +161,6 @@ function resetpage() {
 					if(isset($branchname) && $branchname != "master") { $github = new GitHub('elcabong','MediaCenter-Portal', $branchname); } else { $github = new GitHub('elcabong','MediaCenter-Portal'); }
                     $date = $github->getInfo();
 					if(isset($branchname)) {
-					 //  echo $date['name']; //['author']['date'];
 					   echo $date['commit']['commit']['author']['date'];
 					} else {
                        echo $date['pushed_at'];
@@ -381,22 +367,6 @@ function resetpage() {
 					{
 					echo $e->getMessage();
 					}
-			/*	try {
-					foreach ($configdb->query($sql) as $row)
-						{
-						$userid = $row['userid'];
-						$filename = "../media/Users/user$userid.jpg";
-						if (file_exists($filename)) {
-						$theuserpic = "$filename";
-						} else {
-						$theuserpic = "../media/Users/user-default.jpg";   
-						}
-						echo "<div class='container'><form action='upload.php?user=$userid' class='dropzone' id='user$userid' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;'><input type='file' name='user$userid' /></form><span class='text'>" . $row['username'] . "</span><img src='$theuserpic' class='image' /></div>";
-						}
-				} catch(PDOException $e)
-					{
-					echo $e->getMessage();
-					}		*/		
 				?>
 			<br><br>	
             </div>
