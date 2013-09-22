@@ -33,7 +33,7 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
 			if($section_unique == "new") {
 				$configdb->exec("INSERT INTO users ($vararray) VALUES ($valuearray)");
 			} else {
-				$configdb->exec("UPDATE users SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4],$vararraye[5]=$valuearraye[5] WHERE userid=$section_unique");
+				$configdb->exec("UPDATE users SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4],$vararraye[5]=$valuearraye[5],$vararraye[6]=$valuearraye[6],$vararraye[7]=$valuearraye[7] WHERE userid=$section_unique");
 			}
 		} else if($section_name == "rooms") {
 			if($section_unique == "new") {
@@ -73,15 +73,11 @@ require '../lib/class.github.php';
     $sql = "SELECT * FROM rooms LIMIT 1";
     foreach ($configdb->query($sql) as $row)
         {
-		if(isset($row['roomid'])) /*{
-			if(!$_GET['setup']) {
-				header("Location: index.php");
-				exit; 
-			} else */{ $roomsareset = 1; }
+		if(isset($row['roomid'])) { $roomsareset = 1; }
         }
 if($totalusernum != 0 && !isset($_GET['setup'])) {
 require './config.php';
-if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
+if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername ) || $SETTINGSACCESS != "1") {
     header("Location: login.php");
     exit;}}
 ?>
@@ -130,7 +126,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                 <tr>
                   <td colspan="2">
                     <p align="justify" style="width: 500px;padding-bottom: 20px;">
-                      Control Center is a HTPC Web Program Organiser built on a stripped down version of MediaFrontPage. You can think of this as the universal remote that ties your individual home media and automation softare/hardware together.
+                      Control Center is a Web-bases Service Organiser, designed using MediaFrontPage as one of the bases for this project. You can think of this as the universal remote that ties your individual home media and automation softare/hardware together.
                     </p>
                     <?/*<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
                       <input type="hidden" name="cmd" value="_s-xclick">
@@ -230,9 +226,10 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 	<br><br><b>Password:</b>  Optional.  if not set auth is disabled for this user
 	<br><br><b>Navigation:</b>  Adds Navigation set(s) for the user which are available in the upper left menu bar 
 	<br><br><b>Homeroom:</b>  The default room that this user will will log into unless they logout in another room (set with cookie, so device specific)
-	<br><br><b>R Groups:</b> Set a configured room group for this user 
+	<br><br><b>R Group:</b> Set a configured room group for this user 
 	<br><br><b>Allow:</b>  can add access to rooms, overrides room group access
 	<br><br><b>Deny:</b>  can remove access to rooms, overrides room group access and the allow option
+	<br><br><b>Settings:</b>  This allows or denies the user to this settings area. DO NOT FORGET TO GIVE ACCESS TO ATLEAST 1 USER.
 	<br><br><b>Icon:</b>  After users are created, drag a .jpg image into the designated area to assign each user avatar.<br>
 				</p>			  
                 <?php
@@ -270,8 +267,10 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 									<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"users-new\");' /></td><tr>
 								<tr><td class='title'>Homeroom</td><td><select name='homeroom'><option selected='selected'>Homeroom</option>".$roomlist."</select></td>
 									<td class='title'>Allow</td><td colspan=4><select class='chosen-select multiple' id='roomaccessnew' data-placeholder='Allow Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomaccessnew' type='hidden' name='roomaccess' value=''></td></tr>
-								<tr><td class='title'>R Groups</td><td><select name='roomgroupaccess'><option selected='selected'>Group Access</option>".$roomgrouplist."></td>
-									<td class='title'>Deny</td><td colspan=4><select class='chosen-select multiple' id='roomdenynew' data-placeholder='Deny Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomdenynew' type='hidden' name='roomdeny' value=''></td></tr>";
+								<tr><td class='title'>R Group</td><td><select name='roomgroupaccess'><option selected='selected'>Group Access</option>".$roomgrouplist."></td>
+									<td class='title'>Deny</td><td colspan=4><select class='chosen-select multiple' id='roomdenynew' data-placeholder='Deny Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomdenynew' type='hidden' name='roomdeny' value=''></td></tr>
+									<tr><td class='title'>Settings</td><td><select name='settingsaccess'><option selected='selected' value='0'>Deny</option><option value='1'>Allow</option></select></td>
+																</tr>";
 						echo "</table>";
 						echo "<br><br><br>";
 				try {
@@ -351,6 +350,12 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						} else {
 						$theuserpic = "../media/Users/user-default.jpg";   
 						}
+						$accesstosettings = '';
+						if($row['settingsaccess'] == "1") {
+						$accesstosettings .= "<option selected='selected' value='1'>Allow</option><option value='0'>Deny</option>"; 
+						} else {
+						$accesstosettings .= "<option selected='selected' value='0'>Deny</option><option value='1'>Allow</option>"; 
+						}
 						echo "<div class='container'><form action='upload.php?user=$userid' class='dropzone' id='user$userid' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;'><input type='file' name='user$userid' /></form><span class='text'>" . $row['username'] . "</span><img src='$theuserpic' class='image' /></div>";
 						echo "<table id='users-$userid'>";
 						echo "<tr><td class='title'>Username</td><td><input size='10' name='username' value='" . $row['username'] . "'></td>
@@ -359,8 +364,10 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 										<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /></td></tr>
 								  <tr><td class='title'>Homeroom</td><td><select name='homeroom'>".$thehomeroom.$roomlist."</select></td>
 										<td class='title'>Allow</td><td colspan=4><select class='chosen-select multiple' id='roomaccess$userid' data-placeholder='Allow Overrides' multiple='multiple'>".$theroomaccess.$theallowrooms."</select><input size='10' class='roomaccess$userid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td></tr>
-									<tr><td class='title'>R Groups</td><td><select name='roomgroupaccess'>".$theroomgroup.$roomgrouplist."></td>
-										<td class='title'>Deny</td><td colspan=4><select class='chosen-select multiple' id='roomdeny$userid' data-placeholder='Deny Overrides' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomdeny$userid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td></tr>";
+									<tr><td class='title'>R Group</td><td><select name='roomgroupaccess'>".$theroomgroup.$roomgrouplist."></td>
+										<td class='title'>Deny</td><td colspan=4><select class='chosen-select multiple' id='roomdeny$userid' data-placeholder='Deny Overrides' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomdeny$userid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td></tr>
+									<tr><td class='title'>Settings</td><td><select name='settingsaccess'>".$accesstosettings."</select></td>
+																</tr>";
 						echo "</table><br><br><br>";
 						}
 				} catch(PDOException $e)
@@ -420,8 +427,8 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                 <?php
 				echo "<table id='roomgroups-new'>";
 				echo "<tr><td><input size='10' name='roomgroupname' value=''></td>
-									<td colspan=2><select class='chosen-select multiple' id='roomgroupaccessnew' data-placeholder='Allow Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomgroupaccessnew' type='hidden' name='roomaccess' value=''></td>
-									<td colspan=2><select class='chosen-select multiple' id='roomgroupdenynew' data-placeholder='Deny Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomgroupdenynew' type='hidden' name='roomdeny' value=''></td>
+									<td colspan=2><select class='chosen-select multiple' id='roomgroupaccessnew' data-placeholder='Allow Rooms' multiple='multiple'>".$roomlist."</select><input size='10' class='roomgroupaccessnew' type='hidden' name='roomaccess' value=''></td>
+									<td colspan=2><select class='chosen-select multiple' id='roomgroupdenynew' data-placeholder='Deny Rooms' multiple='multiple'>".$roomlist."</select><input size='10' class='roomgroupdenynew' type='hidden' name='roomdeny' value=''></td>
 								<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"roomgroups-new\");' /></td></tr>";
 				echo "</table><br><br><br>";
 				try {
@@ -464,8 +471,8 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 							$roomid = $row['roomgroupid'];
 							echo "<table id='roomgroups-$roomid'>";						
 							echo "<tr><td><input size='10' name='roomgroupname' value=" . $row['roomgroupname'] . "></td>
-										<td colspan=1><select class='chosen-select multiple' id='roomgroupaccess$roomid' data-placeholder='Allow Overrides' multiple='multiple'>".$theroomaccess.$theallowrooms."</select><input size='10' class='roomgroupaccess$roomid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td>
-										<td colspan=1><select class='chosen-select multiple' id='roomgroupdeny$roomid' data-placeholder='Deny Overrides' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomgroupdeny$roomid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td>
+										<td colspan=1><select class='chosen-select multiple' id='roomgroupaccess$roomid' data-placeholder='Allow Rooms' multiple='multiple'>".$theroomaccess.$theallowrooms."</select><input size='10' class='roomgroupaccess$roomid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td>
+										<td colspan=1><select class='chosen-select multiple' id='roomgroupdeny$roomid' data-placeholder='Deny Rooms' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomgroupdeny$roomid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td>
 										<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"roomgroups-$roomid\");' /></td></tr>";
 							echo "</table>";
 						}

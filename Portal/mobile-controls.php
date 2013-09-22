@@ -72,7 +72,7 @@ while(!$found1){
 			if(($count) > 0) {
 			echo "<div id='multiples'>";
 			?>
-		<nav>		
+		<nav>
 			<ul>
 				<li>
 					<div id='room-menu'><? include"room-chooser.php"; ?></div>
@@ -87,6 +87,8 @@ while(!$found1){
 		<?php
 			$navlist = 0;
 			if($navlist == '1') {
+			
+			/*   Alternative navigation layout
 				echo "<ul>";
 				$navgroups = '0';
 				$tempc = 0;
@@ -133,16 +135,21 @@ while(!$found1){
 						}
 					}
 						if($navgroups =='1'){ echo "</ul>";}	
+						
+					*/   //end alternative nav layout	
+						
 			} else {
 				echo "<ul class='sortable'>";
 				try {
-					$sql = "SELECT navgroup,navgrouptitle FROM navigation ORDER BY navgrouptitle ASC";
+					$sql = "SELECT navgroup,navgrouptitle,mobile FROM navigation ORDER BY navgrouptitle ASC";
 					$navgroupamt = 0;
+					$mobileamt = 0;
 					foreach ($configdb->query($sql) as $row)
 						{
 							$navgroup = $row['navgroup'];
 							if(strpos($NAVGROUPS,$navgroup) !== false) {
 								if($row['navgrouptitle'] == "1") { $navgroupamt++; }
+								if(isset($row['mobile']) && ($row['mobile'] != "0" || $row['mobile'] != "")) { $mobileamt++; }
 							}
 						}
 				} catch(PDOException $e)
@@ -205,9 +212,9 @@ while(!$found1){
 <div class="clearcover" style="position:absolute;width:100%;top:50px;bottom:0;display:none;background-color:rgba(0,0,0,.30);z-index:150;"></div>
 <div id="wrapper" scrolling="auto">
 	<div id="mask">
+		<?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 = $ROOMXBMC."2"; ?>
 		<div id="ROOMCONTROL1" class="item">
 			<div class="content">
-				<?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 = $ROOMXBMC."2"; ?>
 				<iframe id='ROOMCONTROL1f' class='ROOMCONTROL1' src="<?echo ${$ROOMXBMC};?>" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>

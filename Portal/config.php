@@ -80,6 +80,7 @@ if($usernumber != "choose") {
 		try {
 		$sql = "SELECT * FROM users WHERE userid = $usernumber LIMIT 1";
 			foreach ($configdb->query($sql) as $row) {
+				$SETTINGSACCESS = $row['settingsaccess'];
 				$authusername           = $AUTH_USERNAME          = $row['username'];
 				 if(isset($row['password'])) { $authpassword           = $AUTH_PASS              = $row['password']; }
 				 if($AUTH_PASS) { $AUTH_ON = 1; } else { $AUTH_ON = 0; }

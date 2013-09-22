@@ -48,10 +48,11 @@ while(!$found1){
 	<div id='nav-menu2'>
 		<nav id="navsettings" style="float:right;width:50px;">
 			<ul>
-				<li><a href='#Settings' class='navsettings panel' title='Settings' style="margin-bottom:3px;border-bottom:2px solid rgba(0, 0, 0, 0);"><img src="../media/gear.png" style="margin:7px 0 0;width:20px !important;"></a>
+				<li><a href='#<? if($SETTINGSACCESS == "1") { ?>Settings<? } ?>' class='navsettings panel' title='Settings' style="margin-bottom:3px;border-bottom:2px solid rgba(0, 0, 0, 0);"><img src="../media/gear.png" style="margin:7px 0 0;width:20px !important;"></a>
 					<ul>
 						<li><a href="#" class="title"><?echo $USERNAMES[$usernumber];?></a></li>
-						<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li>
+						<? if($SETTINGSACCESS == "1") { ?>
+						<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li> <? } ?>
 						<li><a href="#">&nbsp;</a></li>
 						<li><a href='logout.php' />Logout</a></li>
 					</ul>
@@ -209,9 +210,9 @@ while(!$found1){
 <div class="clearcover" style="position:absolute;width:100%;top:50px;bottom:0;display:none;background-color:rgba(0,0,0,.30);z-index:150;"></div>
 <div id="wrapper" scrolling="auto">
 	<div id="mask">
+		<?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 = $ROOMXBMC."2"; ?>
 		<div id="ROOMCONTROL1" class="item">
 			<div class="content">
-				<?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 = $ROOMXBMC."2"; ?>
 				<iframe id='ROOMCONTROL1f' class='ROOMCONTROL1' src="<?echo ${$ROOMXBMC};?>" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
@@ -245,12 +246,13 @@ while(!$found1){
 					{
 					echo $e->getMessage();
 					}		
-		?>
+		if($SETTINGSACCESS == "1") {?>
 		<div id="Settings" class="item">
 			<div class="content">
 				<iframe id='Settingsf' class='Settings' data-src='./settings.php' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
+		<? } ?>
 	</div>
 </div>
 </body>

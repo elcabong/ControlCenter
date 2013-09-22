@@ -114,7 +114,7 @@ $(document).ready(function() {
 	$(".clearcover").click(function () {
 		$("ul.children").fadeOut(300); //Close filters drop-downs if user taps ANYWHERE in the page
 		$(".clearcover").fadeOut(300);
-	});	
+	});
 
 $("nav").children() // select your element (supports CSS selectors)
     .hover(function(){ // trigger the mouseover event
@@ -126,7 +126,9 @@ $("nav").children() // select your element (supports CSS selectors)
     });
 
 	function hideclearcover() {
-		$(".clearcover").hide(); 
+		$("ul.children").fadeOut(300);
+		$("#wrapper").click();
+		$(".clearcover").fadeOut(300);
 	}
  
 	$(".clearcover").touchwipe({
