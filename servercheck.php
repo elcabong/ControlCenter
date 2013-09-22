@@ -118,8 +118,8 @@ if($redirect){
   } else {
 	echo "<p><input type='button' onclick=\"window.location = './Portal/setup.php?setup=first';\" value='Setup Users and Configure' /></p>";
   }
-  if (file_exists('./config/firstrun.php')){
-    unlink('./config/firstrun.php');
+  if (file_exists('./sessions/firstrun.php')){
+    unlink('./sessions/firstrun.php');
   }
 } else {
   echo "<p>It looks like some problems were found, please fix them then <input type=\"button\" value=\"reload\" onClick=\"window.location.reload()\"> the page.</p>";

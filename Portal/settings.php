@@ -183,14 +183,15 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						}
                       echo "Version </td><td><a href='https://github.com/elcabong/MediaCenter-Portal/commit/".$currentVersion."' target='_blank'>".$currentVersion.'</a>';
                       if($commitNo != $currentVersion){
-                        echo "<br><a href='#' onclick='updateVersion();' title='".$commitNo." - Description: ".$commit['0']['commit']['message']."'>***UPDATE Available***</a>";
-                      }
+                       // echo "<br><a href='#' onclick='updateVersion();' title='".$commitNo." - Description: ".$commit['0']['commit']['message']."'>***UPDATE Available***</a>";
+                       echo "<br><a href='https://github.com/elcabong/MediaCenter-Portal/' title='".$commitNo." - Description: ".$commit['0']['commit']['message']."'>***UPDATE Available***Download From github here or git pull</a>";
+					   }
                     ?>
                   </td>
                 </tr>
               </table>
             </div>
-          <!--  <div id="GLOBAL" class="panel">
+     <?/* <div id="GLOBAL" class="panel">
               <h3>Global Settings</h3>
                 <table>
                   <tr>
@@ -218,7 +219,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                   </tr>
                 </table>
               <input type="button" title="Save these Settings" value="Save" class="ui-button ui-widget ui-state-default ui-corner-all" onClick="updateSettings('GLOBAL');" />
-            </div> -->
+            </div> */ ?>
             <div id="USERS" class="panel">
               <h3>User List</h3>
 				<p align="justify" style="width: 500px;">
