@@ -160,15 +160,16 @@ while(!$found1){
 					echo $e->getMessage();
 					}
 				try {
-					$sql = "SELECT * FROM navigation ORDER BY navgroup ASC";
+					$thenavgroups = explode(",",$NAVGROUPS);
 					$tempc = 0;
+					foreach($thenavgroups as $x) {
+					$sql = "SELECT * FROM navigation WHERE navgroup = $x";
 					foreach ($configdb->query($sql) as $row)
 						{
 						$navtitle = $row['navname'];
 						if(isset($row['navip'])) { $navdestination = $row['navip']; }
 						$navgroup = $row['navgroup'];
 						$navgrouptitle = $row['navgrouptitle'];
-						if(strpos($NAVGROUPS,$navgroup) !== false) {
 							if($navgrouptitle == "1") {
 								if($navgroupamt > '1'){
 									$filename = "../media/Programs/".$navtitle.".png";
@@ -194,8 +195,8 @@ while(!$found1){
 							}
 							echo "<a href='#".$navtitle."' class='main panel unloaded' title='$navtitle'>".$linkto."</a>";
 							}
-						}	
 						}
+					}
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();

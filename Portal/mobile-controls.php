@@ -42,6 +42,11 @@ while(!$found1){
 			var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
 		}
 	</script>
+	<style>
+	ul.sortable > li > a:first-child {
+	width: auto !important;
+	}
+	</style>
 </head>
 <body>
 <div id='header' class="nav-menu-z">
@@ -141,7 +146,7 @@ while(!$found1){
 			} else {
 				echo "<ul class='sortable'>";
 				try {
-					$sql = "SELECT navgroup,navgrouptitle,mobile FROM navigation ORDER BY navgrouptitle ASC";
+					$sql = "SELECT navgroup,navgrouptitle,mobile FROM navigation WHERE mobile != '' ORDER BY navgrouptitle ASC";
 					$navgroupamt = 0;
 					$mobileamt = 0;
 					foreach ($configdb->query($sql) as $row)
@@ -157,47 +162,42 @@ while(!$found1){
 					echo $e->getMessage();
 					}
 				try {
-					$sql = "SELECT * FROM navigation ORDER BY navgroup ASC";
+					$thenavgroups = explode(",",$NAVGROUPS);
 					$tempc = 0;
+					foreach($thenavgroups as $x) {
+					$sql = "SELECT * FROM navigation WHERE navgroup = $x AND mobile != ''";
 					foreach ($configdb->query($sql) as $row)
 						{
 						$navtitle = $row['navname'];
 						if(isset($row['navip'])) { $navdestination = $row['navip']; }
 						$navgroup = $row['navgroup'];
 						$navgrouptitle = $row['navgrouptitle'];
-						$mobiledestination = 0;
-						if(isset($row['mobile']) && $row['mobile'] != '') { $mobiledestination = $row['mobile']; }
-						if($mobiledestination != '0') {
-							if($mobiledestination != "1") { $navdestination = $mobiledestination; }
-							if(strpos($NAVGROUPS,$navgroup) !== false) {
-								if($navgrouptitle == "1") {
-									if($navgroupamt > '1'){
-										$filename = "../media/Programs/".$navtitle.".png";
-										if (file_exists($filename)) {
-											$linkto = "<img src=$filename height='35px' title='$navtitle'>";
-										} else {
-											$linkto = $navtitle;
-										}
-										$tempc++;
-										if($tempc>'1'){
-											echo "</li>";
-											echo "<li id=".$tempc." class='sortable secondary clear hidden'><a href='#' class='main panel title' title='$navtitle'>".$linkto."</a>";
-										} else {
-											echo "<li id=".$tempc." class='sortable clear'><a href='#' class='main panel title' title='$navtitle'>".$linkto."</a>";
-										}
-									}
-								} else {
+						if(isset($row['mobile']) && $row['mobile'] != '' || $row['mobile'] != '1' || $row['mobile'] != '0') { $navdestination = $row['mobile']; }
+							if($mobileamt > '1'){
+								$tempc++;
+								if($tempc == '1'){
+									echo "<li id=".$tempc." class='sortable clear'><a href='#' class='sortable title'></a>";
+								}
+								echo "</li>";	
+								echo "<li id=".$tempc." class='sortable secondary clear hidden'>";
 								$filename = "../media/Programs/".$navtitle.".png";
 								if (file_exists($filename)) {
 									$linkto = "<img src=$filename height='35px' title='$navtitle'>";
 								} else {
 									$linkto = $navtitle;
 								}
-								echo "<a href='#".$navtitle."' class='main panel unloaded' title='$navtitle'>".$linkto."</a>";
-								}
+								echo "<a href='#".$navtitle."' class='main panel unloaded' title='$navtitle'>".$linkto."</a>";											
+							} else {
+							$filename = "../media/Programs/".$navtitle.".png";
+							if (file_exists($filename)) {
+								$linkto = "<img src=$filename height='35px' title='$navtitle'>";
+							} else {
+								$linkto = $navtitle;
 							}
-						}	
+							echo "<a href='#".$navtitle."' class='main panel unloaded' title='$navtitle'>".$linkto."</a>";
+							}
 						}
+					}
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();

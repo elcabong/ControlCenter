@@ -52,7 +52,7 @@ $(document).ready(function() {
 	};
 
 	$(".chosen-select").chosen({
-		width: "95%"
+		width: "100%"
 		//placeholder_text_multiple: "Allow Overrides"
 		});
 	blinkFont();
