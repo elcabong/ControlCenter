@@ -117,3 +117,4 @@ div:hover > .text { color:rgb(0, 153, 255); }
 .orange { color:#FF9522 !important;text-decoration:none; }
 .blue { color:rgb(0, 153, 255); }
 .chosen-container-multi .chosen-choices li.search-field input[type="text"] { padding:0 !important;min-width:95px;margin:2.5px !important; }
+.button.right { text-align:right; }

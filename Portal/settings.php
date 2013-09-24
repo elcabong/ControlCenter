@@ -117,8 +117,6 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
       <div id="slider">
         <ul class="navigation">
           <li><a href="#ABOUT">About</a></li>
-        <!--  <li><a href="#GLOBAL">General</a></li>
-         --> 
           <li><a href="#ROOMS" <? if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
          <li><a href="#ROOMGROUPS">Room Groups</a></li> 
          <li><a href="#NAVIGATION" <? if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation</a></li>
@@ -135,7 +133,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                     <p align="justify" style="width: 500px;#padding-bottom: 20px;">
                       Control Center is a Web-based Service Organiser, inspired by MediaFrontPage. You can think of this as the universal remote that ties your individual home media and automation softare/hardware together.
 						<br><br>
-					I have and will continue to put a bit of time adn effort into this project.  If you find it useful, please consider buying me a tasty snack or refreshing beverage for brain power by donating below.
+					I have and will continue to put a bit of time and effort into this project.  If you find it useful, please consider buying me a tasty snack or refreshing beverage for brain power by donating below.
 					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
 					<input type="hidden" name="cmd" value="_s-xclick">
 					<input type="hidden" name="hosted_button_id" value="ZM5MSNYFM657A">
@@ -244,7 +242,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						echo "<table id='users-new'>";
 						echo "<tr><td class='title'>Username</td><td><input size='10' name='username' value=''></td>
 									<td class='title'>Password</td><td><input size='10' type='password' name='password' value=''></td>
-									<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"users-new\");' /></td><tr>
+									<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"users-new\");' /></td><tr>
 								<tr><td class='title'>Homeroom</td><td><select name='homeroom'>".$roomlist."</select></td>
 									<td class='title'>Navigation</td><td colspan=2><select class='chosen-select multiple' id='navgroupaccessnew' data-placeholder='Add Navigation' multiple='multiple'>".$allnavgroups."</select><input size='10' class='navgroupaccessnew' type='hidden' name='navgroupaccess' value=''></td></tr>
 								<tr><td class='title'>Room Group</td><td><select name='roomgroupaccess'>".$roomgrouplist."</td>
@@ -348,7 +346,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						echo "<table id='users-$userid'>";
 						echo "<tr><td class='title'>Username</td><td><input size='10' name='username' value='" . $row['username'] . "'></td>
 										<td class='title'>Password</td><td><input size='10' type='password' name='password' value=" . $row['password'] . "></td>
-										<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /></td></tr>
+										<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /></td></tr>
 								  <tr><td class='title'>Homeroom</td><td><select name='homeroom'>".$thehomeroom.$roomlist."</select></td>
 										<td class='title'>Navigation</td><td colspan=2><select class='chosen-select multiple' id='navgroupaccess$userid' data-placeholder='Add Navigation' multiple='multiple'>".$setnavgroups.$thenavgroups."</select><input size='10' class='navgroupaccess$userid' type='hidden' name='navgroupaccess' value=" . $row['navgroupaccess'] . "></td></tr>
 									<tr><td class='title'>Room Group</td><td><select name='roomgroupaccess'>".$theroomgroup.$roomgrouplist."></td>
@@ -385,7 +383,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 				</p>
                 <?php
 				echo "<table id='rooms-new'>";
-				echo "<tr><td></td><td class='title'>Title</td><td><input size='10' name='roomname' value=''></td><td class='title'>MAC</td><td><input size='20' name='mac' value=''></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"rooms-new\");' /></td></tr>";
+				echo "<tr><td></td><td class='title'>Title</td><td><input size='10' name='roomname' value=''></td><td class='title'>MAC</td><td><input size='20' name='mac' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"rooms-new\");' /></td></tr>";
 				echo "<tr><td></td><td class='title'>IP1</td><td  colspan=4><input size='60' name='ip1' value=''></td></tr><tr><td></td><td class='title'>IP2</td><td colspan=4><input size='60' name='ip2' value=''></td></tr>";
 				echo "</table><br><br><br>";
 				try {
@@ -395,7 +393,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						{
 						$roomid = $row['roomid'];
 						echo "<table id='rooms-$roomid'>";
-						echo "<tr><td class='title'>Title</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td><td class='title'>MAC</td><td><input size='20' name='mac' value=" . $row['mac'] . "></td><td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"rooms-$roomid\");' /></td></tr>";
+						echo "<tr><td class='title'>Title</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td><td class='title'>MAC</td><td><input size='20' name='mac' value=" . $row['mac'] . "></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"rooms-$roomid\");' /></td></tr>";
 						echo "<tr><td class='title'>IP1</td><td colspan=4><input size='60' name='ip1' value='" . $row['ip1'] . "'></td></tr><tr><td class='title'>IP2</td><td colspan=4><input size='60' name='ip2' value=" . $row['ip2'] . "></td></tr>";
 						echo "</table><br><br>";
 						}
@@ -408,24 +406,17 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 			<div id="ROOMGROUPS" class="panel">
               <h3>Room Permission Groups</h3>
 			    <p>Create a group of permissions for easy multiple user permissions.  Individual permissions override these.</p>			  
-				<p align="justify" style="width: 500px;">
-				  <b>G Name:</b> the name of the permission group
+				<p align="justify" style="width: 350px;">
+				  <b>Group Name:</b> the name of the permission group
 	<br><br><b>Allow:</b>  gives this group access to the room
 	<br><br><b>Deny:</b>  removes group access to this room<br>
 				</p>					  
-              <table id="table_admingroups" class="headers">
-			  <tr>
-			  <td>G Name</td>
-			  <td>Allow</td>
-			  <td>Deny</td>
-			  <td></td>
-			  </tr></table>
                 <?php
 				echo "<table id='roomgroups-new'>";
-				echo "<tr><td><input size='10' name='roomgroupname' value=''></td>
-									<td colspan=2><select class='chosen-select multiple' id='roomgroupaccessnew' data-placeholder='Allow Rooms' multiple='multiple'>".$roomlist."</select><input size='10' class='roomgroupaccessnew' type='hidden' name='roomaccess' value=''></td>
-									<td colspan=2><select class='chosen-select multiple' id='roomgroupdenynew' data-placeholder='Deny Rooms' multiple='multiple'>".$roomlist."</select><input size='10' class='roomgroupdenynew' type='hidden' name='roomdeny' value=''></td>
-								<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"roomgroups-new\");' /></td></tr>";
+				echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='roomgroupname' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"roomgroups-new\");' /></td></tr>
+									<tr><td class='title'>Allow</td><td colspan=3><select class='chosen-select multiple' id='roomgroupaccessnew' data-placeholder='Allow Rooms' multiple='multiple'>".$roomlist."</select><input size='10' class='roomgroupaccessnew' type='hidden' name='roomaccess' value=''></td>
+									</tr><tr><td class='title'>Deny</td><td colspan=3><select class='chosen-select multiple' id='roomgroupdenynew' data-placeholder='Deny Rooms' multiple='multiple'>".$roomlist."</select><input size='10' class='roomgroupdenynew' type='hidden' name='roomdeny' value=''></td>
+								</tr>";
 				echo "</table><br><br><br>";
 				try {
 					$sql = "SELECT * FROM roomgroups";
@@ -466,11 +457,11 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 							}						
 							$roomid = $row['roomgroupid'];
 							echo "<table id='roomgroups-$roomid'>";						
-							echo "<tr><td><input size='10' name='roomgroupname' value=" . $row['roomgroupname'] . "></td>
-										<td colspan=1><select class='chosen-select multiple' id='roomgroupaccess$roomid' data-placeholder='Allow Rooms' multiple='multiple'>".$theroomaccess.$theallowrooms."</select><input size='10' class='roomgroupaccess$roomid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td>
-										<td colspan=1><select class='chosen-select multiple' id='roomgroupdeny$roomid' data-placeholder='Deny Rooms' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomgroupdeny$roomid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td>
-										<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"roomgroups-$roomid\");' /></td></tr>";
-							echo "</table>";
+							echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='roomgroupname' value=" . $row['roomgroupname'] . "></td><td class='button right'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"roomgroups-$roomid\");' /></td></tr>
+										<tr><td class='title'>Allow</td><td colspan=3><select class='chosen-select multiple' id='roomgroupaccess$roomid' data-placeholder='Allow Rooms' multiple='multiple'>".$theroomaccess.$theallowrooms."</select><input size='10' class='roomgroupaccess$roomid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td>
+										</tr><tr><td class='title'>Deny</td><td colspan=3><select class='chosen-select multiple' id='roomgroupdeny$roomid' data-placeholder='Deny Rooms' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomgroupdeny$roomid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td>
+										</tr>";
+							echo "</table><br><br><br>";
 						}
 				} catch(PDOException $e)
 					{
