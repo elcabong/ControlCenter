@@ -46,6 +46,9 @@ while(!$found1){
 	ul.sortable > li > a:first-child {
 	width: auto !important;
 	}
+	#nav-menu nav ul ul li {
+	float: left !important;
+	}
 	</style>
 </head>
 <body>
@@ -90,61 +93,6 @@ while(!$found1){
 <div id='nav-menu'>
 	<nav>
 		<?php
-			$navlist = 0;
-			if($navlist == '1') {
-			
-			/*   Alternative navigation layout
-				echo "<ul>";
-				$navgroups = '0';
-				$tempc = 0;
-				if($gnavlinkcount + $navlinkcount > 1) { $navgroups = '1';}
-				if(!empty($gnavlink)) {
-					foreach( $gnavlink as $navlinklabel => $navlinkpath) {
-					if($navlinklabel == "MaraschinoAdmin") {
-						if($navlinkpath == "title") {
-							if($navgroups == '1'){
-							$filename = "../media/Programs/".$navlinklabel.".png";
-							if (file_exists($filename)) {
-								$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
-							} else {
-								$linkto = $navlinklabel;
-							}
-							$tempc++;
-							if($tempc>1){ echo "</ul></li>"; }
-							echo "<li><a href='#' class='main panel' title='$navlinklabel'>".$linkto."</a>";
-							echo "<ul>";
-							}
-						} else {
-						$filename = "../media/Programs/".$navlinklabel.".png";
-						if (file_exists($filename)) {
-							$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
-						} else {
-							$linkto = $navlinklabel;   
-						}
-						echo "<li><a href='#".$navlinklabel."' class='main panel' title='$navlinklabel'>".$linkto."</a></li>";
-						}
-						if($navgroups =='1' && $navlinkpath != "title"){ echo "</li>";}
-					}}
-				}
-					if(!empty($navlink)){
-						foreach( $navlink as $navlinklabel => $navlinkpath) {
-							if($navlinklabel != "title") {
-							$filename = "../media/Programs/".$navlinklabel.".png";
-							if (file_exists($filename)) {
-								$linkto = "<img src=$filename height='35px' title='$navlinklabel'>";
-							} else {
-								$linkto = $navlinklabel;
-							}
-							echo "<li><a href='#".$navlinklabel."' class='main panel' title='$navlinklabel'>".$linkto."</a></li>";
-							}
-						}
-					}
-						if($navgroups =='1'){ echo "</ul>";}	
-						
-					*/   //end alternative nav layout	
-						
-			} else {
-				echo "<ul class='sortable'>";
 				try {
 					$sql = "SELECT navgroup,navgrouptitle,mobile FROM navigation WHERE mobile != '' ORDER BY navgrouptitle ASC";
 					$navgroupamt = 0;
@@ -161,7 +109,11 @@ while(!$found1){
 					{
 					echo $e->getMessage();
 					}
+				if($mobileamt > '1'){					
+					echo "<ul><li><a href='#'><img src='../media/menudropdown.png' style='width:25px;margin:5px;'></a>";				
+				}
 				try {
+				echo "<ul>";
 					$thenavgroups = explode(",",$NAVGROUPS);
 					$tempc = 0;
 					foreach($thenavgroups as $x) {
@@ -175,11 +127,7 @@ while(!$found1){
 						if(isset($row['mobile']) && $row['mobile'] != '' || $row['mobile'] != '1' || $row['mobile'] != '0') { $navdestination = $row['mobile']; }
 							if($mobileamt > '1'){
 								$tempc++;
-								if($tempc == '1'){
-									echo "<li id=".$tempc." class='sortable clear'><a href='#' class='sortable title'></a>";
-								}
-								echo "</li>";	
-								echo "<li id=".$tempc." class='sortable secondary clear hidden'>";
+								echo "<li id=".$tempc." class='clear'>";
 								$filename = "../media/Programs/".$navtitle.".png";
 								if (file_exists($filename)) {
 									$linkto = "<img src=$filename height='35px' title='$navtitle'>";
@@ -187,6 +135,7 @@ while(!$found1){
 									$linkto = $navtitle;
 								}
 								echo "<a href='#".$navtitle."' class='main panel unloaded' title='$navtitle'>".$linkto."</a>";											
+								echo "</li>";
 							} else {
 							$filename = "../media/Programs/".$navtitle.".png";
 							if (file_exists($filename)) {
@@ -202,9 +151,11 @@ while(!$found1){
 					{
 					echo $e->getMessage();
 					}				
-			}
 		?>
-		</ul>
+		</ul><?
+				if($mobileamt > '1'){					
+					echo "</li></ul>";				
+				}		?>
 	</nav>
 </div>
 <div class="clear"></div>	
