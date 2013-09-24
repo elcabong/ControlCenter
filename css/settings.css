@@ -77,15 +77,13 @@ td > span { display:none;position:absolute;background-color:black;padding:5px;z-
 td:hover > span { display:block; }
 .container
 {
-   # display:inline-block;
     height: 150px;
     width: 100px;
 	max-width:80%;
-    margin: 5px;
+    margin: 5px -100px 5px 100px;
 	position:relative;
 	float:left;
 	clear:both;
-	margin-left:15px;
 }
 .container > span { background-color:rgba(0, 0, 0, 0.65);width:100%;z-index:2;position:absolute;overflow:hidden; }
 .container > form > input { display:none; }
@@ -116,6 +114,6 @@ div:hover > .text { color:rgb(0, 153, 255); }
 .dz-success { position:absolute;background-color:rgba(0,0,0,.4);margin:0 25%;padding:0 5 5; }
 .dz-success-mark, .dz-error-mark, .dz-filename, .dz-size { display:none; }
 .title { text-align:right; }
-.orange { color:#FF9522; }
+.orange { color:#FF9522 !important;text-decoration:none; }
 .blue { color:rgb(0, 153, 255); }
 .chosen-container-multi .chosen-choices li.search-field input[type="text"] { padding:0 !important;min-width:95px;margin:2.5px !important; }

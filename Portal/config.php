@@ -17,7 +17,17 @@ ini_set('session.cookie_lifetime', 86400);
 if(!isset($_SESSION)){session_start();}
 
 $thepath = dirname(dirname($_SERVER['PHP_SELF']));
-if (!file_exists($sessionsloc . "/config.db")) { header('Location: ' . $thepath . '/servercheck.php');exit; }
+
+$found2 = false;
+$path2 = './servercheck.php';
+while(!$found2){
+	if(file_exists($path2)){ 
+		$found2 = true;
+		$servercheckloc = $path2;
+	}
+	else{ $path2= '../'.$path2; }
+}
+if (!file_exists($sessionsloc . "/config.db")) { header('Location: ' . $servercheckloc);exit; }
 $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 
 	try {
@@ -38,7 +48,7 @@ $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 		echo $e->getMessage();
 		}
 
-if ($HOWMANYUSERS == 0) { header('Location: ' . $thepath . '/servercheck.php');exit; }		
+if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }		
 
 		try {
 		$sql = "SELECT * FROM rooms";
@@ -91,6 +101,6 @@ if($usernumber != "choose") {
 			{
 			echo $e->getMessage();
 			}
-			 
+
 }
 ?>

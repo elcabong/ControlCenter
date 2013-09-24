@@ -1,4 +1,5 @@
 <?php
+if (file_exists('../sessions/firstrun.php') || !file_exists('../sessions/config.db')) { header('Location: ../servercheck.php');exit; }
 $configdb = new PDO('sqlite:../sessions/config.db');
     $sql = "SELECT * FROM users LIMIT 1";
     foreach ($configdb->query($sql) as $row)
@@ -44,7 +45,7 @@ $configdb = new PDO('sqlite:../sessions/config.db');
 <div id='header' class="nav-menu-z">
 <div id='nav-menu'>
 	<nav>
-	<ul><li>
+	<ul><li><!--
 <? if(!isset($usersareset)) { ?>
 <a href='#' class='main panel title'>Configure A User Account to Continue</a>
 <? } else if(!isset($roomsareset)) { ?>
@@ -52,7 +53,7 @@ $configdb = new PDO('sqlite:../sessions/config.db');
 <? } else { ?>
 <a href='../index.html' class='main panel'>Begin Using Control Panel</a>
 <? } ?>
-		</li></ul>
+		--></li></ul>
 	</nav>
 </div>
 <div class="clear"></div>	

@@ -60,7 +60,7 @@
 		
 		var t;
 		clearTimeout(t);
-		t=setTimeout(func, 2000);
+		t=setTimeout(func, 1700);
 		function func() {
 			document.getElementById('loading').style.display='none';	
 		}

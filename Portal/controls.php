@@ -9,19 +9,6 @@ $theperm = "USRPR$theroom";
 if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
     header("Location: index.php");
 	exit; }
-	/*
-/////////////////////////////////////////
-$found1 = false;
-$path1 = './lib/xbmc.json.wrapper.php';
-while(!$found1){	
-	if(file_exists($path1)){ 
-		$found1 = true;
-                include("$path1");
-	}
-	else{ $path1= '../'.$path1; }
-}	///////////////////////////////
-	$xbmcHost = new xbmcHost('192.168.3.218:80');
-	$xbmcJson = new xbmcJson($xbmcHost); */
 ?>
 <!DOCTYPE html>
 <html>

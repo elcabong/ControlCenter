@@ -1,7 +1,8 @@
 <?php
+if (file_exists('../sessions/firstrun.php') || !file_exists('../sessions/config.db')) { header('Location: ../servercheck.php');exit; }
 $configdb = new PDO('sqlite:../sessions/config.db');
 
-if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
+if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings') && !isset($_GET['setup'])){
   //if there is no section parameter, we will not do anything.
   if(!isset($_GET['section'])){
     echo false; return false;
@@ -64,17 +65,22 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings')){
 } else {
 require '../lib/class.github.php';
 	$totalusernum = 0;
-    $sql = "SELECT * FROM users LIMIT 1";
+    $sql = "SELECT userid FROM users LIMIT 1";
     foreach ($configdb->query($sql) as $row)
         {
 		if(isset($row['userid'])) {
 		$totalusernum ++;
         } }
-    $sql = "SELECT * FROM rooms LIMIT 1";
+    $sql = "SELECT roomid FROM rooms LIMIT 1";
     foreach ($configdb->query($sql) as $row)
         {
 		if(isset($row['roomid'])) { $roomsareset = 1; }
         }
+    $sql = "SELECT navid FROM navigation LIMIT 1";
+    foreach ($configdb->query($sql) as $row)
+        {
+		if(isset($row['navid'])) { $navisset = 1; }
+        }		
 if($totalusernum != 0 && !isset($_GET['setup'])) {
 require './config.php';
 if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername ) || $SETTINGSACCESS != "1") {
@@ -112,10 +118,11 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
         <ul class="navigation">
           <li><a href="#ABOUT">About</a></li>
         <!--  <li><a href="#GLOBAL">General</a></li>
-         --> <li><a href="#USERS" <? if($totalusernum==0) { echo "id='blink'"; } ?>>User List</a></li>
-          <li><a href="#ROOMS" <? if(!isset($roomsareset) && $totalusernum>0) { echo "id='blink'"; } ?>>Room List</a></li>
+         --> 
+          <li><a href="#ROOMS" <? if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
          <li><a href="#ROOMGROUPS">Room Groups</a></li> 
-         <li><a href="#NAVIGATION">Navigation</a></li>
+         <li><a href="#NAVIGATION" <? if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation</a></li>
+		<li><a href="#USERS" <? if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
  	  </ul>
       <!-- element with overflow applied -->
         <div class="scroll">
@@ -125,16 +132,17 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
               <table cellpadding="5px">
                 <tr>
                   <td colspan="2">
-                    <p align="justify" style="width: 500px;padding-bottom: 20px;">
-                      Control Center is a Web-bases Service Organiser, designed using MediaFrontPage as one of the bases for this project. You can think of this as the universal remote that ties your individual home media and automation softare/hardware together.
-                    </p>
-                    <?/*<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-                      <input type="hidden" name="cmd" value="_s-xclick">
-                      <input type="hidden" name="hosted_button_id" value="D2R8MBBL7EFRY">
-                      <input type="image" src="https://www.paypalobjects.com/en_AU/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
-                      <img alt="" border="0" src="https://www.paypalobjects.com/en_AU/i/scr/pixel.gif" width="1" height="1">
-                    </form>*/?>
-                  </td>
+                    <p align="justify" style="width: 500px;#padding-bottom: 20px;">
+                      Control Center is a Web-based Service Organiser, inspired by MediaFrontPage. You can think of this as the universal remote that ties your individual home media and automation softare/hardware together.
+						<br><br>
+					I have and will continue to put a bit of time adn effort into this project.  If you find it useful, please consider buying me a tasty snack or refreshing beverage for brain power by donating below.
+					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+					<input type="hidden" name="cmd" value="_s-xclick">
+					<input type="hidden" name="hosted_button_id" value="ZM5MSNYFM657A">
+					<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+					<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+					</form></p>
+                 </td>                    
                 </tr>
                 <tr align="left">
                   <td>Forum</td><td><a href="#">no thread yet</a></td>
@@ -199,7 +207,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 	<br><br><b>Navigation:</b>  Adds Navigation group(s) for the user which are available in the upper left menu bar.  Add the groups in the order you want them to be displayed in.
 	<br><br><b>Homeroom:</b>  The default room that this user will will log into unless they logout in another room (set with cookie, so device specific)
 	<br><br><b>Room Group:</b> Set a configured room group for this user 
-	<br><br><b>Allow:</b>  can add access to rooms, overrides room group access
+	<br><br><b>Allow:</b>  MUST BE SET if there is no Room Group.  Adds access to rooms, overrides room group access
 	<br><br><b>Deny:</b>  can remove access to rooms, overrides room group access and the allow option
 	<br><br><b>Settings:</b>  This allows or denies the user to this settings area. DO NOT FORGET TO GIVE ACCESS TO ATLEAST 1 USER.
 	<br><br><b>Icon:</b>  After users are created, drag a .jpg image into the designated area to assign each user avatar.<br>
@@ -229,16 +237,17 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 					}
 							$setnavgroups = '';
 							$thenavgroups = '';
+							$allnavgroups = '';
 							$sql4 = "SELECT * FROM navigation WHERE navgrouptitle = '1'";
 							foreach ($configdb->query($sql4) as $row4) {
 							$allnavgroups .= "<option value=".$row4['navgroup'].">".$row4['navname']."</option>"; }
-						echo "<table id='users-new'>";	
+						echo "<table id='users-new'>";
 						echo "<tr><td class='title'>Username</td><td><input size='10' name='username' value=''></td>
 									<td class='title'>Password</td><td><input size='10' type='password' name='password' value=''></td>
 									<td><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"users-new\");' /></td><tr>
-								<tr><td class='title'>Homeroom</td><td><select name='homeroom'><option selected='selected'>Homeroom</option>".$roomlist."</select></td>
+								<tr><td class='title'>Homeroom</td><td><select name='homeroom'>".$roomlist."</select></td>
 									<td class='title'>Navigation</td><td colspan=2><select class='chosen-select multiple' id='navgroupaccessnew' data-placeholder='Add Navigation' multiple='multiple'>".$allnavgroups."</select><input size='10' class='navgroupaccessnew' type='hidden' name='navgroupaccess' value=''></td></tr>
-								<tr><td class='title'>Room Group</td><td><select name='roomgroupaccess'><option selected='selected'>Group Access</option>".$roomgrouplist."></td>
+								<tr><td class='title'>Room Group</td><td><select name='roomgroupaccess'>".$roomgrouplist."</td>
 									<td class='title'>Allow</td><td colspan=2><select class='chosen-select multiple' id='roomaccessnew' data-placeholder='Allow Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomaccessnew' type='hidden' name='roomaccess' value=''></td></tr>
 									<tr><td class='title'>Settings</td><td><select name='settingsaccess'><option selected='selected' value='0'>Deny</option><option value='1'>Allow</option></select></td>
 									<td class='title'>Deny</td><td colspan=2><select class='chosen-select multiple' id='roomdenynew' data-placeholder='Deny Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomdenynew' type='hidden' name='roomdeny' value=''></td></tr>";
@@ -251,22 +260,27 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						{
 						$userid = $row['userid'];
 						$thehomeroom = '';
-						if(isset($row['homeroom'])) {
+						if(isset($row['homeroom']) && ($row['homeroom'] != '' || $row['homeroom'] != "0")) {
 								$sql2 = "SELECT * FROM rooms WHERE roomid = ".$row['homeroom'];
 								foreach ($configdb->query($sql2) as $row2) {
 								$thehomeroom = "<option selected='selected' value=".$row2['roomid'].">".$row2['roomname']."</option>"; 
 								}
 						} else {
-							$thehomeroom = "<option selected='selected'>GOTO Room List</option>";
+							$thehomeroom = "";
 						}
 						$theroomgroup = '';
 						if(isset($row['roomgroupaccess']) && $row['roomgroupaccess']!='') {
+							try {
 								$sql2 = "SELECT * FROM roomgroups WHERE roomgroupid = ".$row['roomgroupaccess'];
 								foreach ($configdb->query($sql2) as $row2) {
 								$theroomgroup = "<option selected='selected' value=".$row2['roomgroupid'].">".$row2['roomgroupname']."</option>"; 
 								}
+							} catch(PDOException $e)
+								{
+								echo $e->getMessage();
+								}
 						} else {
-							$theroomgroup = "<option selected='selected'>Group Access</option>";
+							$theroomgroup = "";
 						}						
 						$theroomaccess = '';
 						$theallowrooms ='';
@@ -302,11 +316,10 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						}
 						if(isset($row['navgroupaccess']) && $row['navgroupaccess'] != '') {
 								$setnavgroups = '';
-								$thenavgroups = explode(",",$row['navgroupaccess']);					
-								foreach($thenavgroups as $x) {
+								$thenavgroupss = explode(",",$row['navgroupaccess']);					
+								foreach($thenavgroupss as $x) {
 									$sql4 = "SELECT * FROM navigation WHERE navgroup = $x AND navgrouptitle = '1'";								
-									//$sql4 = "SELECT * FROM navigation WHERE navgroup IN (".$row['navgroupaccess'].") AND navgrouptitle = '1'";
-									foreach ($configdb->query($sql4) as $row4) {
+										foreach ($configdb->query($sql4) as $row4) {
 									$setnavgroups .= "<option selected='selected' value=".$row4['navgroup'].">".$row4['navname']."</option>"; 
 									}
 								}
@@ -349,6 +362,15 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 					echo $e->getMessage();
 					}
 				?>
+				<? $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+					if (false !== strpos($url,'setup')) {
+						if($totalusernum>0 && isset($roomsareset) && isset($navisset)) {
+						echo "				<p align='justify' style='width: 450px;'>
+							<b>ALERT:</b>  Ensure atleast 1 user has allow access to settings.
+						<br><br><b>ALERT:</b>  Please make sure your users have access to their Homeroom.  you need to 'Allow' the room, or configure and add a '<a href='#ROOMGROUPS'>Room Group</a>' to each user.  If a user has no rooms allowed, they will have a redirect loop when they try to login.
+						<br><br><h3><a class='orange' href='./login.php' target='_parent'>Continue to Control Center</a></h3>
+						<br>
+				</p>"; }}?>
 			<br><br>	
             </div>
             <div id="ROOMS" class="panel">
@@ -478,6 +500,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						{
 						echo $e->getMessage();
 						}
+				if(!isset($newnavgroup)) { $newnavgroup = 1; }
 				echo "<table id='navigation-new'>";
 				echo "<tr><td></td><td class='title'>Add New Navigation Group</td></tr>";
 				echo "<tr><td class='title'>Nav Group</td><td><input size='40' name='navname' value=''></td><td><input size='1' type='hidden' name='navgroup' value='$newnavgroup'><input size='1' type='hidden' name='navgrouptitle' value='1'></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"navigation-new\");' /></td></tr>";

@@ -106,7 +106,7 @@ $(document).ready(function() {
 	}
 	setTimeout(refreshRooms, 1000);
 
-	setTimeout(func, 5000);
+	setTimeout(func, 4500);
 	function func() {
 		document.getElementById('loading').style.display='none';	
 	}

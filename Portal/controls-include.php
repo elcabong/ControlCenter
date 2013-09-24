@@ -80,5 +80,7 @@
 			$theperm = "USRPR$allowroom";
 			${$theperm} = "1";
 		}
+		$checkhomeroomaccess = "USRPR$HOMEROOMU";
+		if(${$checkhomeroomaccess} != '1' ) { $HOMEROOMU = $allowroom; }
 	}
 ?>
