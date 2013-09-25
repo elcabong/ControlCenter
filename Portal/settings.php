@@ -146,7 +146,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                   <td>Forum</td><td><a href="#">no thread yet</a></td>
                 </tr>
                 <tr align="left">
-                  <td>Source</td><td><a href="https://github.com/elcabong/MediaCenter-Portal" target='_blank'>https://github.com/elcabong/MediaCenter-Portal</a></td>
+                  <td>Source</td><td><a href="https://github.com/elcabong/ControlCenter" target='_blank'>https://github.com/elcabong/ControlCenter</a></td>
                 </tr>
                 <tr align="left">
                   <td>Last Updated</td>
@@ -160,7 +160,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 							$explodedstring = array_filter(array_map('trim',explode('/',$stringfromfile)));
 							$branchname = $explodedstring[2]; //get the one that is always the branch name
 						}
-					if(isset($branchname) && $branchname != "master") { $github = new GitHub('elcabong','MediaCenter-Portal', $branchname); } else { $github = new GitHub('elcabong','MediaCenter-Portal'); }
+					if(isset($branchname) && $branchname != "master") { $github = new GitHub('elcabong','ControlCenter', $branchname); } else { $github = new GitHub('elcabong','ControlCenter'); }
                     $date = $github->getInfo();
 					if(isset($branchname) && $branchname != "master") {
 					   echo $date['commit']['commit']['author']['date'];
@@ -187,10 +187,10 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						} else {
 							//$currentVersion = $config->get('version','ADVANCED');
 						}
-                      echo "Version </td><td><a href='https://github.com/elcabong/MediaCenter-Portal/commit/".$currentVersion."' target='_blank'>".$currentVersion.'</a>';
+                      echo "Version </td><td><a href='https://github.com/elcabong/ControlCenter/commit/".$currentVersion."' target='_blank'>".$currentVersion.'</a>';
                       if($commitNo != $currentVersion){
                        // echo "<br><a href='#' onclick='updateVersion();' title='".$commitNo." - Description: ".$commit['0']['commit']['message']."'>***UPDATE Available***</a>";
-                       echo "<br><a href='https://github.com/elcabong/MediaCenter-Portal/' title='".$commitNo." - Description: ".$commit['0']['commit']['message']."'>***UPDATE Available***Download From github here or git pull</a>";
+                       echo "<br><a href='https://github.com/elcabong/ControlCenter/' title='".$commitNo." - Description: ".$commit['0']['commit']['message']."'>***UPDATE Available***Download From github here or git pull</a>";
 					   }
                     ?>
                   </td>
@@ -366,7 +366,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						echo "				<p align='justify' style='width: 450px;'>
 							<b>ALERT:</b>  Ensure atleast 1 user has allow access to settings.
 						<br><br><b>ALERT:</b>  Please make sure your users have access to their Homeroom.  you need to 'Allow' the room, or configure and add a '<a href='#ROOMGROUPS'>Room Group</a>' to each user.  If a user has no rooms allowed, they will have a redirect loop when they try to login.
-						<br><br><h3><a class='orange' href='./login.php' target='_parent'>Continue to Control Center</a></h3>
+						<br><br><h3><a class='orange' href='../login.php' target='_parent'>Continue to Control Center</a></h3>
 						<br>
 				</p>"; }}?>
 			<br><br>	
