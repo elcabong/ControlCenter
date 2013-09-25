@@ -12,14 +12,14 @@
 			if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
 				header("Location: login.php");
 				exit; }
-			require_once 'controls-include.php';	
+require_once './controls-include.php';	
 			$i = 1;
 			while($i<=$TOTALROOMS) {
-				ip;
+				$ip;
 				$ROOMXBMC = "ROOM$i"."XBMC";
 				$ROOMXBMCM = $ROOMXBMC."M";
 				$theperm = "USRPR$i";
-				if(!empty(${$ROOMXBMC}) && ($ADMINP == "1" or ${$theperm} == "1")){
+				if(!empty(${$ROOMXBMC}) && ${$theperm} == "1"){
 					$ip = ${$ROOMXBMC};
 				   $disallowed = array('http://', 'https://');
 				   foreach($disallowed as $d) {

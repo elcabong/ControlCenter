@@ -1,3 +1,4 @@
-config.ini
-firstrun.php
 sess_*
+*.db
+user*.jpg
+!user-default.jpg
