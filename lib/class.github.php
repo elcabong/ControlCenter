@@ -12,7 +12,7 @@ class GitHub{
 	var $SECTION = null;
 	var $LAST    = null;
 
-	function GitHub($user = 'elcabong', $repo = 'MediaCenter-Portal', $branch = null){
+	function GitHub($user = 'elcabong', $repo = 'ControlCenter', $branch = null){
 	  $this->USER = $user;
 	  $this->REPO = $repo;
 	  if(isset($branch)) { $this->BRANCH = $branch; }
