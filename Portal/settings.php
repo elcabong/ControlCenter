@@ -185,7 +185,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 							$curver = explode(" ",$line);
 							$currentVersion = $curver[1];
 						} else {
-							$currentVersion = $config->get('version','ADVANCED');
+							//$currentVersion = $config->get('version','ADVANCED');
 						}
                       echo "Version </td><td><a href='https://github.com/elcabong/MediaCenter-Portal/commit/".$currentVersion."' target='_blank'>".$currentVersion.'</a>';
                       if($commitNo != $currentVersion){
