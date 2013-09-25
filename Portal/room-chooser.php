@@ -70,10 +70,24 @@
 			iframe2.setAttribute('src','<? echo $xbmcip; ?>');
 			iframe2.setAttribute('data-src','<? echo $xbmcip; ?>');
 			iframe2.src = iframe2.src; }
-
+			
+		<? if($xbmcip2 != '0' || $xbmcip2 != '') { ?>
+		document.getElementById('secondroomprogram').style.display = 'block';
 		var iframe3 = document.getElementById('ROOMCONTROL2f');
 		iframe3.setAttribute('data-src','<? echo $xbmcip2; ?>');
-		if(iframe3.hasAttribute('src')) {
+		iframe3.removeAttribute('src');
+		$('#secondroomprogramlink').addClass('unloaded');
+		/*if(iframe3.hasAttribute('src')) {
 			iframe3.setAttribute('src','<? echo $xbmcip2; ?>');
-			iframe3.src = iframe3.data-src; }
+			iframe3.src = iframe3.data-src; }*/
+		<? } else { ?>
+			document.getElementById('secondroomprogram').style.display = 'none';
+			var iframe3 = document.getElementById('ROOMCONTROL2f');
+			iframe3.setAttribute('data-src','');			
+			iframe3.setAttribute('src','');	
+			<? } ?>
+
+			$('#secondroomprogramlink').removeClass('selected');
+			$('#firstroomprogramlink').addClass('selected');
+			$('#wrapper').scrollTo(0,0);
 </script>

@@ -10,6 +10,7 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
     header("Location: index.php");
 	exit; }	
 ?>
+<?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 = $ROOMXBMC."2"; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,8 +54,8 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 			</ul>
 		</nav>
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
-		<li><a href='#ROOMCONTROL1' class='panel selected' title='ROOMCONTROL1'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
-		<li><a href='#ROOMCONTROL2' class='panel unloaded' title='ROOMCONTROL2'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
+		<li><a id='firstroomprogramlink' href='#ROOMCONTROL1' class='panel selected' title='ROOMCONTROL1'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
+		<li id="secondroomprogram" <? if(${$ROOMXBMC2} == '0') { echo "style='display:none;'"; }?>><a id='secondroomprogramlink' href='#ROOMCONTROL2' class='panel unloaded' title='ROOMCONTROL2'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
 			<?php
 			$c = 1;
 			$count = 0;
@@ -149,7 +150,6 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 <div class="clearcover" style="position:absolute;width:100%;top:50px;bottom:0;display:none;background-color:rgba(0,0,0,.30);z-index:150;"></div>
 <div id="wrapper" scrolling="auto">
 	<div id="mask">
-		<?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 = $ROOMXBMC."2"; ?>
 		<div id="ROOMCONTROL1" class="item">
 			<div class="content">
 				<iframe id='ROOMCONTROL1f' class='ROOMCONTROL1' src="<?echo ${$ROOMXBMC};?>" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>

@@ -207,7 +207,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 	<br><br><b>Room Group:</b> Set a configured room group for this user 
 	<br><br><b>Allow:</b>  MUST BE SET if there is no Room Group.  Adds access to rooms, overrides room group access
 	<br><br><b>Deny:</b>  can remove access to rooms, overrides room group access and the allow option
-	<br><br><b>Settings:</b>  This allows or denies the user to this settings area. DO NOT FORGET TO GIVE ACCESS TO ATLEAST 1 USER.
+	<br><br><b>Settings:</b>  This allows or denies the user to this settings area. DO NOT FORGET TO GIVE ACCESS TO AT LEAST 1 USER.
 	<br><br><b>Icon:</b>  After users are created, drag a .jpg image into the designated area to assign each user avatar.<br>
 				</p>			  
                 <?php
