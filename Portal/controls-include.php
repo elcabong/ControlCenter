@@ -1,67 +1,86 @@
-<?php  //top section also in /portal/index/.php
-	$HOMEROOMU	= $Config2->get('HOMEROOM',"USER$usernumber");
-	$ADMINP		= $Config2->get('ADMIN',"USER$usernumber");
-	
-	$theperm;
-	$y = 1;
-	if($ADMINP > "1") {
-		$x = $Config2->get("ADMINGROUP$ADMINP");
-	} else {
-		$x = $Config2->get("USER$usernumber");
-	}
-          if(!empty($x)){
-              while($y<=$TOTALROOMS) {
-		$theperm = "USRPR$y";
-		$ROOMXT = "ROOM$y";
-		if($ADMINP > "1") {
-			${$theperm} = $Config2->get($ROOMXT,"ADMINGROUP$ADMINP");
-		} else {
-			${$theperm} = $Config2->get($ROOMXT,"USER$usernumber");
-		}
-		$y++;
-		}
-	  }
-
-		  $navlinkcount = '0';
-          $navlink;
-          $x = $Config2->get("NAVBAR$usernumber");
-          if(!empty($x)){
-              foreach ($x as $k=>$e){
-                  $k = str_ireplace('_', ' ', $k);
-                  $navlink["$k"]         = "$e";
-				  if($k == 'title') {
-				  $navlinkcount++; }
-		          }
-		      }
-
-		  $gnavlinkcount = '0';
-		  $gnavlink;	
-          $z = str_ireplace(' ', '', $NAVGROUPS);
-	  $y = explode(",",$z);
-              foreach ($y as $n) {
-          $x = $Config2->get("NAVGROUP$n");
-          if(!empty($x)) {
-              foreach ($x as $k=>$e) {
-                  $k = str_ireplace('_', ' ', $k);
-                  $gnavlink["$k"]         = "$e";
-				  if($e == 'title') {
-				  $gnavlinkcount ++;	}
-		          }
-		      }
+<?php
+	try {
+	$sql = "SELECT * FROM users WHERE userid = $usernumber LIMIT 1";
+		foreach ($configdb->query($sql) as $row) {
+			$HOMEROOMU = $row['homeroom'];
+			if(isset($row['roomgroupaccess'])) { $ROOMGROUPA = $row['roomgroupaccess']; }
+			if(isset($row['roomaccess'])) { $roomaccess = $row['roomaccess']; }
+			if(isset($row['roomdeny'])) { $roomdeny = $row['roomdeny']; }
+		}	 
+	} catch(PDOException $e)
+		{
+			echo $e->getMessage();
 		}
 
-		
-		/*
-	if(!empty($gnavlink)){
-		$c = 1;
-		foreach( $gnavlink as $gnav => $gnavlinks) {
-			$gnavlinks = explode(",",$gnavlinks);
-			
-			${$ROOMname} = $gnavlinks[0];
-			${$ROOMXBMC} = $gnavlinks[1];
-			if($gnavlinks[2] != '') { ${$ROOMXBMCM} = $gnavlinks[2]; } else { ${$ROOMXBMCM} = 0; }
-			$c++;
+	function removeFromString($str, $item) {
+		$parts = explode(',', $str);
+		while(($i = array_search($item, $parts)) !== false) {
+			unset($parts[$i]);
 		}
+		return implode(',', $parts);
 	}		
-		*/
+	function addToString($str, $item) {
+		$parts = explode(',', $str);
+		$addtoarray = '';
+		if(!in_array("$item", $parts)) {	
+			$addtoarray .= ",".$item;
+		}
+		$arrayt = implode(',', $parts);
+		$arrayt = $arrayt.$addtoarray;
+		return $arrayt;
+	}
+	$roomgroupaccess = '';
+	if(isset($ROOMGROUPA) && ($ROOMGROUPA !="" || $ROOMGROUPA != "0")) {
+		try {
+		$sql = "SELECT * FROM roomgroups WHERE roomgroupid = $ROOMGROUPA LIMIT 1";
+			foreach ($configdb->query($sql) as $row) {
+				$roomgroupaccess = $row['roomaccess'];
+				$roomgroupdeny = $row['roomdeny'];				
+			}	 
+		} catch(PDOException $e)
+			{
+			echo $e->getMessage();
+			}		
+	}
+	if(isset($roomgroupaccess) && $roomgroupaccess != '' ) {
+		if(isset($roomgroupdeny) && $roomgroupdeny !='') {
+			$roomgroupdenyarray = explode(',', $roomgroupdeny);
+			foreach ($roomgroupdenyarray as $denyroom) {
+				$roomgroupaccess = removeFromString("$roomgroupaccess", "$denyroom");
+			}
+		}
+	}
+	if(isset($roomaccess) && $roomaccess !='') {
+		if($roomgroupaccess != '' ) {
+			$roomallowarray = explode(',', $roomaccess);
+			foreach ($roomallowarray as $allowroom) {
+				$roomgroupaccess = addToString("$roomgroupaccess", "$allowroom");
+			}
+		} else {
+			$roomgroupaccess = $roomaccess;
+		}
+	}
+	if(isset($roomgroupaccess) && $roomgroupaccess != '' ) {
+		if(isset($roomdeny) && $roomdeny !='') {
+			$roomdenyarray = explode(',', $roomdeny);
+			foreach ($roomdenyarray as $denyroom) {
+				$roomgroupaccess = removeFromString("$roomgroupaccess", "$denyroom");
+			}
+		}
+	}
+	$y = 1;
+    while($y<=$TOTALROOMS) {
+		$theperm = "USRPR$y";
+		${$theperm} = "0";
+		$y++;
+	}
+	if(isset($roomgroupaccess) && $roomgroupaccess != '' ) {
+		$roomgroupaccessarray = explode(',', $roomgroupaccess);
+		foreach ($roomgroupaccessarray as $allowroom) {
+			$theperm = "USRPR$allowroom";
+			${$theperm} = "1";
+		}
+		$checkhomeroomaccess = "USRPR$HOMEROOMU";
+		if(${$checkhomeroomaccess} != '1' ) { $HOMEROOMU = $allowroom; }
+	}
 ?>

@@ -6,7 +6,7 @@ $(document).ready(function() {
 		var thechild = $("a.panel[title="+hash+"]");
 		thechild.addClass('selected');
 		thechild.removeClass('unloaded');
-		var iframe = document.getElementById(hash+' 1');
+		var iframe = document.getElementById(hash+'f');
 		if (!iframe.src) {
 			$('iframe.' + hash).attr('src',$('iframe.' + hash).attr('data-src'));
 		}
@@ -52,7 +52,7 @@ $(document).ready(function() {
 		if(href == '#') { return false; }		
 				
 		href = href.replace(/#/g, "" );
-		var iframe = document.getElementById(href + ' 1');
+		var iframe = document.getElementById(href + 'f');
 		if (!iframe.src) {
 			$('iframe.' + href).attr('src',$('iframe.' + href).attr('data-src'));
 		}
@@ -60,7 +60,7 @@ $(document).ready(function() {
 		if ($(this).hasClass('selected')) {
                 	var href = $(this).attr('href');
 		        href = href.replace(/#/g, "" );
-			var iframe = document.getElementById(href + ' 1');
+			var iframe = document.getElementById(href + 'f');
 			iframe.src = iframe.src;
 		        return false; 
                 } else {
@@ -88,7 +88,7 @@ $(document).ready(function() {
 		if(href == '#') { return false; }		
 
 		href = href.replace(/#/g, "" );
-		var iframe = document.getElementById(href + ' 1');
+		var iframe = document.getElementById(href + 'f');
 		if (!iframe.src) {
 			$('iframe.' + href).attr('src',$('iframe.' + href).attr('data-src'));
 		}		
@@ -106,7 +106,7 @@ $(document).ready(function() {
 	}
 	setTimeout(refreshRooms, 1000);
 
-	setTimeout(func, 5000);
+	setTimeout(func, 4500);
 	function func() {
 		document.getElementById('loading').style.display='none';	
 	}
@@ -114,7 +114,7 @@ $(document).ready(function() {
 	$(".clearcover").click(function () {
 		$("ul.children").fadeOut(300); //Close filters drop-downs if user taps ANYWHERE in the page
 		$(".clearcover").fadeOut(300);
-	});	
+	});
 
 $("nav").children() // select your element (supports CSS selectors)
     .hover(function(){ // trigger the mouseover event
@@ -126,7 +126,9 @@ $("nav").children() // select your element (supports CSS selectors)
     });
 
 	function hideclearcover() {
-		$(".clearcover").hide(); 
+		$("ul.children").fadeOut(300);
+		$("#wrapper").click();
+		$(".clearcover").fadeOut(300);
 	}
  
 	$(".clearcover").touchwipe({

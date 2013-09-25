@@ -13,7 +13,6 @@ $(document).ready(function() {
 	// to remove the default scrollbars that will appear
 	var $scroll = $('#slider .scroll').css('overflow', 'hidden'); // handle nav selection
 
-
 	function selectNav() {
 		$(this).parents('ul:first').find('a').removeClass('selected').end().end().addClass('selected');
 	}
@@ -50,17 +49,32 @@ $(document).ready(function() {
 		// easing - can be used with the easing plugin: 
 		// http://gsgd.co.uk/sandbox/jquery/easing/
 		easing: 'swing'
-	}; // apply serialScroll to the slider - we chose this plugin because it 
-	// supports// the indexed next and previous scroll along with hooking 
-	// in to our navigation.
-	$('#slider').serialScroll(scrollOptions); // now apply localScroll to hook any other arbitrary links to trigger 
-	// the effect
-	$.localScroll(scrollOptions); // finally, if the URL has a hash, move the slider in to position, 
-	// setting the duration to 1 because I don't want it to scroll in the
-	// very first page load.  We don't always need this, but it ensures
-	// the positioning is absolutely spot on when the pages loads.
-	scrollOptions.duration = 1;
-	$.localScroll.hash(scrollOptions);
+	};
+
+	$(".chosen-select").chosen({
+		width: "100%"
+		//placeholder_text_multiple: "Allow Overrides"
+		});
+	blinkFont();
+});
+
+function blinkFont()
+{
+  document.getElementById("blink").style.color="#ff9522";
+  setTimeout("setblinkFont()",1000);
+}
+function setblinkFont()
+{
+  document.getElementById("blink").style.color="";
+  setTimeout("blinkFont()",1000);
+}
+
+$("select.multiple").change(function(){
+    var theid = $(this).attr("id");
+    var selMulti = $.map($("select#"+theid+" option:selected"), function (el, i) {
+		return $(el).val();
+    });
+     $("."+theid).val(selMulti.join(","));
 });
 
 function updateSettings(section) {
@@ -88,23 +102,21 @@ function updateSettings(section) {
 		} else if (contents[i].name != '') {
 			params = params + '&' + contents[i].name + '=' + encodeURIComponent(value);
 		}
-	} 
-	ajaxRequest(params, section);
-}
-
-function updateAlternative(section) {
-	var contents = document.getElementById(section).getElementsByTagName('input');
-	var params = 'section=' + section;
-	for (i = 0; i < contents.length; i++) {
-		if (contents[i].name == 'TITLE' && contents[i].value !='') {
-			params = params + '&' + escape(contents[i++].value) + '=' + encodeURIComponent(contents[i].value);
-		}
 	}
-	ajaxRequest(params);
-}
-
-function ajaxRequest(params){
 	//alert(params);
+	var contents = document.getElementById(section).getElementsByTagName('select');
+	for (i = 0; i < contents.length; i++) {
+		if (contents[i].name != '') {
+			var thecontents = '&' + contents[i].name + '=' + escape(contents[i++].value);
+			//alert(thecontents);
+			params += thecontents;
+		}
+	}	
+	//alert(params);
+	var newsection = section.split('-');
+	ajaxRequest(params,newsection[0]);
+}
+function ajaxRequest(params,section){
 	$.ajax({
 		type: 'GET',
 		url: "settings.php?" + params,
@@ -114,13 +126,15 @@ function ajaxRequest(params){
 						pnotify_title: 'Settings Saved',
 						pnotify_opacity: .5
 					});
+				setTimeout(function(){
+				window.location.reload(true);
+				}, 1500);
 			} else {
 			  $.pnotify({
 				  pnotify_title: 'Error!',
 				  pnotify_text: data,
-				  pnotify_type: 'error'
+				  pnotify_type: 'error',
 			  });
-
 			}
 		},
 		error: function() { // failed request; give feedback to user
@@ -128,39 +142,6 @@ function ajaxRequest(params){
 		}
 	});
 }
-
-function addRowToTable(section, size1, size2) {
-	var tbl = document.getElementById('table_' + section);
-	var lastRow = tbl.rows.length; // if there's no header row in the table, then iteration = lastRow + 1
-	var iteration = lastRow;
-	var row = tbl.insertRow(lastRow); // left cell
-	var cellLeft = row.insertCell(0);
-	var el = document.createElement('input');
-	el.type = 'text';
-	el.name = 'TITLE';
-	el.size = size1;
-	cellLeft.appendChild(el); // select cell
-	var cellRightSel = row.insertCell(1);
-	var sel = document.createElement('input');
-	sel.name = 'VALUE';
-	sel.type = 'text';
-	sel.size = size2;
-	cellRightSel.appendChild(sel);
-}
-function removeRowToTable(section) {
-	var tbl = document.getElementById('table_' + section);
-	var lastRow = tbl.rows.length;
-	if (lastRow > 1) tbl.deleteRow(lastRow - 1);
-}
-function saveAll() {
-	var i = 0;
-	while (i < tabs.length) {
-		updateSettings(tabs[i]);
-		alert(tabs[i] + ' saved');
-		i++;
-	}
-}
-
 function updateVersion(){
 	$.ajax({
 		type: 'GET',
@@ -186,4 +167,4 @@ function updateVersion(){
 			alert("Error saving settings.");
 		}
 	});
-}
+}	

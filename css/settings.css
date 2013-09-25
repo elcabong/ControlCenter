@@ -14,17 +14,23 @@
 }
 
 .scroll {
-    height: 80%;
+    height: 90%;
     width: 1000px;
     overflow: hidden;
 	overflow-y:auto !important;
     position: relative;
     clear: both;
+	background-color:rgb(50,50,50);
+	padding:15px 0;
 }
 
 .scrollContainer div.panel {
     height: 80%;
     width: 1000px;
+}
+
+#navigation {
+	padding:0 !important;
 }
 
 ul.navigation {
@@ -56,10 +62,59 @@ ul.navigation a.selected {
 ul.navigation a:focus {
     outline: none;
 }
+.headers > tbody > tr > td { width:99px; }
+.headers > tbody > tr > td:last-child { width:70px; }
 .hide {
     display: none;
 }
+input.ui-button { padding: .1em 1em }
+input.ui-button:hover { color:rgb(0, 153, 255); }
 input.readonly {
 	background-color:rgb(200,200,200);
 	border-color:rgb(200,200,200);
 }
+td > span { display:none;position:absolute;background-color:black;padding:5px;z-index:1000; }
+td:hover > span { display:block; }
+.container
+{
+    height: 150px;
+    width: 100px;
+	max-width:80%;
+    margin: 5px -100px 5px 100px;
+	position:relative;
+	float:left;
+	clear:both;
+}
+.container > span { background-color:rgba(0, 0, 0, 0.65);width:100%;z-index:2;position:absolute;overflow:hidden; }
+.container > form > input { display:none; }
+h2.container { height:auto; }
+.image
+{
+    position:absolute;
+    left:0;
+    top:0;
+	width:100%;
+	height:100%;
+}
+.text
+{
+    z-index:100;
+    position:absolute;    
+    color:#eee;
+    font-size:24px;
+    font-weight:bold;
+    width:100%;
+	left:0px;
+	padding:10px 0;
+	bottom:0;
+}
+div:hover > .text { color:rgb(0, 153, 255); }
+#NAVIGATION > table > tbody > tr > td > form { float:left; }
+#NAVIGATION > table > tbody > tr > td > img { float:right; }
+.dz-success { position:absolute;background-color:rgba(0,0,0,.4);margin:0 25%;padding:0 5 5; }
+.dz-success-mark, .dz-error-mark, .dz-filename, .dz-size { display:none; }
+.title { text-align:right; }
+.orange { color:#FF9522 !important;text-decoration:none; }
+.blue { color:rgb(0, 153, 255); }
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] { padding:0 !important;min-width:95px;margin:2.5px !important; }
+.button.right { text-align:right; }
