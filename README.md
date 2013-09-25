@@ -14,8 +14,7 @@ sudo mkdir /var/www/MediaCenter
 
   
 1. Download:   git clone git://github.com/elcabong/MediaCenter-Portal.git /var/www/MediaCenter/
-2. Permissions: sudo chmod -R 777 /var/www/MediaCenter/config
-sudo chown -R www-data:www-data /var/www/MediaCenter/sessions
+2. Permissions: sudo chown -R www-data:www-data /var/www/MediaCenter/sessions
 3. browse to your http://webserver/MediaCenter/
 
 
