@@ -174,7 +174,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                   <td>
                     <?php
                       $commit = $github->getCommits();
-					  if(isset($branchname)) {
+					  if(isset($branchname) && $branchname != "master") {
 					  $commitNo = $commit['sha'];
 					  } else {
                       $commitNo = $commit['0']['sha'];
