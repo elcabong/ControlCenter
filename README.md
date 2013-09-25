@@ -10,10 +10,11 @@ Required:
 sudo apt-get install git  
 sudo apt-get install apache2
 sudo apt-get install php5 libapache2-mod-php5 php5-curl
+
 sudo mkdir /var/www/ControlCenter
 
   
-1. Download:   git clone git://github.com/elcabong/ControlCenter-Portal.git /var/www/ControlCenter/
+1. Download:   git clone git://github.com/elcabong/ControlCenter.git /var/www/ControlCenter/
 
 2. Permissions: sudo chown -R www-data:www-data /var/www/ControlCenter/sessions
 sudo chown -R www-data:www-data /var/www/ControlCenter/media
