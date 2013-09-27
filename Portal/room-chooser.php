@@ -87,7 +87,7 @@
 			iframe3.setAttribute('src','');	
 			<? } ?>
 
-			$('#secondroomprogramlink').removeClass('selected');
+			$('a.panel').removeClass('selected');
 			$('#firstroomprogramlink').addClass('selected');
 			$('#wrapper').scrollTo(0,0);
 </script>

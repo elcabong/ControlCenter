@@ -142,6 +142,43 @@ function ajaxRequest(params,section){
 		}
 	});
 }
+function deleteRecord(tablename,rowid,navgroup){
+navgroup = (navgroup === undefined) ? 0 : navgroup;
+if(navgroup == 0) {
+var r=confirm("Are you sure you want to remove this entry?");
+} else {
+var r=confirm("Are you sure you want to remove this Navigation Group?  This will remove all the entries in this group as well as the group.");
+}
+if (r==true)
+  {
+	$.ajax({
+		type: 'GET',
+		url: "settings.php?remove=yes&table=" + tablename + "&rowid=" + rowid + "&navgroup=" +navgroup,
+		success: function(data) { // successful request; do something with the data
+			if(data == 1){
+			  $.pnotify({
+						pnotify_title: 'Entry Deleted',
+						pnotify_opacity: .5
+					});
+				setTimeout(function(){
+				window.location.reload(true);
+				}, 1500);
+			} else {
+			  $.pnotify({
+				  pnotify_title: 'Error!',
+				  pnotify_text: data,
+				  pnotify_type: 'error',
+			  });
+			}
+		},
+		error: function() { // failed request; give feedback to user
+			alert("Error saving settings.");
+		}
+	});
+  } else {
+
+  }
+}
 function updateVersion(){
 	$.ajax({
 		type: 'GET',
