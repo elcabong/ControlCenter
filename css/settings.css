@@ -69,6 +69,8 @@ ul.navigation a:focus {
 }
 input.ui-button { padding: .1em 1em }
 input.ui-button:hover { color:rgb(0, 153, 255); }
+input.ui-button.remove { color:rgb(172, 80, 77); }
+input.ui-button.remove:hover { color:rgb(152, 60, 57); }
 input.readonly {
 	background-color:rgb(200,200,200);
 	border-color:rgb(200,200,200);
@@ -118,3 +120,7 @@ div:hover > .text { color:rgb(0, 153, 255); }
 .blue { color:rgb(0, 153, 255); }
 .chosen-container-multi .chosen-choices li.search-field input[type="text"] { padding:0 !important;min-width:95px;margin:2.5px !important; }
 .button.right { text-align:right; }
+hr { width:60%;color:#eee;border-color:#eee;background-color:#eee;margin:0 auto; }
+.tabletitle { border-top: 1.5px solid #eee;padding: 15px 80px; }
+input.req { border: 3px solid rgb(172, 80, 77) !important; }
+input.req:focus { background-color:rgb(255, 204, 207); }

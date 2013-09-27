@@ -41,7 +41,7 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 		});*/	
 	
 		$('a.container').click(function(){
-			$(this).children("div.locked").animate({height:'100%'},550);
+			$(this).children("div.locked").animate({height:'100%'},350);
 		});
 		$('a.container').hover(function(){	}, function(){
 			$(this).children("div.locked").animate({height:'40px'},450);
