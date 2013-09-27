@@ -3,8 +3,28 @@ if (file_exists('../sessions/firstrun.php') || !file_exists('../sessions/config.
 $configdb = new PDO('sqlite:../sessions/config.db');
 
 if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings') && !isset($_GET['setup'])){
-  //if there is no section parameter, we will not do anything.
-  if(!isset($_GET['section'])){
+	//if there is no section parameter, we will not do anything.
+  if(isset($_GET['remove']) && $_GET['remove'] == 'yes' && isset($_GET['table']) && $_GET['table'] != '' && isset($_GET['rowid']) && $_GET['rowid'] != ''){
+	$theidtodelete = $_GET['rowid'];
+	if($_GET['table'] == 'users') {
+		$configdb->exec("DELETE FROM users WHERE userid = $theidtodelete");
+	} elseif($_GET['table'] == 'rooms') {
+		$configdb->exec("DELETE FROM rooms WHERE roomid = $theidtodelete");
+	} elseif($_GET['table'] == 'roomgroups') {
+		$configdb->exec("DELETE FROM roomgroups WHERE roomgroupid = $theidtodelete");
+	} elseif($_GET['table'] == 'navigation') {
+		if(isset($_GET['navgroup']) && $_GET['navgroup'] != '0') {
+			$thegrouptodelete = $_GET['navgroup'];
+			$configdb->exec("DELETE FROM navigation WHERE navgroup = $thegrouptodelete");
+		} else {
+			$configdb->exec("DELETE FROM navigation WHERE navid = $theidtodelete");
+		}
+	}
+	echo true;
+	return true;
+
+	//if there is no section parameter, we will not do anything.
+  } elseif(!isset($_GET['section'])){
     echo false; return false;
   } else {
     $section_name = $_GET['section'];
@@ -105,6 +125,77 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 		if (window.navigator.standalone) {
 			var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
 		}
+	</script>		
+	<script type="text/javascript">
+		function Settingswakemachine(mac,machinename) {
+
+		var count=totalcount=20;
+
+		var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
+
+		function timer()
+		{
+		  count=count-1;
+		  if (count <= 0)
+		  {
+			 clearInterval(counter);
+			 //counter ended, do something here
+			 return;
+		  }
+			$.pnotify({
+				pnotify_title: 'WOL Sent to '+decodeURIComponent(machinename)+' This page will refresh in '+count+' seconds.',
+				pnotify_opacity: .75,
+				pnotify_delay: 995,
+				pnotify_animation:"none"
+			});
+		}
+			$.ajax({
+				   type: "POST",
+				   url: "wol-check.php?m="+mac+"",
+				   data: 0, // data to send to above script page if any
+				   cache: false,
+				   success: function(response)
+				{
+					// need to retry ping until successful or hit a set limit, then display none
+					var timeout = totalcount+"000";
+					setTimeout(func1, timeout);
+					function func1() {
+					window.location.href += "#ROOMS";
+						window.location.reload(true);
+						//document.getElementById("Settingsf").contentWindow.location.hash = "#ROOMS";
+						//document.getElementById('loading').style.display='none';
+					}
+			   },
+				error: function(response) {
+				$.pnotify({
+				  pnotify_title: 'Error!',
+				  pnotify_text: "Could Not Send WOL Packet, or there was an error communicating with destination machine",
+				  pnotify_type: 'error'
+			  });
+				}
+			});				
+		}
+		
+$(document).ready(function() {
+
+  $(".inputcheck.nospaces").keyup(function(){
+        var t = $(this);
+		if( !/[^a-zA-Z0-9]/.test( t.val() ) && t.val().length > 2) {
+		t.css({'background-color' : 'rgb(224, 255, 224)'});
+		//if($(this).hasClass('req')) {
+		//$(this).removeClass('req');
+		//}		
+		} else {
+		t.css({'background-color' : 'rgb(255, 204, 207)'});
+		//if(!$(this).hasClass('req')) {
+		//$(this).addClass('req');
+		//}
+		}
+  });
+
+  
+  
+});
 	</script>
 </head>
 <body style="overflow: hidden;">
@@ -134,12 +225,13 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
                       Control Center is a Web-based Service Organiser, inspired by MediaFrontPage. You can think of this as the universal remote that ties your individual home media and automation softare/hardware together.
 						<br><br>
 					I have and will continue to put a bit of time and effort into this project.  If you find it useful, please consider buying me a tasty snack or refreshing beverage for brain power by donating below.
-					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+					</p>
+					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="text-align:center;">
 					<input type="hidden" name="cmd" value="_s-xclick">
 					<input type="hidden" name="hosted_button_id" value="ZM5MSNYFM657A">
 					<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
 					<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-					</form></p>
+					</form>
                  </td>                    
                 </tr>
                 <tr align="left">
@@ -203,7 +295,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 				    <b>Username:</b>  The username/login name for each user
 	<br><br><b>Password:</b>  Optional.  if not set auth is disabled for this user
 	<br><br><b>Navigation:</b>  Adds Navigation group(s) for the user which are available in the upper left menu bar.  Add the groups in the order you want them to be displayed in.
-	<br><br><b>Homeroom:</b>  The default room that this user will will log into unless they logout in another room (set with cookie, so device specific)
+	<br><br><b>Homeroom:</b>  The default room that this user will will log into unless they logout while controlling another room (set with cookie, so device specific)
 	<br><br><b>Room Group:</b> Set a configured room group for this user 
 	<br><br><b>Allow:</b>  MUST BE SET if there is no Room Group.  Adds access to rooms, overrides room group access
 	<br><br><b>Deny:</b>  can remove access to rooms, overrides room group access and the allow option
@@ -240,12 +332,12 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 							foreach ($configdb->query($sql4) as $row4) {
 							$allnavgroups .= "<option value=".$row4['navgroup'].">".$row4['navname']."</option>"; }
 						echo "<table id='users-new'>";
-						echo "<tr><td class='title'>Username</td><td><input size='10' name='username' value=''></td>
+						echo "<tr><td class='title'>Username</td><td><input class='inputcheck nospaces' size='10' name='username' value=''></td>
 									<td class='title'>Password</td><td><input size='10' type='password' name='password' value=''></td>
 									<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"users-new\");' /></td><tr>
 								<tr><td class='title'>Homeroom</td><td><select name='homeroom'>".$roomlist."</select></td>
 									<td class='title'>Navigation</td><td colspan=2><select class='chosen-select multiple' id='navgroupaccessnew' data-placeholder='Add Navigation' multiple='multiple'>".$allnavgroups."</select><input size='10' class='navgroupaccessnew' type='hidden' name='navgroupaccess' value=''></td></tr>
-								<tr><td class='title'>Room Group</td><td><select name='roomgroupaccess'>".$roomgrouplist."</td>
+								<tr><td class='title'>Room Group</td><td><select name='roomgroupaccess'><option selected='selected' value=''></option>".$roomgrouplist."</td>
 									<td class='title'>Allow</td><td colspan=2><select class='chosen-select multiple' id='roomaccessnew' data-placeholder='Allow Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomaccessnew' type='hidden' name='roomaccess' value=''></td></tr>
 									<tr><td class='title'>Settings</td><td><select name='settingsaccess'><option selected='selected' value='0'>Deny</option><option value='1'>Allow</option></select></td>
 									<td class='title'>Deny</td><td colspan=2><select class='chosen-select multiple' id='roomdenynew' data-placeholder='Deny Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomdenynew' type='hidden' name='roomdeny' value=''></td></tr>";
@@ -278,7 +370,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 								echo $e->getMessage();
 								}
 						} else {
-							$theroomgroup = "";
+							$theroomgroup = "<option selected='selected' value=''></option>";
 						}						
 						$theroomaccess = '';
 						$theallowrooms ='';
@@ -344,9 +436,9 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						}
 						echo "<div class='container'><form action='upload.php?user=$userid' class='dropzone' id='user$userid' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;'><input type='file' name='user$userid' /></form><span class='text'>" . $row['username'] . "</span><img src='$theuserpic' class='image' /></div>";
 						echo "<table id='users-$userid'>";
-						echo "<tr><td class='title'>Username</td><td><input size='10' name='username' value='" . $row['username'] . "'></td>
-										<td class='title'>Password</td><td><input size='10' type='password' name='password' value=" . $row['password'] . "></td>
-										<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /></td></tr>
+						echo "<tr><td class='title'>Username</td><td><input class='inputcheck nospaces' size='10' name='username' value='" . $row['username'] . "'></td>
+										<td class='title'>Password</td><td><input size='10' type='password' name='password' value='" . $row['password'] . "'></td>
+										<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"users\"," . $row['userid'] . ");' /></td></tr>
 								  <tr><td class='title'>Homeroom</td><td><select name='homeroom'>".$thehomeroom.$roomlist."</select></td>
 										<td class='title'>Navigation</td><td colspan=2><select class='chosen-select multiple' id='navgroupaccess$userid' data-placeholder='Add Navigation' multiple='multiple'>".$setnavgroups.$thenavgroups."</select><input size='10' class='navgroupaccess$userid' type='hidden' name='navgroupaccess' value=" . $row['navgroupaccess'] . "></td></tr>
 									<tr><td class='title'>Room Group</td><td><select name='roomgroupaccess'>".$theroomgroup.$roomgrouplist."></td>
@@ -376,7 +468,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 			    <p>These Rooms are different xbmc machines or other network items you can control from a web interface</p>
 				<p align="justify" style="width: 500px;">
 				    <b>Title:</b>  The title of the room or device
-	<br><br><b>MAC:</b>  This optional input is for the MAC Address and is used to WOL the device if available.
+	<br><br><b>MAC:</b>  This optional input is for the MAC Address and is used to WOL the device if available.  There will be a red/green icon for each room: green if the device is on, red if the device is off, click the red icon to wake the device.
 	<br><br><b>IP1:</b>  A control web interface such as the webinterface plugins for xbmc ie  http://ip:port  or   http://username:pass@ip:port 
 	<br><br><b>IP2:</b>  An optional second control web interface such as the webinterface plugins for xbmc ie  http://ip:port  or   http://username:pass@ip:port 
 				<br>
@@ -393,8 +485,38 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						{
 						$roomid = $row['roomid'];
 						echo "<table id='rooms-$roomid'>";
-						echo "<tr><td class='title'>Title</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td><td class='title'>MAC</td><td><input size='20' name='mac' value=" . $row['mac'] . "></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"rooms-$roomid\");' /></td></tr>";
-						echo "<tr><td class='title'>IP1</td><td colspan=4><input size='60' name='ip1' value='" . $row['ip1'] . "'></td></tr><tr><td class='title'>IP2</td><td colspan=4><input size='60' name='ip2' value=" . $row['ip2'] . "></td></tr>";
+						echo "<tr><td class='title'>Title</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td>
+										<td class='title'>MAC</td><td><input size='20' name='mac' value=" . $row['mac'] . "></td>";
+										
+						$ip = $row['ip1'];
+					   $disallowed = array('http://', 'https://');
+					   foreach($disallowed as $d) {
+							if(strpos($ip, $d) === 0) {
+							   $ip = strtok(str_replace($d, '', $ip),':');
+							}
+						}
+						if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
+							$pingresult = exec("ping -n 1 -w 1 $ip", $output, $status);
+							// echo 'This is a server using Windows!';
+						} else {
+							$pingresult = exec("/bin/ping -c1 -w1 $ip", $outcome, $status);
+							// echo 'This is a server not using Windows!';
+						}
+						if ($status == "0") {
+							$status = "alive";
+						} else { 
+							$status = "dead"; 
+						}
+						$xbmcmachine = $status;					
+						echo "<td>";
+						if($xbmcmachine == 'alive') { echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>"; } else { echo "<a href='#' class='pingicon' onclick=\"Settingswakemachine('" . $row['mac'] . "','" . rawurlencode($row['roomname']) . "');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";}
+						echo "</td>";
+										
+										
+										
+						echo "<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"rooms-$roomid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"rooms\"," . $row['roomid'] . ");' /></td></tr>";
+						echo "<tr><td class='title'>IP1</td><td colspan=5><input size='80' name='ip1' value='" . $row['ip1'] . "'></td></tr>
+								 <tr><td class='title'>IP2</td><td colspan=5><input size='80' name='ip2' value=" . $row['ip2'] . "></td></tr>";
 						echo "</table><br><br>";
 						}
 				} catch(PDOException $e)
@@ -457,7 +579,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 							}						
 							$roomid = $row['roomgroupid'];
 							echo "<table id='roomgroups-$roomid'>";						
-							echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='roomgroupname' value=" . $row['roomgroupname'] . "></td><td class='button right'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"roomgroups-$roomid\");' /></td></tr>
+							echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='roomgroupname' value='" . $row['roomgroupname'] . "'></td><td class='button right'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"roomgroups-$roomid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"roomgroups\"," . $row['roomgroupid'] . ");' /></td></tr>
 										<tr><td class='title'>Allow</td><td colspan=3><select class='chosen-select multiple' id='roomgroupaccess$roomid' data-placeholder='Allow Rooms' multiple='multiple'>".$theroomaccess.$theallowrooms."</select><input size='10' class='roomgroupaccess$roomid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td>
 										</tr><tr><td class='title'>Deny</td><td colspan=3><select class='chosen-select multiple' id='roomgroupdeny$roomid' data-placeholder='Deny Rooms' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomgroupdeny$roomid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td>
 										</tr>";
@@ -474,7 +596,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 			    <p>These links will be available in the upper left menu</p>
 				<p align="justify" style="width: 500px;">
 					<b>Nav Group:</b>  The Display name for the navigation group.  Will only be shown if a user has access to multiple groups.  The links must be grouped under a navigation group.
-	<br><br><b>Title:</b>  The title of the link unless an icon is uploaded (see below).
+	<br><br><b>Title:</b>  The title of the link unless an icon is uploaded (see below).  Please no spaces in the title.
 	<br><br><b>Full IP:</b>  The complete address to the link.  Can include username and password which is masked in the browser unless the source is viewed when those pages have already been accessed.  ie:  http://name:pass@ip:port
 	<br><br><b>M IP:</b>  Adds this link to the mobile specific site. set to 1 if the ip source scales on its own, or specify the full address here of the mobile site.  ie  http://m.ip:port  or   http://ip:port/m/ 
 	<br><br><b>Icon:</b>  Drag a .png image to the designated area to replace the Title in the top navigation bar   <br>
@@ -503,12 +625,13 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 						{
 						$navid = $row['navid'];
 						$navgroup = $row['navgroup'];
-							echo "<br><hr style='width:60%;color:#eee;border-color:#eee;background-color:#eee;'><br>";							
-							echo "<br><table id='navigation-$navid'>";
-							echo "<tr><td class='title'>Nav Group</td><td><input size='40' name='navname' value=" . $row['navname'] . "></td><td><input size='1' type='hidden' name='navgroup' value=" . $row['navgroup'] . "><input size='1' type='hidden' name='navgrouptitle' value=" . $row['navgrouptitle'] . "></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /></td></tr>";
+							echo "<br><br><table class='tabletitle' id='navigation-$navid'>";
+							echo "<tr><td class='title'>Nav Group</td><td><input size='40' name='navname' value='" . $row['navname'] . "'></td>
+											<td><input size='1' type='hidden' name='navgroup' value='" . $row['navgroup'] . "'><input size='1' type='hidden' name='navgrouptitle' value='" . $row['navgrouptitle'] . "'><input size='1' type='hidden' name='navip' value=''><input size='1' type='hidden' name='mobile' value=''></td>
+											<td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"navigation\"," . $navid . "," . $navgroup . " );' /></td></tr>";
 							echo "</table><br><br>";
 								echo "<table id='navigation-new$navid'>";
-								echo "<tr><td></td><td></td><td class='title'>Title</td><td><input size='40' name='navname' value=''></td><td><input size='1' type='hidden' name='navgroup' value=" . $row['navgroup'] . "></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"navigation-new$navid\");' /></td></tr>";
+								echo "<tr><td></td><td></td><td class='title'>Title</td><td><input class='inputcheck nospaces' size='40' name='navname' value=''></td><td><input size='1' type='hidden' name='navgroup' value='" . $row['navgroup'] . "'></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"navigation-new$navid\");' /></td></tr>";
 								echo "<tr><td><img src='../media/Programs/ProgramDefault.png' height='50'><img src='../media/Programs/ProgramDefault.png' height='50'></td><td><img src='../media/Programs/ProgramDefault.png' height='50'></td><td class='title'>Full IP</td><td colspan=4><input size='60' name='navip' value=''></td></td><td><input size='1' type='hidden' name='navgrouptitle' value=''></td></tr>";
 								echo "<tr><td></td><td></td></td><td class='title'>M IP</td><td colspan=4><input size='60' name='mobile' value=''></td></tr>";
 								echo "</table><br><br>";
@@ -524,9 +647,9 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 									$theprogrampic = "../media/Programs/ProgramDefault.png";
 									}
 								echo "<br><table id='navigation-$navid'>";
-								echo "<tr><td></td><td></td><td class='title'>Title</td><td><input size='40' name='navname' value=" . $row['navname'] . "></td><td><input size='1' type='hidden' name='navgroup' value=" . $row['navgroup'] . "></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /></td></tr>";
-								echo "<tr><td><form action=\"upload.php?program=" . $row['navname'] . "\" class='dropzone' id='program" . $row['navname'] . "' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;width:100px;'></form></td><td><img src=" . $theprogrampic ." style='position:relative;height:50px;'></td><td class='title'>Full IP</td><td colspan=4><input size='60' name='navip' value=" . $row['navip'] . "></td></td><td><input size='1' type='hidden' name='navgrouptitle' value=" . $row['navgrouptitle'] . "></td></tr>";
-								echo "<tr><td></td><td></td></td><td class='title'>M IP</td><td colspan=4><input size='60' name='mobile' value=" . $row['mobile'] . "></td></tr>";
+								echo "<tr><td></td><td></td><td class='title'>Title</td><td><input class='inputcheck nospaces' size='40' name='navname' value='" . $row['navname'] . "'></td><td><input size='1' type='hidden' name='navgroup' value='" . $row['navgroup'] . "'></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"navigation\"," . $row['navid'] . ");' /></td></tr>";
+								echo "<tr><td><form action=\"upload.php?program=" . $row['navname'] . "\" class='dropzone' id='program" . $row['navname'] . "' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;width:100px;'></form></td><td><img src=" . $theprogrampic ." style='position:relative;height:50px;'></td><td class='title'>Full IP</td><td colspan=4><input size='75' name='navip' value=" . $row['navip'] . "></td></td><td><input size='1' type='hidden' name='navgrouptitle' value='" . $row['navgrouptitle'] . "'></td></tr>";
+								echo "<tr><td></td><td></td></td><td class='title'>M IP</td><td colspan=4><input size='75' name='mobile' value=" . $row['mobile'] . "></td></tr>";
 								echo "</table><br><br>";
 								}
 						}		
