@@ -160,7 +160,7 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 		</div>
 		<?php
 				try {
-					$sql = "SELECT * FROM navigation ORDER BY navgroup ASC";
+					$sql = "SELECT * FROM navigation WHERE persistent == '1' ORDER BY navgroup ASC";
 					$tempc = 0;
 					foreach ($configdb->query($sql) as $row)
 						{
