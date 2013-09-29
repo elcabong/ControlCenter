@@ -92,7 +92,7 @@ if (file_exists('./sessions/config.db')){
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS roomgroups (roomgroupid integer PRIMARY KEY AUTOINCREMENT, roomgroupname text UNIQUE, roomaccess string, roomdeny string)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS navigation (navid integer PRIMARY KEY AUTOINCREMENT, navname text UNIQUE NULL, navip text, navgroup integer NOT NULL, navgrouptitle integer, mobile text)";
+		  $query = "CREATE TABLE IF NOT EXISTS navigation (navid integer PRIMARY KEY AUTOINCREMENT, navname text UNIQUE NULL, navip text, navgroup integer NOT NULL, navgrouptitle integer, mobile text, persistent integer DEFAULT '1' NOT NULL)";
 		  $execquery = $configdb->exec($query);
 		  echo "<tr><td>DB tables created</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 	} catch(PDOException $e)
