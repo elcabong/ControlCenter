@@ -79,6 +79,8 @@ $(document).ready(function() {
 			myLi.removeClass('secondary');		
 			myLi.removeClass('hidden');
 		}
+
+		myLi.parent().prepend(myLi);		
 		
 		var iframeclear = document.getElementById('nonpersistentf');
 		iframeclear.src = '';
@@ -114,11 +116,13 @@ $(document).ready(function() {
 			myLi.removeClass('hidden');
 		}
 		
+		myLi.parent().prepend(myLi);
+		
 		iframe.attr('src',href);
 	
 		return false;
 	});
-
+	
 	$('a.panel2nd').click(function () {
 
         var href = $(this).attr('href');
