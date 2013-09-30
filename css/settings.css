@@ -69,7 +69,7 @@ ul.navigation a:focus {
 }
 input.ui-button { padding: .1em 1em }
 input.ui-button:hover { color:rgb(0, 153, 255); }
-input.ui-button.remove { color:rgb(172, 80, 77); }
+input.ui-button.remove { color:rgb(172, 80, 77);margin-left:5px; }
 input.ui-button.remove:hover { color:rgb(152, 60, 57); }
 input.readonly {
 	background-color:rgb(200,200,200);

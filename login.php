@@ -2,7 +2,7 @@
 if (file_exists('./sessions/firstrun.php') || !file_exists('./sessions/config.db')) { header('Location: servercheck.php');exit; }
 
 require('./Portal/config.php');
-	if($_SESSION['usernumber'] != "choose") {
+	if(isset($_SESSION['usernumber']) && $_SESSION['usernumber'] != "choose") {
     header("Location: ./Portal/index.php");
     exit;} ?>
 <!DOCTYPE html>	
@@ -67,17 +67,18 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 				<form action='./Portal/login.php' method='post' class='userpick'>
 				<table id=<?echo $u;?>><br><br>
 				  <tr>
-					<td align=center colspan=2 height=25><h2>Authentication</h2></td>
+					<td align=center colspan=2 height=25><h2>Account Locked</h2></td>
 					<tr>
+					<td>&nbsp;
 					<input type='hidden' name='user' value=<? echo $row['username'];?>>
 					<input type='hidden' name='usernumber' value=<? echo "$u";?>>
-					<td align=center>Password:</td>
+					</td>
 					<tr>
-					<td align=center><input type='password' name='password' size=15 /></td>
+					<td align=center><input type='password' name='password' size=13 placeholder='Password' style='text-align:center;' /></td>
 					<tr>
 					<td align=center colspan=2>&nbsp;</td>
 					<tr>
-				<td align=center colspan=2><input type='submit' value='Log in' /></td>
+				<td align=center colspan=2><input type='submit' value='Log In' /></td>
 				</table>
 				</form>
 			<? } else {
