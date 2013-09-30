@@ -77,9 +77,6 @@
 		iframe3.setAttribute('data-src','<? echo $xbmcip2; ?>');
 		iframe3.removeAttribute('src');
 		$('#secondroomprogramlink').addClass('unloaded');
-		/*if(iframe3.hasAttribute('src')) {
-			iframe3.setAttribute('src','<? echo $xbmcip2; ?>');
-			iframe3.src = iframe3.data-src; }*/
 		<? } else { ?>
 			document.getElementById('secondroomprogram').style.display = 'none';
 			var iframe3 = document.getElementById('ROOMCONTROL2f');
@@ -87,6 +84,10 @@
 			iframe3.setAttribute('src','');	
 			<? } ?>
 
+			var iframeclear = document.getElementById('nonpersistentf');
+			iframeclear.src = '';
+			$('a.panel.nonpersistent').addClass('unloaded');			
+			
 			$('a.panel').removeClass('selected');
 			$('#firstroomprogramlink').addClass('selected');
 			$('#wrapper').scrollTo(0,0);

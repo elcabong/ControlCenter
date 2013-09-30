@@ -72,7 +72,7 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings') && !isset($_GET[
 			if(strstr($section_unique,'new')) {
 				$configdb->exec("INSERT INTO navigation ($vararray) VALUES ($valuearray)");
 			} else {
-				$configdb->exec("UPDATE navigation SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4] WHERE navid=$section_unique");
+				$configdb->exec("UPDATE navigation SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4],$vararraye[5]=$valuearraye[5] WHERE navid=$section_unique");
 			}
 		}
 	} catch(PDOException $e)
@@ -458,7 +458,7 @@ $(document).ready(function() {
 						echo "				<p align='justify' style='width: 450px;'>
 							<b>ALERT:</b>  Ensure atleast 1 user has allow access to settings.
 						<br><br><b>ALERT:</b>  Please make sure your users have access to their Homeroom.  you need to 'Allow' the room, or configure and add a '<a href='#ROOMGROUPS'>Room Group</a>' to each user.  If a user has no rooms allowed, they will have a redirect loop when they try to login.
-						<br><br><h3><a class='orange' href='../login.php' target='_parent'>Continue to Control Center</a></h3>
+						<br><br><h3><a class='orange' href='../login.php?user=choose' target='_parent'>Continue to Control Center</a></h3>
 						<br>
 				</p>"; }}?>
 			<br><br>	
@@ -599,6 +599,7 @@ $(document).ready(function() {
 	<br><br><b>Title:</b>  The title of the link unless an icon is uploaded (see below).  Please no spaces in the title.
 	<br><br><b>Full IP:</b>  The complete address to the link.  Can include username and password which is masked in the browser unless the source is viewed when those pages have already been accessed.  ie:  http://name:pass@ip:port
 	<br><br><b>M IP:</b>  Adds this link to the mobile specific site. set to 1 if the ip source scales on its own, or specify the full address here of the mobile site.  ie  http://m.ip:port  or   http://ip:port/m/ 
+	<br><br><b>Persistent:</b>  Persistent links will keep their frame state once loaded until individually reset (clicking on the link while the page is visible) or until the whole control center is refreshed. Non-Persistent links will close the frame connection to the site when a different link is chosen (this is for security camera feeds or other highly active content you do not want running unless your viewing it)
 	<br><br><b>Icon:</b>  Drag a .png image to the designated area to replace the Title in the top navigation bar   <br>
 				</p>
 				<?php
@@ -631,9 +632,9 @@ $(document).ready(function() {
 											<td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"navigation\"," . $navid . "," . $navgroup . " );' /></td></tr>";
 							echo "</table><br><br>";
 								echo "<table id='navigation-new$navid'>";
-								echo "<tr><td></td><td></td><td class='title'>Title</td><td><input class='inputcheck nospaces' size='40' name='navname' value=''></td><td><input size='1' type='hidden' name='navgroup' value='" . $row['navgroup'] . "'></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"navigation-new$navid\");' /></td></tr>";
-								echo "<tr><td><img src='../media/Programs/ProgramDefault.png' height='50'><img src='../media/Programs/ProgramDefault.png' height='50'></td><td><img src='../media/Programs/ProgramDefault.png' height='50'></td><td class='title'>Full IP</td><td colspan=4><input size='60' name='navip' value=''></td></td><td><input size='1' type='hidden' name='navgrouptitle' value=''></td></tr>";
-								echo "<tr><td></td><td></td></td><td class='title'>M IP</td><td colspan=4><input size='60' name='mobile' value=''></td></tr>";
+								echo "<tr><td></td><td></td><td class='title'>Title</td><td><input class='inputcheck nospaces' size='20' name='navname' value=''></td><td class='title'>Persistent</td><td><select name='persistent'><option selected='selected' value='1'>Yes</option><option value='0'>No</option></select></td><td><input size='1' type='hidden' name='navgroup' value='" . $row['navgroup'] . "'></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"navigation-new$navid\");' /></td></tr>";
+								echo "<tr><td><img src='../media/Programs/ProgramDefault.png' height='50'><img src='../media/Programs/ProgramDefault.png' height='50'></td><td><img src='../media/Programs/ProgramDefault.png' height='50'></td><td class='title'>Full IP</td><td colspan=6><input size='60' name='navip' value=''></td></td><td><input size='1' type='hidden' name='navgrouptitle' value=''></td></tr>";
+								echo "<tr><td></td><td></td></td><td class='title'>M IP</td><td colspan=6><input size='60' name='mobile' value=''></td></tr>";
 								echo "</table><br><br>";
 							$sql = "SELECT * FROM navigation WHERE navgroup = '$navgroup' AND navgrouptitle != '1'";
 							$navid = 0;
@@ -646,10 +647,16 @@ $(document).ready(function() {
 									} else {
 									$theprogrampic = "../media/Programs/ProgramDefault.png";
 									}
+									$persistentnavigation = '';
+									if($row['persistent'] == "1") {
+									$persistentnavigation .= "<option selected='selected' value='1'>Yes</option><option value='0'>No</option>"; 
+									} else {
+									$persistentnavigation .= "<option selected='selected' value='0'>No</option><option value='1'>Yes</option>"; 
+									}
 								echo "<br><table id='navigation-$navid'>";
-								echo "<tr><td></td><td></td><td class='title'>Title</td><td><input class='inputcheck nospaces' size='40' name='navname' value='" . $row['navname'] . "'></td><td><input size='1' type='hidden' name='navgroup' value='" . $row['navgroup'] . "'></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"navigation\"," . $row['navid'] . ");' /></td></tr>";
-								echo "<tr><td><form action=\"upload.php?program=" . $row['navname'] . "\" class='dropzone' id='program" . $row['navname'] . "' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;width:100px;'></form></td><td><img src=" . $theprogrampic ." style='position:relative;height:50px;'></td><td class='title'>Full IP</td><td colspan=4><input size='75' name='navip' value=" . $row['navip'] . "></td></td><td><input size='1' type='hidden' name='navgrouptitle' value='" . $row['navgrouptitle'] . "'></td></tr>";
-								echo "<tr><td></td><td></td></td><td class='title'>M IP</td><td colspan=4><input size='75' name='mobile' value=" . $row['mobile'] . "></td></tr>";
+								echo "<tr><td></td><td></td><td class='title'>Title</td><td><input class='inputcheck nospaces' size='20' name='navname' value='" . $row['navname'] . "'></td><td class='title'>Persistent</td><td><select name='persistent'>".$persistentnavigation."</select></td><td><input size='1' type='hidden' name='navgroup' value='" . $row['navgroup'] . "'></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"navigation\"," . $row['navid'] . ");' /></td></tr>";
+								echo "<tr><td><form action=\"upload.php?program=" . $row['navname'] . "\" class='dropzone' id='program" . $row['navname'] . "' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;width:100px;'></form></td><td><img src=" . $theprogrampic ." style='position:relative;height:50px;'></td><td class='title'>Full IP</td><td colspan=6><input size='80' name='navip' value=" . $row['navip'] . "></td></td><td><input size='1' type='hidden' name='navgrouptitle' value='" . $row['navgrouptitle'] . "'></td></tr>";
+								echo "<tr><td></td><td></td></td><td class='title'>M IP</td><td colspan=6><input size='80' name='mobile' value=" . $row['mobile'] . "></td></tr>";
 								echo "</table><br><br>";
 								}
 						}		

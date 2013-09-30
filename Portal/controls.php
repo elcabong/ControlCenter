@@ -48,8 +48,8 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 			</ul>
 		</nav>
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
-		<li><a id='firstroomprogramlink' href='#ROOMCONTROL1' class='panel selected'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
-		<li id="secondroomprogram" <? if(${$ROOMXBMC2} == '0') { echo "style='display:none;'"; }?>><a id='secondroomprogramlink' href='#ROOMCONTROL2' class='panel unloaded'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
+		<li><a id='firstroomprogramlink' href='#ROOMCONTROL1' class='panel persistent selected'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
+		<li id="secondroomprogram" <? if(${$ROOMXBMC2} == '0') { echo "style='display:none;'"; }?>><a id='secondroomprogramlink' href='#ROOMCONTROL2' class='panel persistent unloaded'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
 			<?php
 			$c = 1;
 			$count = 0;
@@ -76,14 +76,18 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 		<?php
 				echo "<ul class='sortable'>";
 				try {
-					$sql = "SELECT navgroup,navgrouptitle FROM navigation ORDER BY navgrouptitle ASC";
+					$sql = "SELECT navgroup,navgrouptitle,persistent FROM navigation ORDER BY navgrouptitle ASC";
 					$navgroupamt = 0;
+					$totalnonpersistentnav = 0;
 					foreach ($configdb->query($sql) as $row)
 						{
 							$navgroup = $row['navgroup'];
 							if(strpos($NAVGROUPS,$navgroup) !== false) {
 								if($row['navgrouptitle'] == "1") { $navgroupamt++; }
 							}
+							if($row['persistent'] == '0') {
+								$totalnonpersistentnav ++;
+							}	
 						}
 				} catch(PDOException $e)
 					{
@@ -111,9 +115,9 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 									$tempc++;
 									if($tempc>1){
 										echo "</li>";
-										echo "<li id=".$tempc." class='sortable secondary clear hidden'><a href='#' class='main panel title' title='$navtitle'>".$linkto."</a>";
+										echo "<li id=".$tempc." class='sortable secondary clear hidden'><a href='#' class='main panel persistent title' title='$navtitle'>".$linkto."</a>";
 									} else {
-										echo "<li id=".$tempc." class='sortable clear'><a href='#' class='main panel title' title='$navtitle'>".$linkto."</a>";
+										echo "<li id=".$tempc." class='sortable clear'><a href='#' class='main panel persistent title' title='$navtitle'>".$linkto."</a>";
 									}
 								}
 							} else {
@@ -123,7 +127,11 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 							} else {
 								$linkto = $navtitle;
 							}
-							echo "<a href='#".$navtitle."' class='main panel unloaded' title='$navtitle'>".$linkto."</a>";
+							if($row['persistent'] == '0') {
+							echo "<a href='".$row['navip']."' class='panel nonpersistent main unloaded' target='nonpersistent'>".$linkto."</a>";
+							} else {
+							echo "<a href='#".$navtitle."' class='main panel persistent unloaded' title='$navtitle'>".$linkto."</a>";
+							}
 							}
 						}
 					}
@@ -152,7 +160,7 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 		</div>
 		<?php
 				try {
-					$sql = "SELECT * FROM navigation ORDER BY navgroup ASC";
+					$sql = "SELECT * FROM navigation WHERE persistent == '1' ORDER BY navgroup ASC";
 					$tempc = 0;
 					foreach ($configdb->query($sql) as $row)
 						{
@@ -174,7 +182,14 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();
-					}		
+					}
+		if($totalnonpersistentnav > "0") {?>
+		<div id="nonpersistent" class="item">
+			<div class="content">
+				<iframe id='nonpersistentf' class='nonpersistent' name='nonpersistent' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+			</div>
+		</div>
+		<? }
 		if($SETTINGSACCESS == "1") {?>
 		<div id="Settings" class="item">
 			<div class="content">

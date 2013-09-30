@@ -54,8 +54,8 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 			</ul>
 		</nav>
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
-		<li><a id='firstroomprogramlink' href='#ROOMCONTROL1' class='panel selected' title='ROOMCONTROL1'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
-		<li id="secondroomprogram" <? if(${$ROOMXBMC2} == '0') { echo "style='display:none;'"; }?>><a id='secondroomprogramlink' href='#ROOMCONTROL2' class='panel unloaded' title='ROOMCONTROL2'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
+		<li><a id='firstroomprogramlink' href='#ROOMCONTROL1' class='panel persistent selected'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
+		<li id="secondroomprogram" <? if(${$ROOMXBMC2} == '0') { echo "style='display:none;'"; }?>><a id='secondroomprogramlink' href='#ROOMCONTROL2' class='panel persistent unloaded'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
 			<?php
 			$c = 1;
 			$count = 0;
@@ -81,9 +81,10 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 	<nav>
 		<?php
 				try {
-					$sql = "SELECT navgroup,navgrouptitle,mobile FROM navigation WHERE mobile != '' ORDER BY navgrouptitle ASC";
+					$sql = "SELECT navgroup,navgrouptitle,mobile,persistent FROM navigation WHERE mobile != '' ORDER BY navgrouptitle ASC";
 					$navgroupamt = 0;
 					$mobileamt = 0;
+					$totalnonpersistentnav = 0;					
 					foreach ($configdb->query($sql) as $row)
 						{
 							$navgroup = $row['navgroup'];
@@ -91,6 +92,9 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 								if($row['navgrouptitle'] == "1") { $navgroupamt++; }
 								if(isset($row['mobile']) && ($row['mobile'] != "0" || $row['mobile'] != "")) { $mobileamt++; }
 							}
+							if($row['persistent'] == '0') {
+								$totalnonpersistentnav ++;
+							}								
 						}
 				} catch(PDOException $e)
 					{
@@ -117,20 +121,24 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 								echo "<li id=".$tempc." class='clear'>";
 								$filename = "../media/Programs/".$navtitle.".png";
 								if (file_exists($filename)) {
-									$linkto = "<img src=$filename height='35px' title='$navtitle'>";
+									$linkto = "<img src=$filename height='35px'>";
 								} else {
 									$linkto = $navtitle;
 								}
-								echo "<a href='#".$navtitle."' class='main panel unloaded' title='$navtitle'>".$linkto."</a>";											
+								echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";											
 								echo "</li>";
 							} else {
 							$filename = "../media/Programs/".$navtitle.".png";
 							if (file_exists($filename)) {
-								$linkto = "<img src=$filename height='35px' title='$navtitle'>";
+								$linkto = "<img src=$filename height='35px'>";
 							} else {
 								$linkto = $navtitle;
 							}
-							echo "<a href='#".$navtitle."' class='main panel unloaded' title='$navtitle'>".$linkto."</a>";
+							if($row['persistent'] == '0') {
+							echo "<a href='".$row['navip']."' class='panel nonpersistent main unloaded' target='nonpersistent'>".$linkto."</a>";
+							} else {
+							echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";
+							}
 							}
 						}
 					}
@@ -162,7 +170,7 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 		</div>
 		<?php
 				try {
-					$sql = "SELECT * FROM navigation ORDER BY navgroup ASC";
+					$sql = "SELECT * FROM navigation WHERE persistent == '1' ORDER BY navgroup ASC";
 					$tempc = 0;
 					foreach ($configdb->query($sql) as $row)
 						{
@@ -190,7 +198,13 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 					{
 					echo $e->getMessage();
 					}
-		?>
+		if($totalnonpersistentnav > "0") {?>
+		<div id="nonpersistent" class="item">
+			<div class="content">
+				<iframe id='nonpersistentf' class='nonpersistent' name='nonpersistent' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+			</div>
+		</div>
+		<? } ?>
 	</div>
 </div>
 </body>

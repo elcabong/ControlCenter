@@ -100,6 +100,16 @@ h2.container { height:auto; }
 }
 a:hover .text { color:rgb(0, 153, 255); }
 
+input[type=submit] {
+	padding:5px 15px; background:#ccc; border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+	font-weight:bold;	}
+	
+input[type=submit]:hover {
+	color:rgb(0, 153, 255);	}	
+	
 @media all and (min-width: 475px) {
 .right { text-align:right; }
 .left { text-align:left; }
