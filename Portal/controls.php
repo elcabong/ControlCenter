@@ -40,7 +40,7 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 					<ul>
 						<li><a href="#" class="title"><?echo $USERNAMES[$usernumber];?></a></li>
 						<? if($SETTINGSACCESS == "1") { ?>
-						<li><a href='#Settings' class='panel2nd' title='Settings'>Settings</a></li> <? } ?>
+						<li><a href='#Settings' class='panel2nd'>Settings</a></li> <? } ?>
 						<li><a href="#">&nbsp;</a></li>
 						<li><a href='logout.php' />Logout</a></li>
 					</ul>
@@ -108,29 +108,29 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 								if($navgroupamt > '1'){
 									$filename = "../media/Programs/".$navtitle.".png";
 									if (file_exists($filename)) {
-										$linkto = "<img src=$filename height='35px' title='$navtitle'>";
+										$linkto = "<img src=$filename height='35px'>";
 									} else {
 										$linkto = $navtitle;
 									}
 									$tempc++;
 									if($tempc>1){
 										echo "</li>";
-										echo "<li id=".$tempc." class='sortable secondary clear hidden'><a href='#' class='main panel persistent title' title='$navtitle'>".$linkto."</a>";
+										echo "<li id=".$tempc." class='sortable secondary clear hidden'><a href='#' class='main panel persistent title'>".$linkto."</a>";
 									} else {
-										echo "<li id=".$tempc." class='sortable clear'><a href='#' class='main panel persistent title' title='$navtitle'>".$linkto."</a>";
+										echo "<li id=".$tempc." class='sortable clear'><a href='#' class='main panel persistent title'>".$linkto."</a>";
 									}
 								}
 							} else {
 							$filename = "../media/Programs/".$navtitle.".png";
 							if (file_exists($filename)) {
-								$linkto = "<img src=$filename height='35px' title='$navtitle'>";
+								$linkto = "<img src=$filename height='35px'>";
 							} else {
 								$linkto = $navtitle;
 							}
 							if($row['persistent'] == '0') {
 							echo "<a href='".$row['navip']."' class='panel nonpersistent main unloaded' target='nonpersistent'>".$linkto."</a>";
 							} else {
-							echo "<a href='#".$navtitle."' class='main panel persistent unloaded' title='$navtitle'>".$linkto."</a>";
+							echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";
 							}
 							}
 						}

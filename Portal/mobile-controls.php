@@ -115,7 +115,7 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 						if(isset($row['navip'])) { $navdestination = $row['navip']; }
 						$navgroup = $row['navgroup'];
 						$navgrouptitle = $row['navgrouptitle'];
-						if(isset($row['mobile']) && $row['mobile'] != '' || $row['mobile'] != '1' || $row['mobile'] != '0') { $navdestination = $row['mobile']; }
+						if(isset($row['mobile']) && ($row['mobile'] != '' || $row['mobile'] != '1' || $row['mobile'] != '0')) { $navdestination = $row['mobile']; }
 							if($mobileamt > '1'){
 								$tempc++;
 								echo "<li id=".$tempc." class='clear'>";
