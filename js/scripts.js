@@ -157,26 +157,36 @@ $(document).ready(function() {
 		$(".clearcover").fadeOut(300);
 	});
 
-$("nav").children() // select your element (supports CSS selectors)
-    .hover(function(){ // trigger the mouseover event
-        $(".clearcover") // select the element to show (can be anywhere)
-            .show(); // show the element
-    }, function(){ // trigger the mouseout event
-        $(".clearcover") // select the same element
-            .hide(); // hide it
+	$("nav").children().hover(function(){
+        $(".clearcover").fadeIn(300);
+    }, function(){
+		var hideclearcovertimer=setInterval(function(){hideclearcover()},300);
     });
 
 	function hideclearcover() {
+		clearInterval(hideclearcovertimer);
+		$(".clearcover").fadeOut(200);
+	}
+
+	$(".clearcover").hover(
+         function () {
+           hideclearcoverandmenus();
+         }, function () {
+
+         }
+     );	
+
+	function hideclearcoverandmenus() {
 		$("ul.children").fadeOut(300);
 		$("#wrapper").click();
 		$(".clearcover").fadeOut(300);
 	}
  
 	$(".clearcover").touchwipe({
-		 wipeUp: function() { hideclearcover(); },
-		 wipeDown: function() { hideclearcover(); },
-		 wipeLeft: function() { hideclearcover(); },
-		 wipeRight: function() { hideclearcover(); },
+		 wipeUp: function() { hideclearcoverandmenus(); },
+		 wipeDown: function() { hideclearcoverandmenus(); },
+		 wipeLeft: function() { hideclearcoverandmenus(); },
+		 wipeRight: function() { hideclearcoverandmenus(); },
 		 min_move_x: 3,
 		 min_move_y: 3 
 		 //preventDefaultEvents: true

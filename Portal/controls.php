@@ -36,7 +36,7 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 	<div id='nav-menu2'>
 		<nav id="navsettings" style="float:right;width:50px;">
 			<ul>
-				<li><a href='#<? if($SETTINGSACCESS == "1") { ?>Settings<? } ?>' class='navsettings panel' style="margin-bottom:3px;border-bottom:2px solid rgba(0, 0, 0, 0);"><img src="../media/gear.png" style="margin:7px 0 0;width:20px !important;"></a>
+				<li><a href='#' class='navsettings panel' style="margin-bottom:3px;border-bottom:2px solid rgba(0, 0, 0, 0);"><img src="../media/gear.png" style="margin:7px 0 0;width:20px !important;"></a>
 					<ul>
 						<li><a href="#" class="title"><?echo $USERNAMES[$usernumber];?></a></li>
 						<? if($SETTINGSACCESS == "1") { ?>
