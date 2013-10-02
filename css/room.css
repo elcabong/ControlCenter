@@ -180,6 +180,8 @@ ul.sortable > li > a:first-child { width: 105px; }
   CONTENT FRAME     /
 --------------------*/
 
+
+
 #wrapper { width:100%;position:absolute;top:50px;left:0;bottom:0;overflow:hidden; }
 
 /*#mask { height:100%;width:200%;top:6%; }
