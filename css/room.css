@@ -120,8 +120,6 @@ a.title:hover {  color:rgb(204,204,204) !important; }
 
 .nav-menu-z {  z-index:1000;background-color:rgba(5,5,5,.75); }
 
-#nav-show {  float:left;z-index:5000;margin-right:15px; }
-
 #navigation { padding-left: 20;z-index:100; }
 
 #navigation ul {padding:0;}

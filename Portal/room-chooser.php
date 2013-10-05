@@ -55,6 +55,7 @@
 		var expire = new Date();
 		expire.setTime(today.getTime() + 3600000*24*5);
 		document.cookie="currentRoom"+usernumber+"="+ escape(newroom) + ";expires="+expire.toGMTString()+";path=/";
+		$("#firstroomprogramlink").removeClass('unloaded');
 		$("#room-menu").load("./room-chooser.php");
 	}
 		
