@@ -72,7 +72,8 @@ a img {border:0;}
   position:absolute;
   display: block;
   font-size:1em;
-  background:url(../media/bgNav.png); 
+  background:url(../media/bgNav.png);
+  z-index:5;
 }
   
 nav ul ul {  display:none; }
@@ -120,8 +121,6 @@ a.title:hover {  color:rgb(204,204,204) !important; }
 
 .nav-menu-z {  z-index:1000;background-color:rgba(5,5,5,.75); }
 
-#nav-show {  float:left;z-index:5000;margin-right:15px; }
-
 #navigation { padding-left: 20;z-index:100; }
 
 #navigation ul {padding:0;}
@@ -146,6 +145,7 @@ ul.sortable > li > a:first-child { width: 105px; }
   right:0;
   display: block;
   font-size:18px;
+  z-index:10;
 }
 
 #room-menu { float:left;padding-bottom:5px; }
