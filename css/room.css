@@ -1,3 +1,12 @@
+* {
+   user-select: none !important;
+   -o-user-select:none !important;
+   -moz-user-select: none !important;
+   -khtml-user-select: none !important;
+   -webkit-user-select: none !important;
+   -webkit-touch-callout: none !important;   
+}
+
 html { height: 96.5%; overflow:hidden;}
 
 body {
@@ -80,7 +89,7 @@ nav ul ul {  display:none; }
 
 nav ul li:hover > ul,nav ul li:hover > #room-menu ul,#room-menu ul:hover { display: block; }
 	
-#nav-menu nav ul li{  width:auto !important;padding-bottom:3px;  } 
+#nav-menu nav ul li{  width:auto !important;padding-bottom:3px;  }
 
 #nav-menu nav ul li:hover{ background:none; }	
 	
