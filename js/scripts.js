@@ -1,5 +1,9 @@
 $(document).ready(function() {
 
+	$(function(){
+		document.oncontextmenu = function() {return false;};
+	});
+
 	if(window.location.hash) {
 		$('a.panel').removeClass('selected');
 		var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
@@ -60,7 +64,7 @@ $(document).ready(function() {
 					//ee.preventDefault();
 					return false;
 				}
-			},2000);
+			},1300);
 		}
 	}).bind('mouseup mouseleave touchend', function() {
 		clearTimeout(timeoutId);
