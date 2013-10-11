@@ -52,6 +52,7 @@ $(document).ready(function() {
 	$('a.panel').on('mousedown touchstart', function(e) {
 		mouseIsHeld = false;
 		if(!$(this).hasClass('unloaded')) { var thislink = $(this); var ee = e;
+			clearTimeout(timeoutId);
 			timeoutId = setTimeout(function(){
 				if (thislink.hasClass('selected')) {
 					mouseIsHeld = true;
@@ -61,14 +62,12 @@ $(document).ready(function() {
 					iframe.getAttribute("src");
 					iframe.removeAttribute("src");
 					thislink.addClass('unloaded');
-					//ee.preventDefault();
 					return false;
 				}
 			},1300);
 		}
 	}).bind('mouseup mouseleave touchend', function() {
 		clearTimeout(timeoutId);
-	//	ee.preventDefault();
 	});
 	
 	$('a.panel.persistent').click(function (e) {
