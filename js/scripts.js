@@ -30,22 +30,6 @@ $(document).ready(function() {
 	$('#wrapper').scrollTo(0,0);
 	}
 
-			$("li.sortable").hover(
-				function () {
-					$('.sortable.secondary').removeClass('hidden');	
-				}, function () {
-
-				}
-			);
-		
-			$("#nav-menu").hover(
-				function () {
-
-				}, function () {
-					$('.sortable.secondary').addClass('hidden');
-				}
-			);
-
 	var timeoutId = 0;
 	var mouseIsHeld = false;
 
@@ -79,7 +63,6 @@ $(document).ready(function() {
 				
 		href = href.replace(/#/g, "" );
 		var iframe = document.getElementById(href + 'f');
-		//if (!iframe.src || iframe.src!=iframe.data-src || iframe!='') {
 		if (!iframe.src) {
 			$('iframe.' + href).attr('src',$('iframe.' + href).attr('data-src'));
 		}
@@ -97,7 +80,6 @@ $(document).ready(function() {
 		}
 		
 		$('#wrapper').scrollTo($(this).attr('href'), 0);
-		//currentview = $(this);
 
 		var myLi = $(this).parent();
 		if(myLi.hasClass("sortable")) {
@@ -136,7 +118,6 @@ $(document).ready(function() {
 		}
 		
 		$('#wrapper').scrollTo('#nonpersistentf', 0);
-		//currentview = $(this);
 
 		var myLi = $(this).parent();
 		if(myLi.hasClass("sortable")) {
@@ -183,11 +164,30 @@ $(document).ready(function() {
 		document.getElementById('loading').style.display='none';	
 	}
 	
-	$(".clearcover").click(function () {
-		$("ul.children").fadeOut(300); //Close filters drop-downs if user taps ANYWHERE in the page
-		$(".clearcover").fadeOut(300);
+	//$(".clearcover").click(function () {
+	$(".clearcover").bind('mousedown touchstart', function() {	
+	hideclearcoverandmenus();
 	});
 
+
+			$("li.sortable").hover(
+				function () {
+					$('.sortable.secondary').removeClass('hidden');	
+				}, function () {
+
+				}
+			);
+/*			
+			$("#nav-menu").hover(
+				function () {
+
+				}, function () {
+					$('.sortable.secondary').addClass('hidden');
+				}
+			);	
+	*/
+	
+	
 	$("nav").children().hover(function(){
         $(".clearcover").fadeIn(300);
     }, function(){
@@ -196,23 +196,22 @@ $(document).ready(function() {
 
 	function hideclearcover() {
 		clearInterval(hideclearcovertimer);
-		$(".clearcover").fadeOut(200);
+		hideclearcoverandmenus()
 	}
 
 	$(".clearcover").hover(
          function () {
            hideclearcoverandmenus();
-         }, function () {
-
          }
      );	
 
 	function hideclearcoverandmenus() {
 		$("ul.children").fadeOut(300);
-		$("#wrapper").click();
 		$(".clearcover").fadeOut(300);
+		$('.sortable.secondary').addClass('hidden');
+		$('.clearcover').simulate('click');
 	}
- 
+ /*  remove touchwipe.js with this
 	$(".clearcover").touchwipe({
 		 wipeUp: function() { hideclearcoverandmenus(); },
 		 wipeDown: function() { hideclearcoverandmenus(); },
@@ -221,8 +220,7 @@ $(document).ready(function() {
 		 min_move_x: 3,
 		 min_move_y: 3 
 		 //preventDefaultEvents: true
-	});
-	
+	});*/
 });	
 
 var resizeTimer;
