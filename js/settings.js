@@ -1,4 +1,9 @@
 $(document).ready(function() {
+
+  	$(function(){
+		document.oncontextmenu = function() {return false;};
+	});
+
 	var $panels = $('#slider .scrollContainer > div');
 	var $container = $('#slider .scrollContainer'); // if false, we'll float all the panels left and fix the width 
 	// of the container

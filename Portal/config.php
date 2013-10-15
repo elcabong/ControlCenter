@@ -41,7 +41,7 @@ $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 			$HOWMANYUSERS++;
 			$USERNAME = "USERNAME$userid";
 			${$USERNAME} = $row['username'];
-			array_push($USERNAMES,${$USERNAME});
+			$USERNAMES[$userid] = ${$USERNAME};
 			}
 	} catch(PDOException $e)
 		{

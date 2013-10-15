@@ -4,11 +4,13 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
     header("Location: login.php");
     exit;}
 require_once 'controls-include.php';	
-$theroom = $_SESSION['room'];
-$theperm = "USRPR$theroom";
-if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
-    header("Location: index.php");
-	exit; }	
+if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
+	$theroom = $_SESSION['room'];
+	$theperm = "USRPR$theroom";
+	if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
+		header("Location: index.php");
+		exit; }
+}
 ?>
 <?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 = $ROOMXBMC."2"; ?>
 <!DOCTYPE html>
@@ -23,7 +25,6 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 	<link rel='stylesheet' type='text/css' href="../css/room.css?<? echo date ("m/d/Y-H.i.s", filemtime('../css/room.css'));?>">
 	<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.scrollTo.js"></script>
-	<script type="text/javascript" src="../js/jquery.touchwipe.js"></script>	
 	<script type="text/javascript" src="../js/scripts.js?<? echo date ("m/d/Y-H.i.s", filemtime('../js/scripts.js'));?>"></script>
 	<script type="text/javascript">
 		if (window.navigator.standalone) {
@@ -54,6 +55,7 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 			</ul>
 		</nav>
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
+		<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){ ?>
 		<li><a id='firstroomprogramlink' href='#ROOMCONTROL1' class='panel persistent selected'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
 		<li id="secondroomprogram" <? if(${$ROOMXBMC2} == '0') { echo "style='display:none;'"; }?>><a id='secondroomprogramlink' href='#ROOMCONTROL2' class='panel persistent unloaded'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
 			<?php
@@ -67,15 +69,16 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 			if(($count) > 0) {
 			echo "<div id='multiples'>";
 			?>
-		<nav>
-			<ul>
-				<li>
-					<div id='room-menu'><? include"room-chooser.php"; ?></div>
-					<ul id="roomList"></ul>
-				</li>
-			</ul>
-		</nav><? } ?>
-	</div>
+				<nav>
+					<ul>
+						<li>
+							<div id='room-menu'><? include"room-chooser.php"; ?></div>
+							<ul id="roomList"></ul>
+						</li>
+					</ul>
+				</nav><? } ?>
+			</div>
+		<? } ?>
 </div>
 <div id='nav-menu'>
 	<nav>
@@ -107,6 +110,7 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 				echo "<ul>";
 					$thenavgroups = explode(",",$NAVGROUPS);
 					$tempc = 0;
+					$linkcount = 1;
 					foreach($thenavgroups as $x) {
 					$sql = "SELECT * FROM navigation WHERE navgroup = $x AND mobile != ''";
 					foreach ($configdb->query($sql) as $row)
@@ -125,7 +129,14 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 								} else {
 									$linkto = $navtitle;
 								}
-								echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";											
+							if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
+							if($row['persistent'] == '0') {
+							if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
+							echo "<a href='".$row['navip']."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
+							} else {
+							echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
+							}
+							$linkcount++;					
 								echo "</li>";
 							} else {
 							$filename = "../media/Programs/".$navtitle.".png";
@@ -134,11 +145,7 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 							} else {
 								$linkto = $navtitle;
 							}
-							if($row['persistent'] == '0') {
-							echo "<a href='".$row['navip']."' class='panel nonpersistent main unloaded' target='nonpersistent'>".$linkto."</a>";
-							} else {
-							echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";
-							}
+								echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";
 							}
 						}
 					}
@@ -158,6 +165,7 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 <div class="clearcover" style="position:absolute;width:100%;top:50px;bottom:0;display:none;background-color:rgba(0,0,0,.30);z-index:150;"></div>
 <div id="wrapper" scrolling="auto">
 	<div id="mask">
+	<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){ ?>
 		<div id="ROOMCONTROL1" class="item">
 			<div class="content">
 				<iframe id='ROOMCONTROL1f' class='ROOMCONTROL1' src="<?echo ${$ROOMXBMC};?>" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
@@ -168,9 +176,10 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 				<iframe id='ROOMCONTROL2f' class='ROOMCONTROL2' data-src="<?echo ${$ROOMXBMC2};?>" width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
+	<? } ?>	
 		<?php
 				try {
-					$sql = "SELECT * FROM navigation WHERE persistent == '1' ORDER BY navgroup ASC";
+					$sql = "SELECT * FROM navigation WHERE navgroup IN (".$NAVGROUPS.") AND persistent == '1' ORDER BY navgroup ASC, navid ASC";
 					$tempc = 0;
 					foreach ($configdb->query($sql) as $row)
 						{
@@ -187,7 +196,11 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 								} else {
 									echo "<div id='$navtitle' class='item'>";
 									echo "<div class='content'>";
+									if($navtitle == $selectedpanel) {
+										echo "<iframe id='".$navtitle."f' class='$navtitle' src='".$navdestination."' data-src='".$navdestination."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
+									} else {
 										echo "<iframe id='".$navtitle."f' class='$navtitle' data-src='".$navdestination."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
+									}
 									echo "</div>";
 									echo "</div>";
 								}
@@ -207,5 +220,19 @@ if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 		<? } ?>
 	</div>
 </div>
+<script>
+	<? if($TOTALALLOWEDROOMS==0){ ?>
+		$(document).ready(function() {
+			<? if($loadpersistent != '0') { ?>
+				var iframepersist = document.getElementById('nonpersistentf');
+				iframepersist.src = '<? echo $loadpersistent; ?>';
+				$('#wrapper').scrollTo(iframepersist, 0);
+			<? } else {?>
+				var iframe = document.getElementById('<?echo $selectedpanel;?>');
+				$('#wrapper').scrollTo(iframe, 0);
+			<? } ?>
+		});
+	<? } ?>
+</script>
 </body>
 </html>
