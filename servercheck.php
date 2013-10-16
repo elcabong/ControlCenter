@@ -1,3 +1,6 @@
+<? //control center upgrade info
+$DBVERSION = "1.0.0";
+?>
 <html>
 <head>
 <title>Control Center Server Check</title>
@@ -82,7 +85,17 @@ if (file_exists('./sessions/config.db')){
       $valid = false;
     }
   } else {
-  	echo "Settings DB found";
+ 		function checkDBversion() {
+			$configdb = new PDO('sqlite:./sessions/config.db');
+			$sql = "SELECT dbversion FROM controlcenter ORDER BY dbversion DESC LIMIT 1";
+				foreach ($configdb->query($sql) as $row)
+				{
+					if(isset($row['dbversion'])) {
+					$thedbversion = $row['dbversion'];
+				}}
+				return $thedbversion;
+		}
+  echo "Settings DB found";
   echo ($valid)?"</td><td><img src='media/green-tick.png' height='15px'/></td></tr>":"</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
   // write db tables here if they dont exist
    try {
@@ -94,7 +107,28 @@ if (file_exists('./sessions/config.db')){
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS navigation (navid integer PRIMARY KEY AUTOINCREMENT, navname text UNIQUE NULL, navip text, navgroup integer NOT NULL, navgrouptitle integer, mobile text, persistent integer DEFAULT '1' NOT NULL)";
 		  $execquery = $configdb->exec($query);
-		  echo "<tr><td>DB tables created</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT, dbversion TEXT)";
+		  $execquery = $configdb->exec($query);
+					$thedbversion = checkDBversion();
+					if(!isset($thedbversion)) {
+						// stamp current version
+						$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$DBVERSION')");
+						echo "<tr><td>DB tables created</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+					} elseif($thedbversion < $DBVERSION) {
+							//custom table upgrades here when needed
+							$thenewdbversion = "1.0.2";
+							if($thedbversion < $thenewdbversion && $thenewdbversion <= $DBVERSION) {
+								//schema update queries
+								$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thenewdbversion')");
+							}
+							$thedbversion = checkDBversion();
+							$thenewdbversion = "1.0.3";
+							if($thedbversion < $thenewdbversion && $thenewdbversion <= $DBVERSION) {
+								//schema update queries
+								$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thenewdbversion')");
+							}
+						echo "<tr><td>DB tables updated</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+					}
 	} catch(PDOException $e)
 		{
 			  echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";

@@ -1,6 +1,6 @@
 <?php
 require_once 'config.php';
-if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
+if ($authsecured && (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername )) {
     header("Location: login.php");
     exit;}
 require_once 'controls-include.php';
@@ -10,9 +10,9 @@ if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 	if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
 		header("Location: index.php");
 		exit; }
+$ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 = $ROOMXBMC."2";
 }
 ?>
-<?php $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 = $ROOMXBMC."2"; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,8 +51,9 @@ if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
 		<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){ ?>
 		<li><a id='firstroomprogramlink' href='#ROOMCONTROL1' class='panel persistent selected'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
-		<li id="secondroomprogram" <? if(${$ROOMXBMC2} == '0') { echo "style='display:none;'"; }?>><a id='secondroomprogramlink' href='#ROOMCONTROL2' class='panel persistent unloaded'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
-			<?php
+		<? if(${$ROOMXBMC2} != '0') { ?>
+		<li id="secondroomprogram"><a id='secondroomprogramlink' href='#ROOMCONTROL2' class='panel persistent unloaded'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
+			<?php }
 			$c = 1;
 			$count = 0;
 			while($count<2 && $c<$TOTALROOMS) {
@@ -222,8 +223,24 @@ if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 				var iframe = document.getElementById('<?echo $selectedpanel;?>');
 				$('#wrapper').scrollTo(iframe, 0);
 			<? } ?>
+			setTimeout(func, 4500);
+			function func() {
+				document.getElementById('loading').style.display='none';
+			}
 		});
-	<? } ?>
+	<? } else {?>
+		$(document).ready(function() {
+			function refreshRooms() {
+			$("#roomList").load("./getrooms.php");
+			setTimeout(refreshRooms, 3500);
+			}
+			setTimeout(refreshRooms, 1000);
+			setTimeout(func, 4500);
+			function func() {
+				document.getElementById('loading').style.display='none';
+			}
+		});
+	<? } ?>	
 </script>
 </body>
 </html>

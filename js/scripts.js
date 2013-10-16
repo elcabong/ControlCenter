@@ -172,17 +172,6 @@ $(document).ready(function() {
 		return false;
 	});	
 	
-	function refreshRooms() {
-	$("#roomList").load("./getrooms.php");
-	setTimeout(refreshRooms, 3500);
-	}
-	setTimeout(refreshRooms, 1000);
-
-	setTimeout(func, 4500);
-	function func() {
-		document.getElementById('loading').style.display='none';	
-	}
-	
 	$(".clearcover").bind('mousedown touchstart', function() {	
 	hideclearcoverandmenus();
 	});
@@ -201,17 +190,30 @@ $(document).ready(function() {
 			$('.sortable.secondary').addClass('hidden');
 		}
 	);	
-			
+
+	var coveron = 0;
 	$("nav").children().hover(function(){
-	 $(".clearcover").fadeIn(300);
+		clearInterval(showclearcovertimer);
+		coveron = 1;
+		var showclearcovertimer=setInterval(function(){showclearcover()},800);
     }, function(){
+		coveron = 0;
+		clearInterval(showclearcovertimer);
 		clearInterval(hideclearcovertimer);
 		var hideclearcovertimer=setInterval(function(){hideclearcover()},300);
     });
 
+	function showclearcover() {
+		if(coveron==1) {
+			$(".clearcover").fadeIn(300);
+			coveron = 0;
+		}
+		clearInterval(showclearcovertimer);
+	}
+
 	function hideclearcover() {
-		clearInterval(hideclearcovertimer);
 		hideclearcoverandmenus();
+		clearInterval(hideclearcovertimer);
 	}
 
 	$(".clearcover").hover(
@@ -227,7 +229,7 @@ $(document).ready(function() {
 		$('.clearcover').simulate('click');
 	}
 
-});	
+});
 
 var resizeTimer;
 $(window).resize(function() {

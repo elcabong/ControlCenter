@@ -4,7 +4,8 @@ ControlCenter
 Access any web based software to control your home and media needs.
 
 Required:
-  Apache web server with php 5+ with curl
+  Any web server with php 5+ with curl, and enable "short_open_tag=On" for php  (apache instruction below)
+  
   
 0.  install prerequisites:
 sudo apt-get install git  
