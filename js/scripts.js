@@ -33,7 +33,7 @@ $(document).ready(function() {
 	var timeoutId = 0;
 	var mouseIsHeld = false;
 
-	$('a.panel').on('mousedown touchstart', function(e) {
+	$('a.panel.persistent').on('mousedown touchstart', function(e) {
 		mouseIsHeld = false;
 		if(!$(this).hasClass('unloaded')) { var thislink = $(this); var ee = e;
 			clearTimeout(timeoutId);
@@ -43,6 +43,25 @@ $(document).ready(function() {
 					var href = thislink.attr('href');
 					href = href.replace(/#/g, "" );
 					var iframe = document.getElementById(href + 'f');
+					iframe.getAttribute("src");
+					iframe.removeAttribute("src");
+					thislink.addClass('unloaded');
+					return false;
+				}
+			},1300);
+		}
+	}).bind('mouseup mouseleave touchend', function() {
+		clearTimeout(timeoutId);
+	});
+
+	$('a.panel.nonpersistent').on('mousedown touchstart', function(e) {
+		mouseIsHeld = false;
+		if(!$(this).hasClass('unloaded')) { var thislink = $(this); var ee = e;
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(function(){
+				if (thislink.hasClass('selected')) {
+					mouseIsHeld = true;
+					var iframe = document.getElementById('nonpersistentf');
 					iframe.getAttribute("src");
 					iframe.removeAttribute("src");
 					thislink.addClass('unloaded');
@@ -103,20 +122,20 @@ $(document).ready(function() {
 	e.preventDefault();
 	if(mouseIsHeld == false) {
 	
-		var href = $(this).attr('href');
-		var iframe = document.getElementById('nonpersistentf');
-
+		var nonpersisthref = $(this).attr('href');
+		var nonpersistiframe = document.getElementById('nonpersistentf');
+ 
 		if ($(this).hasClass('selected')) {
-			iframe.src = '';
-			iframe.attr('src',href);
-			iframe.src = iframe.src;
+			nonpersistiframe.src = '';
+			nonpersistiframe.src = $(this).attr('href');
+			nonpersistiframe.src = nonpersistiframe.src;
 	        return false; 
         } else {
 			$('a.panel').removeClass('selected');
 			$(this).removeClass('unloaded');
-			$(this).addClass('selected'); 
+			$(this).addClass('selected');
 		}
-		
+
 		$('#wrapper').scrollTo('#nonpersistentf', 0);
 
 		var myLi = $(this).parent();
@@ -128,9 +147,9 @@ $(document).ready(function() {
 			myLi.removeClass('hidden');
 			myLi.parent().prepend(myLi);
 		}
-		
-		iframe.attr('src',href);
-	
+		nonpersistiframe.src = $(this).attr('href');
+		nonpersistiframe.src = nonpersistiframe.src;	
+
 		return false;
 	}	
 	});
@@ -153,50 +172,48 @@ $(document).ready(function() {
 		return false;
 	});	
 	
-	function refreshRooms() {
-	$("#roomList").load("./getrooms.php");
-	setTimeout(refreshRooms, 3500);
-	}
-	setTimeout(refreshRooms, 1000);
-
-	setTimeout(func, 4500);
-	function func() {
-		document.getElementById('loading').style.display='none';	
-	}
-	
-	//$(".clearcover").click(function () {
 	$(".clearcover").bind('mousedown touchstart', function() {	
 	hideclearcoverandmenus();
 	});
 
+	$("li.sortable").hover(
+		function () {
+			$('.sortable.secondary').removeClass('hidden');	
+		}, function () {
+		
+		}
+	);
+		
+	$("#nav-menu").hover(
+		function () {
+		}, function () {
+			$('.sortable.secondary').addClass('hidden');
+		}
+	);	
 
-			$("li.sortable").hover(
-				function () {
-					$('.sortable.secondary').removeClass('hidden');	
-				}, function () {
-
-				}
-			);
-/*			
-			$("#nav-menu").hover(
-				function () {
-
-				}, function () {
-					$('.sortable.secondary').addClass('hidden');
-				}
-			);	
-	*/
-	
-	
+	var coveron = 0;
 	$("nav").children().hover(function(){
-        $(".clearcover").fadeIn(300);
+		clearInterval(showclearcovertimer);
+		coveron = 1;
+		var showclearcovertimer=setInterval(function(){showclearcover()},800);
     }, function(){
+		coveron = 0;
+		clearInterval(showclearcovertimer);
+		clearInterval(hideclearcovertimer);
 		var hideclearcovertimer=setInterval(function(){hideclearcover()},300);
     });
 
+	function showclearcover() {
+		if(coveron==1) {
+			$(".clearcover").fadeIn(300);
+			coveron = 0;
+		}
+		clearInterval(showclearcovertimer);
+	}
+
 	function hideclearcover() {
+		hideclearcoverandmenus();
 		clearInterval(hideclearcovertimer);
-		hideclearcoverandmenus()
 	}
 
 	$(".clearcover").hover(
@@ -211,17 +228,8 @@ $(document).ready(function() {
 		$('.sortable.secondary').addClass('hidden');
 		$('.clearcover').simulate('click');
 	}
- /*  remove touchwipe.js with this
-	$(".clearcover").touchwipe({
-		 wipeUp: function() { hideclearcoverandmenus(); },
-		 wipeDown: function() { hideclearcoverandmenus(); },
-		 wipeLeft: function() { hideclearcoverandmenus(); },
-		 wipeRight: function() { hideclearcoverandmenus(); },
-		 min_move_x: 3,
-		 min_move_y: 3 
-		 //preventDefaultEvents: true
-	});*/
-});	
+
+});
 
 var resizeTimer;
 $(window).resize(function() {

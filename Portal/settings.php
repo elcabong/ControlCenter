@@ -177,24 +177,14 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 		}
 		
 $(document).ready(function() {
-
   $(".inputcheck.nospaces").keyup(function(){
         var t = $(this);
 		if( !/[^a-zA-Z0-9]/.test( t.val() ) && t.val().length > 2) {
 		t.css({'background-color' : 'rgb(224, 255, 224)'});
-		//if($(this).hasClass('req')) {
-		//$(this).removeClass('req');
-		//}		
 		} else {
 		t.css({'background-color' : 'rgb(255, 204, 207)'});
-		//if(!$(this).hasClass('req')) {
-		//$(this).addClass('req');
-		//}
 		}
   });
-
-  
-  
 });
 	</script>
 </head>
@@ -297,7 +287,7 @@ $(document).ready(function() {
 	<br><br><b>Navigation:</b>  Adds Navigation group(s) for the user which are available in the upper left menu bar.  Add the groups in the order you want them to be displayed in.
 	<br><br><b>Homeroom:</b>  The default room that this user will will log into unless they logout while controlling another room (set with cookie, so device specific)
 	<br><br><b>Room Group:</b> Set a configured room group for this user 
-	<br><br><b>Allow:</b>  MUST BE SET if there is no Room Group.  Adds access to rooms, overrides room group access
+	<br><br><b>Allow:</b>  Adds access to rooms, overrides room group access
 	<br><br><b>Deny:</b>  can remove access to rooms, overrides room group access and the allow option
 	<br><br><b>Settings:</b>  This allows or denies the user to this settings area. DO NOT FORGET TO GIVE ACCESS TO AT LEAST 1 USER.
 	<br><br><b>Icon:</b>  After users are created, drag a .jpg image into the designated area to assign each user avatar.<br>
@@ -599,7 +589,7 @@ $(document).ready(function() {
 	<br><br><b>Title:</b>  The title of the link unless an icon is uploaded (see below).  Please no spaces in the title.
 	<br><br><b>Full IP:</b>  The complete address to the link.  Can include username and password which is masked in the browser unless the source is viewed when those pages have already been accessed.  ie:  http://name:pass@ip:port
 	<br><br><b>M IP:</b>  Adds this link to the mobile specific site. set to 1 if the ip source scales on its own, or specify the full address here of the mobile site.  ie  http://m.ip:port  or   http://ip:port/m/ 
-	<br><br><b>Persistent:</b>  Persistent links will keep their frame state once loaded until individually reset (clicking on the link while the page is visible) or until the whole control center is refreshed. Non-Persistent links will close the frame connection to the site when a different link is chosen (this is for security camera feeds or other highly active content you do not want running unless your viewing it)
+	<br><br><b>Persistent:</b>  Persistent links will keep their frame state once loaded until individually reset (clicking on the link while the link is selected), individually unload page (click and hold the link while the link is selected) or until the whole control center is refreshed. Non-Persistent links will close the frame connection to the site when a different link is chosen (this is for security camera feeds or other highly active content you do not want running unless your viewing it)
 	<br><br><b>Icon:</b>  Drag a .png image to the designated area to replace the Title in the top navigation bar   <br>
 				</p>
 				<?php

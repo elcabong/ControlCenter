@@ -74,9 +74,11 @@
 		${$theperm} = "0";
 		$y++;
 	}
+	$TOTALALLOWEDROOMS = 0;
 	if(isset($roomgroupaccess) && $roomgroupaccess != '' ) {
 		$roomgroupaccessarray = explode(',', $roomgroupaccess);
 		foreach ($roomgroupaccessarray as $allowroom) {
+			$TOTALALLOWEDROOMS ++;
 			$theperm = "USRPR$allowroom";
 			${$theperm} = "1";
 		}
