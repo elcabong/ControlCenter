@@ -43,6 +43,7 @@ $(document).ready(function() {
 					var href = thislink.attr('href');
 					href = href.replace(/#/g, "" );
 					var iframe = document.getElementById(href + 'f');
+					iframe.src = '';
 					iframe.getAttribute("src");
 					iframe.removeAttribute("src");
 					thislink.addClass('unloaded');
@@ -62,6 +63,7 @@ $(document).ready(function() {
 				if (thislink.hasClass('selected')) {
 					mouseIsHeld = true;
 					var iframe = document.getElementById('nonpersistentf');
+					iframe.src = '';			
 					iframe.getAttribute("src");
 					iframe.removeAttribute("src");
 					thislink.addClass('unloaded');
