@@ -225,7 +225,7 @@ $(document).ready(function() {
                  </td>                    
                 </tr>
                 <tr align="left">
-                  <td>Forum</td><td><a href="#">no thread yet</a></td>
+                  <td>Forum</td><td><a href="http://forum.xbmc.org/showthread.php?tid=176684" target='_blank'>Thread on XBMC Forum</a></td>
                 </tr>
                 <tr align="left">
                   <td>Source</td><td><a href="https://github.com/elcabong/ControlCenter" target='_blank'>https://github.com/elcabong/ControlCenter</a></td>
