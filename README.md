@@ -4,7 +4,14 @@ ControlCenter
 Access any web based software to control your home and media needs.
 
 Required:
-  Any web server with php 5+ with curl, and enable "short_open_tag=On" for php  (apache instruction below)
+  Any web server with php 5+ with curl, and enable "short_open_tag=On" for php  (linux apache instruction below)
+  
+  For the android app to connect, you need to set your webserver IP to one of the following IPs:  (contact me to add more ips)
+		192.168.0.250
+		192.168.1.250
+  
+
+Please direct any comments to this thread:    http://forum.xbmc.org/showthread.php?tid=176684
   
   
 0.  install prerequisites:
@@ -22,5 +29,5 @@ sudo chown -R www-data:www-data /var/www/ControlCenter/sessions
 sudo chown -R www-data:www-data /var/www/ControlCenter/media  
 
 
-3. browse to your http://webserver/ControlCenter/
+3. browse to your http://[webserver]/ControlCenter/
 
