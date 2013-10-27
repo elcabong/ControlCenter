@@ -447,7 +447,7 @@ $(document).ready(function() {
 						if($totalusernum>0 && isset($roomsareset) && isset($navisset)) {
 						echo "				<p align='justify' style='width: 450px;'>
 							<b>ALERT:</b>  Ensure atleast 1 user has allow access to settings.
-						<br><br><b>ALERT:</b>  Please make sure your users have access to their Homeroom.  you need to 'Allow' the room, or configure and add a '<a href='#ROOMGROUPS'>Room Group</a>' to each user.  If a user has no rooms allowed, they will have a redirect loop when they try to login.
+						<br><br><!--<b>ALERT:</b>  Please make sure your users have access to their Homeroom.  you need to 'Allow' the room, or configure and add a '<a href='#ROOMGROUPS'>Room Group</a>' to each user.  If a user has no rooms allowed, they will have a redirect loop when they try to login.-->
 						<br><br><h3><a class='orange' href='../login.php?user=choose' target='_parent'>Continue to Control Center</a></h3>
 						<br>
 				</p>"; }}?>
