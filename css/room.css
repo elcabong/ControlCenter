@@ -97,9 +97,9 @@ nav ul li:hover > ul,nav ul li:hover > #room-menu ul,#room-menu ul:hover { displ
 	
 #nav-menu ul {  padding-left:0px; }
 
-#nav-menu li,#nav-menu2 li ,#multiples li { display: inline;float: left;margin:0; }
+#nav-menu li,#nav-menu2 li { display: inline;float: left;margin:0; }
 
-#nav-menu ul a,#nav-menu li a,#nav-menu2 li a,#multiples li a {
+#nav-menu li a,#nav-menu2 li a {
   color: #ccc;
   text-decoration: none;
   display: block;
@@ -165,7 +165,7 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #multiples li a.selected { border-left:2px solid #0099ff; }
 
-#multiples > nav ul li ul li { background:url(../media/bgNav.png); }
+#multiples > nav ul li ul li, #multiples > nav ul li ul span { background:url(../media/bgNav.png); }
 
 #room-menu > ul li { width:180px;#position: relative;text-align:right;float:right;padding-left:5px; }
 
@@ -182,6 +182,10 @@ ul.sortable > li > a:first-child { width: 105px; }
 #roomList { position:absolute !important;top:50px;right:185px !important;width:50px; }
 
 #roomList li { float:right; }
+
+li.nowplaying { white-space:nowrap; }
+
+li.nowplaying > a { display:inline-block !important; float:none !important; }
 
 .pingicon { width:20px;height:20px; }
 

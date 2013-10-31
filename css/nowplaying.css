@@ -1,0 +1,29 @@
+body {background:#fff; color:#333; font: 12px/22px verdana, arial, sans-serif; height:100%; margin:0 auto; width:100%;}
+h1 {color:#3a6d8c; font-size:34px; line-height:40px; margin:0;}
+h3 {color:#3a6d8c; font-size:22px; line-height:26px; font-weight:normal; margin:0 0 8px 0;}
+
+/* Overlay */
+#simplemodal-overlay {background-color:#000;}
+
+/* Container */
+#simplemodal-container {margin:0 auto !important;left:0 !important;top:70px !important;position:relative !important; height:80% !important;max-height:700px !important; width:80% !important; max-width:600px !important; color:#bbb; background-color:#333; border:4px solid #444; padding:12px;}
+#simplemodal-container .simplemodal-data {padding:8px;}
+#simplemodal-container code {background:#141414; border-left:3px solid #65B43D; color:#bbb; display:block; font-size:12px; margin-bottom:12px; padding:4px 6px 6px;}
+#simplemodal-container a {color:#ddd;}
+#simplemodal-container a.modalCloseImg {background:url(../media/closemodal.png) no-repeat; width:25px; height:29px; display:inline; z-index:3200; position:absolute; top:-15px; right:-16px; cursor:pointer;}
+#simplemodal-container h3 {color:#84b8d9;}
+
+img {border:0;}
+#logo {margin-bottom:20px;}
+#logo h1 {color:#666; letter-spacing:-1px; font-weight:normal;}
+#logo h1 span {color:#444; font-weight:bold;}
+#logo .title {color:#999; font-size:12px;}
+.title > img { float:right;width:25%;margin:-60px 0 0 0;}
+#nowplayingcontainer {margin:0 auto;}
+#nowplayingcontent {clear:both;}
+#nowplayingfooter {clear:both; color:#888; margin:20px 0;}
+#nowplayingfooter a:link, #footer a:visited {color:#888; text-decoration:none;}
+#nowplayingfooter a:hover {color:#333; text-decoration:underline;}
+#nowplaying-info img {width:95%;margin:0 auto;display:block;}
+#images {margin:0 auto;width:520px;}
+.simplemodal-wrap {overflow:auto !important;}

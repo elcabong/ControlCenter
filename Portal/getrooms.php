@@ -39,9 +39,43 @@ require_once './controls-include.php';
 					} else { 
 						$status = "dead"; 
 					}
-					$xbmcmachine = $status;					
-					echo "<li>";
-					if($xbmcmachine == 'alive') { echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>"; } else { echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";}
+					$xbmcmachine = $status;
+					if($xbmcmachine == 'alive') {
+						$videotype='';
+						$jsoncontents = "${$ROOMXBMC}/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Player.GetItem%22,%20%22params%22:%20{%20%22properties%22:%20[%22title%22,%22episode%22,%22showtitle%22,%22season%22,%22year%22],%20%22playerid%22:%201%20},%20%22id%22:%20%221%22}";
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+						curl_setopt($ch, CURLOPT_URL, "$jsoncontents");
+						curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 1);
+						$output = curl_exec($ch);
+						$jsonnowplaying = json_decode($output,true);
+						if($jsonnowplaying['result']['item']['label']!='') {
+							echo "<li class='nowplaying'><a href='#' ip='${$ROOMXBMC}' class='title nowplaying-modal'>";
+							if($jsonnowplaying['result']['item']['type']!='') {
+								if($jsonnowplaying['result']['item']['type']=='unknown') {
+									echo ucfirst($jsonnowplaying['result']['item']['filetype']).": ";
+								} else {
+									echo ucfirst($jsonnowplaying['result']['item']['type']).": "; }
+									$videotype=$jsonnowplaying['result']['item']['type'];
+							}
+							$thelabel = $jsonnowplaying['result']['item']['label'];
+							$theshowtitle = $jsonnowplaying['result']['item']['showtitle'];
+							$thetitle = $jsonnowplaying['result']['item']['title'];
+							$theshowseason = $jsonnowplaying['result']['item']['season'];
+							$theshowepisode = str_pad($jsonnowplaying['result']['item']['episode'], 2, '0', STR_PAD_LEFT);
+							$theyear = $jsonnowplaying['result']['item']['year'];
+							if($videotype=="movie") {
+								echo $thetitle;
+								if(false !== stripos($thetitle, '$theyear')) { } else { echo " ($theyear)"; }
+							} else {
+								echo "$theshowtitle - $theshowseason$theshowepisode - $thetitle";
+							}
+							echo "</a><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>"; 
+						} else {
+							echo "<li><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>"; 
+						}
+					} else {
+						echo "<li><a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";}
 					echo "</li>";
 				}
 			$i++; }
@@ -61,6 +95,15 @@ require_once './controls-include.php';
 					document.getElementById('loading').style.display='none';	
 				}
 		   }
-		});				
+		});
 	}
+	jQuery(function ($) {
+		$('.nowplaying-modal').click(function (e) {
+			var thisip = $(this).attr('ip');
+			$('#nowplaying').load('nowplaying.php?ip='+thisip).modal({
+					opacity: 25,
+					overlayClose: true});
+			return false;
+		});
+	});	
 </script>
