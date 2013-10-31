@@ -210,7 +210,7 @@ $(document).ready(function() {
 			$(".clearcover").fadeIn(300);
 			coveron = 0;
 		}
-		clearInterval(showclearcovertimer);
+		//clearInterval(showclearcovertimer);
 	}
 
 	function hideclearcover() {
