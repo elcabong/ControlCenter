@@ -17,7 +17,7 @@ Please direct any comments to this thread:    http://forum.xbmc.org/showthread.p
 0.  install prerequisites:
 sudo apt-get install git  
 sudo apt-get install apache2  
-sudo apt-get install php5 libapache2-mod-php5 php5-curl   
+sudo apt-get install php5 libapache2-mod-php5 php5-curl sqlite3 libsqlite3-dev  
 sudo mkdir /var/www/ControlCenter 
 
   
