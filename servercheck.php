@@ -73,7 +73,13 @@ if(extension_loaded('curl')){
   $redirect = false;
 }
 echo "<tr><td>";
+if (!file_exists('./sessions/config.db')){
+echo "<tr><td>Trying to Create DB.</td></tr>";
 $configdb = new PDO('sqlite:./sessions/config.db');
+}
+if (!file_exists('./sessions/config.db')){
+echo "<tr><td>Can <b>NOT</b> create DB.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+}
 if (file_exists('./sessions/config.db')){
   $valid = true;
   if(!is_writable('./sessions/config.db')){
