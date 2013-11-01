@@ -444,7 +444,8 @@ $(document).ready(function() {
 				?>
 				<? $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 					if (false !== strpos($url,'setup')) {
-						if($totalusernum>0 && isset($roomsareset) && isset($navisset)) {
+						//if($totalusernum>0 && isset($roomsareset) && isset($navisset)) {
+						if($totalusernum>0) {   //  add alerts to see if they want to add rooms or nav if those are note set
 						echo "				<p align='justify' style='width: 450px;'>
 							<b>ALERT:</b>  Ensure atleast 1 user has allow access to settings.
 						<br><br><!--<b>ALERT:</b>  Please make sure your users have access to their Homeroom.  you need to 'Allow' the room, or configure and add a '<a href='#ROOMGROUPS'>Room Group</a>' to each user.  If a user has no rooms allowed, they will have a redirect loop when they try to login.-->

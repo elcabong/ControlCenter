@@ -80,12 +80,9 @@ echo "<tr><td>Trying to Create DB.</td></tr>";
 		if($configdb) { echo "<tr><td>DB created.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>"; }
 	} catch (PDOException $error) {
         echo "<tr><td>error connecting to , $file,  error message: , $error->getMessage(), </td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
-    }	
+		$redirect = false;
+    }
 }
-/*
-if (!file_exists('./sessions/config.db')){
-echo "<tr><td>Can <b>NOT</b> create DB.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
-}*/
 if (file_exists('./sessions/config.db')){
   $valid = true;
   if(!is_writable('./sessions/config.db')){
@@ -144,6 +141,7 @@ if (file_exists('./sessions/config.db')){
 	} catch(PDOException $e)
 		{
 			  echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+			  $redirect = false;
 		}
 
 	$totalusernum = 0;
@@ -155,6 +153,7 @@ if (file_exists('./sessions/config.db')){
         }}
 } } else{
     echo "sqlite db could not be created.  ensure sqlite3 is enabled.";
+	$redirect = false;
 }
 echo '</table>';
 if($redirect){

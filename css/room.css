@@ -99,7 +99,7 @@ nav ul li:hover > ul,nav ul li:hover > #room-menu ul,#room-menu ul:hover { displ
 
 #nav-menu li,#nav-menu2 li { display: inline;float: left;margin:0; }
 
-#nav-menu li a,#nav-menu2 li a {
+#nav-menu ul a,#nav-menu li a,#nav-menu2 li a {
   color: #ccc;
   text-decoration: none;
   display: block;
