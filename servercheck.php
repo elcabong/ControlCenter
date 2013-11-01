@@ -75,11 +75,17 @@ if(extension_loaded('curl')){
 echo "<tr><td>";
 if (!file_exists('./sessions/config.db')){
 echo "<tr><td>Trying to Create DB.</td></tr>";
-$configdb = new PDO('sqlite:./sessions/config.db');
+	try {
+		$configdb = new PDO('sqlite:./sessions/config.db');
+		if($configdb) { echo "<tr><td>DB created.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>"; }
+	} catch (PDOException $error) {
+        echo "<tr><td>error connecting to , $file,  error message: , $error->getMessage(), </td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+    }	
 }
+/*
 if (!file_exists('./sessions/config.db')){
 echo "<tr><td>Can <b>NOT</b> create DB.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
-}
+}*/
 if (file_exists('./sessions/config.db')){
   $valid = true;
   if(!is_writable('./sessions/config.db')){
