@@ -79,7 +79,7 @@ echo "<tr><td>Trying to Create DB.</td></tr>";
 		$configdb = new PDO('sqlite:./sessions/config.db');
 		if($configdb) { echo "<tr><td>DB created.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>"; }
 	} catch (PDOException $error) {
-        echo "<tr><td>error connecting to , $file,  error message: , $error->getMessage(), </td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+        echo "<tr><td>error connecting to the DB,  error message: , $error->getMessage(), </td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 		$redirect = false;
     }
 }
