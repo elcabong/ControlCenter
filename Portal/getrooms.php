@@ -24,14 +24,14 @@ require_once './controls-include.php';
 				   $disallowed = array('http://', 'https://');
 				   foreach($disallowed as $d) {
 					    if(strpos($ip, $d) === 0) {
-						   $ip = strtok(str_replace($d, '', $ip),':');
+						   $thisip = strtok(str_replace($d, '', $ip),':');
 					    }
 				    }
 					if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
-						$pingresult = exec("ping -n 1 -w 1 $ip", $output, $status);
+						$pingresult = exec("ping -n 1 -w 1 $thisip", $output, $status);
 						// echo 'This is a server using Windows!';
 					} else {
-						$pingresult = exec("/bin/ping -c1 -w1 $ip", $outcome, $status);
+						$pingresult = exec("/bin/ping -c1 -w1 $thisip", $outcome, $status);
 						// echo 'This is a server not using Windows!';
 					}
 					if ($status == "0") {
@@ -41,44 +41,46 @@ require_once './controls-include.php';
 					}
 					$xbmcmachine = $status;
 					if($xbmcmachine == 'alive') {
-						$videotype='';
-						$jsoncontents = "${$ROOMXBMC}/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Player.GetItem%22,%20%22params%22:%20{%20%22properties%22:%20[%22title%22,%22episode%22,%22showtitle%22,%22season%22,%22year%22],%20%22playerid%22:%201%20},%20%22id%22:%20%221%22}";
-						$ch = curl_init();
-						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-						curl_setopt($ch, CURLOPT_URL, "$jsoncontents");
-						curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 1);
-						$output = curl_exec($ch);
-						$jsonnowplaying = json_decode($output,true);
-						if($jsonnowplaying['result']['item']['label']!='') {
-							echo "<li class='nowplaying'><a href='#' ip='${$ROOMXBMC}' class='title nowplaying-modal'>";
-							if($jsonnowplaying['result']['item']['type']!='') {
-								if($jsonnowplaying['result']['item']['type']=='unknown') {
-									echo ucfirst($jsonnowplaying['result']['item']['filetype']).": ";
-								} else {
-									echo ucfirst($jsonnowplaying['result']['item']['type']).": "; }
-									$videotype=$jsonnowplaying['result']['item']['type'];
-							}
-							$thelabel = $jsonnowplaying['result']['item']['label'];
-							$theshowtitle = $jsonnowplaying['result']['item']['showtitle'];
-							$thetitle = $jsonnowplaying['result']['item']['title'];
-							$theshowseason = $jsonnowplaying['result']['item']['season'];
-							$theshowepisode = str_pad($jsonnowplaying['result']['item']['episode'], 2, '0', STR_PAD_LEFT);
-							$theyear = $jsonnowplaying['result']['item']['year'];
-							if($videotype=="movie") {
-								echo $thetitle;
-								if(false !== stripos($thetitle, '$theyear')) { } else { echo " ($theyear)"; }
-							} else {
-								echo "$theshowtitle - $theshowseason$theshowepisode - $thetitle";
-							}
-							echo "</a><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>"; 
+						//$ip = ${$ROOMXBMC};
+						include "nowplayinginfo.php";
+						if(empty($jsonactiveplayer['result'])) {
+							echo "<li><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>";
 						} else {
-							echo "<li><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>"; 
+							if($activeplayerid=='0' || $activeplayerid=='1' || $activeplayerid=='2') {
+								echo "<li class='nowplaying'><a href='#' ip='$ip' class='nowplaying-modal'>";
+							}
+							if($activeplayerid==0) {
+								if($filetype=="unknown") {
+									echo "File: ";
+									echo $thelabel;
+								} elseif($filetype=="song") {
+									echo "Song: ";
+									if(false !== stripos($thealbum, '$theyear')) { echo "$thealbum"; } else { echo "$thealbum ($theyear)"; }
+									echo " - ".$thetitle;
+								}
+							} elseif($activeplayerid==1) {
+								if($filetype=="unknown") {
+									echo "File: ";
+									echo $thelabel;
+								} elseif($filetype=="movie") {
+									echo "Movie: ";
+									echo $thetitle;
+									if(false !== stripos($thetitle, '$theyear')) { } else { echo " ($theyear)"; }
+								} else {
+									echo "Episode: ";
+									echo "$theshowtitle - $theshowseason$theshowepisode - $thetitle";
+								}
+							} elseif($activeplayerid==2) {
+								echo "pics";
+							}
+							echo "</a><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>"; 
 						}
 					} else {
-						echo "<li><a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";}
-					echo "</li>";
+						echo "<li><a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a></li>";
+					}
 				}
-			$i++; }
+			$i++;
+			}
 ?>
 <script>
 	function wakemachine(mac) {
