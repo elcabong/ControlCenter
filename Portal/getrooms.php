@@ -108,4 +108,5 @@ require_once './controls-include.php';
 			return false;
 		});
 	});	
+	reSizeNowPlaying();
 </script>

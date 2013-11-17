@@ -34,6 +34,6 @@
 		$timeleft = $thetotaltimesec - $currenttimesec;
 		$endtime = date("h:i a", time() + $timeleft);
 		$timenow = date("h:i a", time());
-		echo "Current Time: $timenow";
-		echo "&nbsp;&nbsp;||&nbsp;&nbsp;End Time: $endtime";
+		echo         "<img src='../media/time-now.png'/> <span>$timenow</span>";
+		echo "<Br><img class='end' src='../media/time-end.png'/> <span class='end'>$endtime</span>";
 ?>
