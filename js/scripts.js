@@ -243,16 +243,6 @@ function reSizeWindow() {
     theselectedpanel = $('a.panel.selected').attr('href');
 	$('#wrapper').scrollTo(theselectedpanel, 0);
 	reSizeNowPlaying();
-	/*var rw = $('#room-menu > ul').width();
-	var rwx = rw+"px";
-	$('#roomList').css("right",rwx);
-	var w = window.innerWidth;
-	var npw = w - rw;
-	var npwx = npw+"px";
-	var npmw = npw - 80;
-	var npmwx = npmw+"px";
-	$('li.nowplaying').css("width",npwx);
-	$('.nowplaying-modal').css("width",npmwx);*/
 };
 
 function reSizeNowPlaying() {
@@ -266,4 +256,5 @@ function reSizeNowPlaying() {
 	var npmwx = npmw+"px";
 	$('li.nowplaying').css("width",npwx);
 	$('.nowplaying-modal').css("width",npmwx);
+	$('.sendnowplaying').css("width",npmwx);
 };

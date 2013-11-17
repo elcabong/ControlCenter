@@ -12,7 +12,10 @@
 			if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
 				header("Location: login.php");
 				exit; }
-require_once './controls-include.php';	
+			if(isset($_SESSION['room'])) {
+			$roomnum = $_SESSION['room'];
+			}
+			require_once './controls-include.php';	
 			$i = 1;
 			while($i<=$TOTALROOMS) {
 				$ip;
@@ -21,6 +24,7 @@ require_once './controls-include.php';
 				$theperm = "USRPR$i";
 				if(!empty(${$ROOMXBMC}) && ${$theperm} == "1"){
 					$ip = ${$ROOMXBMC};
+					if($roomnum == $i) { $nowplayingip = $ip; }
 				   $disallowed = array('http://', 'https://');
 				   foreach($disallowed as $d) {
 					    if(strpos($ip, $d) === 0) {
@@ -43,37 +47,44 @@ require_once './controls-include.php';
 					if($xbmcmachine == 'alive') {
 						//$ip = ${$ROOMXBMC};
 						include "nowplayinginfo.php";
-						if(empty($jsonactiveplayer['result'])) {
+						if(empty($jsoncheckxbmc['result'])) {
 							echo "<li><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>";
 						} else {
-							if($activeplayerid=='0' || $activeplayerid=='1' || $activeplayerid=='2') {
-								echo "<li class='nowplaying'><a href='#' ip='$ip' class='nowplaying-modal'>";
-							}
-							if($activeplayerid==0) {
-								if($filetype=="unknown") {
-									echo "File: ";
-									echo $thelabel;
-								} elseif($filetype=="song") {
-									echo "Song: ";
-									if(false !== stripos($thealbum, '$theyear')) { echo "$thealbum"; } else { echo "$thealbum ($theyear)"; }
-									echo " - ".$thetitle;
+							if(empty($jsonactiveplayer['result'])) {
+								if($nowplayingip != $ip) {
+									echo "<li class='nowplaying'><a href='#' ip='$ip' class='sendnowplaying'>send</a>";
+								} else { echo "<li>"; }
+								echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>";
+							} else {
+								if($activeplayerid=='0' || $activeplayerid=='1' || $activeplayerid=='2') {
+									echo "<li class='nowplaying'><a href='#' ip='$ip' class='nowplaying-modal'>";
+									if($activeplayerid==0) {
+										if($filetype=="unknown") {
+											echo "File: ";
+											echo $thelabel;
+										} elseif($filetype=="song") {
+											echo "Song: ";
+											if(false !== stripos($thealbum, '$theyear')) { echo "$thealbum"; } else { echo "$thealbum ($theyear)"; }
+											echo " - ".$thetitle;
+										}
+									} elseif($activeplayerid==1) {
+										if($filetype=="unknown") {
+											echo "File: ";
+											echo $thelabel;
+										} elseif($filetype=="movie") {
+											echo "Movie: ";
+											echo $thetitle;
+											if(false !== stripos($thetitle, '$theyear')) { } else { echo " ($theyear)"; }
+										} else {
+											echo "Episode: ";
+											echo "$theshowtitle - $theshowseason$theshowepisode - $thetitle";
+										}
+									} elseif($activeplayerid==2) {
+										echo "pics";
+									}
+									echo "</a><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>"; 
 								}
-							} elseif($activeplayerid==1) {
-								if($filetype=="unknown") {
-									echo "File: ";
-									echo $thelabel;
-								} elseif($filetype=="movie") {
-									echo "Movie: ";
-									echo $thetitle;
-									if(false !== stripos($thetitle, '$theyear')) { } else { echo " ($theyear)"; }
-								} else {
-									echo "Episode: ";
-									echo "$theshowtitle - $theshowseason$theshowepisode - $thetitle";
-								}
-							} elseif($activeplayerid==2) {
-								echo "pics";
 							}
-							echo "</a><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>"; 
 						}
 					} else {
 						echo "<li><a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a></li>";
@@ -108,5 +119,21 @@ require_once './controls-include.php';
 			return false;
 		});
 	});	
+	var from = "<? echo $nowplayingip; ?>";
+	jQuery(function ($) {
+		$('.sendnowplaying').click(function (e) {
+			var thisip = $(this).attr('ip');
+			$.ajax({
+				type: "POST",
+				url : "nowplayingsend.php?to="+thisip+"&from="+from+"",
+				data: 0, // data to send to above script page if any
+				cache: false	
+			//success : function (data) {
+				//$("#contentArea").html(data);
+			//	}
+			});
+			return false;
+		});
+	});		
 	reSizeNowPlaying();
 </script>

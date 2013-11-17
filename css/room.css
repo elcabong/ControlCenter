@@ -185,7 +185,7 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 li.nowplaying { white-space:nowrap;overflow:hidden;height:48px;max-width:600px; }
 
-li.nowplaying > .nowplaying-modal { white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px; }
+li.nowplaying > .nowplaying-modal,li.nowplaying > .sendnowplaying { white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px; }
 
 li.nowplaying > a { display:inline-block !important; #float:none !important; }
 

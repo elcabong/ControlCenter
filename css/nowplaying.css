@@ -18,7 +18,7 @@ img {border:0;}
 #logo h1 {color:#666; letter-spacing:-1px; font-weight:normal;}
 #logo h1 span {color:#444; font-weight:bold;}
 #logo .title {font-size:12px;clear:both;}
-.title > img { float:right;width:25%;#margin:-60px 0 0 0;margin:10px 15px 0 0;top:0;right:0;}
+.title > img { float:right;width:25%;#margin:-60px 0 0 0;margin:10px 0px 0 0;top:0;right:0;}
 #nowplayingcontainer {margin:0 auto;}
 #nowplayingcontent {clear:both;}
 #nowplayingfooter {clear:both; color:#888; margin:20px 0;}
@@ -32,7 +32,7 @@ img {border:0;}
 #timeUpdateField > img.end { margin:-15px 0 0 0; }
 #timeUpdateField > span { float:left;font-weight:bold;margin-top:-2px; }
 #timeUpdateField > span.end { margin-top:-6px; }
-#timeUpdateField { float:right;margin:0 15px 0 0; }
+#timeUpdateField { float:right;margin:0 5px 0 0; }
 
 
 @media all and (max-width: 500px) {

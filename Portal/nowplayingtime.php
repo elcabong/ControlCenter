@@ -23,7 +23,7 @@
 				echo "Playback Ended";
 				exit;
 			}
-	}		
+	}
 		$thecurtime = implode(', ', $jsonnowplayingtime['result']['time']);
 		$thetotaltime = implode(', ', $jsonnowplayingtime['result']['totaltime']);
 		$thecurtime = explode(',',$thecurtime);
@@ -34,6 +34,8 @@
 		$timeleft = $thetotaltimesec - $currenttimesec;
 		$endtime = date("h:i a", time() + $timeleft);
 		$timenow = date("h:i a", time());
+		$currenttimesec+=1.55;
+		$playerpercentage = round($currenttimesec / $thetotaltimesec * 100,1, PHP_ROUND_HALF_UP);
 		echo         "<img src='../media/time-now.png'/> <span>$timenow</span>";
 		echo "<Br><img class='end' src='../media/time-end.png'/> <span class='end'>$endtime</span>";
 ?>
