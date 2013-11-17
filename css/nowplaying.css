@@ -14,16 +14,38 @@ h3 {color:#3a6d8c; font-size:22px; line-height:26px; font-weight:normal; margin:
 #simplemodal-container h3 {color:#84b8d9;}
 
 img {border:0;}
-#logo {margin-bottom:20px;}
+#logo {margin:-8px -8px 0;padding:10px 10px 15px;background-color:#1e1e1e;}
 #logo h1 {color:#666; letter-spacing:-1px; font-weight:normal;}
 #logo h1 span {color:#444; font-weight:bold;}
-#logo .title {color:#999; font-size:12px;}
-.title > img { float:right;width:25%;margin:-60px 0 0 0;}
+#logo .title {font-size:12px;clear:both;}
+.title > img { float:right;width:25%;#margin:-60px 0 0 0;margin:10px 15px 0 0;top:0;right:0;}
 #nowplayingcontainer {margin:0 auto;}
 #nowplayingcontent {clear:both;}
 #nowplayingfooter {clear:both; color:#888; margin:20px 0;}
 #nowplayingfooter a:link, #footer a:visited {color:#888; text-decoration:none;}
 #nowplayingfooter a:hover {color:#333; text-decoration:underline;}
+#nowplaying-info {clear:both;}
 #nowplaying-info img {width:95%;margin:0 auto;display:block;}
-#images {margin:0 auto;width:520px;}
+#images {margin:0 auto;width:100%;}
 .simplemodal-wrap {overflow:auto !important;}
+#timeUpdateField > img { height:40px;float:left;clear:both;margin:-10px 0 0 0; }
+#timeUpdateField > img.end { margin:-15px 0 0 0; }
+#timeUpdateField > span { float:left;font-weight:bold;margin-top:-2px; }
+#timeUpdateField > span.end { margin-top:-6px; }
+#timeUpdateField { float:right;margin:0 15px 0 0; }
+
+
+@media all and (max-width: 500px) {
+#logo > h1 { font-size:20pt; }
+#timeUpdateField { margin:0 0 0 0 !important; }
+.title > img { margin:10px 5px 0 0; }
+}
+
+@media all and (max-width: 390px) {
+#logo > h1 { font-size:15pt; }
+.title > img { margin:10px 0 0 0; }
+}
+
+@media all and (max-width: 320px) {
+#logo > h1 { font-size:13pt; }
+}

@@ -25,6 +25,8 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 	<link rel='stylesheet' type='text/css' href="../css/room.css?<? echo date ("m/d/Y-H.i.s", filemtime('../css/room.css'));?>">
 	<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.scrollTo.js"></script>
+	<script type="text/javascript" src="../js/jquery.simplemodal.js"></script>	
+	<script type="text/javascript" src="../js/jquery.touchwipe.js"></script>
 	<script type="text/javascript" src="../js/scripts.js?<? echo date ("m/d/Y-H.i.s", filemtime('../js/scripts.js'));?>"></script>
 	<script type="text/javascript">
 		if (window.navigator.standalone) {
@@ -249,7 +251,20 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 				document.getElementById('loading').style.display='none';	
 			}			
 		});
-	<? } ?>	
+	<? } ?>
+$(document).ready(function() {
+    $("#room-menu > ul").touchwipe({
+        wipeLeft: function(e) {
+            $('#room-menu > ul').css("width",'180px');
+			reSizeNowPlaying();
+        },
+        wipeRight: function(e) {
+            $('#room-menu > ul').css("width",'50px');
+			reSizeNowPlaying();
+        }
+    });
+});
 </script>
+<div id="nowplaying"></div>
 </body>
 </html>
