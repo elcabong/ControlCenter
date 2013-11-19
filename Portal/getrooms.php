@@ -196,12 +196,12 @@
 
 			$(".nowplaying-modal").bind('mouseleave touchend', function() {
 			clearTimeout(refreshTheRooms);
-			refreshTheRooms = setTimeout(refreshRooms, 1);
+			refreshTheRooms = setTimeout(refreshRooms2, 1);
 			});
 
-			function refreshRooms() {
+			function refreshRooms2() {
 			$("#roomList").load("./getrooms.php");
-			refreshTheRooms = setTimeout(refreshRooms, 3500);
+			refreshTheRooms = setTimeout(refreshRooms2, 3500);
 			}
 			
 </script>
