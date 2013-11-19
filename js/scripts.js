@@ -174,7 +174,7 @@ $(document).ready(function() {
 		return false;
 	});	
 	
-	$(".clearcover").bind('mousedown touchstart', function() {	
+	$(".clearcover").bind('mousedown touchstart', function() {
 	hideclearcoverandmenus();
 	});
 
@@ -229,8 +229,7 @@ $(document).ready(function() {
 		$(".clearcover").fadeOut(300);
 		$('.sortable.secondary').addClass('hidden');
 		$('.clearcover').simulate('click');
-	}
-
+	}	
 });
 
 var resizeTimer;
@@ -253,7 +252,7 @@ function reSizeNowPlaying() {
 	//if(w < 500) {
 	var npw = w - rw;
 	var npwx = npw+"px";
-	var npmw = npw - 80;
+	var npmw = npw - 60;
 	var npmwx = npmw+"px";
 	$('li.nowplaying').css("width",npwx);
 	$('#roomList > li > span > .nowplaying-modal').css("width",npmwx);

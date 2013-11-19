@@ -47,15 +47,14 @@
 					if($xbmcmachine == 'alive') {
 						include "nowplayinginfo.php";
 						if(empty($jsoncheckxbmc['result'])) {
-							echo "<li><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>";
+							echo "<li class='nowplaying'><a href='#' class='pingicon'><img src='../media/orange.png' title='online' style='height:20px;'/></a></li>";
 						} else {
 							if(empty($jsonactiveplayer['result'])) {
-								if($nowplayingip != $ip) {
 									echo "<li class='nowplaying'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";
-									echo "<span class='sendcontrols'><a href='#' ip='$ip' class='sendnowplaying' sendtype='start' room='$i'>start</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='send' room='$i'>send</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='clone' room='$i'>clone</a></span></li>";
-								} else {
-									echo "<li><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>";
+								if($nowplayingip != $ip) {
+									echo "<span class='sendcontrols'><a href='#' ip='$ip' class='sendnowplaying' sendtype='start' room='$i'>start</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='send' room='$i'>send</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='clone' room='$i'>clone</a></span>";
 								}
+									echo "</li>";
 							} else {
 								if($activeplayerid=='0' || $activeplayerid=='1' || $activeplayerid=='2') {
 									if($nowplayingip == $ip) {
@@ -68,7 +67,7 @@
 									</script>
 									<?
 									}
-									echo "<li class='nowplaying'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' class='nowplaying-modal'>";
+									echo "<li class='nowplaying'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' class='nowplaying-modal'><p class='scrolling'>";
 									if($activeplayerid==0) {
 										if($filetype=="unknown") {
 											echo "File: ";
@@ -93,12 +92,12 @@
 									} elseif($activeplayerid==2) {
 										echo "pics";
 									}
-									echo "</a></span></li>"; 
+									echo "</p></a></span></li>"; 
 								}
 							}
 						}
 					} else {
-						echo "<li><a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a></li>";
+						echo "<li class='nowplaying'><a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a></li>";
 					}
 				}
 			$i++;
@@ -158,4 +157,51 @@
 		});
 	});		
 	reSizeNowPlaying();
+	
+  var elements = document.getElementsByClassName('scrolling');
+  for(var i=0; i < elements.length; i++) {
+     var thescrollingelement = elements[i];
+		thescrollingelement.className = 'hiding scrolling';
+
+		thescrollingelement.onmouseover = thescrollingelement.onmouseout = thescrollingelement.touchstart = function (e) {
+			e = e || window.event;
+			e = e.type === 'mouseover';
+			clearTimeout(slide_timer);
+			this.className = e ? 'scrolling now' : 'hiding scrolling';
+			if (e) {
+				slide();
+			} else {
+				this.scrollLeft = 0;
+			}
+		};
+	}
+
+		var slide_timer;
+			slide = function () {
+			  var newelements = document.getElementsByClassName('scrolling now');
+			  for(var i=0; i < newelements.length; i++) {
+				 var thiscrollingelement = newelements[i];			
+				max = thiscrollingelement.scrollWidth;
+				thiscrollingelement.scrollLeft += 1;
+					if (thiscrollingelement.scrollLeft <= max) {
+						slide_timer = setTimeout(slide, 30);
+						return;
+					} 
+				};
+			}
+
+			$(".nowplaying-modal").bind('mouseenter touchstart', function() {
+			clearTimeout(refreshTheRooms);clearTimeout(refreshTheRooms);
+			});	
+
+			$(".nowplaying-modal").bind('mouseleave touchend', function() {
+			clearTimeout(refreshTheRooms);
+			refreshTheRooms = setTimeout(refreshRooms, 1);
+			});
+
+			function refreshRooms() {
+			$("#roomList").load("./getrooms.php");
+			refreshTheRooms = setTimeout(refreshRooms, 3500);
+			}
+			
 </script>
