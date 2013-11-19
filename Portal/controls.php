@@ -233,9 +233,9 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 		$(document).ready(function() {
 			function refreshRooms() {
 			$("#roomList").load("./getrooms.php");
-			setTimeout(refreshRooms, 3500);
+			refreshTheRooms = setTimeout(refreshRooms, 3500);
 			}
-			setTimeout(refreshRooms, 1000);
+			refreshTheRooms = setTimeout(refreshRooms, 1000);
 			setTimeout(func, 4500);
 			function func() {
 				document.getElementById('loading').style.display='none';

@@ -129,8 +129,6 @@
 			?> </div>
 		</div>
 	</div>
-	<div id='nowplayingfooter'>
-	</div>
 <script>
 	timer();
 	function timer()

@@ -1,4 +1,18 @@
 <?
+						$checkxbmc = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22JSONRPC.Ping%22%2C%22id%22%3A%201}";
+						$ch = curl_init();
+						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+						curl_setopt($ch, CURLOPT_URL, "$checkxbmc");
+						curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 1);
+						$output = curl_exec($ch);
+						$jsoncheckxbmc = json_decode($output,true);
+						if(empty($jsoncheckxbmc['result'])) {
+							//echo "There is nothing currently playing.";
+							return;
+						}
+
+
+
 						$filetype='';
 						// get active player
 						$getactiveplayer = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22Player.GetActivePlayers%22%2C%22id%22%3A%201}";
@@ -36,7 +50,7 @@
 								return;
 							} elseif($activeplayerid==1) {
 								$filetype='';
-								$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Player.GetItem%22,%20%22params%22:%20{%20%22properties%22:%20[%22title%22,%22episode%22,%22showtitle%22,%22season%22,%22year%22],%20%22playerid%22:%201%20},%20%22id%22:%20%221%22}";
+								$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Player.GetItem%22,%20%22params%22:%20{%20%22properties%22:%20[%22file%22,%22title%22,%22episode%22,%22showtitle%22,%22season%22,%22year%22],%20%22playerid%22:%201%20},%20%22id%22:%20%221%22}";
 								$ch = curl_init();
 								curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 								curl_setopt($ch, CURLOPT_URL, "$jsoncontents");
@@ -44,6 +58,7 @@
 								$output = curl_exec($ch);
 								$jsonnowplaying = json_decode($output,true);
 								if($jsonnowplaying['result']['item']['label']!='') {
+									$filepath=$jsonnowplaying['result']['item']['file'];
 									$filetype=$jsonnowplaying['result']['item']['type'];
 									$thelabel = $jsonnowplaying['result']['item']['label'];
 									$theshowtitle = $jsonnowplaying['result']['item']['showtitle'];

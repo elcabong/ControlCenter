@@ -119,7 +119,7 @@ nav ul li:hover > ul,nav ul li:hover > #room-menu ul,#room-menu ul:hover { displ
 
 .panel.unloaded:hover { opacity:.7; }
 
-#nav-menu li a:hover,#nav-menu2 li a:hover {
+#nav-menu li a:hover,#nav-menu2 li a:hover,#nav-menu2 li a > p:hover {
   color: #0099ff;
   text-shadow: rgba(255,255,255,.5) 0px 1px 10px;
 }
@@ -163,7 +163,7 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #multiples li a { padding:0px 15px;margin:6.5px 0;text-align:left;white-space:nowrap; }
 
-#multiples li a.selected { border-left:2px solid #0099ff; }
+#multiples li a.selected { border-left:4px solid #0099ff; }
 
 #multiples > nav ul li ul li, #multiples > nav ul li ul span { background:url(../media/bgNav.png); }
 
@@ -183,13 +183,26 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #roomList li { float:right; }
 
-li.nowplaying { white-space:nowrap;overflow:hidden;height:48px;max-width:600px; }
+li.nowplaying { white-space:nowrap;overflow:hidden;height:48px;max-width:600px;min-width:285px; }
 
-li.nowplaying > .nowplaying-modal { white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px; }
+li.nowplaying > span > .nowplaying-modal,li.nowplaying > span > .sendnowplaying { white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px;float:right !important; }
 
 li.nowplaying > a { display:inline-block !important; #float:none !important; }
 
-.pingicon { width:20px;height:20px; }
+.nowplaying > .pingicon { width:20px;height:20px;float:right !important }
+
+.nowplaying > span { #margin-right:55px;#float:right; }
+
+.sendcontrols { display:none; }
+
+.hiding { text-overflow:ellipsis; }
+
+.scrolling { overflow:hidden; white-space:nowrap; }
+
+.nowplaying-modal { margin:0 !important;padding:0 !important; }
+
+.nowplaying-modal > p { margin:.4em 0 1.5em; }
+
 
 /*---------------------/
   CONTENT FRAME     /
