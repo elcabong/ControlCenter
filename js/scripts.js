@@ -250,11 +250,12 @@ function reSizeNowPlaying() {
 	var rwx = rw+"px";
 	$('#roomList').css("right",rwx);
 	var w = window.innerWidth;
+	//if(w < 500) {
 	var npw = w - rw;
 	var npwx = npw+"px";
 	var npmw = npw - 80;
 	var npmwx = npmw+"px";
 	$('li.nowplaying').css("width",npwx);
-	$('.nowplaying-modal').css("width",npmwx);
-	$('.sendnowplaying').css("width",npmwx);
+	$('#roomList > li > span > .nowplaying-modal').css("width",npmwx);
+	//}
 };

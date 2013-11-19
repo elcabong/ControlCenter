@@ -45,19 +45,30 @@
 					}
 					$xbmcmachine = $status;
 					if($xbmcmachine == 'alive') {
-						//$ip = ${$ROOMXBMC};
 						include "nowplayinginfo.php";
 						if(empty($jsoncheckxbmc['result'])) {
 							echo "<li><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>";
 						} else {
 							if(empty($jsonactiveplayer['result'])) {
 								if($nowplayingip != $ip) {
-									echo "<li class='nowplaying'><a href='#' ip='$ip' class='sendnowplaying'>send</a>";
-								} else { echo "<li>"; }
-								echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>";
+									echo "<li class='nowplaying'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";
+									echo "<span class='sendcontrols'><a href='#' ip='$ip' class='sendnowplaying' sendtype='start' room='$i'>start</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='send' room='$i'>send</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='clone' room='$i'>clone</a></span></li>";
+								} else {
+									echo "<li><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>";
+								}
 							} else {
 								if($activeplayerid=='0' || $activeplayerid=='1' || $activeplayerid=='2') {
-									echo "<li class='nowplaying'><a href='#' ip='$ip' class='nowplaying-modal'>";
+									if($nowplayingip == $ip) {
+									?>
+									<script>
+										  var cols =     document.getElementsByClassName('sendcontrols');
+										  for(i=0; i<cols.length; i++) {
+											cols[i].style.display =    'block';
+										  }
+									</script>
+									<?
+									}
+									echo "<li class='nowplaying'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' class='nowplaying-modal'>";
 									if($activeplayerid==0) {
 										if($filetype=="unknown") {
 											echo "File: ";
@@ -82,7 +93,7 @@
 									} elseif($activeplayerid==2) {
 										echo "pics";
 									}
-									echo "</a><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a></li>"; 
+									echo "</a></span></li>"; 
 								}
 							}
 						}
@@ -123,14 +134,25 @@
 	jQuery(function ($) {
 		$('.sendnowplaying').click(function (e) {
 			var thisip = $(this).attr('ip');
+			var thistype = $(this).attr('sendtype');
+			var theroomnum = $(this).attr('room');
+			var usernumber = <?echo $usernumber; ?>;
 			$.ajax({
 				type: "POST",
-				url : "nowplayingsend.php?to="+thisip+"&from="+from+"",
+				url : "nowplayingsend.php?to="+thisip+"&from="+from+"&sendtype="+thistype+"",
 				data: 0, // data to send to above script page if any
-				cache: false	
-			//success : function (data) {
-				//$("#contentArea").html(data);
-			//	}
+				cache: false,
+				success : function (data) {
+					if(thistype=="send" || thistype=="start") {
+						document.getElementById('loading').style.display='block';
+						var today = new Date();
+						var expire = new Date();
+						expire.setTime(today.getTime() + 3600000*24*5);
+						document.cookie="currentRoom"+usernumber+"="+ escape(theroomnum) + ";expires="+expire.toGMTString()+";path=/";
+						$("#firstroomprogramlink").removeClass('unloaded');
+						$("#room-menu").load("./room-chooser.php");
+					}
+				}
 			});
 			return false;
 		});
