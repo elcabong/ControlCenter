@@ -249,12 +249,28 @@ function reSizeNowPlaying() {
 	var rwx = rw+"px";
 	$('#roomList').css("right",rwx);
 	var w = window.innerWidth;
-	//if(w < 500) {
+	
+	var maxitemw = 0;
+	 var newelements = document.getElementsByClassName('scrolling');
+	 for(var i=0; i < newelements.length; i++) {
+		 var thiscrollingelement = newelements[i];			
+		max = thiscrollingelement.scrollWidth;
+		if(max > maxitemw) { var maxitemw = max; }
+		};	
+	if(w < (maxitemw + rw)) {
 	var npw = w - rw;
 	var npwx = npw+"px";
 	var npmw = npw - 60;
 	var npmwx = npmw+"px";
 	$('li.nowplaying').css("width",npwx);
 	$('#roomList > li > span > .nowplaying-modal').css("width",npmwx);
-	//}
+	} else {
+	if(maxitemw == 0 || maxitemw < 250) { maxitemw = 250; }
+	var npmw = maxitemw;
+	var npmwx = npmw+"px";
+	var npw = npmw + 60;
+	var npwx = npw+"px";
+	$('li.nowplaying').css("width",npwx);
+	$('#roomList > li > span > .nowplaying-modal').css("width",npmwx);	
+	}
 };

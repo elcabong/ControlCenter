@@ -92,7 +92,7 @@
 									} elseif($activeplayerid==2) {
 										echo "pics";
 									}
-									echo "</p></a></span></li>"; 
+									echo "</p></a></span></li>";
 								}
 							}
 						}
@@ -201,7 +201,7 @@
 
 			function refreshRooms2() {
 			$("#roomList").load("./getrooms.php");
-			refreshTheRooms = setTimeout(refreshRooms2, 3500);
+			refreshTheRooms = setTimeout(refreshRooms2, 1500);
 			}
 			
 </script>

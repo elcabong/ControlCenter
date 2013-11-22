@@ -1,4 +1,4 @@
-<?
+<?  if(isset($_GET['ip'])) { $ip=$_GET['ip']; }
 						$checkxbmc = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22JSONRPC.Ping%22%2C%22id%22%3A%201}";
 						$ch = curl_init();
 						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -10,8 +10,6 @@
 							//echo "There is nothing currently playing.";
 							return;
 						}
-
-
 
 						$filetype='';
 						// get active player
@@ -47,6 +45,7 @@
 									$theyear = $jsonnowplaying['result']['item']['year'];
 									$thesongid = $jsonnowplaying['result']['item']['id'];
 								}
+								// info for playlist items
 								return;
 							} elseif($activeplayerid==1) {
 								$filetype='';
@@ -57,6 +56,7 @@
 								curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 1);
 								$output = curl_exec($ch);
 								$jsonnowplaying = json_decode($output,true);
+								//print_r($jsonnowplaying);
 								if($jsonnowplaying['result']['item']['label']!='') {
 									$filepath=$jsonnowplaying['result']['item']['file'];
 									$filetype=$jsonnowplaying['result']['item']['type'];
@@ -67,6 +67,19 @@
 									$theshowepisode = str_pad($jsonnowplaying['result']['item']['episode'], 2, '0', STR_PAD_LEFT);
 									$theyear = $jsonnowplaying['result']['item']['year'];
 								}
+								$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Playlist.GetItems%22,%20%22params%22:%20{%20%22playlistid%22:%201%20},%20%22id%22:%20%221%22}";
+								$ch = curl_init();
+								curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+								curl_setopt($ch, CURLOPT_URL, "$jsoncontents");
+								curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 1);
+								$output = curl_exec($ch);
+								$jsonplaylist = json_decode($output,true);
+								//print_r($jsonplaylist);
+								//$test = in_array("$thelabel",$jsonplaylist);
+							/*	echo $thelabel;
+								if(in_array_like("$thelabel",$jsonplaylist)){
+								echo "in the array";
+								} else { echo "not in array"; }*/
 								return;
 							} elseif($activeplayerid==2) {
 								echo "pics";

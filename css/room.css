@@ -183,7 +183,7 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #roomList li { float:right; }
 
-li.nowplaying { white-space:nowrap;overflow:hidden;height:48px;max-width:600px;min-width:285px; }
+li.nowplaying { white-space:nowrap;overflow:hidden;height:48px;max-width:600px;min-width:50px; }
 
 li.nowplaying > span > .nowplaying-modal,li.nowplaying > span > .sendnowplaying { white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px;float:right !important; }
 
