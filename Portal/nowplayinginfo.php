@@ -45,7 +45,15 @@
 									$theyear = $jsonnowplaying['result']['item']['year'];
 									$thesongid = $jsonnowplaying['result']['item']['id'];
 								}
+								$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Playlist.GetItems%22,%20%22params%22:%20{%20%22playlistid%22:%200%20},%20%22id%22:%20%221%22}";
+								$ch = curl_init();
+								curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+								curl_setopt($ch, CURLOPT_URL, "$jsoncontents");
+								curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 1);
+								$output = curl_exec($ch);
+								$jsonplaylist = json_decode($output,true);								
 								// info for playlist items
+							//	print_r($jsonplaylist);
 								return;
 							} elseif($activeplayerid==1) {
 								$filetype='';

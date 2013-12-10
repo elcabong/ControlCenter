@@ -70,23 +70,23 @@
 									echo "<li class='nowplaying'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' class='nowplaying-modal'><p class='scrolling'>";
 									if($activeplayerid==0) {
 										if($filetype=="unknown") {
-											echo "File: ";
+											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-5px;'>";
 											echo $thelabel;
 										} elseif($filetype=="song") {
-											echo "Song: ";
+											echo "<img src='../media/DefaultMusic.png' height='35px' style='float:left;margin-top:-5px;'>";
 											if(false !== stripos($thealbum, '$theyear')) { echo "$thealbum"; } else { echo "$thealbum ($theyear)"; }
 											echo " - ".$thetitle;
 										}
 									} elseif($activeplayerid==1) {
 										if($filetype=="unknown") {
-											echo "File: ";
+											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-5px;'>";
 											echo $thelabel;
 										} elseif($filetype=="movie") {
-											echo "Movie: ";
+											echo "<img src='../media/DefaultMovies.png' height='35px' style='float:left;margin-top:-5px;'>";
 											echo $thetitle;
 											if(false !== stripos($thetitle, '$theyear')) { } else { echo " ($theyear)"; }
 										} else {
-											echo "Episode: ";
+											echo "<img src='../media/DefaultTVShows.png' height='35px' style='float:left;margin-top:-5px;'>";
 											echo "$theshowtitle - $theshowseason$theshowepisode - $thetitle";
 										}
 									} elseif($activeplayerid==2) {
@@ -157,7 +157,7 @@
 		});
 	});		
 	reSizeNowPlaying();
-	
+	/*
   var elements = document.getElementsByClassName('scrolling');
   for(var i=0; i < elements.length; i++) {
      var thescrollingelement = elements[i];
@@ -203,5 +203,5 @@
 			$("#roomList").load("./getrooms.php");
 			refreshTheRooms = setTimeout(refreshRooms2, 1500);
 			}
-			
+			*/
 </script>
