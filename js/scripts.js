@@ -168,7 +168,7 @@ $(document).ready(function() {
 		}		
 		
 		$('a.panel').removeClass('selected');
-		$('.navsettings.panel').addClass('selected');
+		//$('.navsettings.panel').addClass('selected');
 		
 		$('#wrapper').scrollTo($(this).attr('href'), 0);		
 		return false;

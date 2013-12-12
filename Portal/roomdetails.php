@@ -1,8 +1,21 @@
-<? if($_GET['ip']) { $ip=$_GET['ip']; } ?>
+<?
+if($_GET['thisroom']) { $thisroom=$_GET['thisroom']; } 
+if($_GET['ip']) { $ip=$_GET['ip']; } 
+
+//include config.php   run info for room number
+
+//  option to move to this room (move currently playing or just take control of this room if not already selected)
+//  get current running media (basic info)
+//  get current modules plus info on each module
+
+
+include "nowplayinginfo.php";
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
-<title>NowPlaying</title>
+<title>RoomDetails</title>
 <link type='text/css' href='../css/nowplaying.css?<? echo date ("m/d/Y-H.i.s", filemtime('../css/nowplaying.css'));?>' rel='stylesheet' media='screen' />
 </head>
 <body>
@@ -11,10 +24,10 @@
 			<div id="timeUpdateField"></div>
 		<h1>Now<span>Playing</span></h1>
 			<?
-			include "nowplayinginfo.php";
+			
 			if(!isset($jsonactiveplayer['result'])) {
 				echo "There is nothing currently playing.";
-				return;
+				exit;
 			}
 			?>
 	</div>
@@ -84,24 +97,22 @@
 					$thetitle = $jsonnowplaying['result']['item']['title'];
 					$theshowseason = $jsonnowplaying['result']['item']['season'];
 					$theshowepisode = str_pad($jsonnowplaying['result']['item']['episode'], 2, '0', STR_PAD_LEFT);
-					echo "<table><tr>";
 					if($filetype=="movie") {
-						echo "<td>Movie:</td><td>$thetitle</td>";
+						echo "Movie: ".$thetitle;
 					} else {
-						echo "<td>Series:</td><td> $theshowtitle</td></tr><tr><td>Episode: </td><td>$theshowseason$theshowepisode - $thetitle</td>";
+						echo "Series: $theshowtitle <br>Episode: $theshowseason$theshowepisode - $thetitle";
 					}
-					echo "</tr><tr><td>Runtime: </td><td>".round($jsonnowplaying['result']['item']['runtime']/60)." minutes</td>";
+					echo "<br>Runtime: ".round($jsonnowplaying['result']['item']['runtime']/60)." minutes";
 					if($filetype == "episode"){
-						echo "</tr><tr><td>First Aired: </td><td>".$jsonnowplaying['result']['item']['firstaired']."</td>";
+						echo "<br>First Aired: ".$jsonnowplaying['result']['item']['firstaired'];
 					}else{
-						echo "</tr><tr><td>Year: </td><td>$theyear</td>";
-						echo "</tr><tr><td>Tagline: </td><td>".$jsonnowplaying['result']['item']['tagline']."</td>";
+						echo "<br>Year: ".$theyear;
+						echo "<br>Tagline: ".$jsonnowplaying['result']['item']['tagline'];
 					}
-					echo "</tr><tr><td>User Rating: </td><td>".round($jsonnowplaying['result']['item']['rating'],2)."/10</td>";
-					echo "</tr><tr><td>Genre: </td><td>$thegenre</td>";
-					echo "</tr><tr><td>Director: </td><td>$thedirector</td>";
-					echo "</tr><tr><td>Author: </td><td>$thewriter</td>";
-					echo "</tr></table>";
+					echo "<br>User Rating: ".round($jsonnowplaying['result']['item']['rating'],2)."/10";
+					echo "<br>Genre: ".$thegenre;
+					echo "<br>Director: ".$thedirector;
+					echo "<br>Author: ".$thewriter;
 				}
 			} elseif($activeplayerid==2) {
 				echo "pics";

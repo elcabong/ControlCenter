@@ -159,7 +159,9 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #room-menu { float:left;padding-bottom:5px; }
 
-#multiples { float:left;margin-left:-50px; }
+#room-menu > ul > li > img { margin-top: 2.5px;height: 40px;float: right;position:absolute;right:0; }
+
+#multiples { float:left;margin-left:-50px;margin-right:25px; }
 
 #multiples li a { padding:0px 15px;margin:6.5px 0;text-align:left;white-space:nowrap; }
 
@@ -167,11 +169,19 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #multiples > nav ul li ul li, #multiples > nav ul li ul span { background:url(../media/bgNav.png); }
 
-#room-menu > ul li { width:100%;#position: relative;text-align:right;float:right;padding-left:5px;overflow:hidden; }
-
 #room-menu > ul { position:absolute;top:50px;right:0;width:180px; }
 
-#nav-menu2 > nav > ul > li { width:50px !important;position: relative;right:40px;text-align:center; }
+#room-menu > ul li { width:100%;#position: relative;text-align:right;float:right;padding-left:5px;overflow:hidden; }
+
+#room-menu > ul > li > img { float: right;height: 40px;margin-top: 2.5px;cursor: pointer; }
+
+#nav-menu2 > nav > ul > li { text-align:center;float:none }
+
+#nav-menu2 > nav > ul > li > a { margin-bottom:3px;border-bottom: 2px solid rgba(0, 0, 0, 0);padding: 0;float: right; }
+
+#nav-menu2 > nav > ul > li > a > img { margin:4px 0 0;height:40px !important; }
+
+#navsettings { float: right;right: 0px;position: absolute; }
 
 #navsettings > ul > li > ul { right:100px;position:relative;position:absolute;top:48px;right:0; }
   

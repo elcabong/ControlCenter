@@ -36,9 +36,9 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 <body>
 <div id='header' class="nav-menu-z">
 	<div id='nav-menu2'>
-		<nav id="navsettings" style="float:right;width:50px;">
+		<nav id="navsettings">
 			<ul>
-				<li><a href='#' class='navsettings panel' style="margin-bottom:3px;border-bottom:2px solid rgba(0, 0, 0, 0);"><img src="../media/gear.png" style="margin:7px 0 0;width:20px !important;"></a>
+				<li><a href='#' class='navsettings panel'><img src="../media/options.png"></a>
 					<ul>
 						<li><a href="#" class="title"><?echo $USERNAMES[$usernumber];?></a></li>
 						<? if($SETTINGSACCESS == "1") { ?>
@@ -243,6 +243,6 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 		});
 	<? } ?>	
 </script>
-<div id="nowplaying"></div>
+<div id="modal"></div>
 </body>
 </html>

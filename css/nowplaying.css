@@ -2,6 +2,9 @@ body {background:#fff; color:#333; font: 12px/22px verdana, arial, sans-serif; h
 h1 {color:#3a6d8c; font-size:34px; line-height:40px; margin:0;}
 h3 {color:#3a6d8c; font-size:22px; line-height:26px; font-weight:normal; margin:0 0 8px 0;}
 
+tr > td:first-child { white-space:nowrap; }
+
+
 /* Overlay */
 #simplemodal-overlay {background-color:#000;}
 
