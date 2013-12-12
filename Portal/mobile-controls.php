@@ -40,14 +40,15 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 	#nav-menu nav ul ul li {
 	float: left !important;
 	}
+	#multiples li a { padding:0 5px !important; }
 	</style>
 </head>
 <body>
 <div id='header' class="nav-menu-z">
 	<div id='nav-menu2'>
-		<nav id="navsettings" style="float:right;width:50px;">
+		<nav id="navsettings">
 			<ul>
-				<li><a href='#' class='navsettings panel' style="margin-bottom:3px;border-bottom:2px solid rgba(0, 0, 0, 0);"><img src="../media/gear.png" style="margin:7px 0 0;width:20px !important;"></a>
+				<li><a href='#' class='navsettings panel'><img src="../media/options.png"></a>
 					<ul>
 						<li><a href="#" class="title"><?echo $USERNAMES[$usernumber];?></a></li>
 						<li><a href="#">&nbsp;</a></li>
@@ -75,7 +76,7 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 				<nav>
 					<ul>
 						<li>
-							<div id='room-menu'><? include"room-chooser.php"; ?></div>
+							<div id='room-menu'><? include"./room-chooser.php"; ?></div>
 							<ul id="roomList"></ul>
 						</li>
 					</ul>
@@ -183,7 +184,6 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 		<?php
 				try {
 					$sql = "SELECT * FROM navigation WHERE navgroup IN (".$NAVGROUPS.") AND persistent == '1' ORDER BY navgroup ASC, navid ASC";
-					$tempc = 0;
 					foreach ($configdb->query($sql) as $row)
 						{
 						$navtitle = $row['navname'];
@@ -243,28 +243,16 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 		$(document).ready(function() {
 			function refreshRooms() {
 			$("#roomList").load("./getrooms.php");
-			setTimeout(refreshRooms, 1500);
+			refreshTheRooms = setTimeout(refreshRooms, 1500);
 			}
-			setTimeout(refreshRooms, 1000);
+			refreshTheRooms = setTimeout(refreshRooms, 1000);
 			setTimeout(func, 4500);
 			function func() {
 				document.getElementById('loading').style.display='none';	
 			}			
 		});
 	<? } ?>
-$(document).ready(function() {
-    $("#room-menu > ul").touchwipe({
-        wipeLeft: function(e) {
-            $('#room-menu > ul').css("width",'180px');
-			reSizeNowPlaying();
-        },
-        wipeRight: function(e) {
-            $('#room-menu > ul').css("width",'50px');
-			reSizeNowPlaying();
-        }
-    });
-});
 </script>
-<div id="nowplaying"></div>
+<div id="modal"></div>
 </body>
 </html>

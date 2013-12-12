@@ -26,6 +26,7 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 	<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.scrollTo.js"></script>
 	<script type="text/javascript" src="../js/jquery.simplemodal.js"></script>
+	<script type="text/javascript" src="../js/jquery.touchwipe.js"></script>	
 	<script type="text/javascript" src="../js/scripts.js?<? echo date ("m/d/Y-H.i.s", filemtime('../js/scripts.js'));?>"></script>
 	<script type="text/javascript">
 		if (window.navigator.standalone) {
@@ -36,9 +37,9 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 <body>
 <div id='header' class="nav-menu-z">
 	<div id='nav-menu2'>
-		<nav id="navsettings" style="float:right;width:50px;">
+		<nav id="navsettings">
 			<ul>
-				<li><a href='#' class='navsettings panel' style="margin-bottom:3px;border-bottom:2px solid rgba(0, 0, 0, 0);"><img src="../media/gear.png" style="margin:7px 0 0;width:20px !important;"></a>
+				<li><a href='#' class='navsettings panel'><img src="../media/options.png"></a>
 					<ul>
 						<li><a href="#" class="title"><?echo $USERNAMES[$usernumber];?></a></li>
 						<? if($SETTINGSACCESS == "1") { ?>
@@ -243,6 +244,6 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 		});
 	<? } ?>	
 </script>
-<div id="nowplaying"></div>
+<div id="modal"></div>
 </body>
 </html>

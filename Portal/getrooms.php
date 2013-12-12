@@ -70,23 +70,23 @@
 									echo "<li class='nowplaying'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' class='nowplaying-modal'><p class='scrolling'>";
 									if($activeplayerid==0) {
 										if($filetype=="unknown") {
-											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-5px;'>";
+											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
 											echo $thelabel;
 										} elseif($filetype=="song") {
-											echo "<img src='../media/DefaultMusic.png' height='35px' style='float:left;margin-top:-5px;'>";
+											echo "<img src='../media/DefaultMusic.png' height='35px' style='float:left;margin-top:-3px;'>";
 											if(false !== stripos($thealbum, '$theyear')) { echo "$thealbum"; } else { echo "$thealbum ($theyear)"; }
 											echo " - ".$thetitle;
 										}
 									} elseif($activeplayerid==1) {
 										if($filetype=="unknown") {
-											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-5px;'>";
+											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
 											echo $thelabel;
 										} elseif($filetype=="movie") {
-											echo "<img src='../media/DefaultMovies.png' height='35px' style='float:left;margin-top:-5px;'>";
+											echo "<img src='../media/DefaultMovies.png' height='35px' style='float:left;margin-top:-3px;'>";
 											echo $thetitle;
 											if(false !== stripos($thetitle, '$theyear')) { } else { echo " ($theyear)"; }
 										} else {
-											echo "<img src='../media/DefaultTVShows.png' height='35px' style='float:left;margin-top:-5px;'>";
+											echo "<img src='../media/DefaultTVShows.png' height='35px' style='float:left;margin-top:-3px;'>";
 											echo "$theshowtitle - $theshowseason$theshowepisode - $thetitle";
 										}
 									} elseif($activeplayerid==2) {
@@ -104,6 +104,10 @@
 			}
 ?>
 <script>
+	$(document).ready(function() {
+		reSizeNowPlaying();
+	});
+	
 	function wakemachine(mac) {
 		$.ajax({
 			   type: "POST",
@@ -123,7 +127,7 @@
 	jQuery(function ($) {
 		$('.nowplaying-modal').click(function (e) {
 			var thisip = $(this).attr('ip');
-			$('#nowplaying').load('nowplaying.php?ip='+thisip).modal({
+			$('#modal').load('nowplaying.php?ip='+thisip).modal({
 					opacity: 25,
 					overlayClose: true});
 			return false;
@@ -156,7 +160,8 @@
 			return false;
 		});
 	});		
-	reSizeNowPlaying();
+
+	
 	/*
   var elements = document.getElementsByClassName('scrolling');
   for(var i=0; i < elements.length; i++) {

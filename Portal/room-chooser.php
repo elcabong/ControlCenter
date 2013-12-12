@@ -23,16 +23,19 @@
 			$i = 1;
 			while($i<=$TOTALROOMS) {
 				$ROOMXBMC = "ROOM$i"."XBMC";
+				$ip = ${$ROOMXBMC};
 				$ROOMNUMBER = "ROOM$i"."N";
 				$theperm = "USRPR$i";
 				if(!empty(${$ROOMXBMC}) && ${$theperm} == "1"){
 					echo "<li>";
 					if($i == $_SESSION['room']) {
-					echo "<a class='selected changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a></li>"; 				
+					echo "<a class='selected changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a>"; 				
 					$thisroom = 1;
 					} else {
-					echo "<a class='changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a></li>"; 
+					echo "<a class='changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a>"; 
 					}
+					echo "<img class='roomdetails' theroom=\"$i\" ip=\"$ip\" src='../media/options.png'>";
+					echo "</li>";
 				}
 			$i++; }
 		echo "</ul>";
@@ -43,13 +46,47 @@
 	$xbmcip2 = ${$ROOMXBMC2};
 ?>
 <script type="text/javascript">
+	$(document).ready(function() {
+	// needs to set cookie for menu size, then on load see which one it is and set properly
+	//document.cookie="roomMenuSize=75;expires="+expire.toGMTString()+";path=/";
+		//var menusize = $.cookie("roomMenuSize");
+		//if(menusize != null && menusize > 0) {
+			//$('#room-menu > ul').css("width",menusize+'px');
+		//}
+	
+		$("#room-menu > ul").touchwipe({
+			wipeLeft: function(e) {
+				$('#room-menu > ul').css("width",'180px');
+				reSizeNowPlaying();
+				//document.cookie="roomMenuSize=180;expires="+expire.toGMTString()+";path=/";
+			},
+			wipeRight: function(e) {
+				$('#room-menu > ul').css("width",'75px');
+				reSizeNowPlaying();
+				//document.cookie="roomMenuSize=75;expires="+expire.toGMTString()+";path=/";
+			}
+		});
+	});
+
+
+	jQuery(function ($) {
+		$('img.roomdetails').click(function (e) {
+			var thisroom = $(this).attr('theroom');
+			var ip = $(this).attr('ip');
+			$('#modal').load('roomdetails.php?thisroom='+thisroom+'&ip='+ip).modal({
+					opacity: 25,
+					overlayClose: true});
+			return false;
+		});
+	});		
+	
 	$('a.changeroom').click(function () {
         var thenewroom = $(this).attr('newroom');
 		changeroom(thenewroom,<?echo $usernumber; ?>);
 		return false;
 	});	
 
-	function changeroom(newroom,usernumber) {
+	function changeroom(newroom,	usernumber) {
 		document.getElementById('loading').style.display='block';
 		var today = new Date();
 		var expire = new Date();
