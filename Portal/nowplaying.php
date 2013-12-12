@@ -6,7 +6,7 @@
 <link type='text/css' href='../css/nowplaying.css?<? echo date ("m/d/Y-H.i.s", filemtime('../css/nowplaying.css'));?>' rel='stylesheet' media='screen' />
 </head>
 <body>
-<div id='nowplayingcontainer'>
+<div id='roominfocontainer'>
 	<div id='logo'>
 			<div id="timeUpdateField"></div>
 		<h1>Now<span>Playing</span></h1>
@@ -18,7 +18,7 @@
 			}
 			?>
 	</div>
-	<div id='nowplayingcontent'>
+	<div id='roominfocontent'>
 			<div class='title'>
 			<?
 			if(!isset($activeplayerid)) { exit; }
@@ -108,7 +108,7 @@
 			}
 			?>		
 		</div>
-		<div id='nowplaying-info'>
+		<div id='roominfo-info'>
 			<?
 			if($activeplayerid==0) {
 				//echo "music info";

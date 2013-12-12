@@ -57,12 +57,12 @@
 		$("#room-menu > ul").touchwipe({
 			wipeLeft: function(e) {
 				$('#room-menu > ul').css("width",'180px');
-				reSizeNowPlaying();
+				reSizeRoomInfo();
 				//document.cookie="roomMenuSize=180;expires="+expire.toGMTString()+";path=/";
 			},
 			wipeRight: function(e) {
 				$('#room-menu > ul').css("width",'75px');
-				reSizeNowPlaying();
+				reSizeRoomInfo();
 				//document.cookie="roomMenuSize=75;expires="+expire.toGMTString()+";path=/";
 			}
 		});

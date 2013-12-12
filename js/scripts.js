@@ -241,10 +241,10 @@ $(window).resize(function() {
 function reSizeWindow() {
     theselectedpanel = $('a.panel.selected').attr('href');
 	$('#wrapper').scrollTo(theselectedpanel, 0);
-	reSizeNowPlaying();
+	reSizeRoomInfo();
 };
 
-function reSizeNowPlaying() {
+function reSizeRoomInfo() {
 	var rw = $('#room-menu > ul').width();
 	var rwx = rw+"px";
 	$('#roomList').css("right",rwx);
@@ -263,15 +263,14 @@ function reSizeNowPlaying() {
 	var npwx = npw+"px";
 	var npmw = npw - 40;
 	var npmwx = npmw+"px";
-	$('li.nowplaying').css("width",npwx);
-	$('#roomList > li > span > .nowplaying-modal').css("width",npmwx);
+	$('li.roominfo').css("width",npwx);
+	$('#roomList > li > span > .roominfo-modal').css("width",npmwx);
 	} else {
-	//if(maxitemw == 0 || maxitemw == '') { maxitemw = w4; }
 	var npmw = maxitemw;
 	var npmwx = npmw+"px";
 	var npw = npmw + 40;
 	var npwx = npw+"px";
-	$('li.nowplaying').css("width",npwx);
-	$('#roomList > li > span > .nowplaying-modal').css("width",npmwx);	
+	$('li.roominfo').css("width",npwx);
+	$('#roomList > li > span > .roominfo-modal').css("width",npmwx);	
 	}
 };

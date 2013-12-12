@@ -22,13 +22,13 @@ img {border:0;}
 #logo h1 span {color:#444; font-weight:bold;}
 #logo .title {font-size:12px;clear:both;}
 .title > img { float:right;width:25%;#margin:-60px 0 0 0;margin:10px 0px 0 0;top:0;right:0;}
-#nowplayingcontainer {margin:0 auto;}
-#nowplayingcontent {clear:both;}
-#nowplayingfooter {clear:both; color:#888; margin:20px 0;}
-#nowplayingfooter a:link, #footer a:visited {color:#888; text-decoration:none;}
-#nowplayingfooter a:hover {color:#333; text-decoration:underline;}
-#nowplaying-info {clear:both;}
-#nowplaying-info img {width:95%;margin:0 auto;display:block;}
+#roominfocontainer {margin:0 auto;}
+#roominfocontent {clear:both;}
+#roominfofooter {clear:both; color:#888; margin:20px 0;}
+#roominfofooter a:link, #footer a:visited {color:#888; text-decoration:none;}
+#roominfofooter a:hover {color:#333; text-decoration:underline;}
+#roominfo-info {clear:both;}
+#roominfo-info img {width:95%;margin:0 auto;display:block;}
 #images {margin:0 auto;width:100%;}
 .simplemodal-wrap {overflow:auto !important;}
 #timeUpdateField > img { height:40px;float:left;clear:both;margin:-10px 0 0 0; }

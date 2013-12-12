@@ -41,6 +41,7 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 	float: left !important;
 	}
 	#multiples li a { padding:0 5px !important; }
+	#room-menu > a { padding:0 5px !important; }
 	</style>
 </head>
 <body>
