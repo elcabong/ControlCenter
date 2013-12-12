@@ -163,7 +163,7 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #multiples { float:left;margin-left:-50px;margin-right:25px; }
 
-#multiples li a { padding:0px 15px;margin:6.5px 0;text-align:left;white-space:nowrap; }
+#multiples li a { padding:0px 5px;margin:6.5px 0;text-align:left;white-space:nowrap; }
 
 #multiples li a.selected { border-left:4px solid #0099ff; }
 
@@ -179,7 +179,7 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #nav-menu2 > nav > ul > li > a { margin-bottom:3px;border-bottom: 2px solid rgba(0, 0, 0, 0);padding: 0;float: right; }
 
-#nav-menu2 > nav > ul > li > a > img { margin:4px 0 0;height:40px !important; }
+#nav-menu2 > nav > ul > li > a > img { margin:4px 0 0;height:40px !important;padding-bottom:5px; }
 
 #navsettings { float: right;right: 0px;position: absolute; }
 

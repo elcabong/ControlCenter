@@ -104,7 +104,10 @@
 			}
 ?>
 <script>
-	reSizeNowPlaying();
+	$(document).ready(function() {
+		reSizeNowPlaying();
+	});
+	
 	function wakemachine(mac) {
 		$.ajax({
 			   type: "POST",

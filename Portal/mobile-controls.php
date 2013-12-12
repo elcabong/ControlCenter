@@ -252,18 +252,6 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 			}			
 		});
 	<? } ?>
-$(document).ready(function() {
-    $("#room-menu > ul").touchwipe({
-        wipeLeft: function(e) {
-            $('#room-menu > ul').css("width",'180px');
-			reSizeNowPlaying();
-        },
-        wipeRight: function(e) {
-            $('#room-menu > ul').css("width",'75px');
-			reSizeNowPlaying();
-        }
-    });
-});
 </script>
 <div id="modal"></div>
 </body>
