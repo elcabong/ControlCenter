@@ -113,9 +113,9 @@ nav ul li:hover > ul,nav ul li:hover > #room-menu ul,#room-menu ul:hover { displ
   line-height:150%;
 }
 
-#nav-menu > nav > ul > li > a { padding:5px 0; }
+#nav-menu > nav > ul > li > a { padding:5px 15px; }
 
-#nav-menu > nav > ul > li > a > img { margin:0;width:20px; }
+#nav-menu > nav > ul > li > a > img { margin:0;width:35px; }
 
 .panel.selected {  border-bottom:2px solid #0099ff !important; }
 

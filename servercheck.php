@@ -94,9 +94,10 @@ if (file_exists('./sessions/config.db')){
       $valid = false;
     }
   } else {
- 		function checkDBversion() {
-			$configdb = new PDO('sqlite:./sessions/config.db');
-			$sql = "SELECT dbversion FROM controlcenter ORDER BY dbversion DESC LIMIT 1";
+		$configdb = new PDO('sqlite:./sessions/config.db');
+		function checkDBversion() {
+				$configdb = new PDO('sqlite:./sessions/config.db');
+				$sql = "SELECT dbversion FROM controlcenter ORDER BY dbversion DESC LIMIT 1";
 				foreach ($configdb->query($sql) as $row)
 				{
 					if(isset($row['dbversion'])) {
@@ -104,7 +105,8 @@ if (file_exists('./sessions/config.db')){
 				}}
 				return $thedbversion;
 		}
-  echo "Settings DB found";
+		$thedbver = checkDBversion();		
+  echo "Settings DB found: Version $thedbver";
   echo ($valid)?"</td><td><img src='media/green-tick.png' height='15px'/></td></tr>":"</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
   // write db tables here if they dont exist
    try {
