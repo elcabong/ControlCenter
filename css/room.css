@@ -113,6 +113,10 @@ nav ul li:hover > ul,nav ul li:hover > #room-menu ul,#room-menu ul:hover { displ
   line-height:150%;
 }
 
+#nav-menu > nav > ul > li > a { padding:5px 0; }
+
+#nav-menu > nav > ul > li > a > img { margin:0;width:20px; }
+
 .panel.selected {  border-bottom:2px solid #0099ff !important; }
 
 .panel.unloaded { opacity:.5; }
@@ -169,6 +173,8 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #multiples > nav ul li ul li, #multiples > nav ul li ul span { background:url(../media/bgNav.png); }
 
+#room-menu > a { padding:0 15px !important; }
+
 #room-menu > ul { position:absolute;top:50px;right:0;width:180px; }
 
 #room-menu > ul li { width:100%;#position: relative;text-align:right;float:right;padding-left:5px;overflow:hidden; }
@@ -193,25 +199,25 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #roomList li { float:right; }
 
-li.nowplaying { white-space:nowrap;overflow:hidden;height:48px;max-width:600px;min-width:50px; }
+li.roominfo { white-space:nowrap;overflow:hidden;height:48px;max-width:600px;min-width:50px; }
 
-li.nowplaying > span > .nowplaying-modal,li.nowplaying > span > .sendnowplaying { white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px;float:right !important; }
+li.roominfo > span > .roominfo-modal,li.roominfo > span > .sendnowplaying { white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:520px;float:right !important; }
 
-li.nowplaying > a { display:inline-block !important; #float:none !important; }
+li.roominfo > a { display:inline-block !important; #float:none !important; }
 
-.nowplaying > .pingicon { width:20px;height:20px;float:right !important }
+.roominfo > .pingicon { width:20px;height:20px;float:right !important }
 
-.nowplaying > span { #margin-right:55px;#float:right; }
+.roominfo > span { #margin-right:55px;#float:right; }
 
 .sendcontrols { display:none; }
 
 .hiding { text-overflow:ellipsis; }
 
-.scrolling { overflow:hidden; white-space:nowrap; }
+.scrolling { overflow:hidden; white-space:nowrap;text-overflow:ellipsis; }
 
-.nowplaying-modal { margin:0 !important;padding:0 !important; }
+.roominfo-modal { margin:0 !important;padding:0 !important; }
 
-.nowplaying-modal > p { margin:.4em 0 1.5em; }
+.roominfo-modal > p { margin:.4em 0 1.5em; }
 
 
 /*---------------------/

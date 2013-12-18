@@ -30,6 +30,16 @@ while(!$found2){
 if (!file_exists($sessionsloc . "/config.db")) { header('Location: ' . $servercheckloc);exit; }
 $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 
+$found3 = false;
+$path3 = './addons';
+while(!$found3){
+	if(file_exists($path3)){ 
+		$found3 = true;
+		$ADDONDIR = $path3;
+	}
+	else{ $path3= '../'.$path3; }
+}
+
 	try {
 		$sql = "SELECT * FROM users";
 		$userid = 0;

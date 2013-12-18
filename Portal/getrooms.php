@@ -47,10 +47,10 @@
 					if($xbmcmachine == 'alive') {
 						include "nowplayinginfo.php";
 						if(empty($jsoncheckxbmc['result'])) {
-							echo "<li class='nowplaying'><a href='#' class='pingicon'><img src='../media/orange.png' title='online' style='height:20px;'/></a></li>";
+							echo "<li class='roominfo'><a href='#' class='pingicon'><img src='../media/orange.png' title='online' style='height:20px;'/></a></li>";
 						} else {
 							if(empty($jsonactiveplayer['result'])) {
-									echo "<li class='nowplaying'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";
+									echo "<li class='roominfo'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";
 								if($nowplayingip != $ip) {
 									echo "<span class='sendcontrols'><a href='#' ip='$ip' class='sendnowplaying' sendtype='start' room='$i'>start</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='send' room='$i'>send</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='clone' room='$i'>clone</a></span>";
 								}
@@ -67,7 +67,7 @@
 									</script>
 									<?
 									}
-									echo "<li class='nowplaying'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' class='nowplaying-modal'><p class='scrolling'>";
+									echo "<li class='roominfo'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' class='roominfo-modal'><p class='scrolling'>";
 									if($activeplayerid==0) {
 										if($filetype=="unknown") {
 											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
@@ -97,7 +97,7 @@
 							}
 						}
 					} else {
-						echo "<li class='nowplaying'><a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a></li>";
+						echo "<li class='roominfo'><a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a></li>";
 					}
 				}
 			$i++;
@@ -105,7 +105,7 @@
 ?>
 <script>
 	$(document).ready(function() {
-		reSizeNowPlaying();
+		reSizeRoomInfo();
 	});
 	
 	function wakemachine(mac) {
@@ -125,7 +125,7 @@
 		});
 	}
 	jQuery(function ($) {
-		$('.nowplaying-modal').click(function (e) {
+		$('.roominfo-modal').click(function (e) {
 			var thisip = $(this).attr('ip');
 			$('#modal').load('nowplaying.php?ip='+thisip).modal({
 					opacity: 25,
@@ -195,11 +195,11 @@
 				};
 			}
 
-			$(".nowplaying-modal").bind('mouseenter touchstart', function() {
+			$(".roominfo-modal").bind('mouseenter touchstart', function() {
 			clearTimeout(refreshTheRooms);clearTimeout(refreshTheRooms);
 			});	
 
-			$(".nowplaying-modal").bind('mouseleave touchend', function() {
+			$(".roominfo-modal").bind('mouseleave touchend', function() {
 			clearTimeout(refreshTheRooms);
 			refreshTheRooms = setTimeout(refreshRooms2, 1);
 			});
