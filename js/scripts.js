@@ -257,8 +257,11 @@ function reSizeRoomInfo() {
 		 var thiscrollingelement = newelements[i];			
 		max = thiscrollingelement.scrollWidth;
 		if(max > maxitemw) { var maxitemw = max; }
-		};	
-	if(w < (maxitemw + rw) || maxitemw == 0 || maxitemw == '') {
+		};
+	if(maxitemw == 0) {
+	$('li.roominfo').css("width",0);
+	$('#roomList > li > span > .roominfo-modal').css("width",0);
+	} else if(w < (maxitemw + rw) || maxitemw == '') {
 	var npw = w - rw;
 	var npwx = npw+"px";
 	var npmw = npw - 40;

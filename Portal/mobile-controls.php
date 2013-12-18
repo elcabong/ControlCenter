@@ -109,7 +109,7 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 					echo $e->getMessage();
 					}
 				if($mobileamt > '1'){					
-					echo "<ul><li><a href='#'><img src='../media/menudropdown.png' style='width:25px;margin:5px;'></a>";				
+					echo "<ul><li><a href='#'><img src='../media/menudropdown.png'></a>";				
 				}
 				try {
 				echo "<ul>";

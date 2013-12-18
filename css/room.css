@@ -113,6 +113,10 @@ nav ul li:hover > ul,nav ul li:hover > #room-menu ul,#room-menu ul:hover { displ
   line-height:150%;
 }
 
+#nav-menu > nav > ul > li > a { padding:5px 0; }
+
+#nav-menu > nav > ul > li > a > img { margin:0;width:20px; }
+
 .panel.selected {  border-bottom:2px solid #0099ff !important; }
 
 .panel.unloaded { opacity:.5; }
@@ -209,7 +213,7 @@ li.roominfo > a { display:inline-block !important; #float:none !important; }
 
 .hiding { text-overflow:ellipsis; }
 
-.scrolling { overflow:hidden; white-space:nowrap; }
+.scrolling { overflow:hidden; white-space:nowrap;text-overflow:ellipsis; }
 
 .roominfo-modal { margin:0 !important;padding:0 !important; }
 
