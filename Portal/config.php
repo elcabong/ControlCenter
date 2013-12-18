@@ -1,4 +1,19 @@
 <?php
+// this function is also in servercheck.php   remember to update as needed
+function folderRequirements($folderlevel) {
+	$missing = 0;
+	$folders = array('addons','androidapps','css','js','lib','media','Portal','sessions');
+	foreach($folders as $dir) {
+		$thefolder = $folderlevel . $dir."/";
+		if(file_exists($thefolder) && is_dir($thefolder)) {
+			//return true;
+		} else {
+			$missing += 1;
+		}
+	}
+	return $missing;
+}
+
 $found2 = false;
 $path2 = './sessions';
 while(!$found2){
@@ -16,8 +31,10 @@ ini_set('session.save_path', "$sessionsloc");
 ini_set('session.cookie_lifetime', 86400);
 if(!isset($_SESSION)){session_start();}
 
-$thepath = dirname(dirname($_SERVER['PHP_SELF']));
+if(substr($path2, 0, 3) == "../") { $folderlevel = "../"; } else { $folderlevel = "./"; };
 
+
+/*
 $found2 = false;
 $path2 = './servercheck.php';
 while(!$found2){
@@ -26,10 +43,15 @@ while(!$found2){
 		$servercheckloc = $path2;
 	}
 	else{ $path2= '../'.$path2; }
-}
-if (!file_exists($sessionsloc . "/config.db")) { header('Location: ' . $servercheckloc);exit; }
+}*/
+$servercheckloc = $folderlevel . "servercheck.php";
+$thepath = dirname(dirname($_SERVER['PHP_SELF']));
+
+$missing = folderRequirements($folderlevel);
+if (!file_exists($sessionsloc . "/config.db") || $missing > 0) { header('Location: ' . $servercheckloc);exit; }
 $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 
+/*
 $found3 = false;
 $path3 = './addons';
 while(!$found3){
@@ -38,7 +60,8 @@ while(!$found3){
 		$ADDONDIR = $path3;
 	}
 	else{ $path3= '../'.$path3; }
-}
+}*/
+$ADDONDIR = $folderlevel . "addons/";
 
 	try {
 		$sql = "SELECT * FROM users";
