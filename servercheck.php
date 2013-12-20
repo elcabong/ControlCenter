@@ -73,6 +73,33 @@ if(extension_loaded('curl')){
   $redirect = false;
 }
 echo "<tr><td>";
+echo "<tr><td>";
+// this function is also in config.php   remember to update as needed
+	$missing = 0;
+	$folders = array('addons','androidapps','css','js','lib','media','Portal','sessions');
+	foreach($folders as $dir) {
+		$thefolder = "./".$dir."/";
+		if(file_exists($thefolder) && is_dir($thefolder)) {
+			//return true;
+		} else {
+			mkdir($thefolder, 0777, true);
+			if(!file_exists($thefolder) && !is_dir($thefolder)) {
+				$missing += 1;
+			}	
+		}
+	}
+	if($missing > 0) {
+        echo "<tr><td>Folder Structure Incomplete</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+		$redirect = false;
+		foreach($folders as $dir) {
+			$thefolder = "./".$dir."/";
+			if(file_exists($thefolder) && is_dir($thefolder)) {
+				echo "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;$thefolder is Found.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+			} else {
+				 echo "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;$thefolder is Missing.</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+			}
+		}
+	}
 if (!file_exists('./sessions/config.db')){
 echo "<tr><td>Trying to Create DB.</td></tr>";
 	try {
