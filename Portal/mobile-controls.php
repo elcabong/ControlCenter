@@ -245,10 +245,11 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 	<? } else {?>
 		$(document).ready(function() {
 			function refreshRooms() {
-			$("#roomList").load("./getrooms.php");
-			refreshTheRooms = setTimeout(refreshRooms, 1500);
+			$("#roomList").load("./getrooms.php", function () {
+				refreshRooms();
+			});
 			}
-			refreshTheRooms = setTimeout(refreshRooms, 1000);
+			refreshTheRooms = setTimeout(refreshRooms, 2500);
 			setTimeout(func, 4500);
 			function func() {
 				document.getElementById('loading').style.display='none';	
