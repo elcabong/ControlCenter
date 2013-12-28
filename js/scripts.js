@@ -228,7 +228,6 @@ $(document).ready(function() {
 		$("ul.children").fadeOut(300);
 		$(".clearcover").fadeOut(300);
 		$('.sortable.secondary').addClass('hidden');
-		$('.clearcover').simulate('click');
 	}	
 });
 
