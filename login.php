@@ -2,10 +2,11 @@
 if (file_exists('./sessions/firstrun.php') || !file_exists('./sessions/config.db')) { header('Location: servercheck.php');exit; }
 
 require('./Portal/config.php');
-	if(isset($_SESSION['usernumber']) && $_SESSION['usernumber'] != "choose") {
+
+	if(isset($_SESSION['usernumber']) && $_SESSION['usernumber'] != "choose" || $_GET['user'] != "choose") {
     header("Location: ./Portal/index.php");
     exit;} ?>
-<!DOCTYPE html>	
+<!DOCTYPE html>
 <html>
 <head>
 <title>Control Center User Selection</title>

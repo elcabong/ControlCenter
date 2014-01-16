@@ -16,8 +16,8 @@
 			$roomnum = $_SESSION['room'];
 			}
 			require_once './controls-include.php';	
-			$i = 1;
-			while($i<=$TOTALROOMS) {
+			
+			foreach ($roomgroupaccessarray as $i) {
 				$ip;
 				$ROOMXBMC = "ROOM$i"."XBMC";
 				$ROOMXBMCM = $ROOMXBMC."M";
@@ -100,7 +100,6 @@
 						echo "<li class='roominfo'><a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a></li>";
 					}
 				}
-			$i++;
 			}
 ?>
 <script>

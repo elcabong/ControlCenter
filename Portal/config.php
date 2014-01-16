@@ -14,6 +14,7 @@ function folderRequirements($folderlevel) {
 	return $missing;
 }
 
+//  session stuff also found in logout.php
 $found2 = false;
 $path2 = './sessions';
 while(!$found2){
@@ -29,38 +30,19 @@ ini_set('session.gc_probability', 1);
 ini_set('session.gc_divisor', 100	);
 ini_set('session.save_path', "$sessionsloc");
 ini_set('session.cookie_lifetime', 86400);
-if(!isset($_SESSION)){session_start();}
+//if(!isset($_SESSION)){session_start();}
+session_start();
+// end session stuff
 
 if(substr($path2, 0, 3) == "../") { $folderlevel = "../"; } else { $folderlevel = "./"; };
 
-
-/*
-$found2 = false;
-$path2 = './servercheck.php';
-while(!$found2){
-	if(file_exists($path2)){ 
-		$found2 = true;
-		$servercheckloc = $path2;
-	}
-	else{ $path2= '../'.$path2; }
-}*/
 $servercheckloc = $folderlevel . "servercheck.php";
-$thepath = dirname(dirname($_SERVER['PHP_SELF']));
+$thepath = $folderlevel;
 
 $missing = folderRequirements($folderlevel);
 if (!file_exists($sessionsloc . "/config.db") || $missing > 0) { header('Location: ' . $servercheckloc);exit; }
 $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 
-/*
-$found3 = false;
-$path3 = './addons';
-while(!$found3){
-	if(file_exists($path3)){ 
-		$found3 = true;
-		$ADDONDIR = $path3;
-	}
-	else{ $path3= '../'.$path3; }
-}*/
 $ADDONDIR = $folderlevel . "addons/";
 
 	try {
@@ -88,10 +70,13 @@ if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }
 			$TOTALROOMS=0;
 			foreach ($configdb->query($sql) as $row) {
 			$TOTALROOMS++;
-			$ROOMXBMC = "ROOM$TOTALROOMS"."XBMC";
+			$roomid = $row['roomid'];
+			$theperm = "USRPR$roomid";
+			${$theperm} = "0";
+			$ROOMXBMC = "ROOM$roomid"."XBMC";
 			$ROOMXBMC2 = "$ROOMXBMC"."2";
 			$ROOMXBMCM = "$ROOMXBMC"."M";
-			$ROOMname = "ROOM$TOTALROOMS"."N";
+			$ROOMname = "ROOM$roomid"."N";
 			
 			${$ROOMname} = $row['roomname'];
 			${$ROOMXBMC} = $row['ip1'];

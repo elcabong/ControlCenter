@@ -68,12 +68,6 @@
 			}
 		}
 	}
-	$y = 1;
-    while($y<=$TOTALROOMS) {
-		$theperm = "USRPR$y";
-		${$theperm} = "0";
-		$y++;
-	}
 	$TOTALALLOWEDROOMS = 0;
 	if(isset($roomgroupaccess) && $roomgroupaccess != '' ) {
 		$roomgroupaccessarray = explode(',', $roomgroupaccess);

@@ -7,7 +7,7 @@ require_once 'controls-include.php';
 if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 	$theroom = $_SESSION['room'];
 	$theperm = "USRPR$theroom";
-	if (${$theperm}!="1" or $theroom>$TOTALROOMS) {
+	if (${$theperm}!="1" or !in_array($theroom, $roomgroupaccessarray)) {
 		header("Location: index.php");
 		exit; }
 $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 = $ROOMXBMC."2";

@@ -20,8 +20,7 @@
 		echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUMBER}</a>";
 		echo "<ul>";
 			$thisroom = 0;
-			$i = 1;
-			while($i<=$TOTALROOMS) {
+			foreach ($roomgroupaccessarray as $i) {
 				$ROOMXBMC = "ROOM$i"."XBMC";
 				$ip = ${$ROOMXBMC};
 				$ROOMNUMBER = "ROOM$i"."N";
@@ -37,7 +36,7 @@
 					echo "<img class='roomdetails' theroom=\"$i\" ip=\"$ip\" src='../media/options.png'>";
 					echo "</li>";
 				}
-			$i++; }
+			}
 		echo "</ul>";
 
 	$ROOMXBMC = "ROOM$roomnum"."XBMC";
