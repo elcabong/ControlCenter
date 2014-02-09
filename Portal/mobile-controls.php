@@ -80,7 +80,13 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 					<ul>
 						<li>
 							<div id='room-menu'><? include"./room-chooser.php"; ?></div>
-							<ul id="roomList"></ul>
+						<ul id="roomList">
+							<?php 
+								foreach ($roomgroupaccessarray as $i) {
+									echo "<li class='roominfo' id=\"roominfo$i\"></li>";
+								}
+							?>
+						</ul>
 						</li>
 					</ul>
 				</nav><? } ?>
@@ -244,11 +250,21 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 		});
 	<? } else {?>
 		$(document).ready(function() {
-			function refreshRooms() {
-			$("#roomList").load("./getrooms.php", function () {
-				refreshRooms();
-			});
+		<?php
+			foreach ($roomgroupaccessarray as $i) {
+				$thedelay = 1500 + (413 * $i);
+				echo "
+				function refreshRoom$i() {
+				$(\"#roominfo$i\").load(\"./getrooms.php?room=$i\", function () {
+					refreshtheroom$i = setTimeout(refreshRoom$i, 2500);
+					reSizeRoomInfo();
+
+				});
+				}
+				refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);";
 			}
+		?>
+		
 			refreshTheRooms = setTimeout(refreshRooms, 2500);
 			setTimeout(func, 4500);
 			function func() {
