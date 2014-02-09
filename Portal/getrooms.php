@@ -1,32 +1,25 @@
 <?
-			$found = false;
-			$path = 'Portal';
-			while(!$found){	
-				if(file_exists($path)){ 
-					$found = true;
-							$thepath = $path;
-				}
-				else{ $path= '../'.$path; }
-			}
-			require "$thepath/config.php";
-			if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
-				header("Location: login.php");
-				exit; }
+	$setroomnum = '';
+	if(isset($_GET['room'])) { $setroomnum = $_GET['room']; } else { exit; }
+
+			require './config.php';
+		//	if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
+		//		header("Location: login.php");
+		//		exit; }
 			if(isset($_SESSION['room'])) {
 			$roomnum = $_SESSION['room'];
+			$ROOMXBMC = "ROOM$roomnum"."XBMC";
+			$nowplayingip = ${$ROOMXBMC};
 			}
-			require_once './controls-include.php';	
 			
-			foreach ($roomgroupaccessarray as $i) {
+				$i = $setroomnum;
 				$ip;
 				$ROOMXBMC = "ROOM$i"."XBMC";
 				$ROOMXBMCM = $ROOMXBMC."M";
-				$theperm = "USRPR$i";
-				if(!empty(${$ROOMXBMC}) && ${$theperm} == "1"){
+				if(!empty(${$ROOMXBMC})) {
 					$ip = ${$ROOMXBMC};
-					if($roomnum == $i) { $nowplayingip = $ip; }
-				   $disallowed = array('http://', 'https://');
-				   foreach($disallowed as $d) {
+				    $disallowed = array('http://', 'https://');
+				    foreach($disallowed as $d) {
 					    if(strpos($ip, $d) === 0) {
 						   $thisip = strtok(str_replace($d, '', $ip),':');
 					    }
@@ -39,35 +32,25 @@
 						// echo 'This is a server not using Windows!';
 					}
 					if ($status == "0") {
-						$status = "alive";
-					} else { 
-						$status = "dead"; 
-					}
-					$xbmcmachine = $status;
-					if($xbmcmachine == 'alive') {
+						//$status = "alive";
 						include "nowplayinginfo.php";
 						if(empty($jsoncheckxbmc['result'])) {
-							echo "<li class='roominfo'><a href='#' class='pingicon'><img src='../media/orange.png' title='online' style='height:20px;'/></a></li>";
+							echo "<a href='#' class='pingicon'><img src='../media/orange.png' title='online' style='height:20px;'/></a>";
 						} else {
 							if(empty($jsonactiveplayer['result'])) {
-									echo "<li class='roominfo'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";
-								if($nowplayingip != $ip) {
+								echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";
+								$sessvar = "playinginroom$i";
+								$_SESSION[$sessvar] = 0;
+								$thissessvar = "playinginroom$roomnum";
+								$checkstillplaying = $_SESSION[$thissessvar];
+								if($nowplayingip != $ip && $checkstillplaying == 1) {
 									echo "<span class='sendcontrols'><a href='#' ip='$ip' class='sendnowplaying' sendtype='start' room='$i'>start</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='send' room='$i'>send</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='clone' room='$i'>clone</a></span>";
 								}
-									echo "</li>";
 							} else {
+								$sessvar = "playinginroom$i";
+								$_SESSION[$sessvar] = 1;
 								if($activeplayerid=='0' || $activeplayerid=='1' || $activeplayerid=='2') {
-									if($nowplayingip == $ip) {
-									?>
-									<script>
-										  var cols =     document.getElementsByClassName('sendcontrols');
-										  for(i=0; i<cols.length; i++) {
-											cols[i].style.display =    'block';
-										  }
-									</script>
-									<?
-									}
-									echo "<li class='roominfo'><a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' class='roominfo-modal'><p class='scrolling'>";
+									echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' class='roominfo-modal'><p class='scrolling'>";
 									if($activeplayerid==0) {
 										if($filetype=="unknown") {
 											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
@@ -92,26 +75,22 @@
 									} elseif($activeplayerid==2) {
 										echo "pics";
 									}
-									echo "</p></a></span></li>";
+									echo "</p></a></span>";
 								}
 							}
 						}
 					} else {
-						echo "<li class='roominfo'><a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a></li>";
+						//$status = "dead";
+						echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('${$ROOMXBMCM}');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";
 					}
 				}
-			}
 ?>
 <script>
-	$(document).ready(function() {
-		reSizeRoomInfo();
-	});
-	
 	function wakemachine(mac) {
 		$.ajax({
 			   type: "POST",
 			   url: "wol-check.php?m="+mac+"",
-			   data: 0, // data to send to above script page if any
+			   //data: 0, // data to send to above script page if any
 			   cache: false,
 			   success: function(response)
 			{
@@ -132,6 +111,7 @@
 			return false;
 		});
 	});	
+	
 	var from = "<? echo $nowplayingip; ?>";
 	jQuery(function ($) {
 		$('.sendnowplaying').click(function (e) {
@@ -158,54 +138,5 @@
 			});
 			return false;
 		});
-	});		
-
-	
-	/*
-  var elements = document.getElementsByClassName('scrolling');
-  for(var i=0; i < elements.length; i++) {
-     var thescrollingelement = elements[i];
-		thescrollingelement.className = 'hiding scrolling';
-
-		thescrollingelement.onmouseover = thescrollingelement.onmouseout = thescrollingelement.touchstart = function (e) {
-			e = e || window.event;
-			e = e.type === 'mouseover';
-			clearTimeout(slide_timer);
-			this.className = e ? 'scrolling now' : 'hiding scrolling';
-			if (e) {
-				slide();
-			} else {
-				this.scrollLeft = 0;
-			}
-		};
-	}
-
-		var slide_timer;
-			slide = function () {
-			  var newelements = document.getElementsByClassName('scrolling now');
-			  for(var i=0; i < newelements.length; i++) {
-				 var thiscrollingelement = newelements[i];			
-				max = thiscrollingelement.scrollWidth;
-				thiscrollingelement.scrollLeft += 1;
-					if (thiscrollingelement.scrollLeft <= max) {
-						slide_timer = setTimeout(slide, 30);
-						return;
-					} 
-				};
-			}
-
-			$(".roominfo-modal").bind('mouseenter touchstart', function() {
-			clearTimeout(refreshTheRooms);clearTimeout(refreshTheRooms);
-			});	
-
-			$(".roominfo-modal").bind('mouseleave touchend', function() {
-			clearTimeout(refreshTheRooms);
-			refreshTheRooms = setTimeout(refreshRooms2, 1);
-			});
-
-			function refreshRooms2() {
-			$("#roomList").load("./getrooms.php");
-			refreshTheRooms = setTimeout(refreshRooms2, 1500);
-			}
-			*/
+	});
 </script>
