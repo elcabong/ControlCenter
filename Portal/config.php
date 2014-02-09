@@ -25,11 +25,11 @@ while(!$found2){
 	else{ $path2= '../'.$path2; }
 }
 ini_set('display_errors', 'Off');
-ini_set('session.gc_maxlifetime', 86400);
+ini_set('session.gc_maxlifetime', 604800);     // >>  24 hours = 86400 sec
 ini_set('session.gc_probability', 1);
 ini_set('session.gc_divisor', 100	);
 ini_set('session.save_path', "$sessionsloc");
-ini_set('session.cookie_lifetime', 86400);
+ini_set('session.cookie_lifetime', 604800);
 //if(!isset($_SESSION)){session_start();}
 session_start();
 // end session stuff

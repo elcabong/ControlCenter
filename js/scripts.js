@@ -251,6 +251,7 @@ function reSizeRoomInfo() {
 	var w4 = w*.35;
 	
 	var maxitemw = 0;
+	if($(".sendcontrols")[0]){ if($(".sendcontrols").css('display') != 'none') {var maxitemw = 200; } } // if send controls are available, set minimum width to send control width
 	 var newelements = document.getElementsByClassName('scrolling');
 	 for(var i=0; i < newelements.length; i++) {
 		 var thiscrollingelement = newelements[i];			
