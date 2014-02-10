@@ -1,4 +1,7 @@
 <?php
+// this needs to be updated to current version of db.
+$DBVERSION = "1.0.0";
+
 // this function is also in servercheck.php   remember to update as needed
 function folderRequirements($folderlevel) {
 	$missing = 0;
@@ -42,6 +45,20 @@ $thepath = $folderlevel;
 $missing = folderRequirements($folderlevel);
 if (!file_exists($sessionsloc . "/config.db") || $missing > 0) { header('Location: ' . $servercheckloc);exit; }
 $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
+
+	try {
+		$sql = "SELECT dbversion FROM controlcenter ORDER BY dbversion DESC LIMIT 1";
+		foreach ($configdb->query($sql) as $row)
+		{
+			if(isset($row['dbversion'])) {
+			$thedbversion = $row['dbversion'];
+			}
+		}
+		if($thedbversion < $DBVERSION) { header('Location: ' . $servercheckloc . '?newdbversion=' . $DBVERSION);exit; }
+	} catch(PDOException $e)
+		{
+		echo $e->getMessage();
+		}
 
 $ADDONDIR = $folderlevel . "addons/";
 

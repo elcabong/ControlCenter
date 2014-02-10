@@ -240,7 +240,7 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 		$(document).ready(function() {
 		<?php
 			foreach ($roomgroupaccessarray as $i) {
-				$thedelay = 1500 + (413 * $i);
+				$thedelay = 1000 + (180 * $i);
 				echo "
 				function refreshRoom$i() {
 				$(\"#roominfo$i\").load(\"./getrooms.php?room=$i\", function () {

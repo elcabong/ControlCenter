@@ -1,5 +1,7 @@
 <? //control center upgrade info
-$DBVERSION = "1.0.0";
+if(isset($_GET['newdbversion'])) {
+	$DBVERSION = $_GET['newdbversion'];
+}
 ?>
 <html>
 <head>
@@ -99,6 +101,7 @@ echo "<tr><td>";
 				 echo "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;$thefolder is Missing.</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 			}
 		}
+        echo "<tr><td>Check web folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";		
 	}
 if (!file_exists('./sessions/config.db')){
 echo "<tr><td>Trying to Create DB.</td></tr>";
@@ -124,13 +127,17 @@ if (file_exists('./sessions/config.db')){
 		$configdb = new PDO('sqlite:./sessions/config.db');
 		function checkDBversion() {
 				$configdb = new PDO('sqlite:./sessions/config.db');
-				$sql = "SELECT dbversion FROM controlcenter ORDER BY dbversion DESC LIMIT 1";
-				foreach ($configdb->query($sql) as $row)
-				{
-					if(isset($row['dbversion'])) {
-					$thedbversion = $row['dbversion'];
-				}}
-				return $thedbversion;
+				try {
+					$sql = "SELECT dbversion FROM controlcenter ORDER BY dbversion DESC LIMIT 1";
+					foreach ($configdb->query($sql) as $row)
+					{
+						if(isset($row['dbversion'])) {
+						$thedbversion = $row['dbversion'];
+					}}
+					return $thedbversion;
+				} catch(PDOException $e) {
+					  return "none";
+				}
 		}
 		$thedbver = checkDBversion();		
   echo "Settings DB found: Version $thedbver";
@@ -148,10 +155,11 @@ if (file_exists('./sessions/config.db')){
 		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT, dbversion TEXT)";
 		  $execquery = $configdb->exec($query);
 					$thedbversion = checkDBversion();
+					if(!isset($DBVERSION)) { $DBVERSION = $thedbversion; }
 					if(!isset($thedbversion)) {
 						// stamp current version
 						$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$DBVERSION')");
-						echo "<tr><td>DB tables created</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+						echo "<tr><td>DB tables created, version: $DBVERSION</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 					} elseif($thedbversion < $DBVERSION) {
 							//custom table upgrades here when needed
 							$thenewdbversion = "1.0.2";
@@ -165,7 +173,8 @@ if (file_exists('./sessions/config.db')){
 								//schema update queries
 								$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thenewdbversion')");
 							}
-						echo "<tr><td>DB tables updated</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+							$thedbversion = checkDBversion();
+						echo "<tr><td>DB tables updated to $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 					}
 	} catch(PDOException $e)
 		{
