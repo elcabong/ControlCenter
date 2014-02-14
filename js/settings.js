@@ -108,7 +108,7 @@ function updateSettings(section) {
 			params = params + '&' + contents[i].name + '=' + encodeURIComponent(value);
 		}
 	}
-	//alert(params);
+
 	var contents = document.getElementById(section).getElementsByTagName('select');
 	for (i = 0; i < contents.length; i++) {
 		if (contents[i].name != '') {
@@ -117,9 +117,8 @@ function updateSettings(section) {
 			params += thecontents;
 		}
 	}	
-	//alert(params);
-	var newsection = section.split('-');
-	ajaxRequest(params,newsection[0]);
+
+	ajaxRequest(params,section);
 }
 function ajaxRequest(params,section){
 	$.ajax({
@@ -128,12 +127,20 @@ function ajaxRequest(params,section){
 		success: function(data) { // successful request; do something with the data
 			if(data == 1){
 			  $.pnotify({
-						pnotify_title: 'Settings Saved',
+						pnotify_title: 'Settings Saved for ' + section,
 						pnotify_opacity: .5
 					});
-				setTimeout(function(){
-				window.location.reload(true);
-				}, 1500);
+				var thissection = section.substring(0, 5);
+				var thissection2 = section.substring(0, 11);	
+				if(section != 'rooms-new' && thissection == 'rooms' && thissection2 != 'roomsaddons') {
+					var newsection = section.split('-');
+					var thissection = "roomsaddons-" + newsection[1];
+					updateSettings(thissection);
+				} else {
+					setTimeout(function(){
+						window.location.reload(true);
+						}, 1500);
+				}
 			} else {
 			  $.pnotify({
 				  pnotify_title: 'Error!',
@@ -209,4 +216,28 @@ function updateVersion(){
 			alert("Error saving settings.");
 		}
 	});
-}	
+}
+
+function addonselect (theroom) {
+			$("#addons"+theroom).trigger("chosen:updated");
+			/*
+			var theaddons = [];
+			$("#rooms-"+theroom+" ul.chosen-choices").each(function() {
+				var addons = '';
+				$(this).find('li.search-choice > span').each(function(){
+					var current = $(this);
+					if(current.children().size() > 0) {return true;}
+					addons += $(this).text();
+					addons += ",,";
+				});
+				theaddons.push(addons);
+
+
+			});
+			$.pnotify({
+				  pnotify_title: 'Sent',
+				  pnotify_text: theaddons +" - "+ theroom,
+				  pnotify_type: 'alert',
+				  pnotify_size: 'large'
+			});*/
+}

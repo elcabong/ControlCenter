@@ -15,17 +15,47 @@
 	$roomnum = $HOMEROOMU;
 	$_SESSION['room'] = $roomnum; } else {
 	$roomnum = $_SESSION['room']; }
+	
+	require_once "./addons.php";
+	
+	
+	
+									$arr = explode(",", $enabledaddons);
+									
+									foreach($arr as $thearr) {
+										$arr = explode(".", $thearr, 2);
+										$classification = $arr[0];
+										$title = $arr[1];
+
+										$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomnum AND addonid = '$thearr' LIMIT 1";
+											foreach ($configdb->query($sql3) as $addonSettings)
+												{
+												$ADDONIP = $addonSettings['ip'];
+												$MAC = $addonSettings['mac'];
+												$setting1 = $addonSettings['setting1'];
+												$setting2 = $addonSettings['setting2'];
+												$setting3 = $addonSettings['setting3'];
+												$setting4 = $addonSettings['setting4'];
+												$setting5 = $addonSettings['setting5'];
+												$setting6 = $addonSettings['setting6'];
+												$setting7 = $addonSettings['setting7'];
+												$setting8 = $addonSettings['setting8'];
+												$setting9 = $addonSettings['setting9'];
+												$setting10 = $addonSettings['setting10'];
+												}										
+										
+										include $addonarray["$classification"]["$title"]['path']."addonquicklink.php";
+									}
+	
 
 		$ROOMNUMBER = "ROOM$roomnum"."N";
 		echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUMBER}</a>";
 		echo "<ul>";
 			$thisroom = 0;
 			foreach ($roomgroupaccessarray as $i) {
-				$ROOMXBMC = "ROOM$i"."XBMC";
-				$ip = ${$ROOMXBMC};
 				$ROOMNUMBER = "ROOM$i"."N";
 				$theperm = "USRPR$i";
-				if(!empty(${$ROOMXBMC}) && ${$theperm} == "1"){
+				if(!empty(${$ROOMNUMBER}) && ${$theperm} == "1"){
 					echo "<li>";
 					if($i == $_SESSION['room']) {
 					echo "<a class='selected changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a>"; 				
@@ -39,10 +69,6 @@
 			}
 		echo "</ul>";
 
-	$ROOMXBMC = "ROOM$roomnum"."XBMC";
-	$ROOMXBMC2 = $ROOMXBMC."2";
-	$xbmcip = ${$ROOMXBMC};
-	$xbmcip2 = ${$ROOMXBMC2};
 ?>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -103,15 +129,15 @@
 		}
 
 		var iframe2 = document.getElementById('ROOMCONTROL1f');
-		if(iframe2.src != '<? echo $xbmcip; ?>') {
-			iframe2.setAttribute('src','<? echo $xbmcip; ?>');
-			iframe2.setAttribute('data-src','<? echo $xbmcip; ?>');
+		if(iframe2.src != '<? echo $ADDONIP; ?>') {
+			iframe2.setAttribute('src','<? echo $ADDONIP; ?>');
+			iframe2.setAttribute('data-src','<? echo $ADDONIP; ?>');
 			iframe2.src = iframe2.src; }
 			
-		<? if($xbmcip2 != '0' || $xbmcip2 != '') { ?>
+		<? if($setting1 != '0' || $setting1 != '') { ?>
 		document.getElementById('secondroomprogram').style.display = 'block';
 		var iframe3 = document.getElementById('ROOMCONTROL2f');
-		iframe3.setAttribute('data-src','<? echo $xbmcip2; ?>');
+		iframe3.setAttribute('data-src','<? echo $setting1; ?>');
 		iframe3.removeAttribute('src');
 		$('#secondroomprogramlink').addClass('unloaded');
 		<? } else { ?>

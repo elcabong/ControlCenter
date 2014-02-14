@@ -117,7 +117,7 @@ nav ul li:hover > ul,nav ul li:hover > #room-menu ul,#room-menu ul:hover { displ
 
 #nav-menu > nav > ul > li > a > img { margin:0;width:35px; }
 
-.panel.selected {  border-bottom:2px solid #0099ff !important; }
+.panel.selected {  border-bottom:2px solid #0099ff !important; border-left:none !important; }
 
 .panel.unloaded { opacity:.5; }
 

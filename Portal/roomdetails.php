@@ -2,8 +2,6 @@
 if($_GET['thisroom']) { $thisroom=$_GET['thisroom']; } 
 if($_GET['ip']) { $ip=$_GET['ip']; } 
 
-//include config.php   run info for room number
-
 //  option to move to this room (move currently playing or just take control of this room if not already selected)
 //  get current running media (basic info)
 //  get current modules plus info on each module
@@ -30,7 +28,7 @@ include "nowplayinginfo.php";
 		echo "<h1>${$ROOMNUMBER}<span>Details</span></h1>";		
 		?>
 			<?
-			include "nowplayinginfo.php";
+			//include "nowplayinginfo.php";
 			if(!isset($jsonactiveplayer['result'])) {
 				echo "There is nothing currently playing.";
 				return;

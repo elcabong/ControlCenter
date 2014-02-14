@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon>
+	<metadata>
+		<id>mediaplayer.xbmc</id>
+		<version>0.5.0</version>
+		<name>xbmc connector</name>
+		<author>elcabong</author>  
+		<summary>XBMC player integration</summary>
+		<description>connects to xbmc installations.</description>
+	</metadata>	
+  <requires> <!--below not used currently -->
+    <import addon="xbmc.gui" version="2.11"/>
+  </requires>
+</addon>

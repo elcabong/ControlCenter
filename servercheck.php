@@ -161,6 +161,10 @@ if (file_exists('./sessions/config.db')){
 						$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$DBVERSION')");
 						echo "<tr><td>DB tables created, version: $DBVERSION</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 					} elseif($thedbversion < $DBVERSION) {
+					
+							//  need to stop and do a check.. maybe using break and $redirect = false;
+							//  then restart the page and update the db if user input yes.
+					
 							//custom table upgrades here when needed
 							$thenewdbversion = "1.0.2";
 							if($thedbversion < $thenewdbversion && $thenewdbversion <= $DBVERSION) {
