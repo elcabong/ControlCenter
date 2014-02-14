@@ -1,7 +1,9 @@
 <?php
 require "nowplayinginfo.php";
 						if(empty($jsoncheckxbmc['result'])) {
-							echo "<a href='#' class='pingicon'><img src='../media/orange.png' title='online' style='height:20px;'/></a>";
+							$sessvar = "playinginroom$setroomnum";
+							$_SESSION[$sessvar] = 0;
+							echo "<a href='#' class='pingicon'><img src='../media/orange.png' title='online with no xbmc running' style='height:20px;'/></a>";
 						} else {
 							if(empty($jsonactiveplayer['result'])) {
 								echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";

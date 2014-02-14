@@ -42,9 +42,9 @@
 												$setting8 = $addonSettings['setting8'];
 												$setting9 = $addonSettings['setting9'];
 												$setting10 = $addonSettings['setting10'];
-												}										
+												}
 										
-										include $addonarray["$classification"]["$title"]['path']."addonquicklink.php";
+									//	include $addonarray["$classification"]["$title"]['path']."addonquicklink.php";
 									}
 	
 
@@ -134,7 +134,7 @@
 			iframe2.setAttribute('data-src','<? echo $ADDONIP; ?>');
 			iframe2.src = iframe2.src; }
 			
-		<? if($setting1 != '0' || $setting1 != '') { ?>
+		<? if(isset($setting1) && ($setting1 != '0' || $setting1 != '')) { ?>
 		document.getElementById('secondroomprogram').style.display = 'block';
 		var iframe3 = document.getElementById('ROOMCONTROL2f');
 		iframe3.setAttribute('data-src','<? echo $setting1; ?>');
