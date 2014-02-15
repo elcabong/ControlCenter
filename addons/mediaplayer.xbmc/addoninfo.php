@@ -10,7 +10,7 @@ require "nowplayinginfo.php";
 								$sessvar = "playinginroom$setroomnum";
 								$_SESSION[$sessvar] = 0;
 								$thissessvar = "playinginroom$_SESSION[room]";
-								$checkstillplaying = $_SESSION[$thissessvar];
+								if(isset($_SESSION[$thissessvar])) { $checkstillplaying = $_SESSION[$thissessvar]; } else { $checkstillplaying = 0; }
 								if($nowplayingip != $ip && $checkstillplaying == 1) {
 									echo "<span class='sendcontrols'><a href='#' ip='$ip' class='sendnowplaying' sendtype='start' room='$i'>start</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='send' room='$i'>send</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='clone' room='$i'>clone</a></span>";
 								}
