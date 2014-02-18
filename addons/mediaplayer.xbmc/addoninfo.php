@@ -1,24 +1,25 @@
 <?php
-require "nowplayinginfo.php";
+						$ip = $enabledaddonsarray["$THISROOMID"]["$addonid"]['ADDONIP'];
+						require "nowplayinginfo.php";
 						if(empty($jsoncheckxbmc['result'])) {
-							$sessvar = "playinginroom$setroomnum";
+							$sessvar = "playinginroom$THISROOMID";
 							$_SESSION[$sessvar] = 0;
 							echo "<a href='#' class='pingicon'><img src='../media/orange.png' title='online with no xbmc running' style='height:20px;'/></a>";
 						} else {
 							if(empty($jsonactiveplayer['result'])) {
 								echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";
-								$sessvar = "playinginroom$setroomnum";
+								$sessvar = "playinginroom$THISROOMID";
 								$_SESSION[$sessvar] = 0;
 								$thissessvar = "playinginroom$_SESSION[room]";
 								if(isset($_SESSION[$thissessvar])) { $checkstillplaying = $_SESSION[$thissessvar]; } else { $checkstillplaying = 0; }
 								if($nowplayingip != $ip && $checkstillplaying == 1) {
-									echo "<span class='sendcontrols'><a href='#' ip='$ip' class='sendnowplaying' sendtype='start' room='$i'>start</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='send' room='$i'>send</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='clone' room='$i'>clone</a></span>";
+									echo "<span class='sendcontrols'><a href='#' ip='$ip' class='sendnowplaying' sendtype='start' room='$THISROOMID'>start</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='send' room='$THISROOMID'>send</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='clone' room='$THISROOMID'>clone</a></span>";
 								}
 							} else {
-								$sessvar = "playinginroom$setroomnum";
+								$sessvar = "playinginroom$THISROOMID";
 								$_SESSION[$sessvar] = 1;
 								if($activeplayerid=='0' || $activeplayerid=='1' || $activeplayerid=='2') {
-									echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' thisroom='$setroomnum' class='roominfo-modal'><p class='scrolling'>";
+									echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' thisroom='$THISROOMID' class='roominfo-modal'><p class='scrolling'>";
 									if($activeplayerid==0) {
 										if($filetype=="unknown") {
 											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";

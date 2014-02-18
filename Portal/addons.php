@@ -36,8 +36,8 @@ $availableaddons = array();
 		if(isset($theroom) && $theroom != '' ) {
 			$roomid = $theroom;
 		}	
-		if(isset($setroomnum) && $setroomnum != '' ) {
-			$roomid = $setroomnum;
+		if(isset($THISROOMID) && $THISROOMID != '' ) {
+			$roomid = $THISROOMID;
 		}
 		if(isset($roomid)) {
 			$enabledaddons = '';

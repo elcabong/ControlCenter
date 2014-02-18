@@ -1,6 +1,6 @@
 <?
-	$setroomnum = '';
-	if(isset($_GET['room'])) { $setroomnum = $_GET['room']; } else { exit; }
+	$THISROOMID = '';
+	if(isset($_GET['room'])) { $THISROOMID = $_GET['room']; } else { exit; }
 	//if(isset($_GET['addonid'])) { $addonid = $_GET['addonid']; }
 	
 			require './config.php';
@@ -16,38 +16,20 @@
 					}
 			}
 
-require './addons.php';
-//ini_set('display_errors', 'On');
-if (strpos($enabledaddons,',') !== false) {
-    $arr = explode(",", $enabledaddons);
-	$addonid = $arr[0];
-} else { $addonid = $enabledaddons; }
+		require './addons.php';
+		if (strpos($enabledaddons,',') !== false) {
+			$arr = explode(",", $enabledaddons);
+			$addonid = $arr[0];
+		} else { $addonid = $enabledaddons; }
 
 				$arr = explode(".", $addonid, 2);
 				$classification = $arr[0];
 				$title = $arr[1];
 
-										$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $setroomnum AND addonid = '$addonid' LIMIT 1";
-											foreach ($configdb->query($sql3) as $addonSettings)
-												{
-												$ADDONIP = $addonSettings['ip'];
-												$ADDONMAC = $addonSettings['mac'];
-												$setting1 = $addonSettings['setting1'];
-												$setting2 = $addonSettings['setting2'];
-												$setting3 = $addonSettings['setting3'];
-												$setting4 = $addonSettings['setting4'];
-												$setting5 = $addonSettings['setting5'];
-												$setting6 = $addonSettings['setting6'];
-												$setting7 = $addonSettings['setting7'];
-												$setting8 = $addonSettings['setting8'];
-												$setting9 = $addonSettings['setting9'];
-												$setting10 = $addonSettings['setting10'];
-												}
-
-				$i = $setroomnum;
+				$i = $THISROOMID;
 				$ip;
-				if(!empty($ADDONIP)) {
-					$ip = $ADDONIP;
+				if(!empty($enabledaddonsarray["$i"]["$addonid"]['ADDONIP'])) {
+					$ip = $enabledaddonsarray["$i"]["$addonid"]['ADDONIP'];
 				    $disallowed = array('http://', 'https://');
 				    foreach($disallowed as $d) {
 					    if(strpos($ip, $d) === 0) {
@@ -72,6 +54,9 @@ if (strpos($enabledaddons,',') !== false) {
 						}
 					} else {
 						//$status = "dead";
+						$sessvar = "playinginroom$THISROOMID";
+						$_SESSION[$sessvar] = 0;
+						$ADDONMAC = $enabledaddonsarray["$i"]["$addonid"]['MAC'];
 						echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('$ADDONMAC');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";
 					}
 				}
