@@ -99,6 +99,14 @@
 			document.getElementById('loading').style.display='none';	
 		}
 
+		
+		
+//  below gets updated to refresh #addonlinks and #addonlinkspages divs with content for new room		
+
+
+
+		
+	/*	
 		var iframe2 = document.getElementById('ROOMCONTROL1f');
 		if(iframe2.src != '<? echo $enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['ADDONIP']; ?>') {
 			iframe2.setAttribute('src','<? echo $enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['ADDONIP']; ?>');
@@ -123,6 +131,8 @@
 			$('a.panel.nonpersistent').addClass('unloaded');			
 			
 			$('a.panel').removeClass('selected');
-			$('#firstroomprogramlink').addClass('selected');
+			$('#firstroomprogramlink').addClass('selected');*/
+		$("#addonlinks").load("./addonslinks.php?addon=links");
+		$("#addonlinkspages").load("./addonslinks.php?addon=pages");		
 			$('#wrapper').scrollTo(0,0);
 </script>

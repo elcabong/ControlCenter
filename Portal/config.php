@@ -76,10 +76,10 @@ if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }
 			$TOTALROOMS=0;
 			foreach ($configdb->query($sql) as $row) {
 			$TOTALROOMS++;
-			$roomid = $row['roomid'];
-			$theperm = "USRPR$roomid";
+			$theroomid = $row['roomid'];
+			$theperm = "USRPR$theroomid";
 			${$theperm} = "0";
-			$ROOMname = "ROOM$roomid"."N";
+			$ROOMname = "ROOM$theroomid"."N";
 			${$ROOMname} = $row['roomname'];
 			}
 		} catch(PDOException $e)

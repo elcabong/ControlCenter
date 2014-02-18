@@ -1,6 +1,14 @@
 <?php
 //require_once"config.php";
 
+
+if(!isset($ADDONDIR)) {
+	require "config.php";
+}
+if(!isset($roomid)) {
+	$roomid = $_SESSION['room'];
+}
+
 $addonDIRarray = scandir($ADDONDIR);
 
 array_splice($addonDIRarray, 0, 1);
@@ -38,6 +46,9 @@ $availableaddons = array();
 		}	
 		if(isset($THISROOMID) && $THISROOMID != '' ) {
 			$roomid = $THISROOMID;
+		}
+		if(!isset($roomid) && isset($_SESSION['room'])) {
+			$roomid = $_SESSION['room'];		
 		}
 		if(isset($roomid)) {
 			$enabledaddons = '';

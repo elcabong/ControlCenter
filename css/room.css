@@ -189,6 +189,8 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #navsettings { float: right;right: 0px;position: absolute; }
 
+#addonlinks { float:left; }
+
 #navsettings > ul > li > ul { right:100px;position:relative;position:absolute;top:48px;right:0; }
   
 #nav-menu2 > nav ul li ul a { background:url(../media/bgNav.png);width:90px; }
