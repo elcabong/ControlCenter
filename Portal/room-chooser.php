@@ -99,39 +99,6 @@
 			document.getElementById('loading').style.display='none';	
 		}
 
-		
-		
-//  below gets updated to refresh #addonlinks and #addonlinkspages divs with content for new room		
-
-
-
-		
-	/*	
-		var iframe2 = document.getElementById('ROOMCONTROL1f');
-		if(iframe2.src != '<? echo $enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['ADDONIP']; ?>') {
-			iframe2.setAttribute('src','<? echo $enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['ADDONIP']; ?>');
-			iframe2.setAttribute('data-src','<? echo $enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['ADDONIP']; ?>');
-			iframe2.src = iframe2.src; }
-			
-		<? if(isset($enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['setting1']) && ($enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['setting1'] != '0' || $enabledaddonsarray['mediaplayer.xbmc']['setting1'] != '')) { ?>
-		document.getElementById('secondroomprogram').style.display = 'block';
-		var iframe3 = document.getElementById('ROOMCONTROL2f');
-		iframe3.setAttribute('data-src','<? echo $enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['setting1']; ?>');
-		iframe3.removeAttribute('src');
-		$('#secondroomprogramlink').addClass('unloaded');
-		<? } else { ?>
-			document.getElementById('secondroomprogram').style.display = 'none';
-			var iframe3 = document.getElementById('ROOMCONTROL2f');
-			iframe3.setAttribute('data-src','');			
-			iframe3.setAttribute('src','');	
-			<? } ?>
-
-			var iframeclear = document.getElementById('nonpersistentf');
-			iframeclear.src = '';
-			$('a.panel.nonpersistent').addClass('unloaded');			
-			
-			$('a.panel').removeClass('selected');
-			$('#firstroomprogramlink').addClass('selected');*/
 		$("#addonlinks").load("./addonslinks.php?addon=links");
 		$("#addonlinkspages").load("./addonslinks.php?addon=pages");		
 			$('#wrapper').scrollTo(0,0);
