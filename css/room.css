@@ -117,7 +117,7 @@ nav ul li:hover > ul,nav ul li:hover > #room-menu ul,#room-menu ul:hover { displ
 
 #nav-menu > nav > ul > li > a > img { margin:0;width:35px; }
 
-.panel.selected {  border-bottom:2px solid #0099ff !important; }
+.panel.selected {  border-bottom:2px solid #0099ff !important; border-left:none !important; }
 
 .panel.unloaded { opacity:.5; }
 
@@ -188,6 +188,8 @@ ul.sortable > li > a:first-child { width: 105px; }
 #nav-menu2 > nav > ul > li > a > img { margin:4px 0 0;height:40px !important;padding-bottom:5px; }
 
 #navsettings { float: right;right: 0px;position: absolute; }
+
+#addonlinks { float:left; }
 
 #navsettings > ul > li > ul { right:100px;position:relative;position:absolute;top:48px;right:0; }
   

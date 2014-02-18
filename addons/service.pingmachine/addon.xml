@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon>
+	<metadata>
+		<id>service.pingmachine</id>
+		<version>1.0.0</version>
+		<name>ping machine</name>
+		<author>elcabong</author>  
+		<summary>pings devices in your rooms</summary>
+		<description>pings a machine and returns status for info area</description>
+	</metadata>	
+  <requires> <!--below not used currently -->
+    <import addon="xbmc.gui" version="2.11"/>
+  </requires>
+</addon>

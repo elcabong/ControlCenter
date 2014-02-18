@@ -15,17 +15,18 @@
 	$roomnum = $HOMEROOMU;
 	$_SESSION['room'] = $roomnum; } else {
 	$roomnum = $_SESSION['room']; }
+	$roomid = $roomnum;
+	
+	require_once "./addons.php";
 
 		$ROOMNUMBER = "ROOM$roomnum"."N";
 		echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUMBER}</a>";
 		echo "<ul>";
 			$thisroom = 0;
 			foreach ($roomgroupaccessarray as $i) {
-				$ROOMXBMC = "ROOM$i"."XBMC";
-				$ip = ${$ROOMXBMC};
 				$ROOMNUMBER = "ROOM$i"."N";
 				$theperm = "USRPR$i";
-				if(!empty(${$ROOMXBMC}) && ${$theperm} == "1"){
+				if(!empty(${$ROOMNUMBER}) && ${$theperm} == "1"){
 					echo "<li>";
 					if($i == $_SESSION['room']) {
 					echo "<a class='selected changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a>"; 				
@@ -33,16 +34,12 @@
 					} else {
 					echo "<a class='changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a>"; 
 					}
-					echo "<img class='roomdetails' theroom=\"$i\" ip=\"$ip\" src='../media/options.png'>";
+					echo "<img class='roomdetails' theroom=\"$i\" src='../media/options.png'>";
 					echo "</li>";
 				}
 			}
 		echo "</ul>";
 
-	$ROOMXBMC = "ROOM$roomnum"."XBMC";
-	$ROOMXBMC2 = $ROOMXBMC."2";
-	$xbmcip = ${$ROOMXBMC};
-	$xbmcip2 = ${$ROOMXBMC2};
 ?>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -71,8 +68,8 @@
 	jQuery(function ($) {
 		$('img.roomdetails').click(function (e) {
 			var thisroom = $(this).attr('theroom');
-			var ip = $(this).attr('ip');
-			$('#modal').load('roomdetails.php?thisroom='+thisroom+'&ip='+ip).modal({
+			//var ip = $(this).attr('ip');
+			$('#modal').load('roomdetails.php?thisroom='+thisroom).modal({
 					opacity: 25,
 					overlayClose: true});
 			return false;
@@ -102,30 +99,7 @@
 			document.getElementById('loading').style.display='none';	
 		}
 
-		var iframe2 = document.getElementById('ROOMCONTROL1f');
-		if(iframe2.src != '<? echo $xbmcip; ?>') {
-			iframe2.setAttribute('src','<? echo $xbmcip; ?>');
-			iframe2.setAttribute('data-src','<? echo $xbmcip; ?>');
-			iframe2.src = iframe2.src; }
-			
-		<? if($xbmcip2 != '0' || $xbmcip2 != '') { ?>
-		document.getElementById('secondroomprogram').style.display = 'block';
-		var iframe3 = document.getElementById('ROOMCONTROL2f');
-		iframe3.setAttribute('data-src','<? echo $xbmcip2; ?>');
-		iframe3.removeAttribute('src');
-		$('#secondroomprogramlink').addClass('unloaded');
-		<? } else { ?>
-			document.getElementById('secondroomprogram').style.display = 'none';
-			var iframe3 = document.getElementById('ROOMCONTROL2f');
-			iframe3.setAttribute('data-src','');			
-			iframe3.setAttribute('src','');	
-			<? } ?>
-
-			var iframeclear = document.getElementById('nonpersistentf');
-			iframeclear.src = '';
-			$('a.panel.nonpersistent').addClass('unloaded');			
-			
-			$('a.panel').removeClass('selected');
-			$('#firstroomprogramlink').addClass('selected');
+		$("#addonlinks").load("./addonslinks.php?addon=links");
+		$("#addonlinkspages").load("./addonslinks.php?addon=pages");
 			$('#wrapper').scrollTo(0,0);
 </script>

@@ -1,4 +1,16 @@
-<? if($_GET['ip']) { $ip=$_GET['ip']; } ?>
+<? if($_GET['ip']) { $ip=$_GET['ip']; } if($_GET['thisroom']) { $thisroom=$_GET['thisroom']; }
+require 'config.php';
+require 'addons.php';
+if (strpos($enabledaddons,',') !== false) {
+    $arr = explode(",", $enabledaddons);
+	$addonid = $arr[0];
+} else { $addonid = $enabledaddons; }
+$arr = explode(".", $addonid, 2);
+				$classification = $arr[0];
+				$title = $arr[1];
+require $addonarray["$classification"]["$title"]['path']."nowplaying.php";
+$ROOMNUMBER = "ROOM$thisroom"."N";
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,141 +21,47 @@
 <div id='roominfocontainer'>
 	<div id='logo'>
 			<div id="timeUpdateField"></div>
-		<h1>Now<span>Playing</span></h1>
+		<h1>Now<span>Playing</span> in <span><?= ${$ROOMNUMBER};?></span></h1>
 			<?
-			include "nowplayinginfo.php";
-			if(!isset($jsonactiveplayer['result'])) {
+			/*if(!isset($jsonactiveplayer['result'])) {
 				echo "There is nothing currently playing.";
 				return;
-			}
+			}*/
 			?>
 	</div>
 	<div id='roominfocontent'>
 			<div class='title'>
 			<?
-			if(!isset($activeplayerid)) { exit; }
-			if($activeplayerid==0) {
-				$jsonmusicinfo = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22AudioLibrary.GetSongDetails%22%2C%20%22params%22%3A%20%7B%20%22songid%22%3A%20$thesongid%2C%20%22properties%22%3A%20%5B%20%22fanart%22%2C%20%22genre%22%2C%20%22title%22%2C%20%22year%22%2C%20%22rating%22%2C%20%22thumbnail%22%5D%20%7D%2C%20%22id%22%3A%201}";
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_URL, "$jsonmusicinfo");
-				curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 1);
-				$output = curl_exec($ch);
-				$jsonmusicinfo = json_decode($output,true);
-				//print_r ($jsonmusicinfo);
-				$thegenre = implode(', ', $jsonmusicinfo['result']['songdetails']['genre']);
-				
-				if(false !== stripos($thealbum, '$theyear')) { echo "$thealbum"; } else { echo "$thealbum ($theyear)"; }
-				echo "<br>Track: $thetitle";
-				//echo "<br>Runtime: ".round($jsonnowplaying['result']['item']['runtime']/60)." minutes";
-				echo "<br>Genre: ".$thegenre;
-				echo "<br>Year: ".$theyear;
-				//echo "<br>User Rating: ".round($jsonnowplaying['result']['item']['rating'],2)."/10";
-
-					
-			} elseif($activeplayerid==1) {
-				$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22Player.GetItem%22%2C%20%22params%22%3A%20%7B%20%22properties%22%3A%20%5B%22director%22%2C%22writer%22%2C%22tagline%22%2C%22episode%22%2C%22title%22%2C%22showtitle%22%2C%22season%22%2C%22genre%22%2C%22year%22%2C%22rating%22%2C%22runtime%22%2C%22firstaired%22%2C%22plot%22%2C%22fanart%22%2C%22thumbnail%22%2C%22tvshowid%22%5D%2C%20%22playerid%22%3A%201%20%7D%2C%20%22id%22%3A%20%221%22}";
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_URL, "$jsoncontents");
-				curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 1);
-				$output = curl_exec($ch);
-				$jsonnowplaying = json_decode($output,true);
-				if(isset($jsonnowplaying['result']['item']['tvshowid']) && $jsonnowplaying['result']['item']['tvshowid']!='') {
-					$theshowid = $jsonnowplaying['result']['item']['tvshowid'];
-				}	
-				if($jsonnowplaying['result']['item']['label']!='') {
-					if($jsonnowplaying['result']['item']['type']!='') {
-						if($jsonnowplaying['result']['item']['type']=='unknown') {
-						//	echo ucfirst($jsonnowplaying['result']['item']['filetype']).": ";
-						} else {
-						//	echo ucfirst($jsonnowplaying['result']['item']['type']).": "; 
-							$filetype = $jsonnowplaying['result']['item']['type'];
-						}
-					}
-					if($filetype == "episode"){
-						$jsontvshowinfo = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22VideoLibrary.GetTVShowDetails%22%2C%20%22params%22%3A%20%7B%20%22tvshowid%22%3A%20$theshowid%2C%20%22properties%22%3A%20%5B%20%22art%22%2C%20%22votes%22%2C%20%22premiered%22%2C%20%22cast%22%2C%20%22genre%22%2C%20%22plot%22%2C%20%22title%22%2C%20%22originaltitle%22%2C%20%22year%22%2C%20%22rating%22%2C%20%22thumbnail%22%2C%20%22playcount%22%2C%20%22file%22%2C%20%22fanart%22%2C%20%22episode%22%5D%20%7D%2C%20%22id%22%3A%201}";
-						$ch = curl_init();
-						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-						curl_setopt($ch, CURLOPT_URL, "$jsontvshowinfo");
-						curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 1);
-						$output = curl_exec($ch);
-						$jsontvshowinfo = json_decode($output,true);
-						$thegenre = implode(', ', $jsontvshowinfo['result']['tvshowdetails']['genre']);
-						$theyear = $jsontvshowinfo['result']['tvshowdetails']['year'];
-						echo "<img src='$ip/image/".urlencode($jsontvshowinfo['result']['tvshowdetails']['thumbnail'])."'/>";
-					} else {
-						$thegenre = implode(', ', $jsonnowplaying['result']['item']['genre']);
-						$theyear = $jsonnowplaying['result']['item']['year'];
-						echo "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['thumbnail'])."'/>";
-					}
-					$thedirector = implode(', ', $jsonnowplaying['result']['item']['director']);
-					$thewriter = implode(', ', $jsonnowplaying['result']['item']['writer']);
-					$thelabel = $jsonnowplaying['result']['item']['label'];
-					$theshowtitle = $jsonnowplaying['result']['item']['showtitle'];
-					$thetitle = $jsonnowplaying['result']['item']['title'];
-					$theshowseason = $jsonnowplaying['result']['item']['season'];
-					$theshowepisode = str_pad($jsonnowplaying['result']['item']['episode'], 2, '0', STR_PAD_LEFT);
-					echo "<table><tr>";
-					if($filetype=="movie") {
-						echo "<td>Movie:</td><td>$thetitle</td>";
-					} else {
-						echo "<td>Series:</td><td> $theshowtitle</td></tr><tr><td>Episode: </td><td>$theshowseason$theshowepisode - $thetitle</td>";
-					}
-					echo "</tr><tr><td>Runtime: </td><td>".round($jsonnowplaying['result']['item']['runtime']/60)." minutes</td>";
-					if($filetype == "episode"){
-						echo "</tr><tr><td>First Aired: </td><td>".$jsonnowplaying['result']['item']['firstaired']."</td>";
-					}else{
-						echo "</tr><tr><td>Year: </td><td>$theyear</td>";
-						echo "</tr><tr><td>Tagline: </td><td>".$jsonnowplaying['result']['item']['tagline']."</td>";
-					}
-					echo "</tr><tr><td>User Rating: </td><td>".round($jsonnowplaying['result']['item']['rating'],2)."/10</td>";
-					echo "</tr><tr><td>Genre: </td><td>$thegenre</td>";
-					echo "</tr><tr><td>Director: </td><td>$thedirector</td>";
-					echo "</tr><tr><td>Author: </td><td>$thewriter</td>";
-					echo "</tr></table>";
-				}
-			} elseif($activeplayerid==2) {
-				echo "pics";
+			echo $thumbnail;
+			echo "<table>";
+			foreach($nowplayingarray as $item=>$value) {
+				echo "<tr><td><b>".$item.":</b></td><td> ".$value."</td></tr>";
 			}
-			?>		
+			echo "</table>";?>
 		</div>
-		<div id='roominfo-info'>
-			<?
-			if($activeplayerid==0) {
-				//echo "music info";
-					?> <br><br><br><div id="images"> <?
-					echo "<img src='$ip/image/".urlencode($jsonmusicinfo['result']['songdetails']['thumbnail'])."'/>";
-					
-			} elseif($activeplayerid==1) {	
-				echo "Plot:<br>".$jsonnowplaying['result']['item']['plot'];
-
-				if($filetype == "movie"){
-					?> <br><br><br><div id="images"> <?
-					echo "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['fanart'])."'/>";
-				} elseif($filetype == "episode"){
-					?> <br><br><br><div id="images"> <?
-					echo "<img src='$ip/image/".urlencode($jsontvshowinfo['result']['tvshowdetails']['fanart'])."'/>";
-				}
-			} elseif($activeplayerid==2) {
-				echo "pics";
-			}				
-			?> </div>
+		<?php	if(isset($plot) && $plot != '') {?>
+			<br>
+			<div class='plot'>
+			<b>Plot:</b> <?php echo $plot; ?>
+			</div><?php } ?>
+		<div id="images">
+			<?php echo $fanart;?>
 		</div>
 	</div>
 <script>
-	timer();
-	function timer()
+	thenowplayingtimer();
+	function thenowplayingtimer()
 	{
 	  if(!document.contains(timeUpdateField))
 	  {
 		 clearInterval(nowplayingtimer);
 		 return;
+	  } else {
+		$("#timeUpdateField").load("<?php echo $addonarray["$classification"]["$title"]['path'];?>nowplayingtime.php?ip=<?echo $ip;?>&filetype=<?echo $filetype;?>&activeplayer=<?echo $activeplayerid;?>&addon=<?php echo $addonid;?>");
 	  }
-	  $("#timeUpdateField").load("nowplayingtime.php?ip=<?echo $ip;?>&filetype=<?echo $filetype;?>&activeplayer=<?echo $activeplayerid;?>");
 	}
 	clearInterval(nowplayingtimer);
-	var nowplayingtimer=setInterval(timer, 3000);
+	var nowplayingtimer=setInterval(thenowplayingtimer, 5000);
 </script>	
 </div>
 </body>

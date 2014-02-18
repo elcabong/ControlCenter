@@ -2,7 +2,8 @@
 if (file_exists('../sessions/firstrun.php') || !file_exists('../sessions/config.db')) { header('Location: ../servercheck.php');exit; }
 $configdb = new PDO('sqlite:../sessions/config.db');
 
-if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings') && !isset($_GET['setup'])){
+//if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings') && !isset($_GET['setup'])){
+if(!empty($_GET) && !isset($_GET['setup'])){
 	//if there is no section parameter, we will not do anything.
   if(isset($_GET['remove']) && $_GET['remove'] == 'yes' && isset($_GET['table']) && $_GET['table'] != '' && isset($_GET['rowid']) && $_GET['rowid'] != ''){
 	$theidtodelete = $_GET['rowid'];
@@ -10,6 +11,7 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings') && !isset($_GET[
 		$configdb->exec("DELETE FROM users WHERE userid = $theidtodelete");
 	} elseif($_GET['table'] == 'rooms') {
 		$configdb->exec("DELETE FROM rooms WHERE roomid = $theidtodelete");
+		$configdb->exec("DELETE FROM rooms_addons WHERE roomid = $theidtodelete");
 	} elseif($_GET['table'] == 'roomgroups') {
 		$configdb->exec("DELETE FROM roomgroups WHERE roomgroupid = $theidtodelete");
 	} elseif($_GET['table'] == 'navigation') {
@@ -38,7 +40,7 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings') && !isset($_GET[
       foreach ($_GET as $var => $value){
 		  //Here we go through all $_GET variables and add the values one by one.
 			$var = urlencode($var);
-			$value = $value;
+			$value = ltrim($value, ',');
 			$vararray .= $var.",,";
 			$valuearray .= "'".$value."',,";
 	  }
@@ -59,9 +61,83 @@ if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings') && !isset($_GET[
 		} else if($section_name == "rooms") {
 			if(strstr($section_unique,'new')) {
 				$configdb->exec("INSERT INTO rooms ($vararray) VALUES ($valuearray)");
+						foreach ($configdb->query("SELECT max(roomid) FROM rooms LIMIT 1") as $row15) {
+							$section_unique = "$row15[0]";
+						}				
 			} else {
-				$configdb->exec("UPDATE rooms SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3] WHERE roomid=$section_unique");
-			}
+				$configdb->exec("UPDATE rooms SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1] WHERE roomid=$section_unique");
+				}
+				
+				$checkthisshit = explode(',',ltrim(rtrim($valuearraye[1], "'"), "'"));
+				foreach($checkthisshit as $thisvalue) {
+					if($thisvalue != '') {
+						$row5 = '';
+							try {
+								foreach ($configdb->query("SELECT rooms_addonsid FROM rooms_addons WHERE roomid = '$section_unique' AND addonid = '$thisvalue' LIMIT 1") as $row5) {
+									//print_r($row5);
+								}
+							} catch(PDOException $e) {
+								echo $e->getMessage();
+							}			
+							
+							if ($row5 != '') {
+									//echo 'entry Found'; 
+							} else {
+								//echo 'entry NOT Found, try to create';
+								$configdb->exec("INSERT INTO rooms_addons (roomid,addonid) VALUES ($section_unique,'$thisvalue')");
+							}				
+					}
+				}
+		} else if($section_name == "roomsaddons") {
+									/*		echo "<pre>";
+									print_r($vararraye);
+									echo "</pre>";
+											echo "<pre>";
+									print_r($valuearraye);
+									echo "</pre>";							
+*/
+						$row5 = '';
+							try {
+								foreach ($configdb->query("SELECT rooms_addonsid FROM rooms_addons WHERE roomid = $valuearraye[0] AND addonid = $valuearraye[1] LIMIT 1") as $row5) {
+									//print_r($row5);
+								}
+							} catch(PDOException $e) {
+								echo $e->getMessage();
+							}			
+							
+							if ($row5 != '') {
+									$i=0;
+									$setthis = '';
+									foreach($vararraye as $item) {
+										$setthis .= "$item=$valuearraye[$i]".",";
+										$i++;
+									}
+									$setthis = rtrim($setthis, ',');
+									//echo $setthis;
+									//echo 'entry Found';
+									$configdb->exec("UPDATE rooms_addons SET $setthis WHERE roomid = $valuearraye[0] AND addonid = $valuearraye[1]");
+							} else {
+									$i=0;
+									$setthisvar = '';
+									$setthisval = '';
+									foreach($vararraye as $item) {
+										$setthisvar .= $item.",";
+										$setthisval .= $valuearraye[$i].",";
+										$i++;
+									}
+									$setthisvar = rtrim($setthisvar, ',');
+									$setthisval = rtrim($setthisval, ',');
+								//echo 'entry NOT Found, try to create';
+								$configdb->exec("INSERT INTO rooms_addons ($setthisvar) VALUES ($setthisval)");
+							}				
+
+	
+
+
+
+
+
+		
 		} else if($section_name == "roomgroups") {
 			if(strstr($section_unique,'new')) {
 				$configdb->exec("INSERT INTO roomgroups ($vararray) VALUES ($valuearray)");
@@ -106,6 +182,7 @@ require './config.php';
 if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername ) || $SETTINGSACCESS != "1") {
     header("Location: login.php");
     exit;}}
+require './addons.php';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -454,20 +531,27 @@ $(document).ready(function() {
 				</p>"; }}?>
 			<br><br>	
             </div>
+
+
             <div id="ROOMS" class="panel">
               <h3>Room List</h3>
-			    <p>These Rooms are different xbmc machines or other network items you can control from a web interface</p>
 				<p align="justify" style="width: 500px;">
-				    <b>Title:</b>  The title of the room or device
-	<br><br><b>MAC:</b>  This optional input is for the MAC Address and is used to WOL the device if available.  There will be a red/green icon for each room: green if the device is on, red if the device is off, click the red icon to wake the device.
-	<br><br><b>IP1:</b>  A control web interface such as the webinterface plugins for xbmc ie  http://ip:port  or   http://username:pass@ip:port 
-	<br><br><b>IP2:</b>  An optional second control web interface such as the webinterface plugins for xbmc ie  http://ip:port  or   http://username:pass@ip:port 
+				    <b>Title:</b>  The title of the room/set of devices
+			<br><b>Addons:</b>  The list of addons assignable to this room.  each addon will add any settings they need to the assigned room. (ensure the addon you want info displaying for is first in the list.  usually the mediaplayer.addon)
+
 				<br>
 				</p>
                 <?php
 				echo "<table id='rooms-new'>";
-				echo "<tr><td></td><td class='title'>Title</td><td><input size='10' name='roomname' value=''></td><td class='title'>MAC</td><td><input size='20' name='mac' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"rooms-new\");' /></td></tr>";
-				echo "<tr><td></td><td class='title'>IP1</td><td  colspan=4><input size='60' name='ip1' value=''></td></tr><tr><td></td><td class='title'>IP2</td><td colspan=4><input size='60' name='ip2' value=''></td></tr>";
+				echo "<tr><td class='title'>Title</td><td><input size='10' name='roomname' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"rooms-new\");' /></td></tr>";
+
+						for ($i = 0; $i < count($availableaddons); ++$i) {
+								$theavailableaddons .= "<option value=".$availableaddons[$i].">".$availableaddons[$i]."</option>"; 
+						}
+						echo "<tr><td class='title'>Addons</td><td colspan=2><select class='chosen-select multiple' id='addonsnew' data-placeholder='Choose' multiple='multiple' onchange='addonselect('new')'>".$theavailableaddons."</select></td><input size='10' class='addonsnew' type='hidden' name='addons' value=''></td></tr>";
+
+
+				//echo "<tr><td></td><td class='title'>IP1</td><td  colspan=4><input size='60' name='ip1' value=''></td></tr><tr><td></td><td class='title'>IP2</td><td colspan=4><input size='60' name='ip2' value=''></td></tr>";
 				echo "</table><br><br><br>";
 				try {
 					$sql = "SELECT * FROM rooms";
@@ -475,41 +559,79 @@ $(document).ready(function() {
 					foreach ($configdb->query($sql) as $row)
 						{
 						$roomid = $row['roomid'];
-						echo "<table id='rooms-$roomid'>";
-						echo "<tr><td class='title'>Title</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td>
-										<td class='title'>MAC</td><td><input size='20' name='mac' value=" . $row['mac'] . "></td>";
-										
-						$ip = $row['ip1'];
-					   $disallowed = array('http://', 'https://');
-					   foreach($disallowed as $d) {
-							if(strpos($ip, $d) === 0) {
-							   $ip = strtok(str_replace($d, '', $ip),':');
-							}
-						}
-						if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
-							$pingresult = exec("ping -n 1 -w 1 $ip", $output, $status);
-							// echo 'This is a server using Windows!';
-						} else {
-							$pingresult = exec("/bin/ping -c1 -w1 $ip", $outcome, $status);
-							// echo 'This is a server not using Windows!';
-						}
-						if ($status == "0") {
-							$status = "alive";
-						} else { 
-							$status = "dead"; 
-						}
-						$xbmcmachine = $status;					
-						echo "<td>";
-						if($xbmcmachine == 'alive') { echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>"; } else { echo "<a href='#' class='pingicon' onclick=\"Settingswakemachine('" . $row['mac'] . "','" . rawurlencode($row['roomname']) . "');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";}
-						echo "</td>";
-										
-										
-										
+						echo "<hr><table id='rooms-$roomid'>";
+						echo "<tr><td class='title'>Room Name</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td>";
 						echo "<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"rooms-$roomid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"rooms\"," . $row['roomid'] . ");' /></td></tr>";
-						echo "<tr><td class='title'>IP1</td><td colspan=5><input size='80' name='ip1' value='" . $row['ip1'] . "'></td></tr>
-								 <tr><td class='title'>IP2</td><td colspan=5><input size='80' name='ip2' value=" . $row['ip2'] . "></td></tr>";
-						echo "</table><br><br>";
+						
+						$addonids = '';
+						$theenabledaddons = '';
+						$enabledaddons = '';
+						$sql2 = "SELECT addons FROM rooms WHERE roomid = $roomid LIMIT 1";
+							foreach ($configdb->query($sql2) as $row2)
+								{
+									$addonid = $row2['addons'];
+								//	echo $addonid."<br>";
+									
+									$arr = explode(",", $addonid);
+									
+									foreach($arr as $thearr) {
+										$arr = explode(".", $thearr, 2);
+										$classification = $arr[0];
+										$title = $arr[1];									
+										
+									//	echo $addonarray["$classification"]["$title"]['path'];
+										
+										$enabledaddons .= "<option selected='selected' value=".$thearr.">".$thearr."</option>"; 
+										if($thearr != '') { $theenabledaddons .= $thearr.","; }
+									}
+								}
+
+						$theavailableaddons = '';
+						$theseenabledaddons = explode(',',$theenabledaddons);
+						for ($i = 0; $i < count($availableaddons); ++$i) {
+							
+							if(!in_array($availableaddons[$i],$theseenabledaddons)) {
+								$theavailableaddons .= "<option value=".$availableaddons[$i].">".$availableaddons[$i]."</option>"; 
+							}
+						
 						}
+						echo "<tr><td class='title'>Addons</td><td colspan=2><select class='chosen-select multiple' id='addons$roomid' data-placeholder='Choose' multiple='multiple' onchange='addonselect($roomid)'>".$enabledaddons.$theavailableaddons."</select></td><input size='10' class='addons$roomid' type='hidden' name='addons' value=" . $theenabledaddons . "></td></tr>";
+						 echo "</table><table id='roomsaddons-$roomid'>";
+							for ($i = 0; $i < count($theseenabledaddons); ++$i) {
+									$addonid = $theseenabledaddons[$i];
+									if($addonid != '') {
+									
+										$arr = explode(".", $addonid, 2);
+										$classification = $arr[0];
+										$title = $arr[1];
+
+
+										$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid AND addonid = '$addonid' LIMIT 1";
+											foreach ($configdb->query($sql3) as $addonSettings)
+												{
+												$enabledaddonsarray["$roomid"]["$addonid"]['classification'] = $classification;
+												$enabledaddonsarray["$roomid"]["$addonid"]['title'] = $title;
+												$enabledaddonsarray["$roomid"]["$addonid"]['ADDONIP'] = $addonSettings['ip'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['MAC'] = $addonSettings['mac'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting1'] = $addonSettings['setting1'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting2'] = $addonSettings['setting2'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting3'] = $addonSettings['setting3'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting4'] = $addonSettings['setting4'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting5'] = $addonSettings['setting5'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting6'] = $addonSettings['setting6'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting7'] = $addonSettings['setting7'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting8'] = $addonSettings['setting8'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting9'] = $addonSettings['setting9'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting10'] = $addonSettings['setting10'];
+												}
+										echo "<input type='hidden' size='80' name='roomid' value='$roomid'>";
+										echo "<input type='hidden' size='80' name='addonid' value='$addonid'>";
+										include  $addonarray["$classification"]["$title"]['path'] . "settings.php";
+						
+									}
+							}
+						 echo "</table><br><br>";
+						 }
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();

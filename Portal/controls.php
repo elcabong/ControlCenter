@@ -10,8 +10,8 @@ if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 	if (${$theperm}!="1" or !in_array($theroom, $roomgroupaccessarray)) {
 		header("Location: index.php");
 		exit; }
-$ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 = $ROOMXBMC."2";
 }
+require_once 'addons.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,11 +51,11 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 			</ul>
 		</nav>
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
-		<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){ ?>
-		<li><a id='firstroomprogramlink' href='#ROOMCONTROL1' class='panel persistent selected'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
-		<? if(${$ROOMXBMC2} != '0') { ?>
-		<li id="secondroomprogram"><a id='secondroomprogramlink' href='#ROOMCONTROL2' class='panel persistent unloaded'><img src="../media/Programs/XBMC.png" height='35px'></a></li>
-			<?php }
+		<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
+		echo "<nav id='addonlinks'>";
+		$addontype = 'links';
+		include"./addonslinks.php";
+		echo "</nav>";						
 			$c = 1;
 			$count = 0;
 			while($count<2 && $c<$TOTALROOMS) {
@@ -164,19 +164,12 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 <div class="clearcover" style="position:absolute;width:100%;top:50px;bottom:0;display:none;background-color:rgba(0,0,0,.30);z-index:150;"></div>
 <div id="wrapper" scrolling="auto">
 	<div id="mask">
-	<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){ ?>
-		<div id="ROOMCONTROL1" class="item">
-			<div class="content">
-				<iframe id='ROOMCONTROL1f' class='ROOMCONTROL1' src="<?echo ${$ROOMXBMC};?>" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
-			</div>
-		</div>
-		<div id="ROOMCONTROL2" class="item">
-			<div class="content">
-				<iframe id='ROOMCONTROL2f' class='ROOMCONTROL2' data-src="<?echo ${$ROOMXBMC2};?>" width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
-			</div>
-		</div>
-	<? } ?>	
-		<?php
+	<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
+		echo "<span id='addonlinkspages'>";
+		$addontype = 'pages';
+		include"./addonslinks.php";
+		echo "</span>";	
+		}
 				try {
 					$sql = "SELECT * FROM navigation WHERE navgroup IN (".$NAVGROUPS.") AND persistent == '1' ORDER BY navgroup ASC, navid ASC";
 					foreach ($configdb->query($sql) as $row)
@@ -243,7 +236,7 @@ $ROOMXT = "ROOM$theroom"; $XBMC = "XBMC"; $ROOMXBMC = $ROOMXT.$XBMC; $ROOMXBMC2 
 				$thedelay = 1000 + (180 * $i);
 				echo "
 				function refreshRoom$i() {
-				$(\"#roominfo$i\").load(\"./getrooms.php?room=$i\", function () {
+				$(\"#roominfo$i\").load(\"./getaddons.php?room=$i\", function () {
 					refreshtheroom$i = setTimeout(refreshRoom$i, 2500);
 					reSizeRoomInfo();
 				});

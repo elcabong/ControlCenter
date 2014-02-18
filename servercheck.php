@@ -2,6 +2,7 @@
 if(isset($_GET['newdbversion'])) {
 	$DBVERSION = $_GET['newdbversion'];
 }
+require "./Portal/functions.php";
 ?>
 <html>
 <head>
@@ -77,19 +78,8 @@ if(extension_loaded('curl')){
 echo "<tr><td>";
 echo "<tr><td>";
 // this function is also in config.php   remember to update as needed
-	$missing = 0;
-	$folders = array('addons','androidapps','css','js','lib','media','Portal','sessions');
-	foreach($folders as $dir) {
-		$thefolder = "./".$dir."/";
-		if(file_exists($thefolder) && is_dir($thefolder)) {
-			//return true;
-		} else {
-			mkdir($thefolder, 0777, true);
-			if(!file_exists($thefolder) && !is_dir($thefolder)) {
-				$missing += 1;
-			}	
-		}
-	}
+	$folderlevel = "./";
+	$missing = folderRequirements($folderlevel);
 	if($missing > 0) {
         echo "<tr><td>Folder Structure Incomplete</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 		$redirect = false;
@@ -146,7 +136,25 @@ if (file_exists('./sessions/config.db')){
    try {
 		  $query = "CREATE TABLE IF NOT EXISTS users (userid integer PRIMARY KEY AUTOINCREMENT, username text UNIQUE NOT NULL, password text, navgroupaccess string, homeroom integer, roomgroupaccess string, roomaccess string, roomdeny string, settingsaccess integer NOT NULL)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS rooms (roomid integer PRIMARY KEY AUTOINCREMENT, roomname text UNIQUE NOT NULL, ip1 text NOT NULL, ip2 text, mac text)";
+		  $query = "CREATE TABLE IF NOT EXISTS rooms (roomid integer PRIMARY KEY AUTOINCREMENT, roomname text UNIQUE NOT NULL, addons TEXT NULL)";
+		  $execquery = $configdb->exec($query);
+		  $query = "CREATE TABLE IF NOT EXISTS rooms_addons (
+									rooms_addonsid INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
+									roomid INTEGER  NOT NULL,
+									addonid TEXT  NOT NULL,
+									ip TEXT  NULL,
+									mac TEXT  NULL,
+									setting1 TEXT  NULL,
+									setting2 TEXT  NULL,
+									setting3 TEXT  NULL,
+									setting4 TEXT  NULL,
+									setting5 TEXT  NULL,
+									setting6 TEXT  NULL,
+									setting7 TEXT  NULL,
+									setting8 TEXT  NULL,
+									setting9 TEXT  NULL,
+									setting10 TEXT  NULL
+									)";
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS roomgroups (roomgroupid integer PRIMARY KEY AUTOINCREMENT, roomgroupname text UNIQUE, roomaccess string, roomdeny string)";
 		  $execquery = $configdb->exec($query);
@@ -161,6 +169,10 @@ if (file_exists('./sessions/config.db')){
 						$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$DBVERSION')");
 						echo "<tr><td>DB tables created, version: $DBVERSION</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 					} elseif($thedbversion < $DBVERSION) {
+					
+							//  need to stop and do a check.. maybe using break and $redirect = false;
+							//  then restart the page and update the db if user input yes.
+					
 							//custom table upgrades here when needed
 							$thenewdbversion = "1.0.2";
 							if($thedbversion < $thenewdbversion && $thenewdbversion <= $DBVERSION) {

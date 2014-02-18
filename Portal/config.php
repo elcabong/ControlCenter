@@ -2,20 +2,7 @@
 // this needs to be updated to current version of db.
 $DBVERSION = "1.0.0";
 
-// this function is also in servercheck.php   remember to update as needed
-function folderRequirements($folderlevel) {
-	$missing = 0;
-	$folders = array('addons','androidapps','css','js','lib','media','Portal','sessions');
-	foreach($folders as $dir) {
-		$thefolder = $folderlevel . $dir."/";
-		if(file_exists($thefolder) && is_dir($thefolder)) {
-			//return true;
-		} else {
-			$missing += 1;
-		}
-	}
-	return $missing;
-}
+require "functions.php";
 
 //  session stuff also found in logout.php
 $found2 = false;
@@ -42,6 +29,8 @@ if(substr($path2, 0, 3) == "../") { $folderlevel = "../"; } else { $folderlevel 
 $servercheckloc = $folderlevel . "servercheck.php";
 $thepath = $folderlevel;
 
+$ADDONDIR = $folderlevel . "addons/";
+
 $missing = folderRequirements($folderlevel);
 if (!file_exists($sessionsloc . "/config.db") || $missing > 0) { header('Location: ' . $servercheckloc);exit; }
 $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
@@ -60,7 +49,7 @@ $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 		echo $e->getMessage();
 		}
 
-$ADDONDIR = $folderlevel . "addons/";
+
 
 	try {
 		$sql = "SELECT * FROM users";
@@ -87,18 +76,11 @@ if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }
 			$TOTALROOMS=0;
 			foreach ($configdb->query($sql) as $row) {
 			$TOTALROOMS++;
-			$roomid = $row['roomid'];
-			$theperm = "USRPR$roomid";
+			$theroomid = $row['roomid'];
+			$theperm = "USRPR$theroomid";
 			${$theperm} = "0";
-			$ROOMXBMC = "ROOM$roomid"."XBMC";
-			$ROOMXBMC2 = "$ROOMXBMC"."2";
-			$ROOMXBMCM = "$ROOMXBMC"."M";
-			$ROOMname = "ROOM$roomid"."N";
-			
+			$ROOMname = "ROOM$theroomid"."N";
 			${$ROOMname} = $row['roomname'];
-			${$ROOMXBMC} = $row['ip1'];
-			if(isset($row['ip2']) && $row['ip2'] != '') { ${$ROOMXBMC2} = $row['ip2']; } else { ${$ROOMXBMC2} = 0; }
-			if(isset($row['mac']) && $row['mac'] != '') { ${$ROOMXBMCM} = $row['mac']; } else { ${$ROOMXBMCM} = 0; }
 			}
 		} catch(PDOException $e)
 			{

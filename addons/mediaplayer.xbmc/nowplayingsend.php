@@ -1,12 +1,25 @@
-<? if(isset($_GET['to'])) { $to=$_GET['to']; } if(isset($_GET['from'])) { $from=$_GET['from']; } if(isset($_GET['sendtype'])) { $sendtype=$_GET['sendtype']; }
+<? if(isset($_GET['to'])) { $to=$_GET['to']; } if(isset($_GET['from'])) { $from=$_GET['from']; } if(isset($_GET['sendtype'])) { $sendtype=$_GET['sendtype']; } if(isset($_GET['addon'])) { $addonid=$_GET['addon']; }
 $ip = $from;
 
-include "nowplayinginfo.php";
+$found2 = false;
+$path2 = "addons";
+while(!$found2){
+	if(file_exists($path2)){ 
+		$found2 = true;
+		$addonsloc = $path2;
+	}
+	else{ $path2= '../'.$path2; }
+}
+
+set_include_path(dirname(__FILE__).DIRECTORY_SEPARATOR);
+
+//require "config.php";
+require "nowplayinginfo.php";
 
 	$filepath = urlencode($filepath);
 	$thisactiveplayer = $activeplayerid;
 	
-	include "nowplayingtime.php";	
+	require "nowplayingtime.php";	
 	$jsoncontents = '';	
 
 	if($activeplayerid==0) {
