@@ -12,6 +12,8 @@ if($addontype == 'links') {
 		include $addonarray["$classification"]["$title"]['path']."addonquicklink.php";
 	} ?>
 <script>
+		$("#addonlinks li:first-child a:first-child").removeClass('unloaded').addClass('selected');
+
 	var timeoutId = 0;
 	var mouseIsHeld = false;
 

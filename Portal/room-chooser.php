@@ -100,6 +100,6 @@
 		}
 
 		$("#addonlinks").load("./addonslinks.php?addon=links");
-		$("#addonlinkspages").load("./addonslinks.php?addon=pages");		
+		$("#addonlinkspages").load("./addonslinks.php?addon=pages");
 			$('#wrapper').scrollTo(0,0);
 </script>

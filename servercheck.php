@@ -136,7 +136,25 @@ if (file_exists('./sessions/config.db')){
    try {
 		  $query = "CREATE TABLE IF NOT EXISTS users (userid integer PRIMARY KEY AUTOINCREMENT, username text UNIQUE NOT NULL, password text, navgroupaccess string, homeroom integer, roomgroupaccess string, roomaccess string, roomdeny string, settingsaccess integer NOT NULL)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS rooms (roomid integer PRIMARY KEY AUTOINCREMENT, roomname text UNIQUE NOT NULL, ip1 text NOT NULL, ip2 text, mac text)";
+		  $query = "CREATE TABLE IF NOT EXISTS rooms (roomid integer PRIMARY KEY AUTOINCREMENT, roomname text UNIQUE NOT NULL, addons TEXT NULL)";
+		  $execquery = $configdb->exec($query);
+		  $query = "CREATE TABLE IF NOT EXISTS rooms_addons (
+									rooms_addonsid INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
+									roomid INTEGER  NOT NULL,
+									addonid TEXT  NOT NULL,
+									ip TEXT  NULL,
+									mac TEXT  NULL,
+									setting1 TEXT  NULL,
+									setting2 TEXT  NULL,
+									setting3 TEXT  NULL,
+									setting4 TEXT  NULL,
+									setting5 TEXT  NULL,
+									setting6 TEXT  NULL,
+									setting7 TEXT  NULL,
+									setting8 TEXT  NULL,
+									setting9 TEXT  NULL,
+									setting10 TEXT  NULL
+									)";
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS roomgroups (roomgroupid integer PRIMARY KEY AUTOINCREMENT, roomgroupname text UNIQUE, roomaccess string, roomdeny string)";
 		  $execquery = $configdb->exec($query);
