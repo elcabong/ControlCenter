@@ -15,38 +15,9 @@
 	$roomnum = $HOMEROOMU;
 	$_SESSION['room'] = $roomnum; } else {
 	$roomnum = $_SESSION['room']; }
+	$roomid = $roomnum;
 	
 	require_once "./addons.php";
-	
-	
-	
-									$arr = explode(",", $enabledaddons);
-									
-									foreach($arr as $thearr) {
-										$arr = explode(".", $thearr, 2);
-										$classification = $arr[0];
-										$title = $arr[1];
-
-										$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomnum AND addonid = '$thearr' LIMIT 1";
-											foreach ($configdb->query($sql3) as $addonSettings)
-												{
-												$ADDONIP = $addonSettings['ip'];
-												$MAC = $addonSettings['mac'];
-												$setting1 = $addonSettings['setting1'];
-												$setting2 = $addonSettings['setting2'];
-												$setting3 = $addonSettings['setting3'];
-												$setting4 = $addonSettings['setting4'];
-												$setting5 = $addonSettings['setting5'];
-												$setting6 = $addonSettings['setting6'];
-												$setting7 = $addonSettings['setting7'];
-												$setting8 = $addonSettings['setting8'];
-												$setting9 = $addonSettings['setting9'];
-												$setting10 = $addonSettings['setting10'];
-												}
-										
-									//	include $addonarray["$classification"]["$title"]['path']."addonquicklink.php";
-									}
-	
 
 		$ROOMNUMBER = "ROOM$roomnum"."N";
 		echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUMBER}</a>";
@@ -63,7 +34,7 @@
 					} else {
 					echo "<a class='changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a>"; 
 					}
-					echo "<img class='roomdetails' theroom=\"$i\" ip=\"$ip\" src='../media/options.png'>";
+					echo "<img class='roomdetails' theroom=\"$i\" src='../media/options.png'>";
 					echo "</li>";
 				}
 			}
@@ -97,8 +68,8 @@
 	jQuery(function ($) {
 		$('img.roomdetails').click(function (e) {
 			var thisroom = $(this).attr('theroom');
-			var ip = $(this).attr('ip');
-			$('#modal').load('roomdetails.php?thisroom='+thisroom+'&ip='+ip).modal({
+			//var ip = $(this).attr('ip');
+			$('#modal').load('roomdetails.php?thisroom='+thisroom).modal({
 					opacity: 25,
 					overlayClose: true});
 			return false;
@@ -129,15 +100,15 @@
 		}
 
 		var iframe2 = document.getElementById('ROOMCONTROL1f');
-		if(iframe2.src != '<? echo $ADDONIP; ?>') {
-			iframe2.setAttribute('src','<? echo $ADDONIP; ?>');
-			iframe2.setAttribute('data-src','<? echo $ADDONIP; ?>');
+		if(iframe2.src != '<? echo $enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['ADDONIP']; ?>') {
+			iframe2.setAttribute('src','<? echo $enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['ADDONIP']; ?>');
+			iframe2.setAttribute('data-src','<? echo $enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['ADDONIP']; ?>');
 			iframe2.src = iframe2.src; }
 			
-		<? if(isset($setting1) && ($setting1 != '0' || $setting1 != '')) { ?>
+		<? if(isset($enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['setting1']) && ($enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['setting1'] != '0' || $enabledaddonsarray['mediaplayer.xbmc']['setting1'] != '')) { ?>
 		document.getElementById('secondroomprogram').style.display = 'block';
 		var iframe3 = document.getElementById('ROOMCONTROL2f');
-		iframe3.setAttribute('data-src','<? echo $setting1; ?>');
+		iframe3.setAttribute('data-src','<? echo $enabledaddonsarray["$roomid"]['mediaplayer.xbmc']['setting1']; ?>');
 		iframe3.removeAttribute('src');
 		$('#secondroomprogramlink').addClass('unloaded');
 		<? } else { ?>

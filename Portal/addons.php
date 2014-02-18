@@ -46,6 +46,38 @@ $availableaddons = array();
 				$enabledaddons = $row2['addons'];
 				//echo $enabledaddons."<br>";
 			}
+			$enabledaddonsarray = array();
+			// run through enabledaddons array and create new array with settings
+
+			
+			$allenabledaddons = explode(",", $enabledaddons);
+									
+			foreach($allenabledaddons as $theaddon) {
+				$allenabledaddons = explode(".", $theaddon, 2);
+				$classification = $allenabledaddons[0];
+				$title = $allenabledaddons[1];
+			
+			
+				$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid AND addonid = '$theaddon' LIMIT 1";
+				foreach ($configdb->query($sql3) as $addonSettings) {
+					$enabledaddonsarray["$roomid"]["$theaddon"]['classification'] = $classification;
+					$enabledaddonsarray["$roomid"]["$theaddon"]['title'] = $title;
+					$enabledaddonsarray["$roomid"]["$theaddon"]['ADDONIP'] = $addonSettings['ip'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['MAC'] = $addonSettings['mac'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['setting1'] = $addonSettings['setting1'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['setting2'] = $addonSettings['setting2'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['setting3'] = $addonSettings['setting3'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['setting4'] = $addonSettings['setting4'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['setting5'] = $addonSettings['setting5'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['setting6'] = $addonSettings['setting6'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['setting7'] = $addonSettings['setting7'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['setting8'] = $addonSettings['setting8'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['setting9'] = $addonSettings['setting9'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['setting10'] = $addonSettings['setting10'];
+				}
+			
+			}
+
 		}
 	
 /*

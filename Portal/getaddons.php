@@ -17,7 +17,7 @@
 			}
 
 require './addons.php';
-ini_set('display_errors', 'On');
+//ini_set('display_errors', 'On');
 if (strpos($enabledaddons,',') !== false) {
     $arr = explode(",", $enabledaddons);
 	$addonid = $arr[0];

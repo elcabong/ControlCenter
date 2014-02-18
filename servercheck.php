@@ -2,6 +2,7 @@
 if(isset($_GET['newdbversion'])) {
 	$DBVERSION = $_GET['newdbversion'];
 }
+require "./Portal/functions.php";
 ?>
 <html>
 <head>
@@ -77,19 +78,8 @@ if(extension_loaded('curl')){
 echo "<tr><td>";
 echo "<tr><td>";
 // this function is also in config.php   remember to update as needed
-	$missing = 0;
-	$folders = array('addons','androidapps','css','js','lib','media','Portal','sessions');
-	foreach($folders as $dir) {
-		$thefolder = "./".$dir."/";
-		if(file_exists($thefolder) && is_dir($thefolder)) {
-			//return true;
-		} else {
-			mkdir($thefolder, 0777, true);
-			if(!file_exists($thefolder) && !is_dir($thefolder)) {
-				$missing += 1;
-			}	
-		}
-	}
+	$folderlevel = "./";
+	$missing = folderRequirements($folderlevel);
 	if($missing > 0) {
         echo "<tr><td>Folder Structure Incomplete</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 		$redirect = false;

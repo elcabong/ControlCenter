@@ -609,18 +609,20 @@ $(document).ready(function() {
 										$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid AND addonid = '$addonid' LIMIT 1";
 											foreach ($configdb->query($sql3) as $addonSettings)
 												{
-												$ADDONIP = $addonSettings['ip'];
-												$ADDONMAC = $addonSettings['mac'];
-												$setting1 = $addonSettings['setting1'];
-												$setting2 = $addonSettings['setting2'];
-												$setting3 = $addonSettings['setting3'];
-												$setting4 = $addonSettings['setting4'];
-												$setting5 = $addonSettings['setting5'];
-												$setting6 = $addonSettings['setting6'];
-												$setting7 = $addonSettings['setting7'];
-												$setting8 = $addonSettings['setting8'];
-												$setting9 = $addonSettings['setting9'];
-												$setting10 = $addonSettings['setting10'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['classification'] = $classification;
+												$enabledaddonsarray["$roomid"]["$addonid"]['title'] = $title;
+												$enabledaddonsarray["$roomid"]["$addonid"]['ADDONIP'] = $addonSettings['ip'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['MAC'] = $addonSettings['mac'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting1'] = $addonSettings['setting1'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting2'] = $addonSettings['setting2'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting3'] = $addonSettings['setting3'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting4'] = $addonSettings['setting4'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting5'] = $addonSettings['setting5'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting6'] = $addonSettings['setting6'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting7'] = $addonSettings['setting7'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting8'] = $addonSettings['setting8'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting9'] = $addonSettings['setting9'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['setting10'] = $addonSettings['setting10'];
 												}
 										echo "<input type='hidden' size='80' name='roomid' value='$roomid'>";
 										echo "<input type='hidden' size='80' name='addonid' value='$addonid'>";

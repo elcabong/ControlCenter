@@ -44,6 +44,7 @@ require_once 'addons.php';
 	#room-menu > a { padding:0 5px !important; }
 	#nav-menu > nav > ul > li > a { padding:5px 0; }
 	#nav-menu > nav > ul > li > a > img { margin:0;width:20px; }
+	#nav-menu > nav > ul > li > ul > li { padding-top:3px; }
 	</style>
 </head>
 <body>
@@ -63,32 +64,35 @@ require_once 'addons.php';
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
 		<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 		
-									$arr = explode(",", $enabledaddons);
+									$allenabledaddons = explode(",", $enabledaddons);
 									
-									foreach($arr as $thearr) {
-										$arr = explode(".", $thearr, 2);
-										$classification = $arr[0];
-										$title = $arr[1];
+									foreach($allenabledaddons as $thisaddon) {
+										$allenabledaddons = explode(".", $thisaddon, 2);
 
-										$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid AND addonid = '$thearr' LIMIT 1";
-											foreach ($configdb->query($sql3) as $addonSettings)
-												{
-												$ADDONIP = $addonSettings['ip'];
-												$MAC = $addonSettings['mac'];
-												$setting1 = $addonSettings['setting1'];
-												$setting2 = $addonSettings['setting2'];
-												$setting3 = $addonSettings['setting3'];
-												$setting4 = $addonSettings['setting4'];
-												$setting5 = $addonSettings['setting5'];
-												$setting6 = $addonSettings['setting6'];
-												$setting7 = $addonSettings['setting7'];
-												$setting8 = $addonSettings['setting8'];
-												$setting9 = $addonSettings['setting9'];
-												$setting10 = $addonSettings['setting10'];
-												}
-										
+
+										$classification = $allenabledaddons[0];
+										$title = $allenabledaddons[1];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 										include $addonarray["$classification"]["$title"]['path']."addonquicklink.php";
-									}		
+									}
 		
 		
 		
@@ -205,28 +209,32 @@ require_once 'addons.php';
 <div id="wrapper" scrolling="auto">
 	<div id="mask">
 	<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
-			$arr = explode(",", $enabledaddons);
-			foreach($arr as $thearr) {
-				$arr = explode(".", $thearr, 2);
-				$classification = $arr[0];
-				$title = $arr[1];
+			$allenabledaddons = explode(",", $enabledaddons);
 
-										$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $theroom AND addonid = '$thearr' LIMIT 1";
-											foreach ($configdb->query($sql3) as $addonSettings)
-												{
-												$ADDONIP = $addonSettings['ip'];
-												$ADDONMAC = $addonSettings['mac'];
-												$setting1 = $addonSettings['setting1'];
-												$setting2 = $addonSettings['setting2'];
-												$setting3 = $addonSettings['setting3'];
-												$setting4 = $addonSettings['setting4'];
-												$setting5 = $addonSettings['setting5'];
-												$setting6 = $addonSettings['setting6'];
-												$setting7 = $addonSettings['setting7'];
-												$setting8 = $addonSettings['setting8'];
-												$setting9 = $addonSettings['setting9'];
-												$setting10 = $addonSettings['setting10'];
-												}
+
+
+
+									
+			foreach($allenabledaddons as $theaddon) {
+				$allenabledaddons = explode(".", $theaddon, 2);
+				$classification = $allenabledaddons[0];
+				$title = $allenabledaddons[1];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 				include $addonarray["$classification"]["$title"]['path']."addonlinkpages.php";
 			}
 		}
