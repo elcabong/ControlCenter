@@ -63,38 +63,10 @@ require_once 'addons.php';
 		</nav>
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
 		<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
-		
-									$allenabledaddons = explode(",", $enabledaddons);
-									
-									foreach($allenabledaddons as $thisaddon) {
-										$allenabledaddons = explode(".", $thisaddon, 2);
-
-
-										$classification = $allenabledaddons[0];
-										$title = $allenabledaddons[1];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-										include $addonarray["$classification"]["$title"]['path']."addonquicklink.php";
-									}
-		
-		
+		echo "<nav id='addonlinks'>";
+		$addontype = 'links';
+		include"./addonslinks.php";
+		echo "</nav>";
 		
 			$c = 1;
 			$count = 0;
@@ -209,34 +181,10 @@ require_once 'addons.php';
 <div id="wrapper" scrolling="auto">
 	<div id="mask">
 	<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
-			$allenabledaddons = explode(",", $enabledaddons);
-
-
-
-
-									
-			foreach($allenabledaddons as $theaddon) {
-				$allenabledaddons = explode(".", $theaddon, 2);
-				$classification = $allenabledaddons[0];
-				$title = $allenabledaddons[1];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				include $addonarray["$classification"]["$title"]['path']."addonlinkpages.php";
-			}
+		echo "<span id='addonlinkspages'>";
+		$addontype = 'pages';
+		include"./addonslinks.php";
+		echo "</span>";	
 		}
 				try {
 					$sql = "SELECT * FROM navigation WHERE navgroup IN (".$NAVGROUPS.") AND persistent == '1' ORDER BY navgroup ASC, navid ASC";
