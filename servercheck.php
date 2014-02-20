@@ -1,4 +1,4 @@
-<? //control center upgrade info
+<?php //control center upgrade info
 if(isset($_GET['newdbversion'])) {
 	$DBVERSION = $_GET['newdbversion'];
 }

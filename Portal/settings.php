@@ -275,10 +275,10 @@ $(document).ready(function() {
       <div id="slider">
         <ul class="navigation">
           <li><a href="#ABOUT">About</a></li>
-          <li><a href="#ROOMS" <? if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
+          <li><a href="#ROOMS" <?php if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
          <li><a href="#ROOMGROUPS">Room Groups</a></li> 
-         <li><a href="#NAVIGATION" <? if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation</a></li>
-		<li><a href="#USERS" <? if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
+         <li><a href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation</a></li>
+		<li><a href="#USERS" <?php if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
  	  </ul>
       <!-- element with overflow applied -->
         <div class="scroll">
@@ -519,7 +519,7 @@ $(document).ready(function() {
 					echo $e->getMessage();
 					}
 				?>
-				<? $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+				<?php $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 					if (false !== strpos($url,'setup')) {
 						//if($totalusernum>0 && isset($roomsareset) && isset($navisset)) {
 						if($totalusernum>0) {   //  add alerts to see if they want to add rooms or nav if those are note set
@@ -787,4 +787,4 @@ $(document).ready(function() {
   <script type="text/javascript" src="../js/settings.js"></script>  
 </body>
 </html>
-<? } ?>
+<?php } ?>

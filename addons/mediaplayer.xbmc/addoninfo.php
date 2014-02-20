@@ -50,7 +50,7 @@
 						}
 ?>
 <script>
-	var from = "<? echo $nowplayingip; ?>";
+	var from = "<?php echo $nowplayingip; ?>";
 	jQuery(function ($) {
 		$('.sendnowplaying').click(function (e) {
 			var thisip = $(this).attr('ip');

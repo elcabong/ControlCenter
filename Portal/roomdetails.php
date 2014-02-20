@@ -1,4 +1,4 @@
-<? 
+<?php 
 if(isset($_GET['thisroom'])) { $theroom=$_GET['thisroom'];$THISROOMID=$theroom; } else { exit; }
 $ROOMNUMBER = "ROOM$theroom"."N";	
 require_once 'config.php';
@@ -8,7 +8,7 @@ require 'addons.php';
 <html>
 <head>
 <title>RoomDetails</title>
-<link type='text/css' href='../css/nowplaying.css?<? echo date ("m/d/Y-H.i.s", filemtime('../css/nowplaying.css'));?>' rel='stylesheet' media='screen' />
+<link type='text/css' href='../css/nowplaying.css?<?php echo date ("m/d/Y-H.i.s", filemtime('../css/nowplaying.css'));?>' rel='stylesheet' media='screen' />
 </head>
 <body>
 <div id='roominfocontainer'>

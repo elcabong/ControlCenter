@@ -1,4 +1,4 @@
-<? if($_GET['ip']) { $ip=$_GET['ip']; } if($_GET['thisroom']) { $thisroom=$_GET['thisroom']; }
+<?php if($_GET['ip']) { $ip=$_GET['ip']; } if($_GET['thisroom']) { $thisroom=$_GET['thisroom']; }
 require 'config.php';
 require 'addons.php';
 if (strpos($enabledaddons,',') !== false) {
@@ -15,7 +15,7 @@ $ROOMNUMBER = "ROOM$thisroom"."N";
 <html>
 <head>
 <title>NowPlaying</title>
-<link type='text/css' href='../css/nowplaying.css?<? echo date ("m/d/Y-H.i.s", filemtime('../css/nowplaying.css'));?>' rel='stylesheet' media='screen' />
+<link type='text/css' href='../css/nowplaying.css?<?php echo date ("m/d/Y-H.i.s", filemtime('../css/nowplaying.css'));?>' rel='stylesheet' media='screen' />
 </head>
 <body>
 <div id='roominfocontainer'>
