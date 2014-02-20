@@ -6,9 +6,6 @@
 		<name>XBMC Connector</name>
 		<author>elcabong</author>  
 		<summary>XBMC player integration</summary>
-		<description>connects to xbmc installations.</description>
+		<description>this addon add the ability to control and pull/push media to a single xbmc installation.</description>
 	</metadata>	
-  <requires> <!--below not used currently -->
-    <import addon="xbmc.gui" version="2.11"/>
-  </requires>
 </addon>

@@ -51,6 +51,7 @@ $availableaddons = array();
 			$roomid = $_SESSION['room'];		
 		}
 		if(isset($roomid)) {
+			$THISROOMID = $roomid;
 			$enabledaddons = '';
 			$sql2 = "SELECT addons FROM rooms WHERE roomid = $roomid LIMIT 1";
 			foreach ($configdb->query($sql2) as $row2){

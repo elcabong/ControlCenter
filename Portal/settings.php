@@ -544,7 +544,7 @@ $(document).ready(function() {
                 <?php
 				echo "<table id='rooms-new'>";
 				echo "<tr><td class='title'>Title</td><td><input size='10' name='roomname' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"rooms-new\");' /></td></tr>";
-
+						$theavailableaddons = '';
 						for ($i = 0; $i < count($availableaddons); ++$i) {
 								$theavailableaddons .= "<option value=".$availableaddons[$i].">".$availableaddons[$i]."</option>"; 
 						}
@@ -575,11 +575,11 @@ $(document).ready(function() {
 									$arr = explode(",", $addonid);
 									
 									foreach($arr as $thearr) {
+										if($thearr == '') { break; }
+
 										$arr = explode(".", $thearr, 2);
 										$classification = $arr[0];
-										$title = $arr[1];									
-										
-									//	echo $addonarray["$classification"]["$title"]['path'];
+										$title = $arr[1];
 										
 										$enabledaddons .= "<option selected='selected' value=".$thearr.">".$thearr."</option>"; 
 										if($thearr != '') { $theenabledaddons .= $thearr.","; }
