@@ -14,7 +14,7 @@ while(!$found2){
 	}
 	else{ $path2= '../'.$path2; }
 }
-ini_set('display_errors', 'On');
+ini_set('display_errors', 'Off');
 ini_set('session.gc_maxlifetime', 604800);     // >>  24 hours = 86400 sec
 ini_set('session.gc_probability', 1);
 ini_set('session.gc_divisor', 100	);
