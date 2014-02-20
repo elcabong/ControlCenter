@@ -211,6 +211,7 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 					$tempc = 0;
 					$linkcount = 1;
 					foreach($thenavgroups as $x) {
+					if($x == '') { break; }
 					$sql = "SELECT * FROM navigation WHERE navgroup = $x";
 					foreach ($configdb->query($sql) as $row)
 						{

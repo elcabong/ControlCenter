@@ -30,7 +30,7 @@
 		return $arrayt;
 	}
 	$roomgroupaccess = '';
-	if(isset($ROOMGROUPA) && ($ROOMGROUPA !="" || $ROOMGROUPA != "0")) {
+	if(isset($ROOMGROUPA) && $ROOMGROUPA != '' && $ROOMGROUPA != "0") {
 		try {
 		$sql = "SELECT * FROM roomgroups WHERE roomgroupid = $ROOMGROUPA LIMIT 1";
 			foreach ($configdb->query($sql) as $row) {

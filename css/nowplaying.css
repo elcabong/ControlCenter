@@ -56,7 +56,7 @@ img {border:0;}
 #timeUpdateField { margin:0 0 0 0 !important; }
 #timeUpdateField > span { #font-size:16px; }
 .title > img { margin:10px 5px 0 0; width:100% !important;}
-.title > table { clear:right: }
+.title > table { clear:right; }
 	body { #font-size:17px; }
 }
 
@@ -89,7 +89,7 @@ body { font-size:15px; }
 		width:90% !important;
 		height:auto !important;
 	}
-	.title { max-width:35%;float:left; }
+	.title { width:35%;float:left; }
 	.title > table { clear:both; }
 	#images { margin-top:5px; }
 	#images > img { width:65%;margin-top:10px; }
@@ -104,7 +104,7 @@ body { font-size:15px; }
 		width:95% !important;
 		height:auto !important;
 	}
-	.title { max-width:49%;float:left;#height:450px; }
+	.title { width:49%;float:left;#height:450px; }
 	.title > table { clear:none; }
 	#images { margin-top:5px; }
 	#images > img { width:50%;float:right;margin-top:10px; }
@@ -114,6 +114,7 @@ body { font-size:15px; }
 
 @media all and (min-width:1600px) {
 	#simplemodal-container {
+		max-width:95% !important;	
 		width:95% !important;
 		height:auto !important;
 	}
