@@ -559,6 +559,7 @@ $(document).ready(function() {
 					foreach ($configdb->query($sql) as $row)
 						{
 						$roomid = $row['roomid'];
+						$THISROOMID = $roomid;
 						echo "<hr><table id='rooms-$roomid'>";
 						echo "<tr><td class='title'>Room Name</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td>";
 						echo "<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"rooms-$roomid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"rooms\"," . $row['roomid'] . ");' /></td></tr>";

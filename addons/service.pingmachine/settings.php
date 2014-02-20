@@ -1,5 +1,4 @@
 <?php
-
 $ADDONIP = $enabledaddonsarray["$THISROOMID"]['service.pingmachine']['ADDONIP'];
 $ADDONMAC = $enabledaddonsarray["$THISROOMID"]['service.pingmachine']['MAC'];
 $setting1 = $enabledaddonsarray["$THISROOMID"]['service.pingmachine']['setting1'];

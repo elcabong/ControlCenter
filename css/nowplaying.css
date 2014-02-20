@@ -44,28 +44,37 @@ img {border:0;}
 #timeUpdateField { float:right;margin:0 5px 0 0; }
 
 
-@media all and (max-width: 500px) {
+@media all and (max-width: 675px) {
+#logo > h1 { font-size:23pt;line-height:30px !important; }
+	body { font-size:16px; }
+}
+
+@media all and (max-width: 600px) {
 #logo > h1 { font-size:20pt;line-height:30px !important; }
 #timeUpdateField { margin:0 0 0 0 !important; }
+#timeUpdateField > span { #font-size:16px; }
 .title > img { margin:10px 5px 0 0; width:100% !important;}
 .title > table { clear:right: }
+	body { #font-size:17px; }
 }
 
-@media all and (max-width: 390px) {
+@media all and (max-width: 410px) {
 #logo > h1 { font-size:15pt;line-height:25px !important;}
 .title > img { margin:10px 0 0 0; }
+#timeUpdateField > span { #font-size:15px; }
+body { font-size:15px; }
 }
 
-@media all and (max-width: 320px) {
+@media all and (max-width: 350px) {
 #logo > h1 { font-size:13pt;line-height:20px !important; }
 }
 
-@media all and (min-width:700px) {
+@media all and (min-width:675px) {
 	#simplemodal-container {
 		max-width:900px !important;
 	}
 	body {
-		font-size:16px;
+		font-size:17px;
 	}
 }
 
