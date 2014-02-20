@@ -73,7 +73,8 @@ body { font-size:15px; }
 
 @media all and (min-width:675px) {
 	#simplemodal-container {
-		max-width:900px !important;
+		#max-width:900px !important;
+		max-width:90% !important;
 	}
 	body {
 		font-size:17px;
@@ -85,7 +86,7 @@ body { font-size:15px; }
 
 @media all and (min-width:1000px) {
 	#simplemodal-container {
-		max-width:90% !important;
+		width:90% !important;
 		height:auto !important;
 	}
 	.title { max-width:35%;float:left; }
@@ -99,7 +100,8 @@ body { font-size:15px; }
 
 @media all and (min-width:1450px) {
 	#simplemodal-container {
-		max-width:90% !important;
+		max-width:95% !important;
+		width:95% !important;
 		height:auto !important;
 	}
 	.title { max-width:49%;float:left;#height:450px; }
@@ -111,5 +113,9 @@ body { font-size:15px; }
 }
 
 @media all and (min-width:1600px) {
+	#simplemodal-container {
+		width:95% !important;
+		height:auto !important;
+	}
 	body { font-size:18px; }
 }

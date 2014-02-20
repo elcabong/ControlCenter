@@ -70,7 +70,7 @@
 			var thisroom = $(this).attr('theroom');
 			//var ip = $(this).attr('ip');
 			$('#modal').load('roomdetails.php?thisroom='+thisroom).modal({
-					opacity: 25,
+					opacity: 75,
 					overlayClose: true});
 			return false;
 		});
