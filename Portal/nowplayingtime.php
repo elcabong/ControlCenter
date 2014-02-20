@@ -5,6 +5,9 @@ $arr = explode(".", $addonid, 2);
 				$title = $arr[1];
 require 'config.php';
 require 'addons.php';
-				
-require $addonarray["$classification"]["$title"]['path']."nowplayingtime.php";
+
+$filename = $addonarray["$classification"]["$title"]['path']."nowplayingtime.php";
+if (file_exists($filename)) {
+	require $filename;
+}
 ?>

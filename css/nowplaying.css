@@ -4,6 +4,11 @@ h3 {color:#3a6d8c; font-size:22px; line-height:26px; font-weight:normal; margin:
 
 tr > td:first-child { white-space:nowrap; }
 
+a { text-decoration:none; }
+
+a:hover > p {
+color: #0099ff !important;
+}
 
 /* Overlay */
 #simplemodal-overlay {background-color:#000;}
@@ -21,9 +26,9 @@ img {border:0;}
 #logo h1 {color:#666; letter-spacing:-1px; font-weight:normal;}
 #logo h1 span {color:#444; font-weight:bold;}
 #logo .title {font-size:12px;clear:both;}
-.title > img { float:right;width:25%;margin:10px 0px 10px 0;top:0;right:0;}
+.title > img { float:right;width:25%;margin:10px 0px 10px 0;top:0;right:0;min-height: 250px;min-width: 145px;}
 #roominfocontainer {margin:0 auto;}
-#roominfocontent {clear:both;}
+#roominfocontent {clear:both;position:relative;}
 #roominfofooter {clear:both; color:#888; margin:20px 0;}
 #roominfofooter a:link, #footer a:visited {color:#888; text-decoration:none;}
 #roominfofooter a:hover {color:#333; text-decoration:underline;}
@@ -56,29 +61,26 @@ img {border:0;}
 }
 
 @media all and (min-width:700px) {
-#simplemodal-container {
-	max-width:900px !important;
-}
-body {
-	font-size:16px;
-}
-
+	#simplemodal-container {
+		max-width:900px !important;
+	}
+	body {
+		font-size:16px;
+	}
 }
 
 @media all and (min-width:1450px) {
-#simplemodal-container {
-	max-width:90% !important;
-	height:auto !important;
-}
-.title { max-width:49%;float:right;#height:450px; }
-	
-#images {	max-width:49%;float:left;margin-top:5px;position:absolute;top:80px;}
-
-.title > img { width:38% !important;#min-height:430px;#min-width:250px; }
-.plot { clear:both;padding-top:15px; }
-
+	#simplemodal-container {
+		max-width:90% !important;
+		height:auto !important;
+	}
+	.title { max-width:49%;float:left;#height:450px; }
+	#images { margin-top:5px; }
+	#images > img { width:50%;float:right;margin-top:10px; }
+	.title > img { width:38% !important;#min-height:430px;#min-width:250px; }
+	.plot { clear:both;padding-top:15px;float:left; }
 }
 
 @media all and (min-width:1600px) {
-body { font-size:18px; }
+	body { font-size:18px; }
 }

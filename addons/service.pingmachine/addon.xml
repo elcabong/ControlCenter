@@ -3,7 +3,7 @@
 	<metadata>
 		<id>service.pingmachine</id>
 		<version>1.0.0</version>
-		<name>ping machine</name>
+		<name>Ping Machine</name>
 		<author>elcabong</author>  
 		<summary>pings devices in your rooms</summary>
 		<description>pings a machine and returns status for info area</description>

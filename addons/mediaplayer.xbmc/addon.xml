@@ -3,7 +3,7 @@
 	<metadata>
 		<id>mediaplayer.xbmc</id>
 		<version>0.5.0</version>
-		<name>xbmc connector</name>
+		<name>XBMC Connector</name>
 		<author>elcabong</author>  
 		<summary>XBMC player integration</summary>
 		<description>connects to xbmc installations.</description>

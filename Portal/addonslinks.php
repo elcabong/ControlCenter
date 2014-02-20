@@ -5,8 +5,9 @@ if(isset($_GET['addon'])) {
 	}
 if($addontype == 'links') {
 	$allenabledaddons = explode(",", $enabledaddons);
-	foreach($allenabledaddons as $thisaddon) {
-		$thisaddon = explode(".", $thisaddon, 2);
+	foreach($allenabledaddons as $thisaddon1) {
+		if($thisaddon1 == '') { break; }
+		$thisaddon = explode(".", $thisaddon1, 2);
 		$classification = $thisaddon[0];
 		$title = $thisaddon[1];
 		include $addonarray["$classification"]["$title"]['path']."addonquicklink.php";

@@ -64,9 +64,10 @@ $availableaddons = array();
 			$allenabledaddons = explode(",", $enabledaddons);
 									
 			foreach($allenabledaddons as $theaddon) {
-				$allenabledaddons = explode(".", $theaddon, 2);
-				$classification = $allenabledaddons[0];
-				$title = $allenabledaddons[1];
+				if($theaddon == '') { break; }
+				$thisaddon = explode(".", $theaddon, 2);
+				$classification = $thisaddon[0];
+				$title = $thisaddon[1];
 			
 			
 				$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid AND addonid = '$theaddon' LIMIT 1";

@@ -2,7 +2,7 @@
 // this needs to be updated to current version of db.
 $DBVERSION = "1.0.0";
 
-require "functions.php";
+require_once "functions.php";
 
 //  session stuff also found in logout.php
 $found2 = false;
@@ -14,14 +14,14 @@ while(!$found2){
 	}
 	else{ $path2= '../'.$path2; }
 }
-ini_set('display_errors', 'Off');
+ini_set('display_errors', 'On');
 ini_set('session.gc_maxlifetime', 604800);     // >>  24 hours = 86400 sec
 ini_set('session.gc_probability', 1);
 ini_set('session.gc_divisor', 100	);
 ini_set('session.save_path', "$sessionsloc");
 ini_set('session.cookie_lifetime', 604800);
-//if(!isset($_SESSION)){session_start();}
-session_start();
+if(!isset($_SESSION)){session_start();}
+//session_start();
 // end session stuff
 
 if(substr($path2, 0, 3) == "../") { $folderlevel = "../"; } else { $folderlevel = "./"; };
