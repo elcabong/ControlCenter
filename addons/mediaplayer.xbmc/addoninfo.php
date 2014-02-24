@@ -50,7 +50,7 @@
 						}
 ?>
 <script>
-	var from = "<? echo $nowplayingip; ?>";
+	var from = "<?php echo $nowplayingip; ?>";
 	jQuery(function ($) {
 		$('.sendnowplaying').click(function (e) {
 			var thisip = $(this).attr('ip');
@@ -69,7 +69,7 @@
 						var expire = new Date();
 						expire.setTime(today.getTime() + 3600000*24*5);
 						document.cookie="currentRoom"+usernumber+"="+ escape(theroomnum) + ";expires="+expire.toGMTString()+";path=/";
-						$("#firstroomprogramlink").removeClass('unloaded');
+						//$("#firstroomprogramlink").removeClass('unloaded');
 						$("#room-menu").load("./room-chooser.php");
 					}
 				}

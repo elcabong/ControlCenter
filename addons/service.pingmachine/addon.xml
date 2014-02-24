@@ -3,12 +3,9 @@
 	<metadata>
 		<id>service.pingmachine</id>
 		<version>1.0.0</version>
-		<name>ping machine</name>
+		<name>Ping Machine</name>
 		<author>elcabong</author>  
-		<summary>pings devices in your rooms</summary>
-		<description>pings a machine and returns status for info area</description>
-	</metadata>	
-  <requires> <!--below not used currently -->
-    <import addon="xbmc.gui" version="2.11"/>
-  </requires>
+		<summary>pings any ip</summary>
+		<description>allows you to ping a device for a room that has no other addons set, for instance a server</description>
+	</metadata>
 </addon>

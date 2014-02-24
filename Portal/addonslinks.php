@@ -1,15 +1,19 @@
 <?php
-if(isset($_GET['addon'])) { 
+if(isset($_GET['addon'])) {
 	$addontype = $_GET['addon'];
-	require_once "addons.php";
 	}
+	require_once "addons.php";
 if($addontype == 'links') {
 	$allenabledaddons = explode(",", $enabledaddons);
-	foreach($allenabledaddons as $thisaddon) {
-		$thisaddon = explode(".", $thisaddon, 2);
+	foreach($allenabledaddons as $thisaddon1) {
+		if($thisaddon1 == '') { break; }
+		$thisaddon = explode(".", $thisaddon1, 2);
 		$classification = $thisaddon[0];
 		$title = $thisaddon[1];
-		include $addonarray["$classification"]["$title"]['path']."addonquicklink.php";
+		$filename = $addonarray["$classification"]["$title"]['path']."addonquicklinks.php";
+		if (file_exists($filename)) {
+			include $filename;
+		}	
 	} ?>
 <script>
 		$("#addonlinks li:first-child a:first-child").removeClass('unloaded').addClass('selected');
@@ -166,7 +170,10 @@ if($addontype == 'links') {
 		$allenabledaddons = explode(".", $theaddon, 2);
 		$classification = $allenabledaddons[0];
 		$title = $allenabledaddons[1];
-		include $addonarray["$classification"]["$title"]['path']."addonlinkpages.php";
+		$filename = $addonarray["$classification"]["$title"]['path']."addonquicklinks.php";
+		if (file_exists($filename)) {
+			include $filename;
+		}			
 	}
 }
 ?>

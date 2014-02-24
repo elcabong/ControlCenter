@@ -83,7 +83,7 @@
 			var thisip = $(this).attr('ip');
 			var thisroom = $(this).attr('thisroom');
 			$('#modal').load('nowplaying.php?ip='+thisip+'&thisroom='+thisroom).modal({
-					opacity: 25,
+					opacity: 75,
 					overlayClose: true});
 			return false;
 		});

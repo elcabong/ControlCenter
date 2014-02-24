@@ -4,26 +4,33 @@ h3 {color:#3a6d8c; font-size:22px; line-height:26px; font-weight:normal; margin:
 
 tr > td:first-child { white-space:nowrap; }
 
+a { text-decoration:none; }
+
+a:hover > p {
+color: #0099ff !important;
+}
 
 /* Overlay */
 #simplemodal-overlay {background-color:#000;}
 
 /* Container */
-#simplemodal-container {margin:0 auto !important;left:0 !important;top:70px !important;position:relative !important; height:85% !important;max-height:750px !important; width:80% !important; max-width:600px !important; color:#bbb; background-color:#333; border:4px solid #444; padding:12px;}
+#simplemodal-container {margin:0 auto !important;left:0 !important;top:70px !important;position:relative !important; height:85% !important;max-height:750px !important; width:80% !important; max-width:600px !important; color:#bbb; background-color:#333; border:4px solid #444; padding:12px;#overflow: hidden;#overflow-y: auto;}
 #simplemodal-container .simplemodal-data {padding:8px;}
 #simplemodal-container code {background:#141414; border-left:3px solid #65B43D; color:#bbb; display:block; font-size:12px; margin-bottom:12px; padding:4px 6px 6px;}
 #simplemodal-container a {color:#ddd;}
 #simplemodal-container a.modalCloseImg {background:url(../media/closemodal.png) no-repeat; width:25px; height:29px; display:inline; z-index:3200; position:absolute; top:-15px; right:-16px; cursor:pointer;}
 #simplemodal-container h3 {color:#84b8d9;}
 
+
 img {border:0;}
 #logo {margin:-8px -8px 0;padding:10px 10px 15px;background-color:#1e1e1e;}
 #logo h1 {color:#666; letter-spacing:-1px; font-weight:normal;}
 #logo h1 span {color:#444; font-weight:bold;}
 #logo .title {font-size:12px;clear:both;}
-.title > img { float:right;width:25%;margin:10px 0px 10px 0;top:0;right:0;}
+.title > img { float:right;width:25%;margin:10px 0px 10px 0;top:0;right:0;#min-height: 250px;min-width: 145px;}
+.title > table { padding-top:8px; }
 #roominfocontainer {margin:0 auto;}
-#roominfocontent {clear:both;}
+#roominfocontent {clear:both;position:relative;}
 #roominfofooter {clear:both; color:#888; margin:20px 0;}
 #roominfofooter a:link, #footer a:visited {color:#888; text-decoration:none;}
 #roominfofooter a:hover {color:#333; text-decoration:underline;}
@@ -39,46 +46,77 @@ img {border:0;}
 #timeUpdateField { float:right;margin:0 5px 0 0; }
 
 
-@media all and (max-width: 500px) {
+@media all and (max-width: 675px) {
+#logo > h1 { font-size:23pt;line-height:30px !important; }
+	body { font-size:16px; }
+}
+
+@media all and (max-width: 550px) {
 #logo > h1 { font-size:20pt;line-height:30px !important; }
 #timeUpdateField { margin:0 0 0 0 !important; }
+#timeUpdateField > span { #font-size:16px; }
 .title > img { margin:10px 5px 0 0; width:100% !important;}
-.title > table { clear:right: }
+.title > table { clear:right; }
+	body { #font-size:17px; }
 }
 
-@media all and (max-width: 390px) {
+@media all and (max-width: 410px) {
 #logo > h1 { font-size:15pt;line-height:25px !important;}
 .title > img { margin:10px 0 0 0; }
+#timeUpdateField > span { #font-size:15px; }
+body { font-size:15px; }
 }
 
-@media all and (max-width: 320px) {
+@media all and (max-width: 350px) {
 #logo > h1 { font-size:13pt;line-height:20px !important; }
 }
 
-@media all and (min-width:700px) {
-#simplemodal-container {
-	max-width:900px !important;
-}
-body {
-	font-size:16px;
+@media all and (min-width:675px) {
+	#simplemodal-container {
+		#max-width:900px !important;
+		max-width:90% !important;
+	}
+	body {
+		font-size:17px;
+	}
 }
 
+
+
+
+@media all and (min-width:1000px) {
+	#simplemodal-container {
+		width:90% !important;
+		height:auto !important;
+	}
+	.title { width:35%;float:left; }
+	.title > table { clear:both; }
+	#images { margin-top:5px; }
+	#images > img { width:65%;margin-top:10px; }
+	.title > img { float:left;width:70% !important;margin-left:10%; }
+	.plot { clear:none;#padding-top:15px;float:right;width:65%; }
 }
+
 
 @media all and (min-width:1450px) {
-#simplemodal-container {
-	max-width:90% !important;
-	height:auto !important;
-}
-.title { max-width:49%;float:right;#height:450px; }
-	
-#images {	max-width:49%;float:left;margin-top:5px;position:absolute;top:80px;}
-
-.title > img { width:38% !important;#min-height:430px;#min-width:250px; }
-.plot { clear:both;padding-top:15px; }
-
+	#simplemodal-container {
+		max-width:95% !important;
+		width:95% !important;
+		height:auto !important;
+	}
+	.title { width:49%;float:left;#height:450px; }
+	.title > table { clear:none; }
+	#images { margin-top:5px; }
+	#images > img { width:50%;float:right;margin-top:10px; }
+	.title > img { margin-left:0;float:right;width:38% !important;#min-height:430px;#min-width:250px; }
+	.plot { clear:both;padding-top:15px;float:left;width:100%; }
 }
 
 @media all and (min-width:1600px) {
-body { font-size:18px; }
+	#simplemodal-container {
+		max-width:95% !important;	
+		width:95% !important;
+		height:auto !important;
+	}
+	body { font-size:18px; }
 }

@@ -71,8 +71,8 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 					<td align=center colspan=2 height=25><h2>Account Locked</h2></td>
 					<tr>
 					<td>&nbsp;
-					<input type='hidden' name='user' value=<? echo $row['username'];?>>
-					<input type='hidden' name='usernumber' value=<? echo "$u";?>>
+					<input type='hidden' name='user' value=<?php echo $row['username'];?>>
+					<input type='hidden' name='usernumber' value=<?php echo "$u";?>>
 					</td>
 					<tr>
 					<td align=center><input type='password' name='password' size=13 placeholder='Password' style='text-align:center;' /></td>
@@ -82,7 +82,7 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 				<td align=center colspan=2><input type='submit' value='Log In' /></td>
 				</table>
 				</form>
-			<? } else {
+			<?php } else {
 			 echo "<a href='./Portal/index.php?user=$u' class='container' id='user$u'><div id='login$u'>";?>
 				<div class='userpick'>
 				<table id=<?echo $u;?>><br><br>
@@ -90,7 +90,7 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 					<td align=center colspan=2 height=25><h2>Click to Login</h2></td>
 				</table>
 				</div>	 
-			<? }
+			<?php }
 			echo "<span class='text'>" . $row['username'] . "</span></div><img src='$theuserpic' class='image' /></a>";
 		}
 	} catch(PDOException $e)

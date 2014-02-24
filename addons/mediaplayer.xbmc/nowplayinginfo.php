@@ -1,4 +1,4 @@
-<?  if(isset($_GET['ip'])) { $ip=$_GET['ip']; }
+<?php  if(isset($_GET['ip'])) { $ip=$_GET['ip']; }
 						$checkxbmc = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22JSONRPC.Ping%22%2C%22id%22%3A%201}";
 						$ch = curl_init();
 						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

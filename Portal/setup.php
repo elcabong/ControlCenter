@@ -33,7 +33,7 @@ $configdb = new PDO('sqlite:../sessions/config.db');
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Control Center Setup</title>
-	<link rel='stylesheet' type='text/css' href="../css/room.css?<? echo date ("m/d/Y-H.i.s", filemtime('../css/room.css'));?>">
+	<link rel='stylesheet' type='text/css' href="../css/room.css?<?php echo date ("m/d/Y-H.i.s", filemtime('../css/room.css'));?>">
 	<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript">
 		if (window.navigator.standalone) {
@@ -46,13 +46,13 @@ $configdb = new PDO('sqlite:../sessions/config.db');
 <div id='nav-menu'>
 	<nav>
 	<ul><li><!--
-<? if(!isset($usersareset)) { ?>
+<?php if(!isset($usersareset)) { ?>
 <a href='#' class='main panel title'>Configure A User Account to Continue</a>
-<? } else if(!isset($roomsareset)) { ?>
+<?php } else if(!isset($roomsareset)) { ?>
 <a href='#' class='main panel title'>Configure A Room for XBMC Control</a>
-<? } else { ?>
+<?php } else { ?>
 <a href='../index.html' class='main panel'>Begin Using Control Panel</a>
-<? } ?>
+<?php } ?>
 		--></li></ul>
 	</nav>
 </div>
@@ -62,7 +62,7 @@ $configdb = new PDO('sqlite:../sessions/config.db');
 	<div id="mask">
 		<div id="Settings" class="item">
 			<div class="content">
-				<iframe id="Settingsf" class='Settings' src='./settings.php<? if($_GET['setup']) { echo "?setup=".$_GET['setup']; }?>' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
+				<iframe id="Settingsf" class='Settings' src='./settings.php<?php if($_GET['setup']) { echo "?setup=".$_GET['setup']; }?>' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
 	</div>

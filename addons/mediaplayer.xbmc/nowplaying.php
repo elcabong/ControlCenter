@@ -1,4 +1,4 @@
-<? if($_GET['ip']) { $ip=$_GET['ip']; }  if($_GET['addon']) { $addonid=$_GET['addon']; } 
+<?php if($_GET['ip']) { $ip=$_GET['ip']; } // if($_GET['addon']) { $addonid=$_GET['addon']; } 
 $nowplayingarray = array();
 
 			require "nowplayinginfo.php";

@@ -12,27 +12,52 @@ if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 		exit; }
 }
 require_once 'addons.php';
+require_once "mobile_device_detect.php";
+if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
+	$isMobile = 1;
+} else {
+	$isMobile = 0;
+}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
+<?php if($isMobile == 1) { ?>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi" />
+<?php } else { ?>
 	<meta name='viewport' content="width=device-width,height:window-height, initial-scale=.9, maximum-scale=.9, minimum-scale=.9, user-scalable=auto" />
+<?php } ?>
 	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 	<link rel="icon" type="image/png" href="./favicon.ico">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Control Center</title>
-	<link rel='stylesheet' type='text/css' href="../css/room.css?<? echo date ("m/d/Y-H.i.s", filemtime('../css/room.css'));?>">
+	<link rel='stylesheet' type='text/css' href="../css/room.css?<?php echo date ("m/d/Y-H.i.s", filemtime('../css/room.css'));?>">
 	<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.scrollTo.js"></script>
 	<script type="text/javascript" src="../js/jquery.simplemodal.js"></script>
 	<script type="text/javascript" src="../js/jquery.touchwipe.js"></script>	
-	<script type="text/javascript" src="../js/scripts.js?<? echo date ("m/d/Y-H.i.s", filemtime('../js/scripts.js'));?>"></script>
+	<script type="text/javascript" src="../js/scripts.js?<?php echo date ("m/d/Y-H.i.s", filemtime('../js/scripts.js'));?>"></script>
 	<script type="text/javascript">
 		if (window.navigator.standalone) {
 			var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
 		}
 	</script>
+<?php if($isMobile == 1) { ?>
+	<style>
+	ul.sortable > li > a:first-child {
+	width: auto !important;
+	}
+	#nav-menu nav ul ul li {
+	float: left !important;
+	}
+	#multiples li a { padding:0 5px !important; }
+	#room-menu > a { padding:0 5px !important; }
+	#nav-menu > nav > ul > li > a { padding:5px 0; }
+	#nav-menu > nav > ul > li > a > img { margin:0;width:20px; }
+	#nav-menu > nav > ul > li > ul > li { padding-top:3px; }
+	</style>
+<?php } ?>	
 </head>
 <body>
 <div id='header' class="nav-menu-z">
@@ -41,9 +66,9 @@ require_once 'addons.php';
 			<ul>
 				<li><a href='#' class='navsettings panel'><img src="../media/options.png"></a>
 					<ul>
-						<li><a href="#" class="title"><?echo $USERNAMES[$usernumber];?></a></li>
-						<? if($SETTINGSACCESS == "1") { ?>
-						<li><a href='#Settings' class='panel2nd'>Settings</a></li> <? } ?>
+						<li><a href="#" class="title"><?php echo $USERNAMES[$usernumber];?></a></li>
+						<?php if($SETTINGSACCESS == "1" && $isMobile == "0") { ?>
+						<li><a href='#Settings' class='panel2nd'>Settings</a></li> <?php } ?>
 						<li><a href="#">&nbsp;</a></li>
 						<li><a href='logout.php' />Logout</a></li>
 					</ul>
@@ -51,7 +76,7 @@ require_once 'addons.php';
 			</ul>
 		</nav>
 		<li id="loading" style="padding:10px;"><img src="../media/loading.gif" height='25px'></li>
-		<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
+		<?php if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 		echo "<nav id='addonlinks'>";
 		$addontype = 'links';
 		include"./addonslinks.php";
@@ -69,7 +94,7 @@ require_once 'addons.php';
 			<nav>		
 				<ul>
 					<li>
-						<div id='room-menu'><? include"./room-chooser.php"; ?></div>
+						<div id='room-menu'><?php include"./room-chooser.php"; ?></div>
 						<ul id="roomList">
 							<?php 
 								foreach ($roomgroupaccessarray as $i) {
@@ -79,13 +104,89 @@ require_once 'addons.php';
 						</ul>
 					</li>
 				</ul>
-			</nav><? } ?>
+			</nav><?php } ?>
 		</div>
-		<? } ?>
+		<?php } ?>
 </div>
 <div id='nav-menu'>
 	<nav>
 		<?php
+			if($isMobile == "1") {
+				try {
+					$sql = "SELECT navgroup,navgrouptitle,mobile,persistent FROM navigation WHERE mobile != '' ORDER BY navgrouptitle ASC";
+					$navgroupamt = 0;
+					$mobileamt = 0;
+					$totalnonpersistentnav = 0;					
+					foreach ($configdb->query($sql) as $row)
+						{
+							$navgroup = $row['navgroup'];
+							if(strpos($NAVGROUPS,$navgroup) !== false) {
+								if($row['navgrouptitle'] == "1") { $navgroupamt++; }
+								if(isset($row['mobile']) && ($row['mobile'] != "0" || $row['mobile'] != "")) { $mobileamt++; }
+							}
+							if($row['persistent'] == '0') {
+								$totalnonpersistentnav ++;
+							}								
+						}
+				} catch(PDOException $e)
+					{
+					echo $e->getMessage();
+					}
+				if($mobileamt > '1'){					
+					echo "<ul><li><a href='#'><img src='../media/menudropdown.png'></a>";				
+				}
+				try {
+				echo "<ul>";
+					$thenavgroups = explode(",",$NAVGROUPS);
+					$tempc = 0;
+					$linkcount = 1;
+					foreach($thenavgroups as $x) {
+					$sql = "SELECT * FROM navigation WHERE navgroup = $x AND mobile != ''";
+					foreach ($configdb->query($sql) as $row)
+						{
+						$navtitle = $row['navname'];
+						if(isset($row['navip'])) { $navdestination = $row['navip']; }
+						$navgroup = $row['navgroup'];
+						$navgrouptitle = $row['navgrouptitle'];
+						if(isset($row['mobile']) && ($row['mobile'] != '' || $row['mobile'] != '1' || $row['mobile'] != '0')) { $navdestination = $row['mobile']; }
+							if($mobileamt > '1'){
+								$tempc++;
+								echo "<li id=".$tempc." class='clear'>";
+								$filename = "../media/Programs/".$navtitle.".png";
+								if (file_exists($filename)) {
+									$linkto = "<img src=$filename height='35px'>";
+								} else {
+									$linkto = $navtitle;
+								}
+							if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
+							if($row['persistent'] == '0') {
+							if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
+							echo "<a href='".$row['navip']."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
+							} else {
+							echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
+							}
+							$linkcount++;					
+								echo "</li>";
+							} else {
+							$filename = "../media/Programs/".$navtitle.".png";
+							if (file_exists($filename)) {
+								$linkto = "<img src=$filename height='35px'>";
+							} else {
+								$linkto = $navtitle;
+							}
+								echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";
+							}
+						}
+					}
+				} catch(PDOException $e)
+					{
+					echo $e->getMessage();
+					}				
+				echo "</ul>";
+				if($mobileamt > '1'){					
+					echo "</li></ul>";				
+				}	
+			} else {
 				echo "<ul class='sortable'>";
 				try {
 					$sql = "SELECT navgroup,navgrouptitle,persistent FROM navigation ORDER BY navgrouptitle ASC";
@@ -110,6 +211,7 @@ require_once 'addons.php';
 					$tempc = 0;
 					$linkcount = 1;
 					foreach($thenavgroups as $x) {
+					if($x == '') { break; }
 					$sql = "SELECT * FROM navigation WHERE navgroup = $x";
 					foreach ($configdb->query($sql) as $row)
 						{
@@ -154,7 +256,8 @@ require_once 'addons.php';
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();
-					}				
+					}
+			}
 		?>
 		</ul>
 	</nav>
@@ -164,20 +267,30 @@ require_once 'addons.php';
 <div class="clearcover" style="position:absolute;width:100%;top:50px;bottom:0;display:none;background-color:rgba(0,0,0,.30);z-index:150;"></div>
 <div id="wrapper" scrolling="auto">
 	<div id="mask">
-	<? if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
+	<?php if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 		echo "<span id='addonlinkspages'>";
 		$addontype = 'pages';
 		include"./addonslinks.php";
 		echo "</span>";	
 		}
 				try {
-					$sql = "SELECT * FROM navigation WHERE navgroup IN (".$NAVGROUPS.") AND persistent == '1' ORDER BY navgroup ASC, navid ASC";
+					if($isMobile == "1") {
+						$sql = "SELECT * FROM navigation WHERE navgroup IN (".$NAVGROUPS.") AND persistent == '1' AND mobile != '' AND mobile != '0' ORDER BY navgroup ASC, navid ASC";
+					} else {
+						$sql = "SELECT * FROM navigation WHERE navgroup IN (".$NAVGROUPS.") AND persistent == '1' ORDER BY navgroup ASC, navid ASC";
+					}
 					foreach ($configdb->query($sql) as $row)
 						{
 						$navtitle = $row['navname'];
 						if(isset($row['navip'])) { $navdestination = $row['navip']; }
 						$navgroup = $row['navgroup'];
 						$navgrouptitle = $row['navgrouptitle'];
+						if($isMobile == "1") {
+							if(isset($row['mobile']) && $row['mobile'] != '') { $mobiledestination = $row['mobile']; }
+							if($mobiledestination != '0') {
+								if($mobiledestination != "1") { $navdestination = $mobiledestination; }
+							}
+						}
 						if(strpos($NAVGROUPS,$navgroup) !== false) {
 							if($navgrouptitle == "1") {
 							} else {
@@ -203,33 +316,33 @@ require_once 'addons.php';
 				<iframe id='nonpersistentf' class='nonpersistent' name='nonpersistent' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
-		<? }
-		if($SETTINGSACCESS == "1") {?>
+		<?php }
+		if($SETTINGSACCESS == "1" && $isMobile == "0") {?>
 		<div id="Settings" class="item">
 			<div class="content">
 				<iframe id='Settingsf' class='Settings' data-src='./settings.php' width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
 			</div>
 		</div>
-		<? } ?>
+		<?php } ?>
 	</div>
 </div>
 <script>
-	<? if($TOTALALLOWEDROOMS==0){ ?>
+	<?php if($TOTALALLOWEDROOMS==0){ ?>
 		$(document).ready(function() {
-			<? if($loadpersistent != '0') { ?>
+			<?php if($loadpersistent != '0') { ?>
 				var iframepersist = document.getElementById('nonpersistentf');
-				iframepersist.src = '<? echo $loadpersistent; ?>';
+				iframepersist.src = '<?php echo $loadpersistent; ?>';
 				$('#wrapper').scrollTo(iframepersist, 0);
-			<? } else {?>
-				var iframe = document.getElementById('<?echo $selectedpanel;?>');
+			<?php } else {?>
+				var iframe = document.getElementById('<?php echo $selectedpanel;?>');
 				$('#wrapper').scrollTo(iframe, 0);
-			<? } ?>
+			<?php } ?>
 			setTimeout(func, 4500);
 			function func() {
 				document.getElementById('loading').style.display='none';
 			}
 		});
-	<? } else {?>
+	<?php } else {?>
 		$(document).ready(function() {
 		<?php
 			foreach ($roomgroupaccessarray as $i) {
@@ -249,7 +362,7 @@ require_once 'addons.php';
 				document.getElementById('loading').style.display='none';
 			}
 		});
-	<? } ?>	
+	<?php } ?>	
 </script>
 <div id="modal"></div>
 </body>

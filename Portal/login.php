@@ -45,12 +45,12 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
     <table width=259 cellpadding=3 cellspacing=0 id=1>
       <tr>
         <td align=center colspan=2 height=25><h2>Authentication</h2></td>
-<? if(isset($_SESSION['attempt']) && $_SESSION['attempt'] > 0) { ?>
+<?php if(isset($_SESSION['attempt']) && $_SESSION['attempt'] > 0) { ?>
 	<tr>
 	<td align=center colspan=4 height=25><br>Invalid Password. Try Again.</td>
 	<tr>
 	<td align=center height=25>&nbsp; &nbsp;</td>
-<? } ?>
+<?php } ?>
 <tr>
     <input type="hidden" name="user" value="<?php echo $authusername; ?>">
     <td align=left>&nbsp; &nbsp;Username:</td>

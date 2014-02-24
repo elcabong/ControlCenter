@@ -1,4 +1,4 @@
-<? if(isset($_GET['to'])) { $to=$_GET['to']; } if(isset($_GET['from'])) { $from=$_GET['from']; } if(isset($_GET['sendtype'])) { $sendtype=$_GET['sendtype']; } if(isset($_GET['addon'])) { $addonid=$_GET['addon']; }
+<?php if(isset($_GET['to'])) { $to=$_GET['to']; } if(isset($_GET['from'])) { $from=$_GET['from']; } if(isset($_GET['sendtype'])) { $sendtype=$_GET['sendtype']; } if(isset($_GET['addon'])) { $addonid=$_GET['addon']; }
 $ip = $from;
 
 $found2 = false;
