@@ -1,11 +1,12 @@
 <?php
-//require_once"config.php";
-
-
 if(!isset($ADDONDIR)) {
-	require "config.php";
+	if(!isset($_GET['setup'])) {
+		require_once "config.php";
+	} else {
+		$ADDONDIR = "../addons/";
+	}
 }
-if(!isset($roomid)) {
+if(!isset($roomid) && isset($_SESSION['room'])) {
 	$roomid = $_SESSION['room'];
 }
 
@@ -47,9 +48,6 @@ $availableaddons = array();
 		if(isset($THISROOMID) && $THISROOMID != '' ) {
 			$roomid = $THISROOMID;
 		}
-		if(!isset($roomid) && isset($_SESSION['room'])) {
-			$roomid = $_SESSION['room'];		
-		}
 		if(isset($roomid)) {
 			$THISROOMID = $roomid;
 			$enabledaddons = '';
@@ -66,9 +64,9 @@ $availableaddons = array();
 									
 			foreach($allenabledaddons as $theaddon) {
 				if($theaddon == '') { break; }
-				$thisaddon = explode(".", $theaddon, 2);
-				$classification = $thisaddon[0];
-				$title = $thisaddon[1];
+				$allenabledaddons = explode(".", $theaddon, 2);
+				$classification = $allenabledaddons[0];
+				$title = $allenabledaddons[1];
 			
 			
 				$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid AND addonid = '$theaddon' LIMIT 1";

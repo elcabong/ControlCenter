@@ -69,7 +69,7 @@
 						var expire = new Date();
 						expire.setTime(today.getTime() + 3600000*24*5);
 						document.cookie="currentRoom"+usernumber+"="+ escape(theroomnum) + ";expires="+expire.toGMTString()+";path=/";
-						$("#firstroomprogramlink").removeClass('unloaded');
+						//$("#firstroomprogramlink").removeClass('unloaded');
 						$("#room-menu").load("./room-chooser.php");
 					}
 				}

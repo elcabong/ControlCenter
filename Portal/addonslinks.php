@@ -1,8 +1,8 @@
 <?php
-if(isset($_GET['addon'])) { 
+if(isset($_GET['addon'])) {
 	$addontype = $_GET['addon'];
-	require_once "addons.php";
 	}
+	require_once "addons.php";
 if($addontype == 'links') {
 	$allenabledaddons = explode(",", $enabledaddons);
 	foreach($allenabledaddons as $thisaddon1) {

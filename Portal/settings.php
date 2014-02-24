@@ -176,13 +176,13 @@ require '../lib/class.github.php';
     foreach ($configdb->query($sql) as $row)
         {
 		if(isset($row['navid'])) { $navisset = 1; }
-        }		
+        }
 if($totalusernum != 0 && !isset($_GET['setup'])) {
 require './config.php';
 if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername ) || $SETTINGSACCESS != "1") {
     header("Location: login.php");
     exit;}}
-require './addons.php';
+require './addons.php';	
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -275,10 +275,10 @@ $(document).ready(function() {
       <div id="slider">
         <ul class="navigation">
           <li><a href="#ABOUT">About</a></li>
-          <li><a href="#ROOMS" <?php if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
+          <li><a href="#ROOMS" <? if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
          <li><a href="#ROOMGROUPS">Room Groups</a></li> 
-         <li><a href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation</a></li>
-		<li><a href="#USERS" <?php if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
+         <li><a href="#NAVIGATION" <? if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation</a></li>
+		<li><a href="#USERS" <? if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
  	  </ul>
       <!-- element with overflow applied -->
         <div class="scroll">
@@ -311,7 +311,7 @@ $(document).ready(function() {
                   <td>Last Updated</td>
                   <td>
                   <?php
-						$filename = '../.git/logs/HEAD';						
+						$filename = '../.git/logs/HEAD';
 						$branchname = "";
 						if (file_exists($filename)) {
 							$stringfromfile = file('../.git/HEAD', FILE_USE_INCLUDE_PATH);
@@ -332,6 +332,8 @@ $(document).ready(function() {
                 <tr align="left">
                   <td>
                     <?php
+					$commitNo = '';
+					$currentVersion = '';
                       $commit = $github->getCommits();
 					  if(isset($branchname) && $branchname != "master") {
 					  $commitNo = $commit['sha'];
@@ -519,7 +521,7 @@ $(document).ready(function() {
 					echo $e->getMessage();
 					}
 				?>
-				<?php $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+				<? $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 					if (false !== strpos($url,'setup')) {
 						//if($totalusernum>0 && isset($roomsareset) && isset($navisset)) {
 						if($totalusernum>0) {   //  add alerts to see if they want to add rooms or nav if those are note set
@@ -559,7 +561,6 @@ $(document).ready(function() {
 					foreach ($configdb->query($sql) as $row)
 						{
 						$roomid = $row['roomid'];
-						$THISROOMID = $roomid;
 						echo "<hr><table id='rooms-$roomid'>";
 						echo "<tr><td class='title'>Room Name</td><td><input size='10' name='roomname' value='" . $row['roomname'] . "'></td>";
 						echo "<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"rooms-$roomid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"rooms\"," . $row['roomid'] . ");' /></td></tr>";
@@ -577,10 +578,11 @@ $(document).ready(function() {
 									
 									foreach($arr as $thearr) {
 										if($thearr == '') { break; }
-
 										$arr = explode(".", $thearr, 2);
 										$classification = $arr[0];
 										$title = $arr[1];
+										
+									//	echo $addonarray["$classification"]["$title"]['path'];
 										
 										$enabledaddons .= "<option selected='selected' value=".$thearr.">".$thearr."</option>"; 
 										if($thearr != '') { $theenabledaddons .= $thearr.","; }
@@ -606,7 +608,7 @@ $(document).ready(function() {
 										$classification = $arr[0];
 										$title = $arr[1];
 
-
+										$THISROOMID = $roomid;
 										$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid AND addonid = '$addonid' LIMIT 1";
 											foreach ($configdb->query($sql3) as $addonSettings)
 												{
@@ -788,4 +790,4 @@ $(document).ready(function() {
   <script type="text/javascript" src="../js/settings.js"></script>  
 </body>
 </html>
-<?php } ?>
+<? } ?>

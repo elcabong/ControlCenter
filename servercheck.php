@@ -1,4 +1,5 @@
 <?php //control center upgrade info
+$DBVERSION = 0;
 if(isset($_GET['newdbversion'])) {
 	$DBVERSION = $_GET['newdbversion'];
 }
@@ -97,7 +98,9 @@ if (!file_exists('./sessions/config.db')){
 echo "<tr><td>Trying to Create DB.</td></tr>";
 	try {
 		$configdb = new PDO('sqlite:./sessions/config.db');
-		if($configdb) { echo "<tr><td>DB created.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>"; }
+		if($configdb) { 
+		echo "<tr><td>DB created.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>"; 
+		}
 	} catch (PDOException $error) {
         echo "<tr><td>error connecting to the DB,  error message: , $error->getMessage(), </td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 		$redirect = false;
@@ -118,6 +121,7 @@ if (file_exists('./sessions/config.db')){
 		function checkDBversion() {
 				$configdb = new PDO('sqlite:./sessions/config.db');
 				try {
+					$thedbversion = "none";
 					$sql = "SELECT dbversion FROM controlcenter ORDER BY dbversion DESC LIMIT 1";
 					foreach ($configdb->query($sql) as $row)
 					{
@@ -128,10 +132,7 @@ if (file_exists('./sessions/config.db')){
 				} catch(PDOException $e) {
 					  return "none";
 				}
-		}
-		$thedbver = checkDBversion();		
-  echo "Settings DB found: Version $thedbver";
-  echo ($valid)?"</td><td><img src='media/green-tick.png' height='15px'/></td></tr>":"</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+		}		
   // write db tables here if they dont exist
    try {
 		  $query = "CREATE TABLE IF NOT EXISTS users (userid integer PRIMARY KEY AUTOINCREMENT, username text UNIQUE NOT NULL, password text, navgroupaccess string, homeroom integer, roomgroupaccess string, roomaccess string, roomdeny string, settingsaccess integer NOT NULL)";
@@ -163,12 +164,16 @@ if (file_exists('./sessions/config.db')){
 		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT, dbversion TEXT)";
 		  $execquery = $configdb->exec($query);
 					$thedbversion = checkDBversion();
-					if(!isset($DBVERSION)) { $DBVERSION = $thedbversion; }
-					if(!isset($thedbversion)) {
+					if(isset($thedbversion) && $thedbversion != "none") {
+						//$DBVERSION = $thedbversion;
+					
+					} else {
 						// stamp current version
-						$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$DBVERSION')");
-						echo "<tr><td>DB tables created, version: $DBVERSION</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
-					} elseif($thedbversion < $DBVERSION) {
+						$thedbversion = "1.0.0";
+						$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thedbversion')");
+						echo "<tr><td>DB tables created, Version: $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+					}
+					if($thedbversion < $DBVERSION) {
 					
 							//  need to stop and do a check.. maybe using break and $redirect = false;
 							//  then restart the page and update the db if user input yes.
@@ -193,6 +198,14 @@ if (file_exists('./sessions/config.db')){
 			  echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 			  $redirect = false;
 		}
+
+		$thisdbversion = checkDBversion();
+		if(isset($thisdbversion)) { $thedbversion = $thisdbversion; }
+  echo "<tr><td>Settings DB found: Version $thedbversion";
+  echo ($valid)?"</td><td><img src='media/green-tick.png' height='15px'/></td></tr>":"</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";		
+		
+		
+		
 
 	$totalusernum = 0;
     $sql = "SELECT * FROM users LIMIT 1";
