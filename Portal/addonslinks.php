@@ -17,11 +17,12 @@ if($addontype == 'links') {
 	} ?>
 <script>
 		$("#addonlinks li:first-child a:first-child").removeClass('unloaded').addClass('selected');
-
+		
+		
 	var timeoutId = 0;
 	var mouseIsHeld = false;
 
-	$('a.panel.persistent').on('mousedown touchstart', function(e) {
+	$('#addonlinks li a.panel.persistent').on('mousedown touchstart', function(e) {
 		mouseIsHeld = false;
 		if(!$(this).hasClass('unloaded')) { var thislink = $(this); var ee = e;
 			clearTimeout(timeoutId);
@@ -43,27 +44,7 @@ if($addontype == 'links') {
 		clearTimeout(timeoutId);
 	});
 
-	$('a.panel.nonpersistent').on('mousedown touchstart', function(e) {
-		mouseIsHeld = false;
-		if(!$(this).hasClass('unloaded')) { var thislink = $(this); var ee = e;
-			clearTimeout(timeoutId);
-			timeoutId = setTimeout(function(){
-				if (thislink.hasClass('selected')) {
-					mouseIsHeld = true;
-					var iframe = document.getElementById('nonpersistentf');
-					iframe.src = '';			
-					iframe.getAttribute("src");
-					iframe.removeAttribute("src");
-					thislink.addClass('unloaded');
-					return false;
-				}
-			},1300);
-		}
-	}).bind('mouseup mouseleave touchend', function() {
-		clearTimeout(timeoutId);
-	});
-
-	$("a.panel.persistent").click(function (e) {
+	$("#addonlinks li a.panel.persistent").click(function (e) {
 	e.preventDefault();
 	if(mouseIsHeld == false) {
 
@@ -76,7 +57,7 @@ if($addontype == 'links') {
 			$('iframe.' + href).attr('src',$('iframe.' + href).attr('data-src'));
 		}
 
-		if ($(this).hasClass('selected')) {
+		if($(this).hasClass('selected')) {
             var href = $(this).attr('href');
 		    href = href.replace(/#/g, "" );
 			var iframe = document.getElementById(href + 'f');
@@ -106,62 +87,11 @@ if($addontype == 'links') {
 		
 		return false;
 	}
-	});
-
-	$('a.panel.nonpersistent').click(function (e) {
-	e.preventDefault();
-	if(mouseIsHeld == false) {
-	
-		var nonpersisthref = $(this).attr('href');
-		var nonpersistiframe = document.getElementById('nonpersistentf');
- 
-		if ($(this).hasClass('selected')) {
-			nonpersistiframe.src = '';
-			nonpersistiframe.src = $(this).attr('href');
-			nonpersistiframe.src = nonpersistiframe.src;
-	        return false; 
-        } else {
-			$('a.panel').removeClass('selected');
-			$(this).removeClass('unloaded');
-			$(this).addClass('selected');
-		}
-
-		$('#wrapper').scrollTo('#nonpersistentf', 0);
-
-		var myLi = $(this).parent();
-		if(myLi.hasClass("sortable")) {
-			$("li.sortable").each(function () {
-				$(this).addClass('secondary');
-			});
-			myLi.removeClass('secondary');		
-			myLi.removeClass('hidden');
-			myLi.parent().prepend(myLi);
-		}
-		nonpersistiframe.src = $(this).attr('href');
-		nonpersistiframe.src = nonpersistiframe.src;	
-
-		return false;
-	}	
-	});
-	
-	$('a.panel2nd').click(function () {
-
-        var href = $(this).attr('href');
-		if(href == '#') { return false; }		
-
-		href = href.replace(/#/g, "" );
-		var iframe = document.getElementById(href + 'f');
-		if (!iframe.src) {
-			$('iframe.' + href).attr('src',$('iframe.' + href).attr('data-src'));
-		}		
-		
-		$('a.panel').removeClass('selected');
-		//$('.navsettings.panel').addClass('selected');
-		
-		$('#wrapper').scrollTo($(this).attr('href'), 0);		
-		return false;
 	});	
-	</script>	
+		
+</script>
+<!--<script type="text/javascript" src="../js/scripts.js"></script>
+-->
 <?php
 	
 } elseif($addontype == 'pages') {
