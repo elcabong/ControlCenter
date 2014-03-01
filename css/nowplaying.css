@@ -93,7 +93,7 @@ body { font-size:15px; }
 	.title > table { clear:both; }
 	#images { margin-top:5px; }
 	#images > img { width:65%;margin-top:10px; }
-	.title > img { float:left;width:70% !important;margin-left:10%; }
+	.title > img { float:left;width:71% !important;margin-left:10%; }
 	.plot { clear:none;#padding-top:15px;float:right;width:65%; }
 }
 
@@ -108,7 +108,7 @@ body { font-size:15px; }
 	.title > table { clear:none; }
 	#images { margin-top:5px; }
 	#images > img { width:50%;float:right;margin-top:10px; }
-	.title > img { margin-left:0;float:right;width:38% !important;#min-height:430px;#min-width:250px; }
+	.title > img { margin-left:0;float:right;width:39% !important;#min-height:430px;#min-width:250px; }
 	.plot { clear:both;padding-top:15px;float:left;width:100%; }
 }
 

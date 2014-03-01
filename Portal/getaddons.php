@@ -1,21 +1,19 @@
 <?
 	$THISROOMID = '';
 	if(isset($_GET['room'])) { $THISROOMID = $_GET['room']; } else { exit; }
-	//if(isset($_GET['addonid'])) { $addonid = $_GET['addonid']; }
-	
-			require './config.php';
-			
-			if(isset($_SESSION['room'])) {
-			$roomid = $_SESSION['room'];
-			$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid";
-				foreach ($configdb->query($sql3) as $addonSettings)
-					{
-						if($addonSettings['ip'] != '') {
-							$nowplayingip = $addonSettings['ip'];
-							break;
-						}
-					}
+
+	require './config.php';
+	if(isset($_SESSION['room'])) {
+		$roomid = $_SESSION['room'];
+		$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid";
+		foreach ($configdb->query($sql3) as $addonSettings)
+			{
+				if($addonSettings['ip'] != '') {
+					$nowplayingip = $addonSettings['ip'];
+					break;
+				}
 			}
+	}
 
 		require './addons.php';
 		if (strpos($enabledaddons,',') !== false) {

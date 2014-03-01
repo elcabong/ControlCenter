@@ -310,27 +310,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 }).call(this);
 
-
-
-            function d(el){
-                return document.getElementById(el);
-            }
-            ifvisible.setIdleDuration(120);
-
-            ifvisible.idle(function(){
-				var today = new Date();
-				var expire = new Date();
-				expire.setTime(today.getTime() + 3600000*24*5);
-				document.cookie="sleeping=1;expires="+expire.toGMTString()+";path=/";
-            });
-
-            ifvisible.wakeup(function(){
-				var today = new Date();
-				var expire = new Date();
-				expire.setTime(today.getTime() + 3600000*24*5);
-				document.cookie="sleeping=0;expires="+expire.toGMTString()+";path=/";					
-            });
-
 /*
 //@ sourceMappingURL=ifvisible.map
 */

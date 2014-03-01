@@ -16,9 +16,7 @@ if($addontype == 'links') {
 		}	
 	} ?>
 <script>
-		$("#addonlinks li:first-child a:first-child").removeClass('unloaded').addClass('selected');
-		
-		
+	$("#addonlinks li:first-child a:first-child").removeClass('unloaded').addClass('selected');
 	var timeoutId = 0;
 	var mouseIsHeld = false;
 
@@ -88,10 +86,8 @@ if($addontype == 'links') {
 		return false;
 	}
 	});	
-		
 </script>
 <?php
-	
 } elseif($addontype == 'pages') {
 	$allenabledaddons = explode(",", $enabledaddons);
 	foreach($allenabledaddons as $theaddon) {
