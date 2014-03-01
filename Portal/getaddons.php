@@ -4,6 +4,7 @@
 	//if(isset($_GET['addonid'])) { $addonid = $_GET['addonid']; }
 	
 			require './config.php';
+			
 			if(isset($_SESSION['room'])) {
 			$roomid = $_SESSION['room'];
 			$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid";

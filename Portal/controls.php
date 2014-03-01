@@ -38,6 +38,7 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	<script type="text/javascript" src="../js/jquery.simplemodal.js"></script>
 	<script type="text/javascript" src="../js/jquery.touchwipe.js"></script>	
 	<script type="text/javascript" src="../js/scripts.js"></script>
+	<script type="text/javascript" src="../js/ifvisible.js"></script>
 	<script type="text/javascript">
 		if (window.navigator.standalone) {
 			var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
@@ -344,15 +345,25 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 		});
 	<?php } else {?>
 		$(document).ready(function() {
+				var today = new Date();
+				var expire = new Date();
+				expire.setTime(today.getTime() + 3600000*24*5);
+				document.cookie="sleeping=0;expires="+expire.toGMTString()+";path=/";		
 		<?php
 			foreach ($roomgroupaccessarray as $i) {
 				$thedelay = 1000 + (180 * $i);
 				echo "
 				function refreshRoom$i() {
-				$(\"#roominfo$i\").load(\"./getaddons.php?room=$i\", function () {
-					refreshtheroom$i = setTimeout(refreshRoom$i, 2500);
-					reSizeRoomInfo();
-				});
+					var isSleeping = 0;
+					if (document.cookie.indexOf(\"sleeping\") >= 0) {
+						var isSleeping = getCookie('sleeping');
+					}
+					if(isSleeping == 0) {
+						$(\"#roominfo$i\").load(\"./getaddons.php?room=$i\", function () {
+							reSizeRoomInfo();
+						});
+					}
+					refreshtheroom$i = setTimeout(refreshRoom$i, 2500);					
 				}
 				refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);";
 			}
@@ -362,7 +373,20 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 				document.getElementById('loading').style.display='none';
 			}
 		});
-	<?php } ?>	
+	<?php } ?>
+
+function getCookie(cname)
+{
+var name = cname + "=";
+var ca = document.cookie.split(';');
+for(var i=0; i<ca.length; i++) 
+  {
+  var c = ca[i].trim();
+  if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+  }
+return "";
+}
+	
 </script>
 <div id="modal"></div>
 </body>

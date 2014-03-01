@@ -90,8 +90,6 @@ if($addontype == 'links') {
 	});	
 		
 </script>
-<!--<script type="text/javascript" src="../js/scripts.js"></script>
--->
 <?php
 	
 } elseif($addontype == 'pages') {
