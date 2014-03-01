@@ -315,15 +315,13 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             function d(el){
                 return document.getElementById(el);
             }
-            ifvisible.setIdleDuration(30);
+            ifvisible.setIdleDuration(120);
 
             ifvisible.idle(function(){
 				var today = new Date();
 				var expire = new Date();
 				expire.setTime(today.getTime() + 3600000*24*5);
-				document.cookie="sleeping=1;expires="+expire.toGMTString()+";path=/";				
-                //d("nav-menu").innerHTML = "(-_-) Good bye. ZzzZZzz...";
-                //document.body.style.opacity = 0.5;
+				document.cookie="sleeping=1;expires="+expire.toGMTString()+";path=/";
             });
 
             ifvisible.wakeup(function(){
@@ -331,8 +329,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				var expire = new Date();
 				expire.setTime(today.getTime() + 3600000*24*5);
 				document.cookie="sleeping=0;expires="+expire.toGMTString()+";path=/";					
-                //d("nav-menu").innerHTML = "(O_o) Hey!, you woke me up.";
-                //document.body.style.opacity = 1;
             });
 
 /*
