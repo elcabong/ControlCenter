@@ -57,9 +57,6 @@ $availableaddons = array();
 				//echo $enabledaddons."<br>";
 			}
 			$enabledaddonsarray = array();
-			// run through enabledaddons array and create new array with settings
-
-			
 			$allenabledaddons = explode(",", $enabledaddons);
 									
 			foreach($allenabledaddons as $theaddon) {
@@ -67,8 +64,7 @@ $availableaddons = array();
 				$allenabledaddons = explode(".", $theaddon, 2);
 				$classification = $allenabledaddons[0];
 				$title = $allenabledaddons[1];
-			
-			
+
 				$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid AND addonid = '$theaddon' LIMIT 1";
 				foreach ($configdb->query($sql3) as $addonSettings) {
 					$enabledaddonsarray["$roomid"]["$theaddon"]['classification'] = $classification;
@@ -90,14 +86,4 @@ $availableaddons = array();
 			}
 
 		}
-	
-/*
-	echo "<pre>";
-print_r($addonarray);	
-	echo "</pre>";
-	echo "<pre>";
-print_r($availableaddons);	
-	echo "</pre>";	
-	*/
-	
 ?>
