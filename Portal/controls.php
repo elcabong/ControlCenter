@@ -391,7 +391,7 @@ return "";
 		document.getElementById('loading').style.display='block';
 		var wakemachinewait;
 		clearTimeout(wakemachinewait);
-		wakemachinewait=setTimeout(functimer, 4500);
+		wakemachinewait=setTimeout(functimer, 10000);
 		function functimer() {
 			$("#room-menu").load("./room-chooser.php");
 		}
