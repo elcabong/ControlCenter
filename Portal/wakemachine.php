@@ -22,7 +22,7 @@ echo "<script type='text/javascript' src='../js/jquery-1.10.1.min.js'></script>
 			   cache: false,
 			   success: function(response)
 			{
-				parent.updateroom();	
+				parent.document.getElementById('loading').style.display='block';
 		   }
 		});
 	}

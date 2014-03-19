@@ -96,7 +96,7 @@
 		
 		var t;
 		clearTimeout(t);
-		t=setTimeout(func, 1700);
+		t=setTimeout(func, 1000);
 		function func() {
 			document.getElementById('loading').style.display='none';	
 		}
