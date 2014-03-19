@@ -386,6 +386,16 @@ for(var i=0; i<ca.length; i++)
   }
 return "";
 }
+
+	function updateroom() {
+		document.getElementById('loading').style.display='block';
+		var wakemachinewait;
+		clearTimeout(wakemachinewait);
+		wakemachinewait=setTimeout(functimer, 4500);
+		function functimer() {
+			$("#room-menu").load("./room-chooser.php");
+		}
+	}
 </script>
 <div id="modal"></div>
 </body>
