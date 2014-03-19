@@ -46,7 +46,14 @@
 						// echo 'This is a server not using Windows!';
 					}
 					if ($status == "0") {
-						$_SESSION[$ip] = 'alive';
+						if($_SESSION[$ip] == "dead" && $ip == $nowplayingip) {
+							$_SESSION[$ip] = 'alive'; ?>
+							<script>
+								$("#room-menu").load("./room-chooser.php");
+							</script>	
+			<?php } else {					
+							$_SESSION[$ip] = 'alive';
+						}
 						//$status = "alive";
 						
 						$filename = $addonarray["$classification"]["$title"]['path']."addoninfo.php";
@@ -56,7 +63,14 @@
 							echo "<a href='#' class='pingicon'><img src='../media/orange.png' title='online with no addons' style='height:20px;'/></a>";
 						}
 					} else {
-						$_SESSION[$ip] = 'dead';
+						if($_SESSION[$ip] == "alive" && $ip == $nowplayingip) {
+							$_SESSION[$ip] = 'dead'; ?>
+							<script>
+								$("#room-menu").load("./room-chooser.php");
+							</script>	
+			<?php } else {
+							$_SESSION[$ip] = 'dead';
+						}	
 						//$status = "dead";
 						$sessvar = "playinginroom$THISROOMID";
 						$_SESSION[$sessvar] = 0;
