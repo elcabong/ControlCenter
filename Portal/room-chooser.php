@@ -86,7 +86,7 @@
 		document.getElementById('loading').style.display='block';
 		var today = new Date();
 		var expire = new Date();
-		expire.setTime(today.getTime() + 3600000*24*5);
+		expire.setTime(today.getTime() + 3600000*24*5*50);
 		document.cookie="currentRoom"+usernumber+"="+ escape(newroom) + ";expires="+expire.toGMTString()+";path=/";
 		if(!window.location.hash) {
 			$("a.panel").removeClass('selected');

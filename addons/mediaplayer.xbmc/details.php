@@ -20,9 +20,11 @@
 											echo " - ".$thetitle;
 										}
 									} elseif($activeplayerid==1) {
+
+									
 										if($filetype=="unknown") {
-											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
-											echo $thelabel;
+											//echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
+											//echo $thelabel;
 										} elseif($filetype=="movie") {
 											echo "<img src='../media/DefaultMovies.png' height='35px' style='float:left;margin-top:-3px;'>";
 											echo $thetitle;
