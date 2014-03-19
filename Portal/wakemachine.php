@@ -19,20 +19,10 @@ echo "
 			   cache: false,
 			   success: function(response)
 			{
-				alert(response);
 				// need to retry ping until successful or hit a set limit, then display none
 				setTimeout(func, 35000);
 				function func() {
-					document.getElementById('loading').style.display='none';	
-				}
-		   },
-			   error: function(response)
-			{
-				alert(response);
-				// need to retry ping until successful or hit a set limit, then display none
-				setTimeout(func, 35000);
-				function func() {
-					document.getElementById('loading').style.display='none';	
+				//	document.getElementById('loading').style.display='none';	
 				}
 		   }		   
 		});
