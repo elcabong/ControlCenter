@@ -386,7 +386,6 @@ for(var i=0; i<ca.length; i++)
   }
 return "";
 }
-	
 </script>
 <div id="modal"></div>
 </body>

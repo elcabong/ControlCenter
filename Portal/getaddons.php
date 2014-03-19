@@ -3,6 +3,9 @@
 	if(isset($_GET['room'])) { $THISROOMID = $_GET['room']; } else { exit; }
 
 	require './config.php';
+	if ($authsecured && (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername )) {
+		header("Location: login.php");
+		exit;}
 	if(isset($_SESSION['room'])) {
 		$roomid = $_SESSION['room'];
 		$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid";
@@ -43,6 +46,7 @@
 						// echo 'This is a server not using Windows!';
 					}
 					if ($status == "0") {
+						$_SESSION[$ip] = 'alive';
 						//$status = "alive";
 						
 						$filename = $addonarray["$classification"]["$title"]['path']."addoninfo.php";
@@ -52,6 +56,7 @@
 							echo "<a href='#' class='pingicon'><img src='../media/orange.png' title='online with no addons' style='height:20px;'/></a>";
 						}
 					} else {
+						$_SESSION[$ip] = 'dead';
 						//$status = "dead";
 						$sessvar = "playinginroom$THISROOMID";
 						$_SESSION[$sessvar] = 0;

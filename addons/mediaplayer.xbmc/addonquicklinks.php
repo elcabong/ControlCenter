@@ -4,6 +4,7 @@
 //  $enabledaddonsarray["$THISROOMID"]['test.addon5']        >    where "test.addon5" is your addons name and $THISROOMID is the room the addon is associated with.  $THISROOMID is already set.
 
 $ADDONIP = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['ADDONIP'];
+$ADDONMAC = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['MAC'];
 $setting1 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting1'];
 		
 		
@@ -25,9 +26,13 @@ $setting1 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting1'];
 		// this section is the actual frames that the links are displayed in
 	
 		echo "<div id='XBMCCONTROL1' class='item'>
-			<div class='content'>
-				<iframe id='XBMCCONTROL1f' src=\"$ADDONIP\" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>
-			</div>
+			<div class='content'>";
+			if(isset($_SESSION[$ADDONIP]) && $_SESSION[$ADDONIP] == 'dead') {
+				echo "<iframe id='XBMCCONTROL1f' src=\"wakemachine.php?mac=$ADDONMAC\" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
+			} else {
+				echo "<iframe id='XBMCCONTROL1f' src=\"$ADDONIP\" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
+			}
+		echo "</div>
 		</div>";
 		if($enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting1'] != '') {
 			echo"<div id='XBMCCONTROL2' class='item'>
