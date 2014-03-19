@@ -2,7 +2,7 @@
 if(isset($_GET['mac'])) {
 	$mac = $_GET['mac'];
 }
-echo "
+echo "<script type='text/javascript' src='../js/jquery-1.10.1.min.js'></script>
 			<div style='color:#eee;margin: 5% auto 0;position: relative;text-align: center;'>
 			<h1>Power On</h1>
 			<a href='#' class='pingicon' onclick=\"wakethismachine('$mac');\" style='display: block;'>
@@ -19,6 +19,7 @@ echo "
 			   cache: false,
 			   success: function(response)
 			{
+				alert(response);
 		   }
 		});
 	}
