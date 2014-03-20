@@ -20,11 +20,34 @@
 											echo " - ".$thetitle;
 										}
 									} elseif($activeplayerid==1) {
-
+										if($filetype=="unknown") {
+											$ext = pathinfo($filepath, PATHINFO_EXTENSION);
+											$file = basename($filepath, ".".$ext);
+											$needles = array('(19','(20','[19','[20');
+											foreach($needles as $needle) {
+												if (strpos($file,$needle) !== false) {
+													$filetype = "amovie";
+												}
+											}
+											$needles = array('1x','2x','3x','4x','5x','6x','7x','8x','9x','0x','s01','s02','s03','s04','s05','s06','s07','s08','s09','s00');
+											foreach($needles as $needle) {
+												if (strpos($file,$needle) !== false) {
+													$filetype = "atvshow";
+												}
+											}
+											if($filetype == "amovie") {
+												echo "<img src='../media/DefaultMovies.png' height='35px' style='float:left;margin-top:-3px;'>";
+												echo "$file";
+											}											
+											if($filetype == "atvshow") {
+												echo "<img src='../media/DefaultTVShows.png' height='35px' style='float:left;margin-top:-3px;'>";
+												echo "$file";
+											}
+										}
 									
 										if($filetype=="unknown") {
-											//echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
-											//echo $thelabel;
+											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
+											echo $thelabel;
 										} elseif($filetype=="movie") {
 											echo "<img src='../media/DefaultMovies.png' height='35px' style='float:left;margin-top:-3px;'>";
 											echo $thetitle;

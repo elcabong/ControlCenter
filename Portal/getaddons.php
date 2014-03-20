@@ -50,7 +50,7 @@
 							$_SESSION[$ip] = 'alive'; ?>
 							<script>
 								$("#room-menu").load("./room-chooser.php");
-							</script>	
+							</script>
 			<?php } else {					
 							$_SESSION[$ip] = 'alive';
 						}
@@ -67,10 +67,10 @@
 							$_SESSION[$ip] = 'dead'; ?>
 							<script>
 								$("#room-menu").load("./room-chooser.php");
-							</script>	
+							</script>
 			<?php } else {
 							$_SESSION[$ip] = 'dead';
-						}	
+						}
 						//$status = "dead";
 						$sessvar = "playinginroom$THISROOMID";
 						$_SESSION[$sessvar] = 0;
