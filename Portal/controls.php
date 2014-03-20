@@ -23,7 +23,7 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 <html>
 <head>
 <?php if($isMobile == 1) { ?>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi" />
+	<meta name="viewport" content="width=device-width, initial-scale=.9, maximum-scale=.9, minimum-scale=.9, target-densitydpi=medium-dpi" />
 <?php } else { ?>
 	<meta name='viewport' content="width=device-width,height:window-height, initial-scale=.9, maximum-scale=.9, minimum-scale=.9, user-scalable=auto" />
 <?php } ?>
