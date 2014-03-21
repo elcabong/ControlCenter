@@ -49,7 +49,7 @@
 						if($_SESSION[$ip] == "dead" && $ip == $nowplayingip) {
 							$_SESSION[$ip] = 'alive'; ?>
 							<script>
-								$("#room-menu").load("./room-chooser.php");
+								$("#room-menu").load("./room-chooser.php?noreset=1");
 							</script>
 			<?php } else {					
 							$_SESSION[$ip] = 'alive';

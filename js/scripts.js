@@ -282,7 +282,7 @@ function reSizeRoomInfo() {
 function d(el){
     return document.getElementById(el);
 }
-ifvisible.setIdleDuration(120);
+ifvisible.setIdleDuration(360);
 
 ifvisible.idle(function(){
 	var today = new Date();
