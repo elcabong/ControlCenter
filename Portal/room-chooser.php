@@ -5,6 +5,12 @@
 		exit;
 	}
 	require_once "./controls-include.php";
+
+	$noreset = 0;
+	if(isset($_GET['noreset'])) {
+		$noreset = $_GET['noreset'];
+	}
+	
 	
 	if(isset($_COOKIE["currentRoom$usernumber"])) {
 	$roomnum = $_COOKIE["currentRoom$usernumber"];
@@ -103,5 +109,7 @@
 
 		$("#addonlinks").load("./addonslinks.php?addon=links");
 		$("#addonlinkspages").load("./addonslinks.php?addon=pages");
+		<?php if($noreset == 0) { ?>
 			$('#wrapper').scrollTo(0,0);
+		<?php } ?>
 </script>
