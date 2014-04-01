@@ -23,7 +23,7 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 <html>
 <head>
 <?php if($isMobile == 1) { ?>
-	<meta name="viewport" content="width=device-width, initial-scale=.9, maximum-scale=.9, minimum-scale=.9, target-densitydpi=medium-dpi" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi, minimal-ui" />
 <?php } else { ?>
 	<meta name='viewport' content="width=device-width,height:window-height, initial-scale=.9, maximum-scale=.9, minimum-scale=.9, user-scalable=auto" />
 <?php } ?>
@@ -353,14 +353,17 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 			foreach ($roomgroupaccessarray as $i) {
 				$thedelay = 1000 + (180 * $i);
 				echo "
+				var roomcheckcount$i = 0;
 				function refreshRoom$i() {
 					var isSleeping = 0;
 					if (document.cookie.indexOf(\"sleeping\") >= 0) {
 						var isSleeping = getCookie('sleeping');
 					}
-					if(isSleeping == 0) {
+					roomcheckcount$i++;
+					if(isSleeping == 0 || roomcheckcount$i > 100) {
 						$(\"#roominfo$i\").load(\"./getaddons.php?room=$i\", function () {
 							reSizeRoomInfo();
+							roomcheckcount$i = 0;
 						});
 					}
 					refreshtheroom$i = setTimeout(refreshRoom$i, 2500);					

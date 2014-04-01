@@ -27,7 +27,7 @@ $configdb = new PDO('sqlite:../sessions/config.db');
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name='viewport' content="width=device-width,height:window-height, initial-scale=.9, maximum-scale=.9, minimum-scale=.9, user-scalable=auto" />
+	<meta name='viewport' content="width=device-width,height:window-height, initial-scale=.9, maximum-scale=.9, minimum-scale=.9, user-scalable=auto, minimal-ui" />
 	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
 	<link rel="icon" type="image/png" href="./favicon.ico">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
