@@ -353,14 +353,17 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 			foreach ($roomgroupaccessarray as $i) {
 				$thedelay = 1000 + (180 * $i);
 				echo "
+				var roomcheckcount$i = 0;
 				function refreshRoom$i() {
 					var isSleeping = 0;
 					if (document.cookie.indexOf(\"sleeping\") >= 0) {
 						var isSleeping = getCookie('sleeping');
 					}
-					if(isSleeping == 0) {
+					roomcheckcount$i++;
+					if(isSleeping == 0 || roomcheckcount$i > 100) {
 						$(\"#roominfo$i\").load(\"./getaddons.php?room=$i\", function () {
 							reSizeRoomInfo();
+							roomcheckcount$i = 0;
 						});
 					}
 					refreshtheroom$i = setTimeout(refreshRoom$i, 2500);					

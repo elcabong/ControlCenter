@@ -23,6 +23,10 @@ echo "<script type='text/javascript' src='../js/jquery-1.10.1.min.js'></script>
 			   success: function(response)
 			{
 				parent.document.getElementById('loading').style.display='block';
+				var today = new Date();
+				var expire = new Date();
+				expire.setTime(today.getTime() + 3600000*24*5);
+				document.cookie="sleeping=0;expires="+expire.toGMTString()+";path=/";					
 		   }
 		});
 	}
