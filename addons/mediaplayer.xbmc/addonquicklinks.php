@@ -27,7 +27,7 @@ $setting1 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting1'];
 	
 		echo "<div id='XBMCCONTROL1' class='item'>
 			<div class='content'>";
-			if(isset($_SESSION[$ADDONIP]) && $_SESSION[$ADDONIP] == 'dead') {
+			if($_SESSION[$ADDONIP] != 'alive') {
 				echo "<iframe id='XBMCCONTROL1f' src=\"wakemachine.php?ip=$ADDONIP&mac=$ADDONMAC\" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
 			} else {
 				echo "<iframe id='XBMCCONTROL1f' src=\"$ADDONIP\" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";

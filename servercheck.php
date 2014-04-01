@@ -7,6 +7,11 @@ require "./Portal/functions.php";
 ?>
 <html>
 <head>
+	<meta name='viewport' content="width=device-width,height:window-height, initial-scale=.9, maximum-scale=.9, minimum-scale=.9, user-scalable=auto, minimal-ui" />
+	<META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+	<link rel="icon" type="image/png" href="./favicon.ico">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Control Center Server Check</title>
 <script type="text/javascript">
 function redirect(){
@@ -44,7 +49,7 @@ function redirect(){
 <br>
 <table class="widget" width=400 cellpadding=0 cellspacing=0>
 <tr>
-  <td align=center colspan=2 height=25 style="padding:0;"><div class="widget-head">Welcome to the Control Center</div></td>
+  <td align=center colspan=2 height=25 style="padding:0;"><div class="widget-head">Welcome to your Control Center</div></td>
 <tr>
 <td align=center><br>
 Something was updated.  Running checks.

@@ -29,7 +29,7 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
 <title>Control Center Authentication</title>
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi, minimal-ui" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<link rel="icon" type="image/png" href="./favicon.ico">
 <link rel="stylesheet" type="text/css" href="../css/front.css" />

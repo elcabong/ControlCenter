@@ -10,7 +10,7 @@ require('./Portal/config.php');
 <html>
 <head>
 <title>Control Center User Selection</title>
-<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no' />
+<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, target-densitydpi=medium-dpi, user-scalable=no, minimal-ui' />
 <meta name='apple-mobile-web-app-capable' content='yes' />
 <link rel='stylesheet' type='text/css' href='./css/front.css' />
 <link rel="icon" type="image/png" href="./favicon.ico">
