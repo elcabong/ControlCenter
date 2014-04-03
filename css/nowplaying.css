@@ -87,13 +87,13 @@ body { font-size:15px; }
 @media all and (min-width:1000px) {
 	#simplemodal-container {
 		width:90% !important;
-		height:auto !important;
+		#height:auto !important;
 	}
 	.title { width:35%;float:left; }
 	.title > table { clear:both; }
 	#images { margin-top:5px; }
-	#images > img { width:65%;margin-top:10px; }
-	.title > img { float:left;width:71% !important;margin-left:10%; }
+	#images > img { width:65%;margin-top:10px;max-height:400px; }
+	.title > img { float:left;width:71% !important;margin-left:10%;max-height:400px; }
 	.plot { clear:none;#padding-top:15px;float:right;width:65%; }
 }
 
@@ -107,8 +107,8 @@ body { font-size:15px; }
 	.title { width:49%;float:left;#height:450px; }
 	.title > table { clear:none; }
 	#images { margin-top:5px; }
-	#images > img { width:50%;float:right;margin-top:10px; }
-	.title > img { margin-left:0;float:right;width:39% !important;#min-height:430px;#min-width:250px; }
+	#images > img { width:50%;float:right;margin-top:10px;max-height:510px; }
+	.title > img { margin-left:0;float:right;width:39% !important;#min-height:430px;#min-width:250px;max-height:510px; }
 	.plot { clear:both;padding-top:15px;float:left;width:100%; }
 }
 
