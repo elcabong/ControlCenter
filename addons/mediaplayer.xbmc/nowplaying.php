@@ -57,7 +57,27 @@ $nowplayingarray = array();
 							$filetype = $jsonnowplaying['result']['item']['type'];
 						}
 					}
-					if($filetype == "episode"){
+										if($filetype=="unknown") {
+											$ext = pathinfo($filepath, PATHINFO_EXTENSION);
+											$file = basename($filepath, ".".$ext);
+											$needles = array('1x','2x','3x','4x','5x','6x','7x','8x','9x','0x','s01','s02','s03','s04','s05','s06','s07','s08','s09','s00');
+											foreach($needles as $needle) {
+												if (strpos($file,$needle) !== false) {
+													$filetype = "atvshow";
+												}
+											}
+										}
+										
+					if($filetype == "atvshow") {
+						$file = explode("-",$file);
+						$nowplayingarray['Series'] = $file[0];
+						$nowplayingarray['Episode'] = $file[1].$file[2];
+						$nowplayingarray['Genre'] = implode(', ', $jsontvshowinfo['result']['tvshowdetails']['genre']);
+						$nowplayingarray['Year'] = $jsontvshowinfo['result']['tvshowdetails']['year'];
+						$nowplayingarray['First Aired'] = $jsonnowplaying['result']['item']['firstaired'];
+						$thumbnail = "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['thumbnail'])."'/>";
+						$fanart =  "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['fanart'])."'/>";								
+					} elseif($filetype == "episode"){
 						$jsontvshowinfo = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22VideoLibrary.GetTVShowDetails%22%2C%20%22params%22%3A%20%7B%20%22tvshowid%22%3A%20$theshowid%2C%20%22properties%22%3A%20%5B%20%22art%22%2C%20%22votes%22%2C%20%22premiered%22%2C%20%22cast%22%2C%20%22genre%22%2C%20%22plot%22%2C%20%22title%22%2C%20%22originaltitle%22%2C%20%22year%22%2C%20%22rating%22%2C%20%22thumbnail%22%2C%20%22playcount%22%2C%20%22file%22%2C%20%22fanart%22%2C%20%22episode%22%5D%20%7D%2C%20%22id%22%3A%201}";
 						$ch = curl_init();
 						curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -72,7 +92,7 @@ $nowplayingarray = array();
 						$nowplayingarray['First Aired'] = $jsonnowplaying['result']['item']['firstaired'];
 						$thumbnail = "<img src='$ip/image/".urlencode($jsontvshowinfo['result']['tvshowdetails']['thumbnail'])."'/>";
 						$fanart = "<img src='$ip/image/".urlencode($jsontvshowinfo['result']['tvshowdetails']['fanart'])."'/>";
-					} else {
+					} else{
 						$nowplayingarray['Movie'] = $jsonnowplaying['result']['item']['title'];
 						$nowplayingarray['Genre'] = implode(', ', $jsonnowplaying['result']['item']['genre']);
 						$nowplayingarray['Year'] = $jsonnowplaying['result']['item']['year'];
