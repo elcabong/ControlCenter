@@ -66,6 +66,7 @@ $nowplayingarray = array();
 													$filetype = "atvshow";
 												}
 											}
+											if($jsonnowplaying['result']['item']['title'] != '') { $file = $jsonnowplaying['result']['item']['title']; }
 										}
 										
 					if($filetype == "atvshow") {
