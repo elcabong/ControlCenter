@@ -1,6 +1,8 @@
 ControlCenter
 ==================
 
+picutres @ http://imgur.com/a/vFT9c#0
+
 Access any web based software to control your home and media needs.
 
 Required:
