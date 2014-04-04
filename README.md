@@ -19,7 +19,7 @@ Please direct any comments to this thread:    http://forum.xbmc.org/showthread.p
 0.  install prerequisites:
 sudo apt-get install git  
 sudo apt-get install apache2  
-sudo apt-get install php5 libapache2-mod-php5 php5-curl php5-sqlite 
+sudo apt-get install php5 libapache2-mod-php5 php5-curl php5-sqlite  
 sudo mkdir /var/www/ControlCenter 
 
   
@@ -28,7 +28,7 @@ sudo mkdir /var/www/ControlCenter
 
 2. Permissions: 
 sudo chown -R www-data:www-data /var/www/ControlCenter/sessions   
-sudo chown -R www-data:www-data /var/www/ControlCenter/media/Users
+sudo chown -R www-data:www-data /var/www/ControlCenter/media/Users  
 sudo chown -R www-data:www-data /var/www/ControlCenter/media/Programs
 
 3. browse to your http://[webserver]/ControlCenter/
