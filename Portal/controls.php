@@ -280,9 +280,12 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 					} else {
 						$sql = "SELECT * FROM navigation WHERE navgroup IN (".$NAVGROUPS.") AND persistent == '1' ORDER BY navgroup ASC, navid ASC";
 					}
+					$namearray = '';
 					foreach ($configdb->query($sql) as $row)
 						{
 						$navtitle = $row['navname'];
+						if(in_array($navtitle, $namearray)) { continue; }
+						array_push($namearray, $navtitle);
 						if(isset($row['navip'])) { $navdestination = $row['navip']; }
 						$navgroup = $row['navgroup'];
 						$navgrouptitle = $row['navgrouptitle'];
