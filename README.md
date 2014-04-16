@@ -20,6 +20,7 @@ Please direct any comments to this thread:    http://forum.xbmc.org/showthread.p
 sudo apt-get install git  
 sudo apt-get install apache2  
 sudo apt-get install php5 libapache2-mod-php5 php5-curl php5-sqlite  
+sudo service apache2 restart  
 sudo mkdir /var/www/ControlCenter 
 
   
