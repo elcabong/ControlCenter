@@ -60,13 +60,13 @@
 						if (file_exists($filename)) {
 							require $addonarray["$classification"]["$title"]['path']."addoninfo.php";
 						} else {
-							echo "<a href='#' class='pingicon'><img src='../media/orange.png' title='online with no addons' style='height:20px;'/></a>";
+							echo "<a href='#' class='pingicon'><img src='../media/cyan.png' title='online with no addons' style='height:20px;'/></a>";
 						}
 					} else {
 						if($_SESSION[$ip] == "alive" && $ip == $nowplayingip) {
 							$_SESSION[$ip] = 'dead'; ?>
 							<script>
-								$("#room-menu").load("./room-chooser.php");
+								$("#room-menu").load("./room-chooser.php?noreset=1");
 							</script>
 			<?php } else {
 							$_SESSION[$ip] = 'dead';
