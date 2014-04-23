@@ -66,15 +66,15 @@ $nowplayingarray = array();
 													$filetype = "atvshow";
 												}
 											}
-											if($jsonnowplaying['result']['item']['title'] != '') { $file = $jsonnowplaying['result']['item']['title']; }
+											if($jsonnowplaying['result']['item']['title'] != '' && $filetype != "atvshow") { $file = $jsonnowplaying['result']['item']['title']; }
 										}
 										
 					if($filetype == "atvshow") {
-						$file = explode("-",$file);
+						$file = explode(" - ",$file);
 						$nowplayingarray['Series'] = $file[0];
-						$nowplayingarray['Episode'] = $file[1].$file[2];
-						$nowplayingarray['Genre'] = implode(', ', $jsontvshowinfo['result']['tvshowdetails']['genre']);
-						$nowplayingarray['Year'] = $jsontvshowinfo['result']['tvshowdetails']['year'];
+						$nowplayingarray['Episode'] = $file[1]." ".$file[2];
+						$nowplayingarray['Genre'] = implode(', ', $jsonnowplaying['result']['item']['genre']);
+						$nowplayingarray['Year'] = $jsonnowplaying['result']['item']['year'];
 						$nowplayingarray['First Aired'] = $jsonnowplaying['result']['item']['firstaired'];
 						$thumbnail = "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['thumbnail'])."'/>";
 						$fanart =  "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['fanart'])."'/>";								
