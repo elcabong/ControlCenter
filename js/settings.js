@@ -87,7 +87,9 @@ $("select.multiple").change(function(){
 
 function updateSettings(section) {
 	var contents = document.getElementById(section).getElementsByTagName('input'); //$("#result").html(contents);
-	var params = 'section=' + section;
+	var origparams = 'section=' + section;
+	var params = origparams;
+	var addonnum = 0;
 	for (i = 0; i < contents.length; i++) { //alert(contents[i].name+'='+contents[i].value);
 		var value = contents[i].value;
 		if (contents[i].type == 'checkbox') {
@@ -108,6 +110,13 @@ function updateSettings(section) {
 			}
 			i--;
 		} else if (contents[i].name != '') {
+			//alert(contents[i].name);
+			if(contents[i].name == 'roomid') { addonnum++; }
+			if(addonnum > 1) { 
+				ajaxRequest(params,section);
+				addonnum = 1;
+				params = origparams;
+			}
 			params = params + '&' + contents[i].name + '=' + encodeURIComponent(value);
 		}
 	}
@@ -124,6 +133,7 @@ function updateSettings(section) {
 	ajaxRequest(params,section);
 }
 function ajaxRequest(params,section){
+alert(params);
 	$.ajax({
 		type: 'GET',
 		url: "settings.php?" + params,
