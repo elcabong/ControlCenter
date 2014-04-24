@@ -2,6 +2,16 @@ $(document).ready(function() {
 
 $('a#dlconfig').attr({target: '_blank', 
                     href  : '../Portal/exportdb.php'});
+					
+$('.showhidebutton').click(function(e){
+					var parent = $(this).parent();
+					if(parent.height() == '20') {
+						parent.height('auto');
+					} else {
+						parent.height(20);
+					}					
+
+				});
 
   	$(function(){
 		document.oncontextmenu = function() {return false;};

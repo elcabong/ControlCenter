@@ -387,7 +387,8 @@ $(document).ready(function() {
             </div>
             <div id="USERS" class="panel">
               <h3>User List</h3>
-				<p align="justify" style="width: 500px;">
+				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
+				<a href="#" class='showhidebutton'>info</a><br>
 				    <b>Username:</b>  The username/login name for each user
 	<br><br><b>Password:</b>  Optional.  if not set auth is disabled for this user
 	<br><br><b>Navigation:</b>  Adds Navigation group(s) for the user which are available in the upper left menu bar.  Add the groups in the order you want them to be displayed in.
@@ -578,7 +579,8 @@ $(document).ready(function() {
 
             <div id="ROOMS" class="panel">
               <h3>Room List</h3>
-				<p align="justify" style="width: 500px;">
+				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
+				<a href="#" class='showhidebutton'>info</a><br>
 				    <b>Title:</b>  The title of the room/set of devices
 			<br><b>Addons:</b>  The list of addons assignable to this room.  each addon will add any settings they need to the assigned room. (ensure the addon you want info displaying for is first in the list.  usually the mediaplayer.addon)
 
@@ -656,6 +658,7 @@ $(document).ready(function() {
 												$enabledaddonsarray["$roomid"]["$addonid"]['classification'] = $classification;
 												$enabledaddonsarray["$roomid"]["$addonid"]['title'] = $title;
 												$enabledaddonsarray["$roomid"]["$addonid"]['ADDONIP'] = $addonSettings['ip'];
+												$enabledaddonsarray["$roomid"]["$addonid"]['ADDONIPW'] = $addonSettings['ipw'];
 												$enabledaddonsarray["$roomid"]["$addonid"]['MAC'] = $addonSettings['mac'];
 												$enabledaddonsarray["$roomid"]["$addonid"]['setting1'] = $addonSettings['setting1'];
 												$enabledaddonsarray["$roomid"]["$addonid"]['setting2'] = $addonSettings['setting2'];
@@ -685,7 +688,8 @@ $(document).ready(function() {
 			<div id="ROOMGROUPS" class="panel">
               <h3>Room Permission Groups</h3>
 			    <p>Create a group of permissions for easy multiple user permissions.  Individual permissions override these.</p>			  
-				<p align="justify" style="width: 350px;">
+				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
+				<a href="#" class='showhidebutton'>info</a><br>
 				  <b>Group Name:</b> the name of the permission group
 	<br><br><b>Allow:</b>  gives this group access to the room
 	<br><br><b>Deny:</b>  removes group access to this room<br>
@@ -755,10 +759,13 @@ $(document).ready(function() {
 			<div id="NAVIGATION" class="panel">
               <h3>Navigation</h3>
 			    <p>These links will be available in the upper left menu</p>
-				<p align="justify" style="width: 500px;">
+				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
+				<a href="#" class='showhidebutton'>info</a><br>
 				<b>Title:</b>  The title of the link unless an icon is uploaded (see below).  Please no spaces in the title.
-	<br><br><b>Full IP:</b>  The complete address to the link.  Can include username and password which is masked in the browser unless the source is viewed when those pages have already been accessed.  ie:  http://name:pass@ip:port
-	<br><br><b>M IP:</b>  Adds this link to the mobile specific site. set to 1 if the ip source scales on its own, or specify the full address here of the mobile site.  ie  http://m.ip:port  or   http://ip:port/m/ 
+	<br><br><b>Full LAN IP:</b>  The complete LOCAL address to the link.  Can include username and password which is masked in the browser unless the source is viewed when those pages have already been accessed.  ie:  http://name:pass@ip:port
+	<br><br><b>Full WAN IP:</b>  The complete address to the link from the INTERNET.  wouldnt recomment putting username and password outside your network, but you can. ie:  http://name:pass@ip:port
+	<br><br><b>M LAN IP:</b>  Adds this link to the mobile specific site when on LAN. set to 1 if the ip source scales on its own, or specify the full address here of the mobile site.  ie  http://m.ip:port  or   http://ip:port/m/ 
+	<br><br><b>M WAN IP:</b>  Adds this link to the mobile specific site for INTERNET connections. set to 1 if the ip source scales on its own, or specify the full address here of the mobile site.  ie  http://m.ip:port  or   http://ip:port/m/ 
 	<br><br><b>Persistent:</b>  Persistent links will keep their frame state once loaded until individually reset (clicking on the link while the link is selected), individually unload page (click and hold the link while the link is selected) or until the whole control center is refreshed. Non-Persistent links will close the frame connection to the site when a different link is chosen (this is for security camera feeds or other highly active content you do not want running unless your viewing it)
 	<br><br><b>Icon:</b>  Drag a .png image to the designated area to replace the Title in the top navigation bar   <br>
 				</p>
@@ -806,7 +813,8 @@ $(document).ready(function() {
 			<div id="NAVIGATIONGROUPS" class="panel">
               <h3>Navigation Groups</h3>
 			    <p>Create groups for navigation links to easily control user access.</p>			  
-				<p align="justify" style="width: 350px;">
+				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
+				<a href="#" class='showhidebutton'>info</a><br>
 				  <b>Group Name:</b> the name of the permission group
 	<br><br><b>Links:</b>  Links created on the Navigation page
 				</p>					  
