@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+$('a#dlconfig').attr({target: '_blank', 
+                    href  : '../Portal/exportdb.php'});
+
   	$(function(){
 		document.oncontextmenu = function() {return false;};
 	});
