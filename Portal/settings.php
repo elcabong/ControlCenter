@@ -102,39 +102,38 @@ if(!empty($_GET) && !isset($_GET['setup'])){
 							try {
 								foreach ($configdb->query("SELECT rooms_addonsid FROM rooms_addons WHERE roomid = $valuearraye[0] AND addonid = $valuearraye[1] LIMIT 1") as $row5) {
 									//print_r($row5);
+									if ($row5 != '') {
+											$i=0;
+											$roomaddonsid = $row5['rooms_addonsid'];
+											$setthis = '';
+											foreach($vararraye as $item) {
+												$setthis .= "$item=$valuearraye[$i]".",";
+												$i++;
+											}
+											$setthis = rtrim($setthis, ',');
+											//echo $setthis;
+											//echo 'entry Found';
+											$configdb->exec("UPDATE rooms_addons SET $setthis WHERE roomid = $valuearraye[0] AND addonid = $valuearraye[1]");
+									} else {
+											$i=0;
+											$setthisvar = '';
+											$setthisval = '';
+											foreach($vararraye as $item) {
+												$setthisvar .= $item.",";
+												$setthisval .= $valuearraye[$i].",";
+												$i++;
+											}
+											$setthisvar = rtrim($setthisvar, ',');
+											$setthisval = rtrim($setthisval, ',');
+										//echo 'entry NOT Found, try to create';
+										$configdb->exec("INSERT INTO rooms_addons ($setthisvar) VALUES ($setthisval)");
+									}				
+
+	
 								}
 							} catch(PDOException $e) {
 								echo $e->getMessage();
-							}			
-							
-							if ($row5 != '') {
-									$i=0;
-									$setthis = '';
-									foreach($vararraye as $item) {
-										$setthis .= "$item=$valuearraye[$i]".",";
-										$i++;
-									}
-									$setthis = rtrim($setthis, ',');
-									//echo $setthis;
-									//echo 'entry Found';
-									$configdb->exec("UPDATE rooms_addons SET $setthis WHERE roomid = $valuearraye[0] AND addonid = $valuearraye[1]");
-							} else {
-									$i=0;
-									$setthisvar = '';
-									$setthisval = '';
-									foreach($vararraye as $item) {
-										$setthisvar .= $item.",";
-										$setthisval .= $valuearraye[$i].",";
-										$i++;
-									}
-									$setthisvar = rtrim($setthisvar, ',');
-									$setthisval = rtrim($setthisval, ',');
-								//echo 'entry NOT Found, try to create';
-								$configdb->exec("INSERT INTO rooms_addons ($setthisvar) VALUES ($setthisval)");
-							}				
-
-	
-
+							}
 
 
 

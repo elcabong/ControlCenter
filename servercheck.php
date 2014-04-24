@@ -149,6 +149,7 @@ if (file_exists('./sessions/config.db')){
 									roomid INTEGER  NOT NULL,
 									addonid TEXT  NOT NULL,
 									ip TEXT  NULL,
+									ipw TEXT  NULL,
 									mac TEXT  NULL,
 									setting1 TEXT  NULL,
 									setting2 TEXT  NULL,

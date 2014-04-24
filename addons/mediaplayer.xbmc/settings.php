@@ -1,5 +1,6 @@
 <?php
 $ADDONIP = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['ADDONIP'];
+$ADDONIPW = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['ADDONIPW'];
 $ADDONMAC = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['MAC'];
 $setting1 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting1'];
 $setting2 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting2'];
@@ -13,7 +14,8 @@ $setting9 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting9'];
 $setting10 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting10'];
 
 echo "<tr><td>&nbsp;</td></tr><tr><td></td><td colspan=5>$title</td></tr>
-		<tr><td class='title'>IP</td><td colspan=5><input size='80' name='ip' value='$ADDONIP'></td></tr>
+		<tr><td class='title'>IP LAN</td><td colspan=5><input size='80' name='ip' value='$ADDONIP'></td></tr>
+		<tr><td class='title'>IP WAN</td><td colspan=5><input size='80' name='ipw' value='$ADDONIPW'></td></tr>
 		<tr><td class='title'>MAC</td><td colspan=5><input size='80' name='mac' value='$ADDONMAC'></td></tr>
 		<td class='title'>IP2</td><td><input size='80' name='setting1' value='$setting1'></td></tr>
 		<input type='hidden' size='80' name='setting2' value=''>

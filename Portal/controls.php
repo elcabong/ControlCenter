@@ -154,8 +154,8 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 							$sql = "SELECT * FROM navigation WHERE navid = $x AND mobile != ''";
 							foreach ($configdb->query($sql) as $row) {
 								$navtitle = $row['navname'];
-								if(isset($row['navip'])) { $navdestination = $row['navip']; }
-								if(isset($row['mobile']) && ($row['mobile'] != '' || $row['mobile'] != '1' || $row['mobile'] != '0')) { $navdestination = $row['mobile']; }
+							//	if(isset($row['navip'])) { $navdestination = $row['navip']; }
+							//	if(isset($row['mobile']) && ($row['mobile'] != '' || $row['mobile'] != '1' || $row['mobile'] != '0')) { $navdestination = $row['mobile']; }
 									if($mobileamt > '1'){
 										$tempc++;
 										echo "<li id=".$tempc." class='clear'>";
@@ -168,7 +168,8 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 									if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
 									if($row['persistent'] == '0') {
 										if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
-										echo "<a href='".$row['navip']."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
+										if($WANCONNECTION == '1' && isset($row['navipw']) && $row['navipw'] != '') { $loadpersistent = $row['navipw']; }
+										echo "<a href='".$loadpersistent."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
 									} else {
 										echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
 									}
@@ -243,7 +244,8 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 									if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
 									if($row['persistent'] == '0') {
 									if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
-									echo "<a href='".$row['navip']."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
+									if($WANCONNECTION == '1' && isset($row['navipw']) && $row['navipw'] != '') { $loadpersistent = $row['navipw']; }
+									echo "<a href='".$loadpersistent."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
 									} else {
 									echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
 									}
@@ -287,11 +289,21 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 					}
 					foreach ($configdb->query($sql) as $row) {
 						$navtitle = $row['navname'];
-						if(isset($row['navip'])) { $navdestination = $row['navip']; }
+						if($WANCONNECTION == '1' && isset($row['navipw']) && $row['navipw'] != '' && $row['navipw'] != '0' && $row['navipw'] != '1') { 
+							$navdestination = $row['navipw']; 
+						} elseif(isset($row['navip'])) { 
+							$navdestination = $row['navip']; 
+						}	
 						if($isMobile == "1") {
 							if(isset($row['mobile']) && $row['mobile'] != '') { $mobiledestination = $row['mobile']; }
 							if($mobiledestination != '0') {
-								if($mobiledestination != "1") { $navdestination = $mobiledestination; }
+								if($mobiledestination != "1") {
+									if($WANCONNECTION == '1' && isset($row['mobilew']) && $row['mobilew'] != '' && $row['mobilew'] != '0' && $row['mobilew'] != '1') { 
+										$navdestination = $row['mobilew'];
+									} else {
+										$navdestination = $mobiledestination; 
+									}	
+								}
 							}
 						}
 						echo "<div id='$navtitle' class='item'>";

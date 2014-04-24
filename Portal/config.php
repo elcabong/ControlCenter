@@ -101,4 +101,7 @@ if($usernumber != "choose") {
 			}
 
 }
+
+$WANCONNECTION = 0;
+if(substr($_SERVER['REMOTE_ADDR'],0,6) != substr($_SERVER['SERVER_ADDR'],0,6)) { $WANCONNECTION = 1; }
 ?>
