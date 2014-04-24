@@ -15,12 +15,14 @@ if(!empty($_GET) && !isset($_GET['setup'])){
 	} elseif($_GET['table'] == 'roomgroups') {
 		$configdb->exec("DELETE FROM roomgroups WHERE roomgroupid = $theidtodelete");
 	} elseif($_GET['table'] == 'navigation') {
-		if(isset($_GET['navgroup']) && $_GET['navgroup'] != '0') {
+	/*	if(isset($_GET['navgroup']) && $_GET['navgroup'] != '0') {
 			$thegrouptodelete = $_GET['navgroup'];
 			$configdb->exec("DELETE FROM navigation WHERE navgroup = $thegrouptodelete");
-		} else {
+		} else {*/
 			$configdb->exec("DELETE FROM navigation WHERE navid = $theidtodelete");
-		}
+		//}
+	} elseif($_GET['table'] == 'navigationgroups') {
+			$configdb->exec("DELETE FROM navigationgroups WHERE navgroupid = $theidtodelete");
 	}
 	echo true;
 	return true;
@@ -148,7 +150,13 @@ if(!empty($_GET) && !isset($_GET['setup'])){
 			if(strstr($section_unique,'new')) {
 				$configdb->exec("INSERT INTO navigation ($vararray) VALUES ($valuearray)");
 			} else {
-				$configdb->exec("UPDATE navigation SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4],$vararraye[5]=$valuearraye[5] WHERE navid=$section_unique");
+				$configdb->exec("UPDATE navigation SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4],$vararraye[5]=$valuearraye[5],$vararraye[6]=$valuearraye[6] WHERE navid=$section_unique");
+			}
+		} else if($section_name == "navgroups") {
+			if(strstr($section_unique,'new')) {
+				$configdb->exec("INSERT INTO navigationgroups ($vararray) VALUES ($valuearray)");
+			} else {
+				$configdb->exec("UPDATE navigationgroups SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1] WHERE navgroupid=$section_unique");
 			}
 		}
 	} catch(PDOException $e)
@@ -198,10 +206,11 @@ require './addons.php';
   <script src="../js/dropzone.js"></script>
   <script src="../js/chosen.jquery.min.js"></script>
   <script src="../js/chosen.proto.min.js"></script>
-	<script type="text/javascript">
+  <script type="text/javascript">
 		if (window.navigator.standalone) {
 			var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
 		}
+		$('.chosen-choices').sortable();
 	</script>		
 	<script type="text/javascript">
 		function Settingswakemachine(mac,machinename) {
@@ -278,7 +287,8 @@ $(document).ready(function() {
           <li><a href="#ROOMS" <? if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
          <li><a href="#ROOMGROUPS">Room Groups</a></li> 
          <li><a href="#NAVIGATION" <? if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation</a></li>
-		<li><a href="#USERS" <? if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
+         <li><a href="#NAVIGATIONGROUPS" <? if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation Groups</a></li>
+		 <li><a href="#USERS" <? if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
  	  </ul>
       <!-- element with overflow applied -->
         <div class="scroll">
@@ -356,6 +366,24 @@ $(document).ready(function() {
                     ?>
                   </td>
                 </tr>
+				<tr><td></td></tr>
+				<tr><td></td></tr>
+				<tr>
+				  <td>Export Database</td><td><a href="#" id="dlconfig">config.db</a></td>
+				</tr>
+				<tr><td></td></tr>
+				<tr>
+				  <td>Import Database</td>
+					<td>
+						<form action="upload.php?db=config" method="post"
+						enctype="multipart/form-data">
+						<label for="file">Filename:</label>
+						<input type="file" name="file" id="file">
+						<input type="submit" name="submit" value="Submit">
+						</form>					
+					</td>
+				  </td>				
+				</tr>				
               </table>
             </div>
             <div id="USERS" class="panel">
@@ -394,12 +422,25 @@ $(document).ready(function() {
 					{
 					echo $e->getMessage();
 					}
+					
+				try {
+					$sql = "SELECT * FROM navigation";
+					$navlist = '';
+					foreach ($configdb->query($sql) as $row)
+						{
+						$navlist .= "<option value=".$row['navid'].">".$row['navname']."</option>";
+						}
+				} catch(PDOException $e)
+					{
+					echo $e->getMessage();
+					}
+
 							$setnavgroups = '';
 							$thenavgroups = '';
 							$allnavgroups = '';
-							$sql4 = "SELECT * FROM navigation WHERE navgrouptitle = '1'";
+							$sql4 = "SELECT * FROM navigationgroups";
 							foreach ($configdb->query($sql4) as $row4) {
-							$allnavgroups .= "<option value=".$row4['navgroup'].">".$row4['navname']."</option>"; }
+							$allnavgroups .= "<option value=".$row4['navgroupid'].">".$row4['navgroupname']."</option>"; }
 						echo "<table id='users-new'>";
 						echo "<tr><td class='title'>Username</td><td><input class='inputcheck nospaces' size='10' name='username' value=''></td>
 									<td class='title'>Password</td><td><input size='10' type='password' name='password' value=''></td>
@@ -475,16 +516,17 @@ $(document).ready(function() {
 						}
 						if(isset($row['navgroupaccess']) && $row['navgroupaccess'] != '') {
 								$setnavgroups = '';
+								$thenavgroups = '';
 								$thenavgroupss = explode(",",$row['navgroupaccess']);					
 								foreach($thenavgroupss as $x) {
-									$sql4 = "SELECT * FROM navigation WHERE navgroup = $x AND navgrouptitle = '1'";								
-										foreach ($configdb->query($sql4) as $row4) {
-									$setnavgroups .= "<option selected='selected' value=".$row4['navgroup'].">".$row4['navname']."</option>"; 
+									$sql4 = "SELECT * FROM navigationgroups WHERE navgroupid = $x";								
+									foreach ($configdb->query($sql4) as $row4) {
+										$setnavgroups .= "<option selected='selected' value=".$row4['navgroupid'].">".$row4['navgroupname']."</option>"; 
 									}
 								}
-								$sql4 = "SELECT * FROM navigation WHERE navgroup NOT IN (".$row['navgroupaccess'].") AND navgrouptitle = '1'";
+								$sql4 = "SELECT * FROM navigationgroups WHERE navgroupid NOT IN (".$row['navgroupaccess'].")";
 								foreach ($configdb->query($sql4) as $row4) {
-								$thenavgroups .= "<option value=".$row4['navgroup'].">".$row4['navname']."</option>"; 
+									$thenavgroups .= "<option value=".$row4['navgroupid'].">".$row4['navgroupname']."</option>"; 
 								}
 						} else {
 							$setnavgroups = '';
@@ -664,10 +706,13 @@ $(document).ready(function() {
 							$theroomaccess = '';
 							$theallowrooms ='';
 							if(isset($row['roomaccess']) && $row['roomaccess'] != '') {
-									$sql3 = "SELECT * FROM rooms WHERE roomid IN (".$row['roomaccess'].")";
+								$temproomaccess = explode(',',$row['roomaccess']);
+								foreach($temproomaccess	as $room) {
+									$sql3 = "SELECT * FROM rooms WHERE roomid = $room";
 									foreach ($configdb->query($sql3) as $row3) {
 									$theroomaccess .= "<option selected='selected' value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
 									}
+								}	
 									$sql3 = "SELECT * FROM rooms WHERE roomid NOT IN (".$row['roomaccess'].")";
 									foreach ($configdb->query($sql3) as $row3) {
 									$theallowrooms .= "<option value=".$row3['roomid'].">".$row3['roomname']."</option>"; 
@@ -707,87 +752,120 @@ $(document).ready(function() {
 					}
 				?>
             </div>			
+
 			<div id="NAVIGATION" class="panel">
               <h3>Navigation</h3>
 			    <p>These links will be available in the upper left menu</p>
 				<p align="justify" style="width: 500px;">
-					<b>Nav Group:</b>  The Display name for the navigation group.  Will only be shown if a user has access to multiple groups.  The links must be grouped under a navigation group.
-	<br><br><b>Title:</b>  The title of the link unless an icon is uploaded (see below).  Please no spaces in the title.
+				<b>Title:</b>  The title of the link unless an icon is uploaded (see below).  Please no spaces in the title.
 	<br><br><b>Full IP:</b>  The complete address to the link.  Can include username and password which is masked in the browser unless the source is viewed when those pages have already been accessed.  ie:  http://name:pass@ip:port
 	<br><br><b>M IP:</b>  Adds this link to the mobile specific site. set to 1 if the ip source scales on its own, or specify the full address here of the mobile site.  ie  http://m.ip:port  or   http://ip:port/m/ 
 	<br><br><b>Persistent:</b>  Persistent links will keep their frame state once loaded until individually reset (clicking on the link while the link is selected), individually unload page (click and hold the link while the link is selected) or until the whole control center is refreshed. Non-Persistent links will close the frame connection to the site when a different link is chosen (this is for security camera feeds or other highly active content you do not want running unless your viewing it)
 	<br><br><b>Icon:</b>  Drag a .png image to the designated area to replace the Title in the top navigation bar   <br>
 				</p>
 				<?php
-				try {
-					$sql = "SELECT navgroup FROM navigation ORDER BY navgroup DESC LIMIT 1";
-					foreach ($configdb->query($sql) as $row)
-						{
-							$lastnavgroup = $row['navgroup'];
-							$newnavgroup = $lastnavgroup +='1';
-						}
-					} catch(PDOException $e)
-						{
-						echo $e->getMessage();
-						}
-				if(!isset($newnavgroup)) { $newnavgroup = 1; }
 				echo "<table id='navigation-new'>";
-				echo "<tr><td></td><td class='title'>Add New Navigation Group</td></tr>";
-				echo "<tr><td class='title'>Nav Group</td><td><input size='40' name='navname' value=''></td><td><input size='1' type='hidden' name='navgroup' value='$newnavgroup'><input size='1' type='hidden' name='navgrouptitle' value='1'></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"navigation-new\");' /></td></tr>";
-				echo "</table><br><br>";
+				echo "<tr><td></td><td></td><td class='title'>Title</td><td><input class='inputcheck nospaces' size='20' name='navname' value=''></td><td class='title'>Persistent</td><td><select name='persistent'><option selected='selected' value='1'>Yes</option><option value='0'>No</option></select></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"navigation-new\");' /></td></tr>";
+				echo "<tr><td><img src='../media/Programs/ProgramDefault.png' height='50'><img src='../media/Programs/ProgramDefault.png' height='50'></td><td><img src='../media/Programs/ProgramDefault.png' height='50'></td><td class='title'>Full LAN IP</td><td colspan=6><input size='60' name='navip' value=''></td></tr>";
+				echo "<tr><td></td><td></td></td><td class='title'>Full WAN IP</td><td colspan=6><input size='60' name='navipw' value=''></td></tr>";
+				echo "<tr><td></td><td></td></td><td class='title'>M LAN IP</td><td colspan=6><input size='60' name='mobile' value=''></td></tr>";
+				echo "<tr><td></td><td></td></td><td class='title'>M WAN IP</td><td colspan=6><input size='60' name='mobilew' value=''></td></tr>";
+				echo "<input size='10' class='navigation' type='hidden' name='autorefresh' value=''></table><br><br>";
 				try {
-					$sql = "SELECT * FROM navigation WHERE navgrouptitle = '1' ORDER BY navgrouptitle ASC, navgroup ASC";
+					$sql = "SELECT * FROM navigation";
 					$navid = 0;
-					foreach ($configdb->query($sql) as $row)
-						{
+					foreach ($configdb->query($sql) as $row) {
 						$navid = $row['navid'];
-						$navgroup = $row['navgroup'];
-							echo "<br><br><table class='tabletitle' id='navigation-$navid'>";
-							echo "<tr><td class='title'>Nav Group</td><td><input size='40' name='navname' value='" . $row['navname'] . "'></td>
-											<td><input size='1' type='hidden' name='navgroup' value='" . $row['navgroup'] . "'><input size='1' type='hidden' name='navgrouptitle' value='" . $row['navgrouptitle'] . "'><input size='1' type='hidden' name='navip' value=''><input size='1' type='hidden' name='mobile' value=''></td>
-											<td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"navigation\"," . $navid . "," . $navgroup . " );' /></td></tr>";
-							echo "</table><br><br>";
-								echo "<table id='navigation-new$navid'>";
-								echo "<tr><td></td><td></td><td class='title'>Title</td><td><input class='inputcheck nospaces' size='20' name='navname' value=''></td><td class='title'>Persistent</td><td><select name='persistent'><option selected='selected' value='1'>Yes</option><option value='0'>No</option></select></td><td><input size='1' type='hidden' name='navgroup' value='" . $row['navgroup'] . "'></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"navigation-new$navid\");' /></td></tr>";
-								echo "<tr><td><img src='../media/Programs/ProgramDefault.png' height='50'><img src='../media/Programs/ProgramDefault.png' height='50'></td><td><img src='../media/Programs/ProgramDefault.png' height='50'></td><td class='title'>Full IP</td><td colspan=6><input size='60' name='navip' value=''></td></td><td><input size='1' type='hidden' name='navgrouptitle' value=''></td></tr>";
-								echo "<tr><td></td><td></td></td><td class='title'>M IP</td><td colspan=6><input size='60' name='mobile' value=''></td></tr>";
-								echo "</table><br><br>";
-							$sql = "SELECT * FROM navigation WHERE navgroup = '$navgroup' AND navgrouptitle != '1'";
-							$navid = 0;
-							foreach ($configdb->query($sql) as $row)
-								{
-								$navid = $row['navid'];
-									$filename = "../media/Programs/" . $row['navname'] . ".png";
-									if (file_exists($filename)) {
-									$theprogrampic = "$filename";
-									} else {
-									$theprogrampic = "../media/Programs/ProgramDefault.png";
-									}
-									$persistentnavigation = '';
-									if($row['persistent'] == "1") {
-									$persistentnavigation .= "<option selected='selected' value='1'>Yes</option><option value='0'>No</option>"; 
-									} else {
-									$persistentnavigation .= "<option selected='selected' value='0'>No</option><option value='1'>Yes</option>"; 
-									}
-								echo "<br><table id='navigation-$navid'>";
-								echo "<tr><td></td><td></td><td class='title'>Title</td><td><input class='inputcheck nospaces' size='20' name='navname' value='" . $row['navname'] . "'></td><td class='title'>Persistent</td><td><select name='persistent'>".$persistentnavigation."</select></td><td><input size='1' type='hidden' name='navgroup' value='" . $row['navgroup'] . "'></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"navigation\"," . $row['navid'] . ");' /></td></tr>";
-								echo "<tr><td><form action=\"upload.php?program=" . $row['navname'] . "\" class='dropzone' id='program" . $row['navname'] . "' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;width:100px;'></form></td><td><img src=" . $theprogrampic ." style='position:relative;height:50px;'></td><td class='title'>Full IP</td><td colspan=6><input size='80' name='navip' value=" . $row['navip'] . "></td></td><td><input size='1' type='hidden' name='navgrouptitle' value='" . $row['navgrouptitle'] . "'></td></tr>";
-								echo "<tr><td></td><td></td></td><td class='title'>M IP</td><td colspan=6><input size='80' name='mobile' value=" . $row['mobile'] . "></td></tr>";
-								echo "</table><br><br>";
-								}
-						}		
+						$filename = "../media/Programs/" . $row['navname'] . ".png";
+						if (file_exists($filename)) {
+						$theprogrampic = "$filename";
+						} else {
+							$theprogrampic = "../media/Programs/ProgramDefault.png";
+						}
+						$persistentnavigation = '';
+						if($row['persistent'] == "1") {
+							$persistentnavigation .= "<option selected='selected' value='1'>Yes</option><option value='0'>No</option>"; 
+						} else {
+							$persistentnavigation .= "<option selected='selected' value='0'>No</option><option value='1'>Yes</option>"; 
+						}
+						echo "<br><table id='navigation-$navid'>";
+						echo "<tr><td></td><td class='title'>Title</td><td><input class='inputcheck nospaces' size='20' name='navname' value='" . $row['navname'] . "'></td><td class='title'>Persistent</td><td><select name='persistent'>".$persistentnavigation."</select></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navigation-$navid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"navigation\"," . $row['navid'] . ");' /></td></tr>";
+						echo "<tr><td><form action=\"upload.php?program=" . $row['navname'] . "\" class='dropzone' id='program" . $row['navname'] . "' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;width:100px;'></form></td><td class='title'>Full LAN IP</td><td colspan=6><input size='80' name='navip' value=" . $row['navip'] . "></td></tr>";
+						echo "<tr><td><img src=" . $theprogrampic ." style='position:absolute;height:50px;'></td><td class='title'>Full WAN IP</td><td colspan=6><input size='80' name='navipw' value=" . $row['navipw'] . "></td></tr>";
+						echo "<tr><td></td><td class='title'>M LAN IP</td><td colspan=6><input size='80' name='mobile' value=" . $row['mobile'] . "></td></tr>";
+						echo "<tr><td></td><td class='title'>M WAN IP</td><td colspan=6><input size='80' name='mobilew' value=" . $row['mobilew'] . "></td></tr>";
+						echo "<input size='10' class='navigation' type='hidden' name='autorefresh' value=''></table><br><br>";
+					}
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();
 					}
                 ?>
            </div>
+
+		   
+			<div id="NAVIGATIONGROUPS" class="panel">
+              <h3>Navigation Groups</h3>
+			    <p>Create groups for navigation links to easily control user access.</p>			  
+				<p align="justify" style="width: 350px;">
+				  <b>Group Name:</b> the name of the permission group
+	<br><br><b>Links:</b>  Links created on the Navigation page
+				</p>					  
+                <?php
+				echo "<table id='navgroups-new'>";
+				echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='navgroupname' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"navgroups-new\");' /></td></tr>
+									<tr><td class='title'>Links</td><td colspan=3><select class='chosen-select multiple' id='navgroupaccessnew' data-placeholder='Navigation Links' multiple='multiple'>".$navlist."</select><input size='10' class='navgroupaccessnew' type='hidden' name='navitems' value=''></td>
+								</tr>";
+				echo "</table><br><br><br>";
+				try {
+					$sql = "SELECT * FROM navigationgroups";
+					$navgroupid = 0;
+					foreach ($configdb->query($sql) as $row)
+						{
+							$thenavitems = '';						
+							$theallownav ='';
+							if(isset($row['navitems']) && $row['navitems'] != '') {
+								$tempnavitems = explode(',',$row['navitems']);
+								foreach($tempnavitems	as $item) {
+									$sql3 = "SELECT * FROM navigation WHERE navid = $item";
+									foreach ($configdb->query($sql3) as $row3) {
+									$thenavitems .= "<option selected='selected' value=".$row3['navid'].">".$row3['navname']."</option>"; 
+									}
+								}
+									$sql3 = "SELECT * FROM navigation WHERE navid NOT IN (".$row['navitems'].")";
+									foreach ($configdb->query($sql3) as $row3) {
+									$theallownav .= "<option value=".$row3['navid'].">".$row3['navname']."</option>"; 
+									}
+							} else {
+								$thenavitems = '';
+								$theallownav = '';
+								$theallownav = $navlist;
+							}
+							$navgroupid = $row['navgroupid'];
+							echo "<table id='navgroups-$navgroupid'>";					
+							echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='navgroupname' value='" . $row['navgroupname'] . "'></td><td class='button right'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navgroups-$navgroupid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"navigationgroups\"," . $row['navgroupid'] . ");' /></td></tr>
+										<tr><td class='title'>Links</td><td colspan=3><select class='chosen-select multiple' id='navgroupaccess$navgroupid' data-placeholder='Navigation Links' multiple='multiple'>".$thenavitems.$theallownav."</select><input size='10' class='navgroupaccess$navgroupid' type='hidden' name='navitems' value=" . $row['navitems'] . "></td>
+										</tr>";
+							echo "</table><br><br><br>";
+						}
+				} catch(PDOException $e)
+					{
+					echo $e->getMessage();
+					}
+				?>
+            </div>		   
           </div>
         </div>
       </div>
     </div>  
   </center>
-  <script type="text/javascript" src="../js/settings.js"></script>  
+  <script type="text/javascript" src="../js/settings.js"></script>
+<?php /*   <script src="../js/jquery.sortable.min.js"></script>
+    <script type="text/javascript">
+	$( document ).ready(function() {
+		$('.chosen-choices').sortable();
+	});
+	</script> */ ?>
 </body>
 </html>
 <? } ?>

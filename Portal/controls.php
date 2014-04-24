@@ -10,8 +10,8 @@ if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 	if (${$theperm}!="1" or !in_array($theroom, $roomgroupaccessarray)) {
 		header("Location: index.php");
 		exit; }
+	require_once 'addons.php';
 }
-require_once 'addons.php';
 require_once "mobile_device_detect.php";
 if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	$isMobile = 1;
@@ -112,71 +112,78 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 <div id='nav-menu'>
 	<nav>
 		<?php
+		if(isset($NAVGROUPS) && $NAVGROUPS != '') {
+			$thenavgroups = explode(",",$NAVGROUPS);
+			$navitems = '';
+			$allnavitems = '';
 			if($isMobile == "1") {
 				try {
-					$sql = "SELECT navgroup,navgrouptitle,mobile,persistent FROM navigation WHERE mobile != '' ORDER BY navgrouptitle ASC";
-					$navgroupamt = 0;
+					$sql = "SELECT mobile,persistent FROM navigation WHERE mobile != ''";
 					$mobileamt = 0;
 					$totalnonpersistentnav = 0;					
 					foreach ($configdb->query($sql) as $row)
 						{
-							$navgroup = $row['navgroup'];
-							if(strpos($NAVGROUPS,$navgroup) !== false) {
-								if($row['navgrouptitle'] == "1") { $navgroupamt++; }
-								if(isset($row['mobile']) && ($row['mobile'] != "0" || $row['mobile'] != "")) { $mobileamt++; }
-							}
-							if($row['persistent'] == '0') {
-								$totalnonpersistentnav ++;
-							}								
+							if(isset($row['mobile']) && ($row['mobile'] != "0" || $row['mobile'] != "")) { $mobileamt++; }
+							if($row['persistent'] == '0') { $totalnonpersistentnav ++; }								
 						}
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();
 					}
-				if($mobileamt > '1'){					
+				if($mobileamt > '1'){				
 					echo "<ul><li><a href='#'><img src='../media/menudropdown.png'></a>";				
 				}
 				try {
-				echo "<ul>";
-					$thenavgroups = explode(",",$NAVGROUPS);
+					echo "<ul>";
 					$tempc = 0;
 					$linkcount = 1;
+					$thenavitems = '';
+					$itemarray = array();
 					foreach($thenavgroups as $x) {
-					$sql = "SELECT * FROM navigation WHERE navgroup = $x AND mobile != ''";
-					foreach ($configdb->query($sql) as $row)
-						{
-						$navtitle = $row['navname'];
-						if(isset($row['navip'])) { $navdestination = $row['navip']; }
-						$navgroup = $row['navgroup'];
-						$navgrouptitle = $row['navgrouptitle'];
-						if(isset($row['mobile']) && ($row['mobile'] != '' || $row['mobile'] != '1' || $row['mobile'] != '0')) { $navdestination = $row['mobile']; }
-							if($mobileamt > '1'){
-								$tempc++;
-								echo "<li id=".$tempc." class='clear'>";
-								$filename = "../media/Programs/".$navtitle.".png";
-								if (file_exists($filename)) {
-									$linkto = "<img src=$filename height='35px'>";
-								} else {
-									$linkto = $navtitle;
-								}
-							if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
-							if($row['persistent'] == '0') {
-							if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
-							echo "<a href='".$row['navip']."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
-							} else {
-							echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
-							}
-							$linkcount++;					
-								echo "</li>";
-							} else {
-							$filename = "../media/Programs/".$navtitle.".png";
-							if (file_exists($filename)) {
-								$linkto = "<img src=$filename height='35px'>";
-							} else {
-								$linkto = $navtitle;
-							}
-								echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";
-							}
+						$sql = "SELECT * FROM navigationgroups WHERE navgroupid = $x";
+						foreach ($configdb->query($sql) as $row) {
+							$thenavitems .= ",".$row['navitems'];
+						}
+						$thenavitems = explode(",",$thenavitems);
+						$navitems = $row['navitems'];
+						$allnavitems .= ",".$navitems;
+						foreach($thenavitems as $x) {
+							if($x == '') { continue; }
+							if(in_array($x, $itemarray)) { continue; }
+							array_push($itemarray, $x);								
+							$sql = "SELECT * FROM navigation WHERE navid = $x AND mobile != ''";
+							foreach ($configdb->query($sql) as $row) {
+								$navtitle = $row['navname'];
+								if(isset($row['navip'])) { $navdestination = $row['navip']; }
+								if(isset($row['mobile']) && ($row['mobile'] != '' || $row['mobile'] != '1' || $row['mobile'] != '0')) { $navdestination = $row['mobile']; }
+									if($mobileamt > '1'){
+										$tempc++;
+										echo "<li id=".$tempc." class='clear'>";
+										$filename = "../media/Programs/".$navtitle.".png";
+										if (file_exists($filename)) {
+											$linkto = "<img src=$filename height='35px'>";
+										} else {
+											$linkto = $navtitle;
+										}
+									if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
+									if($row['persistent'] == '0') {
+										if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
+										echo "<a href='".$row['navip']."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
+									} else {
+										echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
+									}
+									$linkcount++;					
+										echo "</li>";
+									} else {
+										$filename = "../media/Programs/".$navtitle.".png";
+										if (file_exists($filename)) {
+											$linkto = "<img src=$filename height='35px'>";
+										} else {
+											$linkto = $navtitle;
+										}
+										echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";
+									}
+							}		
 						}
 					}
 				} catch(PDOException $e)
@@ -184,81 +191,73 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 					echo $e->getMessage();
 					}				
 				echo "</ul>";
-				if($mobileamt > '1'){					
+				if($mobileamt > '1'){				
 					echo "</li></ul>";				
-				}	
+				}
 			} else {
 				echo "<ul class='sortable'>";
-				try {
-					$sql = "SELECT navgroup,navgrouptitle,persistent FROM navigation ORDER BY navgrouptitle ASC";
-					$navgroupamt = 0;
-					$totalnonpersistentnav = 0;
-					foreach ($configdb->query($sql) as $row)
-						{
-							$navgroup = $row['navgroup'];
-							if(strpos($NAVGROUPS,$navgroup) !== false) {
-								if($row['navgrouptitle'] == "1") { $navgroupamt++; }
-							}
-							if($row['persistent'] == '0') {
-								$totalnonpersistentnav ++;
-							}	
-						}
-				} catch(PDOException $e)
-					{
-					echo $e->getMessage();
-					}
-				try {
-					$thenavgroups = explode(",",$NAVGROUPS);
-					$tempc = 0;
-					$linkcount = 1;
-					foreach($thenavgroups as $x) {
-					if($x == '') { break; }
-					$sql = "SELECT * FROM navigation WHERE navgroup = $x";
-					foreach ($configdb->query($sql) as $row)
-						{
-						$navtitle = $row['navname'];
-						if(isset($row['navip'])) { $navdestination = $row['navip']; }
-						$navgroup = $row['navgroup'];
-						$navgrouptitle = $row['navgrouptitle'];
-							if($navgrouptitle == "1") {
-								if($navgroupamt > '1'){
-									$filename = "../media/Programs/".$navtitle.".png";
-									if (file_exists($filename)) {
-										$linkto = "<img src=$filename height='35px'>";
-									} else {
-										$linkto = $navtitle;
-									}
-									$tempc++;
-									if($tempc>1){
-										echo "</li>";
-										echo "<li id=".$tempc." class='sortable secondary clear hidden'><a href='#' class='main panel persistent title'>".$linkto."</a>";
-									} else {
-										echo "<li id=".$tempc." class='sortable clear'><a href='#' class='main panel persistent title'>".$linkto."</a>";
-									}
-								}
-							} else {
+					try {
+						$totalnonpersistentnav = 0;
+						$tempc = 0;
+						$linkcount = 1;
+						$navgroupamt = substr_count($NAVGROUPS, ",") +1;
+						foreach($thenavgroups as $x) {
+						if($x == '') { break; }
+						$sql = "SELECT * FROM navigationgroups WHERE navgroupid = $x";
+						foreach ($configdb->query($sql) as $row)
+							{
+							$navtitle = $row['navgroupname'];
+							$navgroup = $row['navgroupid'];
+							$navitems = $row['navitems'];
+							$allnavitems .= ",".$navitems;
+							
 							$filename = "../media/Programs/".$navtitle.".png";
 							if (file_exists($filename)) {
 								$linkto = "<img src=$filename height='35px'>";
 							} else {
 								$linkto = $navtitle;
 							}
-							if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
-							if($row['persistent'] == '0') {
-							if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
-							echo "<a href='".$row['navip']."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
+							$tempc++;
+							if($tempc>1){
+								echo "</li>";
+								echo "<li id=".$tempc." class='sortable secondary clear hidden'><a href='#' class='main panel persistent title'>".$linkto."</a>";
 							} else {
-							echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
+								echo "<li id=".$tempc." class='sortable clear'><a href='#' class='main panel persistent title'>".$linkto."</a>";
 							}
-							$linkcount++;
+							
+							$thenavitems = explode(",",$navitems);
+								foreach($thenavitems as $item) {
+									$sql = "SELECT navname,navip,mobile,persistent FROM navigation WHERE navid = $item";
+									foreach ($configdb->query($sql) as $row) {									
+									$navtitle = $row['navname'];
+									if($row['persistent'] == '0') {
+										$totalnonpersistentnav ++;
+									}
+									
+									$filename = "../media/Programs/".$navtitle.".png";
+									if (file_exists($filename)) {
+										$linkto = "<img src=$filename height='35px'>";
+									} else {
+										$linkto = $navtitle;
+									}
+									if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
+									if($row['persistent'] == '0') {
+									if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
+									echo "<a href='".$row['navip']."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
+									} else {
+									echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
+									}
+									$linkcount++;
+									}
+								}
 							}
 						}
-					}
-				} catch(PDOException $e)
-					{
-					echo $e->getMessage();
-					}
-			}
+					} catch(PDOException $e)
+						{
+						echo $e->getMessage();
+						}
+				}
+		}
 		?>
 		</ul>
 	</nav>
@@ -274,46 +273,41 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 		include"./addonslinks.php";
 		echo "</span>";	
 		}
-				try {
+			try {
+				$thenavitems = explode(",",$allnavitems);
+				$namearray = array();
+				foreach($thenavitems as $item) {
+					if($item == '') { continue; }
+					if(in_array($item, $namearray)) { continue; }
+					array_push($namearray, $item);
 					if($isMobile == "1") {
-						$sql = "SELECT * FROM navigation WHERE navgroup IN (".$NAVGROUPS.") AND persistent == '1' AND mobile != '' AND mobile != '0' ORDER BY navgroup ASC, navid ASC";
+						$sql = "SELECT * FROM navigation WHERE navid = $item AND mobile != '' AND mobile != '0' AND persistent == '1' ";
 					} else {
-						$sql = "SELECT * FROM navigation WHERE navgroup IN (".$NAVGROUPS.") AND persistent == '1' ORDER BY navgroup ASC, navid ASC";
+						$sql = "SELECT * FROM navigation WHERE navid = $item AND persistent == '1' ";
 					}
-					$namearray = '';
-					foreach ($configdb->query($sql) as $row)
-						{
+					foreach ($configdb->query($sql) as $row) {
 						$navtitle = $row['navname'];
-						if(in_array($navtitle, $namearray)) { continue; }
-						array_push($namearray, $navtitle);
 						if(isset($row['navip'])) { $navdestination = $row['navip']; }
-						$navgroup = $row['navgroup'];
-						$navgrouptitle = $row['navgrouptitle'];
 						if($isMobile == "1") {
 							if(isset($row['mobile']) && $row['mobile'] != '') { $mobiledestination = $row['mobile']; }
 							if($mobiledestination != '0') {
 								if($mobiledestination != "1") { $navdestination = $mobiledestination; }
 							}
 						}
-						if(strpos($NAVGROUPS,$navgroup) !== false) {
-							if($navgrouptitle == "1") {
-							} else {
-								echo "<div id='$navtitle' class='item'>";
-								echo "<div class='content'>";
-								if($navtitle == $selectedpanel) {
-									echo "<iframe id='".$navtitle."f' class='$navtitle' src='".$navdestination."' data-src='".$navdestination."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
-								} else {
-									echo "<iframe id='".$navtitle."f' class='$navtitle' data-src='".$navdestination."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
-								}
-								echo "</div>";
-								echo "</div>";
-							}
+						echo "<div id='$navtitle' class='item'>";
+						echo "<div class='content'>";
+						if($navtitle == $selectedpanel) {
+							echo "<iframe id='".$navtitle."f' class='$navtitle' src='".$navdestination."' data-src='".$navdestination."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
+						} else {
+							echo "<iframe id='".$navtitle."f' class='$navtitle' data-src='".$navdestination."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
 						}
-						}
-				} catch(PDOException $e)
-					{
-					echo $e->getMessage();
+						echo "</div>";
+						echo "</div>";
 					}
+				}
+			} catch(PDOException $e) {
+				echo $e->getMessage();
+			}
 		if($totalnonpersistentnav > "0") {?>
 		<div id="nonpersistent" class="item">
 			<div class="content">
