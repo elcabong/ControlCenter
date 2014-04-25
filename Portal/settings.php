@@ -194,7 +194,12 @@ require './addons.php';
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+<?php
+	if(isset($_GET['setup'])){ ?>
+  <title>First Time Configuration</title>	
+	<?php } else { ?>
   <title>Settings</title>
+  <?php } ?>
   <script src="../js/jquery-1.10.1.min.js"></script>
   <link rel="stylesheet" type="text/css" href="../css/UI/jquery-ui-1.8.14.custom.css">
   <link href="../css/room.css" rel="stylesheet" type="text/css">
@@ -277,7 +282,11 @@ $(document).ready(function() {
   <center>
     <div style="width:90%; height:95%;" class="widget">
       <div class="widget-head">
-        <h3>Settings</h3>
+<?php	if(isset($_GET['setup'])){ ?>
+  <h3>First Time Configuration</h3>	
+	<?php } else { ?>
+  <h3>Settings</h3>
+  <?php } ?>	  
       </div>
           <br />
       <div id="slider">
