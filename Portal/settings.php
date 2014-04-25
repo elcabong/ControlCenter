@@ -387,8 +387,9 @@ $(document).ready(function() {
             </div>
             <div id="USERS" class="panel">
               <h3>User List</h3>
+			  <p>Control who has access to what in your Control Center.</p>	
 				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
-				<a href="#" class='showhidebutton'>info</a><br>
+				<a href="#" class='showhidebutton orange'>info</a><br>
 				    <b>Username:</b>  The username/login name for each user
 	<br><br><b>Password:</b>  Optional.  if not set auth is disabled for this user
 	<br><br><b>Navigation:</b>  Adds Navigation group(s) for the user which are available in the upper left menu bar.  Add the groups in the order you want them to be displayed in.
@@ -397,7 +398,7 @@ $(document).ready(function() {
 	<br><br><b>Allow:</b>  Adds access to rooms, overrides room group access
 	<br><br><b>Deny:</b>  can remove access to rooms, overrides room group access and the allow option
 	<br><br><b>Settings:</b>  This allows or denies the user to this settings area. DO NOT FORGET TO GIVE ACCESS TO AT LEAST 1 USER.
-	<br><br><b>WAN Enabled:</b>  This allows or denies the user ability to connect from a different subnet from the server. ie: the internet.
+	<br><br><b>WAN Enabled:</b>  This allows or denies the user when connecting from a different subnet from the server. ie: the internet.
 	<br><br><b>Icon:</b>  After users are created, drag a .jpg image into the designated area to assign each user avatar.<br>
 				</p>			  
                 <?php
@@ -588,8 +589,9 @@ $(document).ready(function() {
 
             <div id="ROOMS" class="panel">
               <h3>Room List</h3>
+			   <p>Rooms are like groups for your digital equipment.  Additional addons can be created to interact with more equipment.</p>	
 				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
-				<a href="#" class='showhidebutton'>info</a><br>
+				<a href="#" class='showhidebutton orange'>info</a><br>
 				    <b>Title:</b>  The title of the room/set of devices
 			<br><b>Addons:</b>  The list of addons assignable to this room.  each addon will add any settings they need to the assigned room. (ensure the addon you want info displaying for is first in the list.  usually the mediaplayer.addon)
 
@@ -698,7 +700,7 @@ $(document).ready(function() {
               <h3>Room Permission Groups</h3>
 			    <p>Create a group of permissions for easy multiple user permissions.  Individual permissions override these.</p>			  
 				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
-				<a href="#" class='showhidebutton'>info</a><br>
+				<a href="#" class='showhidebutton orange'>info</a><br>
 				  <b>Group Name:</b> the name of the permission group
 	<br><br><b>Allow:</b>  gives this group access to the room
 	<br><br><b>Deny:</b>  removes group access to this room<br>
@@ -769,7 +771,7 @@ $(document).ready(function() {
               <h3>Navigation</h3>
 			    <p>These links will be available in the upper left menu</p>
 				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
-				<a href="#" class='showhidebutton'>info</a><br>
+				<a href="#" class='showhidebutton orange'>info</a><br>
 				<b>Title:</b>  The title of the link unless an icon is uploaded (see below).  Please no spaces in the title.
 	<br><br><b>Full LAN IP:</b>  The complete LOCAL address to the link.  Can include username and password which is masked in the browser unless the source is viewed when those pages have already been accessed.  ie:  http://name:pass@ip:port
 	<br><br><b>Full WAN IP:</b>  The complete address to the link from the INTERNET.  wouldnt recomment putting username and password outside your network, but you can. ie:  http://name:pass@ip:port
@@ -823,7 +825,7 @@ $(document).ready(function() {
               <h3>Navigation Groups</h3>
 			    <p>Create groups for navigation links to easily control user access.</p>			  
 				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
-				<a href="#" class='showhidebutton'>info</a><br>
+				<a href="#" class='showhidebutton orange'>info</a><br>
 				  <b>Group Name:</b> the name of the permission group
 	<br><br><b>Links:</b>  Links created on the Navigation page
 				</p>					  
