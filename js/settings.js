@@ -143,7 +143,7 @@ function updateSettings(section) {
 	ajaxRequest(params,section);
 }
 function ajaxRequest(params,section){
-alert(params);
+//alert(params);
 	$.ajax({
 		type: 'GET',
 		url: "settings.php?" + params,
