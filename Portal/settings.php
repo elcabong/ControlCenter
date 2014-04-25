@@ -309,7 +309,7 @@ $(document).ready(function() {
                     <p align="justify" style="width: 500px;#padding-bottom: 20px;">
                       Control Center is a Web-based Service Organiser, inspired by MediaFrontPage. You can think of this as the universal remote that ties your individual home media and automation softare/hardware together.
 						<br><br>
-					I have and will continue to put a bit of time and effort into this project.  If you find it useful, please consider buying me a tasty snack or refreshing beverage for brain power by donating below.
+					If you find this useful, please donate below to help continued development.
 					</p>
 					<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" style="text-align:center;">
 					<input type="hidden" name="cmd" value="_s-xclick">
