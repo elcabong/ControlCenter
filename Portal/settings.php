@@ -472,7 +472,7 @@ $(document).ready(function() {
 						{
 						$userid = $row['userid'];
 						$thehomeroom = '';
-						if(isset($row['homeroom']) && ($row['homeroom'] != '' || $row['homeroom'] != "0")) {
+						if(isset($row['homeroom']) && $row['homeroom'] != "0" && !empty($row['homeroom'])) {
 								$sql2 = "SELECT * FROM rooms WHERE roomid = ".$row['homeroom'];
 								foreach ($configdb->query($sql2) as $row2) {
 								$thehomeroom = "<option selected='selected' value=".$row2['roomid'].">".$row2['roomname']."</option>"; 
