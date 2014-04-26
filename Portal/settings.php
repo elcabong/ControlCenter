@@ -377,7 +377,7 @@ $(document).ready(function() {
 				<tr><td></td></tr>
 				<tr><td></td></tr>
 				<tr>
-				  <td>Export Database</td><td><a href="#" id="dlconfig">config.db</a></td>
+				  <td>Export Database</td><td><a href="../Portal/exportdb.php" id="dlconfig">config.db</a><?php if(file_exists("../sessions/config-bak.db")) { ?> <a href="../Portal/exportdb.php?bak=1" id="dlconfig2">config-bak.db</a> <?php } ?></td>
 				</tr>
 				<tr><td></td></tr>
 				<tr>
