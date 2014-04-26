@@ -292,11 +292,11 @@ $(document).ready(function() {
       <div id="slider">
         <ul class="navigation">
           <li><a href="#ABOUT">About</a></li>
-          <li><a href="#ROOMS" <? if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
+          <li><a href="#ROOMS" <?php if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
          <li><a href="#ROOMGROUPS">Room Groups</a></li> 
-         <li><a href="#NAVIGATION" <? if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation</a></li>
-         <li><a href="#NAVIGATIONGROUPS" <? if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation Groups</a></li>
-		 <li><a href="#USERS" <? if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
+         <li><a href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation</a></li>
+         <li><a href="#NAVIGATIONGROUPS" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation Groups</a></li>
+		 <li><a href="#USERS" <?php if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
  	  </ul>
       <!-- element with overflow applied -->
         <div class="scroll">
@@ -582,7 +582,7 @@ $(document).ready(function() {
 					echo $e->getMessage();
 					}
 				?>
-				<? $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+				<?php $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 					if (false !== strpos($url,'setup')) {
 						//if($totalusernum>0 && isset($roomsareset) && isset($navisset)) {
 						if($totalusernum>0) {   //  add alerts to see if they want to add rooms or nav if those are note set
@@ -601,14 +601,14 @@ $(document).ready(function() {
 			   <p>Rooms are like groups for your digital equipment.  Additional addons can be created to interact with more equipment.</p>	
 				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
 				<a href="#" class='showhidebutton orange'>info</a><br>
-				    <b>Title:</b>  The title of the room/set of devices
+				    <b>Room Name:</b>  The title of the room/set of devices
 			<br><b>Addons:</b>  The list of addons assignable to this room.  each addon will add any settings they need to the assigned room. (ensure the addon you want info displaying for is first in the list.  usually the mediaplayer.addon)
 
 				<br>
 				</p>
                 <?php
 				echo "<table id='rooms-new'>";
-				echo "<tr><td class='title'>Title</td><td><input size='10' name='roomname' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"rooms-new\");' /></td></tr>";
+				echo "<tr><td class='title'>Room Name</td><td><input size='10' name='roomname' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"rooms-new\");' /></td></tr>";
 						$theavailableaddons = '';
 						for ($i = 0; $i < count($availableaddons); ++$i) {
 								$theavailableaddons .= "<option value=".$availableaddons[$i].">".$availableaddons[$i]."</option>"; 
@@ -895,4 +895,4 @@ $(document).ready(function() {
 	</script> */ ?>
 </body>
 </html>
-<? } ?>
+<?php } ?>
