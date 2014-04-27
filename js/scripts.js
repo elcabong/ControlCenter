@@ -135,12 +135,15 @@ $(document).ready(function() {
 			nonpersistiframe.src = '';
 			nonpersistiframe.src = $(this).attr('href');
 			nonpersistiframe.src = nonpersistiframe.src;
-	        return false; 
-        } else {
 			$('a.panel').removeClass('selected');
 			$(this).removeClass('unloaded');
 			$(this).addClass('selected');
-		}
+	        return false; 
+        }
+		
+		$('a.panel').removeClass('selected');
+		$(this).removeClass('unloaded');
+		$(this).addClass('selected');
 
 		$('#wrapper').scrollTo('#nonpersistentf', 0);
 
