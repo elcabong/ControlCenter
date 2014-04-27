@@ -93,12 +93,16 @@ $(document).ready(function() {
 		    href = href.replace(/#/g, "" );
 			var iframe = document.getElementById(href + 'f');
 			iframe.src = iframe.src;
-		        //return false; 
+			$('a.panel').removeClass('selected');
+			$(this).removeClass('unloaded');
+			$(this).addClass('selected');
+			return false;
         }
 		
-		$(this).removeClass('unloaded');
 		$('a.panel').removeClass('selected');
+		$(this).removeClass('unloaded');
 		$(this).addClass('selected');
+
 		
 		$('#wrapper').scrollTo($(this).attr('href'), 0);
 
