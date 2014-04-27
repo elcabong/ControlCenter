@@ -95,10 +95,11 @@ $(document).ready(function() {
 			iframe.src = iframe.src;
 		        return false; 
         } else {
-			$('a.panel').removeClass('selected');
 			$(this).removeClass('unloaded');
-			$(this).addClass('selected');
 		}
+
+		$('a.panel').removeClass('selected');
+		$(this).addClass('selected');
 		
 		$('#wrapper').scrollTo($(this).attr('href'), 0);
 
