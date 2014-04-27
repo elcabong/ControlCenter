@@ -294,10 +294,20 @@ $(document).ready(function() {
           <li><a href="#ABOUT">About</a></li>
           <li><a href="#ROOMS" <?php if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
          <li><a href="#ROOMGROUPS">Room Groups</a></li> 
-         <li><a href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation</a></li>
-         <li><a href="#NAVIGATIONGROUPS" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Navigation Groups</a></li>
+         <li><a href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Applications</a></li>
+         <li><a href="#NAVIGATIONGROUPS" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>App Groups</a></li>
 		 <li><a href="#USERS" <?php if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
  	  </ul>
+				<?php $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+					if (false !== strpos($url,'setup')) {
+						if($totalusernum>0) {
+							echo "<p align='justify' style='width: 450px;'>
+								<b class='orange'>ALERT:</b>  Ensure at least 1 user has allow access to settings.
+							<br><h3><a class='orange' href='../login.php?user=choose' target='_parent'>>>> Continue to Control Center <<<</a></h3>
+							</p>"; 
+						}
+					}
+				?>
       <!-- element with overflow applied -->
         <div class="scroll">
           <!-- the element that will be scrolled during the effect -->
@@ -401,11 +411,11 @@ $(document).ready(function() {
 				<a href="#" class='showhidebutton orange'>info</a><br>
 				    <b>Username:</b>  The username/login name for each user
 	<br><br><b>Password:</b>  Optional.  if not set auth is disabled for this user
-	<br><br><b>Navigation:</b>  Adds Navigation group(s) for the user which are available in the upper left menu bar.  Add the groups in the order you want them to be displayed in.
+	<br><br><b>App Groups:</b>  Adds Application group(s) for the user which are available in the upper left menu bar.  Add the groups in the order you want them to be displayed in.
 	<br><br><b>Homeroom:</b>  The default room that this user will will log into unless they logout while controlling another room (set with cookie, so device specific)
 	<br><br><b>Room Group:</b> Set a configured room group for this user 
-	<br><br><b>Allow:</b>  Adds access to rooms, overrides room group access
-	<br><br><b>Deny:</b>  can remove access to rooms, overrides room group access and the allow option
+	<br><br><b>Room Allow:</b>  Adds access to rooms, overrides room group access
+	<br><br><b>Room Deny:</b>  can remove access to rooms, overrides room group access and the allow option
 	<br><br><b>Settings:</b>  This allows or denies the user to this settings area. DO NOT FORGET TO GIVE ACCESS TO AT LEAST 1 USER.
 	<br><br><b>WAN Enabled:</b>  This allows or denies the user when connecting from a different subnet from the server. ie: the internet.
 	<br><br><b>Icon:</b>  After users are created, drag a .jpg image into the designated area to assign each user avatar.<br>
@@ -457,11 +467,11 @@ $(document).ready(function() {
 									<td class='title'>Password</td><td><input size='10' type='password' name='password' value=''></td>
 									<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"users-new\");' /></td><tr>
 								<tr><td class='title'>Homeroom</td><td><select name='homeroom'>".$roomlist."</select></td>
-									<td class='title'>Navigation</td><td colspan=2><select class='chosen-select multiple' id='navgroupaccessnew' data-placeholder='Add Navigation' multiple='multiple'>".$allnavgroups."</select><input size='10' class='navgroupaccessnew' type='hidden' name='navgroupaccess' value=''></td></tr>
+									<td class='title'>App Groups</td><td colspan=2><select class='chosen-select multiple' id='navgroupaccessnew' data-placeholder='Add Apps' multiple='multiple'>".$allnavgroups."</select><input size='10' class='navgroupaccessnew' type='hidden' name='navgroupaccess' value=''></td></tr>
 								<tr><td class='title'>Room Group</td><td><select name='roomgroupaccess'><option selected='selected' value=''></option>".$roomgrouplist."</td>
-									<td class='title'>Allow</td><td colspan=2><select class='chosen-select multiple' id='roomaccessnew' data-placeholder='Allow Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomaccessnew' type='hidden' name='roomaccess' value=''></td></tr>
+									<td class='title'>Room Allow</td><td colspan=2><select class='chosen-select multiple' id='roomaccessnew' data-placeholder='Allow Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomaccessnew' type='hidden' name='roomaccess' value=''></td></tr>
 									<tr><td class='title'>Settings</td><td><select name='settingsaccess'><option selected='selected' value='0'>Deny</option><option value='1'>Allow</option></select></td>
-									<td class='title'>Deny</td><td colspan=2><select class='chosen-select multiple' id='roomdenynew' data-placeholder='Deny Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomdenynew' type='hidden' name='roomdeny' value=''></td></tr>
+									<td class='title'>Room Deny</td><td colspan=2><select class='chosen-select multiple' id='roomdenynew' data-placeholder='Deny Overrides' multiple='multiple'>".$roomlist."</select><input size='10' class='roomdenynew' type='hidden' name='roomdeny' value=''></td></tr>
 								<tr><td class='title'>WAN Enabled</td><td><select name='wanenabled'><option selected='selected' value='0'>Deny</option><option value='1'>Allow</option></select></td><tr>";
 						echo "</table>";
 						echo "<br><br><br>";
@@ -569,11 +579,11 @@ $(document).ready(function() {
 										<td class='title'>Password</td><td><input size='10' type='password' name='password' value='" . $row['password'] . "'></td>
 										<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"users\"," . $row['userid'] . ");' /></td></tr>
 								  <tr><td class='title'>Homeroom</td><td><select name='homeroom'>".$thehomeroom.$roomlist."</select></td>
-										<td class='title'>Navigation</td><td colspan=2><select class='chosen-select multiple' id='navgroupaccess$userid' data-placeholder='Add Navigation' multiple='multiple'>".$setnavgroups.$thenavgroups."</select><input size='10' class='navgroupaccess$userid' type='hidden' name='navgroupaccess' value=" . $row['navgroupaccess'] . "></td></tr>
+										<td class='title'>App Groups</td><td colspan=2><select class='chosen-select multiple' id='navgroupaccess$userid' data-placeholder='Add Apps' multiple='multiple'>".$setnavgroups.$thenavgroups."</select><input size='10' class='navgroupaccess$userid' type='hidden' name='navgroupaccess' value=" . $row['navgroupaccess'] . "></td></tr>
 									<tr><td class='title'>Room Group</td><td><select name='roomgroupaccess'>".$theroomgroup.$roomgrouplist."></td>
-										<td class='title'>Allow</td><td colspan=2><select class='chosen-select multiple' id='roomaccess$userid' data-placeholder='Allow Overrides' multiple='multiple'>".$theroomaccess.$theallowrooms."</select><input size='10' class='roomaccess$userid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td></tr>
+										<td class='title'>Room Allow</td><td colspan=2><select class='chosen-select multiple' id='roomaccess$userid' data-placeholder='Allow Overrides' multiple='multiple'>".$theroomaccess.$theallowrooms."</select><input size='10' class='roomaccess$userid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td></tr>
 									<tr><td class='title'>Settings</td><td><select name='settingsaccess'>".$accesstosettings."</select></td>
-										<td class='title'>Deny</td><td colspan=2><select class='chosen-select multiple' id='roomdeny$userid' data-placeholder='Deny Overrides' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomdeny$userid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td></tr>
+										<td class='title'>Room Deny</td><td colspan=2><select class='chosen-select multiple' id='roomdeny$userid' data-placeholder='Deny Overrides' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomdeny$userid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td></tr>
 									<tr><td class='title'>WAN Enabled</td><td><select name='wanenabled'>".$accesswanenabled."</select></td><tr>";
 						echo "</table><br><br><br>";
 						}
@@ -582,16 +592,6 @@ $(document).ready(function() {
 					echo $e->getMessage();
 					}
 				?>
-				<?php $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-					if (false !== strpos($url,'setup')) {
-						//if($totalusernum>0 && isset($roomsareset) && isset($navisset)) {
-						if($totalusernum>0) {   //  add alerts to see if they want to add rooms or nav if those are note set
-						echo "				<p align='justify' style='width: 450px;'>
-							<b>ALERT:</b>  Ensure atleast 1 user has allow access to settings.
-						<br><br><!--<b>ALERT:</b>  Please make sure your users have access to their Homeroom.  you need to 'Allow' the room, or configure and add a '<a href='#ROOMGROUPS'>Room Group</a>' to each user.  If a user has no rooms allowed, they will have a redirect loop when they try to login.-->
-						<br><br><h3><a class='orange' href='../login.php?user=choose' target='_parent'>Continue to Control Center</a></h3>
-						<br>
-				</p>"; }}?>
 			<br><br>	
             </div>
 
@@ -777,8 +777,8 @@ $(document).ready(function() {
             </div>			
 
 			<div id="NAVIGATION" class="panel">
-              <h3>Navigation</h3>
-			    <p>These links will be available in the upper left menu</p>
+              <h3>Applications</h3>
+			    <p>These Application links will be available in the upper left menu</p>
 				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
 				<a href="#" class='showhidebutton orange'>info</a><br>
 				<b>Title:</b>  The title of the link unless an icon is uploaded (see below).  Please no spaces in the title.
@@ -831,17 +831,17 @@ $(document).ready(function() {
 
 		   
 			<div id="NAVIGATIONGROUPS" class="panel">
-              <h3>Navigation Groups</h3>
-			    <p>Create groups for navigation links to easily control user access.</p>			  
+              <h3>Application Groups</h3>
+			    <p>Create groups for Applications to easily control user access.</p>			  
 				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
 				<a href="#" class='showhidebutton orange'>info</a><br>
 				  <b>Group Name:</b> the name of the permission group
-	<br><br><b>Links:</b>  Links created on the Navigation page
+	<br><br><b>Apps:</b>  From the Application page
 				</p>					  
                 <?php
 				echo "<table id='navgroups-new'>";
 				echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='navgroupname' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"navgroups-new\");' /></td></tr>
-									<tr><td class='title'>Links</td><td colspan=3><select class='chosen-select multiple' id='navgroupaccessnew' data-placeholder='Navigation Links' multiple='multiple'>".$navlist."</select><input size='10' class='navgroupaccessnew' type='hidden' name='navitems' value=''></td>
+									<tr><td class='title'>Apps</td><td colspan=3><select class='chosen-select multiple' id='navgroupaccessnew' data-placeholder='Navigation Links' multiple='multiple'>".$navlist."</select><input size='10' class='navgroupaccessnew' type='hidden' name='navitems' value=''></td>
 								</tr>";
 				echo "</table><br><br><br>";
 				try {
@@ -871,7 +871,7 @@ $(document).ready(function() {
 							$navgroupid = $row['navgroupid'];
 							echo "<table id='navgroups-$navgroupid'>";					
 							echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='navgroupname' value='" . $row['navgroupname'] . "'></td><td class='button right'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navgroups-$navgroupid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"navigationgroups\"," . $row['navgroupid'] . ");' /></td></tr>
-										<tr><td class='title'>Links</td><td colspan=3><select class='chosen-select multiple' id='navgroupaccess$navgroupid' data-placeholder='Navigation Links' multiple='multiple'>".$thenavitems.$theallownav."</select><input size='10' class='navgroupaccess$navgroupid' type='hidden' name='navitems' value=" . $row['navitems'] . "></td>
+										<tr><td class='title'>Apps</td><td colspan=3><select class='chosen-select multiple' id='navgroupaccess$navgroupid' data-placeholder='Applications' multiple='multiple'>".$thenavitems.$theallownav."</select><input size='10' class='navgroupaccess$navgroupid' type='hidden' name='navitems' value=" . $row['navitems'] . "></td>
 										</tr>";
 							echo "</table><br><br><br>";
 						}
@@ -884,7 +884,7 @@ $(document).ready(function() {
           </div>
         </div>
       </div>
-    </div>  
+    </div>
   </center>
   <script type="text/javascript" src="../js/settings.js?<?php echo date ("m/d/Y-H.i.s", filemtime('../js/settings.js'));?>"></script>
 <?php /*   <script src="../js/jquery.sortable.min.js"></script>
