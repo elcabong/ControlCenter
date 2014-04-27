@@ -93,11 +93,10 @@ $(document).ready(function() {
 		    href = href.replace(/#/g, "" );
 			var iframe = document.getElementById(href + 'f');
 			iframe.src = iframe.src;
-		        return false; 
-        } else {
-			$(this).removeClass('unloaded');
-		}
-
+		        //return false; 
+        }
+		
+		$(this).removeClass('unloaded');
 		$('a.panel').removeClass('selected');
 		$(this).addClass('selected');
 		
