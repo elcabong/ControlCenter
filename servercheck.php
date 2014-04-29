@@ -161,6 +161,7 @@ if (file_exists('./sessions/config.db')){
 							$redirect = false;
 							exit;
 						}
+						$thedbversion = $DBVERSION;
 						$configdb = null;
 						copy('./sessions/config.db', './sessions/config-bak.db');
 						unset($configdb);
@@ -219,8 +220,12 @@ if (file_exists('./sessions/config.db')){
 		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT, dbversion TEXT)";
 		  $execquery = $configdb->exec($query);
 			// stamp current version
-			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$DBVERSION')");
-			echo "<tr><td>DB tables created, Version: $DBVERSION</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+			if($thedbversion != 'none') {
+				$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thedbversion')");
+				echo "<tr><td>DB tables checked, Version: $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+			} else {
+				echo "<tr><td>DB tables checked</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+			}
 	} catch(PDOException $e)
 		{
 			  echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
