@@ -1,6 +1,6 @@
 <?php
 // this needs to be updated to current version of db.
-$DBVERSION = "1.0.0";
+$DBVERSION = "1.0.1";
 
 require_once "functions.php";
 require "startsession.php";
@@ -101,4 +101,7 @@ if($usernumber != "choose") {
 			}
 
 }
+
+$WANCONNECTION = 0;
+if(substr($_SERVER['REMOTE_ADDR'],0,6) != substr($_SERVER['SERVER_ADDR'],0,6)) { $WANCONNECTION = 1; }
 ?>

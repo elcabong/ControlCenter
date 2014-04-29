@@ -31,7 +31,12 @@
 				$i = $THISROOMID;
 				$ip;
 				if(!empty($enabledaddonsarray["$i"]["$addonid"]['ADDONIP'])) {
-					$ip = $enabledaddonsarray["$i"]["$addonid"]['ADDONIP'];
+					$ip = $enabledaddonsarray["$i"]["$addonid"]['ADDONIP']; 
+				}
+				if(($WANCONNECTION == '1' && !empty($enabledaddonsarray["$i"]["$addonid"]['ADDONIPW']))) {
+					$ip = $enabledaddonsarray["$i"]["$addonid"]['ADDONIPW']; 
+				}
+				if($ip != '') {
 				    $disallowed = array('http://', 'https://');
 				    foreach($disallowed as $d) {
 					    if(strpos($ip, $d) === 0) {

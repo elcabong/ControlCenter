@@ -6,12 +6,18 @@
 			if(isset($row['roomgroupaccess'])) { $ROOMGROUPA = $row['roomgroupaccess']; }
 			if(isset($row['roomaccess'])) { $roomaccess = $row['roomaccess']; }
 			if(isset($row['roomdeny'])) { $roomdeny = $row['roomdeny']; }
+			$wanenabled = 0;
+			if(isset($row['wanenabled'])) { $wanenabled = $row['wanenabled']; }
 		}	 
 	} catch(PDOException $e)
 		{
 			echo $e->getMessage();
 		}
-
+		
+	if($WANCONNECTION == '1') {
+		if($wanenabled != '1') { header("Location: logout.php");exit; }
+	}
+		
 	function removeFromString($str, $item) {
 		$parts = explode(',', $str);
 		while(($i = array_search($item, $parts)) !== false) {

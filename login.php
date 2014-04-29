@@ -54,7 +54,11 @@ if((strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') || strstr($_SERVER['HTTP_USER_A
 	echo "<br><h2 class='container right'>Control Center</h2><h2  class='container left'> User Selection</h2>";
 	echo "<br><br><br>";
 	try {
-		$sql = "SELECT * FROM users";
+		if($WANCONNECTION == '1') {
+			$sql = "SELECT * FROM users WHERE wanenabled = 1";
+		} else {
+			$sql = "SELECT * FROM users";		
+		}	
 		foreach ($configdb->query($sql) as $row) {
 			$u = $row['userid'];
 			$filename = "./media/Users/user$u.jpg";
