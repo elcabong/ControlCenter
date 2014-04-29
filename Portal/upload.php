@@ -42,7 +42,11 @@ return false;exit;}
  move_uploaded_file($tempFile,$mainFile);
 
  if($set="db"){
- Header("Location: ./settings.php");
+	if(isset($_GET['setup'])) {
+		Header("Location: ./settings.php?setup=first");
+	} else {
+		Header("Location: ./settings.php");
+	}
  }
 }
 ?>

@@ -147,7 +147,7 @@ if (file_exists('./sessions/config.db')){
   					$thedbversion = checkDBversion();
 					if($thedbversion < $DBVERSION && $thedbversion != 'none') {
 						if($acceptupgrade != '1') {
-							echo "<tr><td>Database Upgrade Needed.</td></tr><tr><td>&nbsp;</td></tr>";
+							echo "<tr><td>Database Upgrade Needed.</td><td><img src='media/red-cross.png' height='15px'/></td></tr><tr><td>&nbsp;</td></tr>";
 							echo "<tr><td>Export Database</td></tr><tr><td><a href=\"./Portal/exportdb.php?upgrade=1\" id=\"dlconfig\" target=\"_blank\">config.db</a></td></tr>";
 							if(file_exists("./sessions/config-bak.db")) {
 								echo "<tr><td><a href=\"./Portal/exportdb.php?bak=1&upgrade=1\" id=\"dlconfig2\" target=\"_blank\">config-bak.db</a> <?php } ?></td></tr>";
