@@ -1,7 +1,11 @@
 <?php //control center upgrade info
-$DBVERSION = 0;
+$DBVERSION = "1.0.0";
+$acceptupgrade = 0;
 if(isset($_GET['newdbversion'])) {
 	$DBVERSION = $_GET['newdbversion'];
+}
+if(isset($_GET['acceptupgrade'])) {
+	$acceptupgrade = '1';
 }
 require "./Portal/functions.php";
 ?>
@@ -140,6 +144,49 @@ if (file_exists('./sessions/config.db')){
 		}		
   // write db tables here if they dont exist
    try {
+  					$thedbversion = checkDBversion();
+					if($thedbversion < $DBVERSION && $thedbversion != 'none') {
+						if($acceptupgrade != '1') {
+							echo "<tr><td>Database Upgrade Needed.</td></tr><tr><td>&nbsp;</td></tr>";
+							echo "<tr><td>Export Database</td></tr><tr><td><a href=\"./Portal/exportdb.php?upgrade=1\" id=\"dlconfig\" target=\"_blank\">config.db</a></td></tr>";
+							if(file_exists("./sessions/config-bak.db")) {
+								echo "<tr><td><a href=\"./Portal/exportdb.php?bak=1&upgrade=1\" id=\"dlconfig2\" target=\"_blank\">config-bak.db</a> <?php } ?></td></tr>";
+								}
+							echo "<tr><td>Database will need to be recreated.</td></tr><tr><td>&nbsp;</td></tr>";
+							echo "<tr><td>To keep old settings/configuration:</td></tr>";
+							echo "<tr><td>You can export the current db, then export the new one after upgrading.  Edit the new table changes to your old db, then import.</td></tr><tr><td>&nbsp;</td></tr>";
+							echo "<tr><td>Remeber to change the dbversion in the controlcenter table to $DBVERSION</td></tr><tr><td>&nbsp;</td></tr>";
+							echo "<tr><td>You can also roll back to a previous build to use your current db.</td></tr><tr><td>&nbsp;</td></tr>";
+							echo "<tr><td><input type='button' onclick=\"window.location = './servercheck.php?newdbversion=$DBVERSION&acceptupgrade=1';\" value='Create new DB' /></td></tr>";
+							$redirect = false;
+							exit;
+						}
+						$configdb = null;
+						copy('./sessions/config.db', './sessions/config-bak.db');
+						unset($configdb);
+						unlink('./sessions/config.db');
+						
+						echo "<tr><td>Old DB backed up.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+						$configdb = new PDO('sqlite:./sessions/config.db');						
+					/*
+							//  need to stop and do a check.. maybe using break and $redirect = false;
+							//  then restart the page and update the db if user input yes.
+					
+							//custom table upgrades here when needed
+							$thenewdbversion = "1.0.2";
+							if($thedbversion < $thenewdbversion && $thenewdbversion <= $DBVERSION) {
+								//schema update queries
+								$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thenewdbversion')");
+							}
+							$thedbversion = checkDBversion();
+							$thenewdbversion = "1.0.3";
+							if($thedbversion < $thenewdbversion && $thenewdbversion <= $DBVERSION) {
+								//schema update queries
+								$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thenewdbversion')");
+							}
+							$thedbversion = checkDBversion();
+						echo "<tr><td>DB tables updated to $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";*/
+					}
 		  $query = "CREATE TABLE IF NOT EXISTS users (userid integer PRIMARY KEY AUTOINCREMENT, username text UNIQUE NOT NULL, password text, navgroupaccess string, homeroom integer, roomgroupaccess string, roomaccess string, roomdeny string, settingsaccess integer NOT NULL, wanenabled integer DEFAULT '0' NOT NULL)";
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS rooms (roomid integer PRIMARY KEY AUTOINCREMENT, roomname text UNIQUE NOT NULL, addons TEXT NULL)";
@@ -171,47 +218,20 @@ if (file_exists('./sessions/config.db')){
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT, dbversion TEXT)";
 		  $execquery = $configdb->exec($query);
-					$thedbversion = checkDBversion();
-					if(isset($thedbversion) && $thedbversion != "none") {
-						//$DBVERSION = $thedbversion;
-					
-					} else {
-						// stamp current version
-						$thedbversion = "1.0.0";
-						$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thedbversion')");
-						echo "<tr><td>DB tables created, Version: $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
-					}
-					if($thedbversion < $DBVERSION) {
-					
-							//  need to stop and do a check.. maybe using break and $redirect = false;
-							//  then restart the page and update the db if user input yes.
-					
-							//custom table upgrades here when needed
-							$thenewdbversion = "1.0.2";
-							if($thedbversion < $thenewdbversion && $thenewdbversion <= $DBVERSION) {
-								//schema update queries
-								$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thenewdbversion')");
-							}
-							$thedbversion = checkDBversion();
-							$thenewdbversion = "1.0.3";
-							if($thedbversion < $thenewdbversion && $thenewdbversion <= $DBVERSION) {
-								//schema update queries
-								$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thenewdbversion')");
-							}
-							$thedbversion = checkDBversion();
-						echo "<tr><td>DB tables updated to $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
-					}
+			// stamp current version
+			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$DBVERSION')");
+			echo "<tr><td>DB tables created, Version: $DBVERSION</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 	} catch(PDOException $e)
 		{
 			  echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 			  $redirect = false;
 		}
-
+/*
 		$thisdbversion = checkDBversion();
 		if(isset($thisdbversion)) { $thedbversion = $thisdbversion; }
   echo "<tr><td>Settings DB found: Version $thedbversion";
   echo ($valid)?"</td><td><img src='media/green-tick.png' height='15px'/></td></tr>":"</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";		
-		
+	*/
 		
 		
 

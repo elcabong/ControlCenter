@@ -278,7 +278,7 @@ $(document).ready(function() {
 });
 	</script>
 </head>
-<body style="overflow: hidden;">
+<body style="overflow: hidden;color:#666;">
   <center>
     <div style="width:90%; height:95%;" class="widget">
       <div class="widget-head">
@@ -291,11 +291,11 @@ $(document).ready(function() {
           <br />
       <div id="slider">
         <ul class="navigation">
-          <li><a href="#ABOUT">About</a></li>
+          <li><a href="#ABOUT">About</a></li>|
           <li><a href="#ROOMS" <?php if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
-         <li><a href="#ROOMGROUPS">Room Groups</a></li> 
+         <li><a href="#ROOMGROUPS">Room Groups</a></li>|
          <li><a href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Applications</a></li>
-         <li><a href="#NAVIGATIONGROUPS" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>App Groups</a></li>
+         <li><a href="#NAVIGATIONGROUPS" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>App Groups</a></li>|
 		 <li><a href="#USERS" <?php if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
  	  </ul>
 				<?php $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
@@ -387,7 +387,7 @@ $(document).ready(function() {
 				<tr><td></td></tr>
 				<tr><td></td></tr>
 				<tr>
-				  <td>Export Database</td><td><a href="../Portal/exportdb.php" id="dlconfig">config.db</a><?php if(file_exists("../sessions/config-bak.db")) { ?> <a href="../Portal/exportdb.php?bak=1" id="dlconfig2">config-bak.db</a> <?php } ?></td>
+				  <td>Export Database</td><td><a href="../Portal/exportdb.php" id="dlconfig" target="_blank">config.db</a><?php if(file_exists("../sessions/config-bak.db")) { ?> <a href="../Portal/exportdb.php?bak=1" id="dlconfig2" target="_blank">config-bak.db</a> <?php } ?></td>
 				</tr>
 				<tr><td></td></tr>
 				<tr>
