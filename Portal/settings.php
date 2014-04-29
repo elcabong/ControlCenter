@@ -393,11 +393,11 @@ $(document).ready(function() {
 				<tr>
 				  <td>Import Database</td>
 					<td>
-						<form action="upload.php?db=config" method="post"
+						<form action="upload.php?db=config<?php	if(isset($_GET['setup'])){ echo "&setup=first"; }?>" method="post"
 						enctype="multipart/form-data">
 						<label for="file">Filename:</label>
 						<input type="file" name="file" id="file">
-						<input type="submit" name="submit" value="Submit">
+						<input type="submit" name="submit" value="Submit" id="dbuploadsubmit">
 						</form>					
 					</td>
 				  </td>				
