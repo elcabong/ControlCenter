@@ -1,8 +1,5 @@
 ControlCenter v1.0
 ==================
-If you have installed this before 4/26/2014, you need to remove your /sessions/config.db and let the control center create a new one to configure.
-==================
-
 
 picutres @ http://imgur.com/a/vFT9c#0
 
