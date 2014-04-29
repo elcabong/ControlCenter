@@ -1,12 +1,15 @@
-ControlCenter
+ControlCenter v1.0
 ==================
+If you have installed this before 4/26/2014, you need to remove your /sessions/config.db and let the control center create a new one to configure.
+==================
+
 
 picutres @ http://imgur.com/a/vFT9c#0
 
 Access any web based software to control your home and media needs.
 
 Required:
-  Any web server with php 5+ with curl and sqlite, and enable "short_open_tag=On" for php  (linux apache instruction below)
+  Any web server with php 5+ with curl and sqlite  (linux apache instruction below)
   
   For the android app to connect, you need to set your webserver IP to one of the following IPs:  (contact me to add more ips)
 		192.168.0.250
@@ -33,4 +36,7 @@ sudo chown -R www-data:www-data /var/www/ControlCenter/media/Users
 sudo chown -R www-data:www-data /var/www/ControlCenter/media/Programs
 
 3. browse to your http://[webserver]/ControlCenter/
+
+
+if you have any loading issues try enabling "short_open_tag=On" for php
 

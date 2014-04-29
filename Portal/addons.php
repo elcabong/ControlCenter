@@ -70,6 +70,7 @@ $availableaddons = array();
 					$enabledaddonsarray["$roomid"]["$theaddon"]['classification'] = $classification;
 					$enabledaddonsarray["$roomid"]["$theaddon"]['title'] = $title;
 					$enabledaddonsarray["$roomid"]["$theaddon"]['ADDONIP'] = $addonSettings['ip'];
+					$enabledaddonsarray["$roomid"]["$theaddon"]['ADDONIPW'] = $addonSettings['ipw'];
 					$enabledaddonsarray["$roomid"]["$theaddon"]['MAC'] = $addonSettings['mac'];
 					$enabledaddonsarray["$roomid"]["$theaddon"]['setting1'] = $addonSettings['setting1'];
 					$enabledaddonsarray["$roomid"]["$theaddon"]['setting2'] = $addonSettings['setting2'];
