@@ -276,6 +276,10 @@ $(document).ready(function() {
 		}
   });
 });
+
+	$(function(){
+		document.oncontextmenu = function() {return false;};
+	});
 	</script>
 </head>
 <body style="overflow: hidden;color:#666;">
