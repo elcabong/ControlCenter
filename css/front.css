@@ -21,6 +21,9 @@ h2 {
 	font-size: 24px;
 	font-weight: bold;
 }
+a h2 {
+	color:#FF9522 !important;
+}
 h3 {
 	margin: 0 0 .5em 0;
 }
@@ -35,7 +38,7 @@ table {
 	text-align:left;
 }
 td {
-	vertical-align:bottom;
+	vertical-align:middle;
 }
 .userpick > table { width:100%; }
 .userpick > table > tbody > tr > td { padding:0; }
@@ -50,15 +53,6 @@ ul, li {
 a {
 	text-decoration: none;
 	outline: 0;
-}
-a:link {
-	color:#FF9522;
-}
-a:hover {
-	color:#FF9522;
-}
-a:visited {
-	color:#FF9522;
 }
 #tiles {
    overflow: hidden;
@@ -109,6 +103,8 @@ input[type=submit] {
 	
 input[type=submit]:hover {
 	color:rgb(0, 153, 255);	}	
+
+.orange { color:#FF9522 !important;text-decoration:none; }
 	
 @media all and (min-width: 475px) {
 .right { text-align:right; }
