@@ -1,5 +1,6 @@
 <?php //control center upgrade info
-$DBVERSION = "1.0.1";
+//db version in config.php as well
+$DBVERSION = "1.1.1";
 $acceptupgrade = 0;
 if(isset($_GET['newdbversion'])) {
 	$DBVERSION = $_GET['newdbversion'];
@@ -159,34 +160,53 @@ if (file_exists('./sessions/config.db')){
 				} catch(PDOException $e) {
 					  return "none";
 				}
-		}	
+		}
+		function checkDBupgrade($old,$new) {
+			$thisupgrade = "minimal";
+			$old = explode(".","$old");
+			$new = explode(".","$new");
+			if($new[0] > $old[0] || $new[1] > $old[1]) {
+				$thisupgrade = "bigupdate";
+			}
+			return $thisupgrade;
+		}
   // write db tables here if they dont exist
    try {
   					$thedbversion = checkDBversion();
 					if($thedbversion < $DBVERSION && $thedbversion != 'none') {
-						if($acceptupgrade != '1') {
-							echo "<tr><td>Database Upgrade Needed.</td><td><img src='media/red-cross.png' height='15px'/></td></tr><tr><td>&nbsp;</td></tr>";
-							echo "<tr><td>Export Database</td></tr><tr><td><a href=\"./Portal/exportdb.php?upgrade=1\" id=\"dlconfig\" target=\"_blank\">config.db</a></td></tr>";
-							if(file_exists("./sessions/config-bak.db")) {
-								echo "<tr><td><a href=\"./Portal/exportdb.php?bak=1&upgrade=1\" id=\"dlconfig2\" target=\"_blank\">config-bak.db</a> <?php } ?></td></tr>";
-								}
-							echo "<tr><td>Database will need to be recreated.</td></tr><tr><td>&nbsp;</td></tr>";
-							echo "<tr><td>To keep old settings/configuration:</td></tr>";
-							echo "<tr><td>You can export the current db, then export the new one after upgrading.  Edit the new table changes to your old db, then import.</td></tr><tr><td>&nbsp;</td></tr>";
-							echo "<tr><td>Remeber to change the dbversion in the controlcenter table to $DBVERSION</td></tr><tr><td>&nbsp;</td></tr>";
-							echo "<tr><td>You can also roll back to a previous build to use your current db.</td></tr><tr><td>&nbsp;</td></tr>";
-							echo "<tr><td><input type='button' onclick=\"window.location = './servercheck.php?newdbversion=$DBVERSION&acceptupgrade=1';\" value='Create new DB' /></td></tr>";
-							$redirect = false;
-							exit;
+						$upgrademe = checkDBupgrade($thedbversion,$DBVERSION);
+						if($upgrademe == "bigupdate") {
+							if($acceptupgrade != '1') {
+								echo "<tr><td>Major Database Upgrade Needed.</td><td><img src='media/red-cross.png' height='15px'/></td></tr><tr><td>&nbsp;</td></tr>";
+								echo "<tr><td>Export Database</td></tr><tr><td><a href=\"./Portal/exportdb.php?upgrade=1\" id=\"dlconfig\" target=\"_blank\">config.db</a></td></tr>";
+								if(file_exists("./sessions/config-bak.db")) {
+									echo "<tr><td><a href=\"./Portal/exportdb.php?bak=1&upgrade=1\" id=\"dlconfig2\" target=\"_blank\">config-bak.db</a> <?php } ?></td></tr>";
+									}
+								echo "<tr><td>Database will need to be recreated.</td></tr><tr><td>&nbsp;</td></tr>";
+								echo "<tr><td>To keep old settings/configuration:</td></tr>";
+								echo "<tr><td>You can export the current db, then export the new one after upgrading.  Edit the new table changes to your old db, then import.</td></tr><tr><td>&nbsp;</td></tr>";
+								echo "<tr><td>Remeber to change the dbversion in the controlcenter table to $DBVERSION</td></tr><tr><td>&nbsp;</td></tr>";
+								echo "<tr><td>You can also roll back to a previous build to use your current db.</td></tr><tr><td>&nbsp;</td></tr>";
+								echo "<tr><td><input type='button' onclick=\"window.location = './servercheck.php?newdbversion=$DBVERSION&acceptupgrade=1';\" value='Create new DB' /></td></tr>";
+								$redirect = false;
+								exit;
+							}
+							$thedbversion = $DBVERSION;
+							$configdb = null;
+							copy('./sessions/config.db', './sessions/config-bak.db');
+							unset($configdb);
+							unlink('./sessions/config.db');
+							
+							echo "<tr><td>Old DB backed up.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+							$configdb = new PDO('sqlite:./sessions/config.db');
+						} else {
+							echo "<tr><td>Small DB upgrade Needed.</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+							$configdb = null;
+							copy('./sessions/config.db', './sessions/config-bak.db');
+							echo "<tr><td>Old DB backed up.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+							$configdb = new PDO('sqlite:./sessions/config.db');
+							$thedbversion = $DBVERSION;							
 						}
-						$thedbversion = $DBVERSION;
-						$configdb = null;
-						copy('./sessions/config.db', './sessions/config-bak.db');
-						unset($configdb);
-						unlink('./sessions/config.db');
-						
-						echo "<tr><td>Old DB backed up.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
-						$configdb = new PDO('sqlite:./sessions/config.db');						
 					}
 		  $query = "CREATE TABLE IF NOT EXISTS users (userid integer PRIMARY KEY AUTOINCREMENT, username text UNIQUE NOT NULL, password text, navgroupaccess string, homeroom integer, roomgroupaccess string, roomaccess string, roomdeny string, settingsaccess integer NOT NULL, wanenabled integer DEFAULT '0' NOT NULL)";
 		  $execquery = $configdb->exec($query);
