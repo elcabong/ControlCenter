@@ -41,12 +41,11 @@ return false;exit;}
  $mainFile = $targetPath.$filename;
  move_uploaded_file($tempFile,$mainFile);
 
- if($set="db"){
-	if(isset($_GET['setup'])) {
-		Header("Location: ./settings.php?setup=first");
-	} else {
-		Header("Location: ./settings.php");
-	}
+ if($set="db"){ ?>
+ <script>
+	top.window.location='../servercheck.php';
+ </script>
+ <?php
  }
 }
 ?>
