@@ -143,6 +143,23 @@ if (file_exists('./sessions/config.db')){
 					  return "none";
 				}
 		}
+		function checkDBsettings() {
+				if(!isset($configdb)) {	$configdb = new PDO('sqlite:./sessions/config.db'); }
+				$tempsettingarray = array();
+				try {
+					$sql = "SELECT * FROM settings";
+					foreach ($configdb->query($sql) as $row)
+					{
+						if(isset($row['settingvalue1']) && $row['settingvalue1'] != '') {
+							$thissetting = $row['setting'];
+							$tempsettingarray["$thissetting"]['1'] = $row['settingvalue1'];
+						}
+					}
+					return $tempsettingarray;
+				} catch(PDOException $e) {
+					  return "none";
+				}
+		}	
   // write db tables here if they dont exist
    try {
   					$thedbversion = checkDBversion();
@@ -200,25 +217,26 @@ if (file_exists('./sessions/config.db')){
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS navigationgroups (navgroupid integer PRIMARY KEY AUTOINCREMENT, navgroupname text UNIQUE, navitems string)";
 		  $execquery = $configdb->exec($query);
+		  $query = "CREATE TABLE IF NOT EXISTS settings (settingid integer PRIMARY KEY AUTOINCREMENT, setting text UNIQUE, description text, settingvalue1type text, settingvalue1 text)";
+		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT, dbversion TEXT)";
 		  $execquery = $configdb->exec($query);
 			// stamp current version
 			if($thedbversion == 'none') { $thedbversion = $DBVERSION; }
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thedbversion')");
 			echo "<tr><td>DB tables checked, Version: $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+			
+			//insert all settings with default values
+			$thedbsettings = checkDBsettings();
+			if(!isset($thedbsettings["InputUserName"]['1']) || $thedbsettings["InputUserName"]['1'] == '') {
+				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (1, 'InputUserName','Requires user to type username instead of showing list for login','boolean','0')");
+			}
+			
 	} catch(PDOException $e)
 		{
 			  echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 			  $redirect = false;
 		}
-/*
-		$thisdbversion = checkDBversion();
-		if(isset($thisdbversion)) { $thedbversion = $thisdbversion; }
-  echo "<tr><td>Settings DB found: Version $thedbversion";
-  echo ($valid)?"</td><td><img src='media/green-tick.png' height='15px'/></td></tr>":"</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";		
-	*/
-		
-		
 
 	$totalusernum = 0;
     $sql = "SELECT * FROM users LIMIT 1";

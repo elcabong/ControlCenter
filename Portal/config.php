@@ -105,4 +105,17 @@ $WANCONNECTION = 0;
 if(substr($_SERVER['REMOTE_ADDR'],0,6) != substr($_SERVER['SERVER_ADDR'],0,6)) { 
 	$WANCONNECTION = 1; 
 }
+
+$settingsarray = array();
+		try {
+			$sql = "SELECT * FROM settings";
+			foreach ($configdb->query($sql) as $row) {
+				$settingname = $row['setting'];
+				$settingsarray["$settingname"]["value1"] = $row['settingvalue1'];
+				$settingsarray["$settingname"]["value2"] = $row['settingvalue2'];
+			}
+		} catch(PDOException $e) {
+			echo $e->getMessage();
+		}
+
 ?>

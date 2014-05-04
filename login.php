@@ -60,7 +60,7 @@ if(strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_
 	echo "<h3 class='orange'>Login Error, Try Again</h3><br>";
 	}
 	// check for input users or display user selection
-	if($inputusername == 1) { ?>
+	if($settingsarray["InputUserName"]["value1"] == 1) { ?>
 		<form action="./Portal/login.php?inputusername=1" method="post" style="width:280px;margin:0 auto;">
 			<table width=259 cellpadding=3 cellspacing=0 id=1>
 		<tr>

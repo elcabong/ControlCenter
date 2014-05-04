@@ -157,6 +157,8 @@ if(!empty($_GET) && !isset($_GET['setup'])){
 			} else {
 				$configdb->exec("UPDATE navigationgroups SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1] WHERE navgroupid=$section_unique");
 			}
+		} else if($section_name == "settings") {
+			$configdb->exec("UPDATE settings SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3] WHERE settingid=$section_unique");
 		}
 	} catch(PDOException $e)
 		{
@@ -296,6 +298,7 @@ $(document).ready(function() {
       <div id="slider">
         <ul class="navigation">
           <li><a href="#ABOUT">About</a></li>|
+          <li><a href="#SETTINGS">Settings</a></li>|
           <li><a href="#ROOMS" <?php if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
          <li><a href="#ROOMGROUPS">Room Groups</a></li>|
          <li><a href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Applications</a></li>
@@ -408,6 +411,46 @@ $(document).ready(function() {
 				</tr>				
               </table>
             </div>
+			<div id="SETTINGS" class="panel">
+              <h3>Settings</h3>
+			    <p>Global Settings that effect the all users and the overall use of the Control Center</p>			  
+                <?php
+				try {
+					$sql = "SELECT * FROM settings";
+					$navgroupid = 0;
+					foreach ($configdb->query($sql) as $row)
+						{
+							$settingid = $row['settingid'];
+							$settingname = $row['setting'];
+							$description = $row['description'];
+							$setting1type = $row['settingvalue1type'];
+							$settingvalue1 = $row['settingvalue1'];
+							echo "<br><hr><br>";
+							echo "<table id='settings-$settingid'>";
+							echo"<input type='hidden' name='setting' value='$settingname'>";
+							echo"<input type='hidden' name='description' value='$description'>";
+							echo"<input type='hidden' name='settingvalue1type' value='$setting1type'>";
+							echo "<tr><td class='title' colspan=3>$description</td><tr>
+										<tr><td class='title'>$settingname</td>";
+							if($setting1type == "boolean") {
+								if($settingvalue1 == "1") {
+								$setting1 .= "<option selected='selected' value='1'>Required</option><option value='0'>No</option>"; 
+								} else {
+								$setting1 .= "<option selected='selected' value='0'>no</option><option value='1'>Required</option>"; 
+								}
+								echo "<td><select name='settingvalue1'>".$setting1."</select></td>";
+							} else {
+								echo "<td><input class='inputcheck nospaces' size='10' name='settingvalue1' value='$settingvalue1'></td>";							
+							}
+							echo "<td class='button right'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"settings-$settingid\");' /></td></tr>";
+							echo "</table><br><br><br>";
+						}
+				} catch(PDOException $e)
+					{
+					echo $e->getMessage();
+					}
+				?>
+            </div>				
             <div id="USERS" class="panel">
               <h3>User List</h3>
 			  <p>Control who has access to what in your Control Center.</p>	
