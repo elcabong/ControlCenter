@@ -30,8 +30,6 @@ $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 		echo $e->getMessage();
 		}
 
-
-
 	try {
 		$sql = "SELECT * FROM users";
 		$userid = 0;
@@ -50,7 +48,7 @@ $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 		echo $e->getMessage();
 		}
 
-if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }		
+if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }	
 
 		try {
 		$sql = "SELECT * FROM rooms";
@@ -67,7 +65,7 @@ if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }
 			{
 			echo $e->getMessage();
 			}
-
+			
 	if($HOWMANYUSERS > 0) {
 			if (!isset($_SESSION['usernumber']) || $_SESSION['usernumber'] == "choose") {
 				if(isset($_POST['usernumber'])) { $_SESSION['usernumber'] = $_POST['usernumber']; }
@@ -75,14 +73,14 @@ if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }
 					header("Location: $thepath");
 						exit;
 				} else {
-			   $_SESSION['usernumber'] = $_GET['user']; }
+					$_SESSION['usernumber'] = $_GET['user']; 
+				}			   
 			   $usernumber = $_SESSION['usernumber'];
-			} else {
-				if (isset($_GET['user']) && $_GET['user']!="choose") {
-					$_SESSION['usernumber'] = $_GET['user']; }
-					$usernumber = $_SESSION['usernumber'];
+			} elseif (!isset($_SESSION['usernumber']) && isset($_GET['user']) && $_GET['user']!="choose") {
+				$_SESSION['usernumber'] = $_GET['user']; 
 			}
-		}	
+			$usernumber = $_SESSION['usernumber'];
+	}
 
 if($usernumber != "choose") {
 		try {
@@ -94,6 +92,7 @@ if($usernumber != "choose") {
 				 if($AUTH_PASS) { $AUTH_ON = 1; } else { $AUTH_ON = 0; }
 				 $authsecured            = $AUTH_ON;
 				 if(isset($row['navgroupaccess'])) { $NAVGROUPS              = $row['navgroupaccess']; }
+				 $userwanenabled = $row['wanenabled'];
 			}	 
 		} catch(PDOException $e)
 			{
@@ -103,5 +102,7 @@ if($usernumber != "choose") {
 }
 
 $WANCONNECTION = 0;
-if(substr($_SERVER['REMOTE_ADDR'],0,6) != substr($_SERVER['SERVER_ADDR'],0,6)) { $WANCONNECTION = 1; }
+if(substr($_SERVER['REMOTE_ADDR'],0,6) != substr($_SERVER['SERVER_ADDR'],0,6)) { 
+	$WANCONNECTION = 1; 
+}
 ?>

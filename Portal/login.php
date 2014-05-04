@@ -1,7 +1,31 @@
-<?php require_once('config.php');
+<?php
+require "startsession.php";
+if(isset($_GET['inputusername']) && $_GET['inputusername'] =='1') {
+	if(isset($_POST['user'])) {
+		$user = $_POST['user'];
+		$configdb = new PDO('sqlite:../sessions/config.db');
+		try {
+			$sql = "SELECT * FROM users WHERE username = '$user' LIMIT 1";
+			foreach ($configdb->query($sql) as $row) {
+				if(isset($row['userid']) && $row['userid'] != '' && $row['userid'] != 0) {
+					$_SESSION['usernumber'] = $row['userid'];
+				}
+			}
+		} catch(PDOException $e)
+			{
+			echo $e->getMessage();
+			}
+	}
+	if(!isset($_SESSION['usernumber']) || $_SESSION['usernumber'] == 'choose') { header( "refresh: 0; url=./logout.php?loginerror=1" );exit; }
+}
+require_once('config.php');
 if(isset($_GET['user']) && $_GET['user'] =='choose') {
-header( "refresh: 0; url=../login.php?user=choose" );
-exit;
+	header( "refresh: 0; url=../login.php?user=choose" );
+	exit;
+}
+if($WANCONNECTION == 1 && $userwanenabled != 1) {
+	header("refresh: 0; url=./logout.php?loginerror=1");
+	exit;
 }
 If (!$authsecured) {
 header( "refresh: 0; url=index.php" );
@@ -10,19 +34,16 @@ header( "refresh: 0; url=index.php" );
 if(isset($_POST['user']) && isset($_POST['password'])) {
     if ($_POST['user']==$authusername && $_POST['password']==$authpassword) {
         $_SESSION["$authusername"] = $authusername;
+		$_SESSION['loginerror'] = 0;
         header( "refresh: 0; url=index.php" );
         exit;
     } else {
-		if(!isset($_SESSION['attempt']) || $_SESSION['attempt'] < 0) {
-			$_SESSION['attempt'] = 0;
-		}
-		$_SESSION['attempt']++;
-		if($_SESSION['attempt'] > 2) {
-		$_SESSION['attempt'] = 0;
-		header( "refresh: 0; url=./logout.php" );
+		header( "refresh: 0; url=./logout.php?loginerror=1" );
 		exit;
-} } }
- ?>
+	}
+}
+?>
+<?php /*
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,4 +89,4 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
 <h2><a href="logout.php">Back to User Selection</a></h2>
 </center>
 </body>
-</html>
+</html>*/?>
