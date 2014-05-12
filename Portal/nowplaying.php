@@ -39,14 +39,18 @@ $ROOMNUMBER = "ROOM$thisroom"."N";
 			}
 			echo "</table>";?>
 		</div>
+		<?php if(isset($fanart) && $fanart != '') { ?>
 		<div id="images">
 			<?php echo $fanart;?>
 		</div>
-		<?php	if(isset($plot) && $plot != '') {?>
+		<?php
+		}
+		if(isset($plot) && $plot != '') {?>
 			<br>
 			<div class='plot'>
 			<b>Plot:</b> <?php echo $plot; ?>
-			</div><?php } ?>
+			</div>
+		<?php } ?>
 	</div>
 <script>
 	thenowplayingtimer();

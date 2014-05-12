@@ -77,7 +77,9 @@ $nowplayingarray = array();
 						$nowplayingarray['Year'] = $jsonnowplaying['result']['item']['year'];
 						$nowplayingarray['First Aired'] = $jsonnowplaying['result']['item']['firstaired'];
 						$thumbnail = "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['thumbnail'])."'/>";
-						$fanart =  "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['fanart'])."'/>";								
+						if(isset($jsonnowplaying['result']['item']['fanart']) && $jsonnowplaying['result']['item']['fanart'] != '') {
+							$fanart =  "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['fanart'])."'/>";
+						}
 					} elseif($filetype == "episode"){
 						$jsontvshowinfo = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22VideoLibrary.GetTVShowDetails%22%2C%20%22params%22%3A%20%7B%20%22tvshowid%22%3A%20$theshowid%2C%20%22properties%22%3A%20%5B%20%22art%22%2C%20%22votes%22%2C%20%22premiered%22%2C%20%22cast%22%2C%20%22genre%22%2C%20%22plot%22%2C%20%22title%22%2C%20%22originaltitle%22%2C%20%22year%22%2C%20%22rating%22%2C%20%22thumbnail%22%2C%20%22playcount%22%2C%20%22file%22%2C%20%22fanart%22%2C%20%22episode%22%5D%20%7D%2C%20%22id%22%3A%201}";
 						$ch = curl_init();
@@ -93,13 +95,18 @@ $nowplayingarray = array();
 						$nowplayingarray['First Aired'] = $jsonnowplaying['result']['item']['firstaired'];
 						$thumbnail = "<img src='$ip/image/".urlencode($jsontvshowinfo['result']['tvshowdetails']['thumbnail'])."'/>";
 						$fanart = "<img src='$ip/image/".urlencode($jsontvshowinfo['result']['tvshowdetails']['fanart'])."'/>";
+						if(isset($jsontvshowinfo['result']['tvshowdetails']['fanart']) && $jsontvshowinfo['result']['tvshowdetails']['fanart'] != '') {
+							$fanart =  "<img src='$ip/image/".urlencode($jsontvshowinfo['result']['tvshowdetails']['fanart'])."'/>";
+						}
 					} else{
 						$nowplayingarray['Movie'] = $jsonnowplaying['result']['item']['title'];
 						$nowplayingarray['Genre'] = implode(', ', $jsonnowplaying['result']['item']['genre']);
 						$nowplayingarray['Year'] = $jsonnowplaying['result']['item']['year'];
 						$nowplayingarray['Tagline'] = $jsonnowplaying['result']['item']['tagline'];
 						$thumbnail = "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['thumbnail'])."'/>";
-						$fanart =  "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['fanart'])."'/>";
+						if(isset($jsonnowplaying['result']['item']['fanart']) && $jsonnowplaying['result']['item']['fanart'] != '') {
+							$fanart =  "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['fanart'])."'/>";
+						}
 					}
 					$nowplayingarray['Runtime'] = round($jsonnowplaying['result']['item']['runtime']/60)." minutes";
 					$nowplayingarray['User Rating'] = round($jsonnowplaying['result']['item']['rating'],2)."/10";
