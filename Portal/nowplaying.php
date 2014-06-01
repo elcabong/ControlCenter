@@ -35,6 +35,7 @@ $ROOMNUMBER = "ROOM$thisroom"."N";
 			echo $thumbnail;
 			echo "<table>";
 			foreach($nowplayingarray as $item=>$value) {
+				if($value == "" || $value == "0") { continue; }
 				echo "<tr><td><b>".$item.":</b></td><td> ".$value."</td></tr>";
 			}
 			echo "</table>";?>
@@ -53,7 +54,7 @@ $ROOMNUMBER = "ROOM$thisroom"."N";
 		<?php } ?>
 	</div>
 <script>
-	thenowplayingtimer();
+	//thenowplayingtimer();
 	function thenowplayingtimer()
 	{
 	  if(!document.contains(timeUpdateField))
@@ -61,11 +62,11 @@ $ROOMNUMBER = "ROOM$thisroom"."N";
 		 clearInterval(nowplayingtimer);
 		 return;
 	  } else {
-		$("#timeUpdateField").load("<?php echo $addonarray["$classification"]["$title"]['path'];?>nowplayingtime.php?ip=<?echo $ip;?>&filetype=<?echo $filetype;?>&activeplayer=<?echo $activeplayerid;?>&addon=<?php echo $addonid;?>");
+		$("#timeUpdateField").load("<?php echo $addonarray["$classification"]["$title"]['path'];?>nowplayingtime.php?ip=<?echo $ip;?>&filetype=<?echo $filetype;?>&activeplayer=<?echo $activeplayerid;?>&addon=<?php echo $addonid;?>&showtime=1");
 	  }
 	}
 	clearInterval(nowplayingtimer);
-	var nowplayingtimer=setInterval(thenowplayingtimer, 5000);
+	var nowplayingtimer=setInterval(thenowplayingtimer, 4000);
 </script>	
 </div>
 </body>

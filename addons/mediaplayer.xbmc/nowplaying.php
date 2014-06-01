@@ -9,13 +9,6 @@ $nowplayingarray = array();
 
 			if(!isset($activeplayerid)) { exit; }
 			if($activeplayerid==0) {
-				$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22Player.GetItem%22%2C%20%22params%22%3A%20%7B%20%22properties%22%3A%20%5B%22director%22%2C%22writer%22%2C%22tagline%22%2C%22episode%22%2C%22title%22%2C%22showtitle%22%2C%22season%22%2C%22genre%22%2C%22year%22%2C%22rating%22%2C%22runtime%22%2C%22firstaired%22%2C%22plot%22%2C%22fanart%22%2C%22thumbnail%22%2C%22tvshowid%22%5D%2C%20%22playerid%22%3A%200%20%7D%2C%20%22id%22%3A%20%221%22}";
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_URL, "$jsoncontents");
-				curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 1);
-				$output = curl_exec($ch);
-				$jsonnowplaying = json_decode($output,true);
 				$jsonmusicinfo = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22AudioLibrary.GetSongDetails%22%2C%20%22params%22%3A%20%7B%20%22songid%22%3A%20$thesongid%2C%20%22properties%22%3A%20%5B%20%22fanart%22%2C%20%22genre%22%2C%20%22title%22%2C%20%22year%22%2C%20%22rating%22%2C%20%22thumbnail%22%5D%20%7D%2C%20%22id%22%3A%201}";
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -38,13 +31,6 @@ $nowplayingarray = array();
 
 					
 			} elseif($activeplayerid==1) {
-				$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22Player.GetItem%22%2C%20%22params%22%3A%20%7B%20%22properties%22%3A%20%5B%22director%22%2C%22writer%22%2C%22tagline%22%2C%22episode%22%2C%22title%22%2C%22showtitle%22%2C%22season%22%2C%22genre%22%2C%22year%22%2C%22rating%22%2C%22runtime%22%2C%22firstaired%22%2C%22plot%22%2C%22fanart%22%2C%22thumbnail%22%2C%22tvshowid%22%5D%2C%20%22playerid%22%3A%201%20%7D%2C%20%22id%22%3A%20%221%22}";
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($ch, CURLOPT_URL, "$jsoncontents");
-				curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 1);
-				$output = curl_exec($ch);
-				$jsonnowplaying = json_decode($output,true);
 				if(isset($jsonnowplaying['result']['item']['tvshowid']) && $jsonnowplaying['result']['item']['tvshowid']!='') {
 					$theshowid = $jsonnowplaying['result']['item']['tvshowid'];
 				}	
@@ -60,16 +46,18 @@ $nowplayingarray = array();
 										if($filetype=="unknown") {
 											$ext = pathinfo($filepath, PATHINFO_EXTENSION);
 											$file = basename($filepath, ".".$ext);
-											$needles = array('1x','2x','3x','4x','5x','6x','7x','8x','9x','0x','s01','s02','s03','s04','s05','s06','s07','s08','s09','s00');
+											$needles = $tvshowneedles;
 											foreach($needles as $needle) {
 												if (strpos($file,$needle) !== false) {
 													$filetype = "atvshow";
+													break;
 												}
 											}
 											if($jsonnowplaying['result']['item']['title'] != '' && $filetype != "atvshow") { $file = $jsonnowplaying['result']['item']['title']; }
 										}
 										
 					if($filetype == "atvshow") {
+						$file = str_replace("."," ","$file");
 						$file = explode(" - ",$file);
 						$nowplayingarray['Series'] = $file[0];
 						$nowplayingarray['Episode'] = $file[1]." ".$file[2];
@@ -108,7 +96,13 @@ $nowplayingarray = array();
 							$fanart =  "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['fanart'])."'/>";
 						}
 					}
-					$nowplayingarray['Runtime'] = round($jsonnowplaying['result']['item']['runtime']/60)." minutes";
+					if(isset($jsonnowplaying['result']['item']['runtime']) && $jsonnowplaying['result']['item']['runtime'] != 0) {
+						$nowplayingarray['Runtime'] = round($jsonnowplaying['result']['item']['runtime']/60)." minutes";
+					} else {
+						require "nowplayingtime.php";
+						$howmanyminutes = round($thetotaltimesec / 60,0);
+						$nowplayingarray['Runtime'] = $howmanyminutes." minutes";
+					}
 					$nowplayingarray['User Rating'] = round($jsonnowplaying['result']['item']['rating'],2)."/10";
 					
 					$nowplayingarray['Director'] = implode(', ', $jsonnowplaying['result']['item']['director']);

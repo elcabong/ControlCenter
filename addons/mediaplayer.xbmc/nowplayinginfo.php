@@ -30,7 +30,9 @@
 							}
 							if($activeplayerid==0) {
 								$filetype='';
-								$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Player.GetItem%22,%20%22params%22:%20{%20%22properties%22:%20[%22album%22,%22title%22,%22year%22],%20%22playerid%22:%200%20},%20%22id%22:%20%221%22}";
+								$therequest = urlencode("\"jsonrpc\": \"2.0\", \"method\": \"Player.GetItem\", \"params\": { \"properties\": [\"director\",\"writer\",\"tagline\",\"episode\",\"file\",\"title\",\"showtitle\",\"season\",\"genre\",\"year\",\"rating\",\"runtime\",\"firstaired\",\"plot\",\"fanart\",\"thumbnail\",\"tvshowid\"%5D, \"playerid\": 0 }, \"id\": \"1\"");
+								//$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Player.GetItem%22,%20%22params%22:%20{%20%22properties%22:%20[%22album%22,%22title%22,%22year%22],%20%22playerid%22:%200%20},%20%22id%22:%20%221%22}";
+								$jsoncontents = "$ip/jsonrpc?request={".$therequest."}";
 								$ch = curl_init();
 								curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 								curl_setopt($ch, CURLOPT_URL, "$jsoncontents");
@@ -54,10 +56,12 @@
 								$jsonplaylist = json_decode($output,true);								
 								// info for playlist items
 							//	print_r($jsonplaylist);
-								return;
+							//	return $jsonnowplaying;
 							} elseif($activeplayerid==1) {
 								$filetype='';
-								$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Player.GetItem%22,%20%22params%22:%20{%20%22properties%22:%20[%22file%22,%22title%22,%22episode%22,%22showtitle%22,%22season%22,%22year%22],%20%22playerid%22:%201%20},%20%22id%22:%20%221%22}";
+//								$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Player.GetItem%22,%20%22params%22:%20{%20%22properties%22:%20[%22file%22,%22title%22,%22episode%22,%22showtitle%22,%22season%22,%22year%22],%20%22playerid%22:%201%20},%20%22id%22:%20%221%22}";
+								$therequest = urlencode("\"jsonrpc\": \"2.0\", \"method\": \"Player.GetItem\", \"params\": { \"properties\": [\"director\",\"writer\",\"tagline\",\"episode\",\"file\",\"title\",\"showtitle\",\"season\",\"genre\",\"year\",\"rating\",\"runtime\",\"firstaired\",\"plot\",\"fanart\",\"thumbnail\",\"tvshowid\"], \"playerid\": 1 }, \"id\": \"1\"");
+								$jsoncontents = "$ip/jsonrpc?request={".$therequest."}";
 								$ch = curl_init();
 								curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 								curl_setopt($ch, CURLOPT_URL, "$jsoncontents");
@@ -88,10 +92,14 @@
 								if(in_array_like("$thelabel",$jsonplaylist)){
 								echo "in the array";
 								} else { echo "not in array"; }*/
-								return;
+								
+								$tvshowneedles = array('1x','2x','3x','4x','5x','6x','7x','8x','9x','0x','s0','S0','00E','00e','e0','E0','e1','E1');
+								$movieneedles = array('(19','(20','[19','[20');
+								
+								return $jsonnowplaying;
 							} elseif($activeplayerid==2) {
 								echo "pics";
-								return;
+								//return $jsonnowplaying;
 							}
 						}
 ?>
