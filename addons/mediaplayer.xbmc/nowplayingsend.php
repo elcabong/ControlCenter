@@ -17,7 +17,6 @@ set_include_path(dirname(__FILE__).DIRECTORY_SEPARATOR);
 require "nowplayinginfo.php";
 
 	$filepath = urlencode($filepath);
-	$thisactiveplayer = $activeplayerid;
 	
 	require "nowplayingtime.php";	
 	$jsoncontents = '';	
