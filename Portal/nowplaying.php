@@ -32,7 +32,9 @@ $ROOMNUMBER = "ROOM$thisroom"."N";
 	<div id='roominfocontent'>
 			<div class='title'>
 			<?
+			if(isset($thumbnail) && $thumbnail != '') {
 			echo $thumbnail;
+			}
 			echo "<table>";
 			foreach($nowplayingarray as $item=>$value) {
 				if($value == "" || $value == "0") { continue; }

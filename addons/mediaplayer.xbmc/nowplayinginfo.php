@@ -30,7 +30,7 @@
 							}
 							if($activeplayerid==0) {
 								$filetype='';
-								$therequest = urlencode("\"jsonrpc\": \"2.0\", \"method\": \"Player.GetItem\", \"params\": { \"properties\": [\"director\",\"writer\",\"tagline\",\"episode\",\"file\",\"title\",\"showtitle\",\"season\",\"genre\",\"year\",\"rating\",\"runtime\",\"firstaired\",\"plot\",\"fanart\",\"thumbnail\",\"tvshowid\"%5D, \"playerid\": 0 }, \"id\": \"1\"");
+								$therequest = urlencode("\"jsonrpc\": \"2.0\", \"method\": \"Player.GetItem\", \"params\": { \"properties\": [\"album\",\"artist\",\"director\",\"writer\",\"tagline\",\"episode\",\"file\",\"title\",\"showtitle\",\"season\",\"genre\",\"year\",\"rating\",\"runtime\",\"firstaired\",\"plot\",\"fanart\",\"thumbnail\",\"tvshowid\"], \"playerid\": 0 }, \"id\": \"1\"");
 								//$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Player.GetItem%22,%20%22params%22:%20{%20%22properties%22:%20[%22album%22,%22title%22,%22year%22],%20%22playerid%22:%200%20},%20%22id%22:%20%221%22}";
 								$jsoncontents = "$ip/jsonrpc?request={".$therequest."}";
 								$ch = curl_init();
@@ -41,6 +41,7 @@
 								$jsonnowplaying = json_decode($output,true);
 								if($jsonnowplaying['result']['item']['label']!='') {
 									$filetype=$jsonnowplaying['result']['item']['type'];
+									$theartist = $jsonnowplaying['result']['item']['artist'];
 									$thealbum = $jsonnowplaying['result']['item']['album'];
 									$thelabel = $jsonnowplaying['result']['item']['label'];
 									$thetitle = $jsonnowplaying['result']['item']['title'];

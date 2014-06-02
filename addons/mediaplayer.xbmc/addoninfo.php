@@ -26,6 +26,8 @@
 											echo $thelabel;
 										} elseif($filetype=="song") {
 											echo "<img src='../media/DefaultMusic.png' height='35px' style='float:left;margin-top:-3px;'>";
+											$theartist = implode(', ', $theartist);
+											echo $theartist." - ";
 											if(false !== stripos($thealbum, '$theyear')) { echo "$thealbum"; } else { echo "$thealbum ($theyear)"; }
 											echo " - ".$thetitle;
 										}

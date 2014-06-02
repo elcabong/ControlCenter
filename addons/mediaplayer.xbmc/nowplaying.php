@@ -19,16 +19,22 @@ $nowplayingarray = array();
 				//print_r ($jsonmusicinfo);
 				$thegenre = implode(', ', $jsonmusicinfo['result']['songdetails']['genre']);
 				
+				$nowplayingarray['Artist'] = implode(', ', $theartist);
+				
 				if(false !== stripos($thealbum, '$theyear')) { $nowplayingarray['Album'] =  "$thealbum"; } else { $nowplayingarray['Album'] =  "$thealbum ($theyear)"; }
 				
 				$nowplayingarray['Track'] = $thetitle; 
 				$nowplayingarray['Genre'] = $thegenre; 
 				$nowplayingarray['Year'] = $theyear;
-				$thumbnail = "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['thumbnail'])."'/>";
-				
+				$thumbnail = '';
+				if(isset($jsonnowplaying['result']['item']['thumbnail'])) {
+					$thumbnail = "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['thumbnail'])."'/>";
+				}
 				// maybe try to put playlist in the fanart area
-				$fanart =  "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['thumbnail'])."'/>";				
-
+				$fanart = '';
+				if(isset($jsonnowplaying['result']['item']['thumbnail'])) {
+					$fanart =  "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['thumbnail'])."'/>";				
+				}
 					
 			} elseif($activeplayerid==1) {
 				if(isset($jsonnowplaying['result']['item']['tvshowid']) && $jsonnowplaying['result']['item']['tvshowid']!='') {
