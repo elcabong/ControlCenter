@@ -18,6 +18,10 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 } else {
 	$isMobile = 0;
 }
+$dev=0;
+if(isset($_GET['dev']) && $_GET['dev'] == 1){
+$dev=1;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -375,7 +379,9 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 							roomcheckcount$i = 0;
 						});
 					}
-					refreshtheroom$i = setTimeout(refreshRoom$i, 2500);					
+					if($dev!=1) {
+						refreshtheroom$i = setTimeout(refreshRoom$i, 2500);
+					}
 				}
 				refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);";
 			}

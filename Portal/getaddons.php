@@ -19,15 +19,14 @@
 	}
 
 		require './addons.php';
-		if (strpos($enabledaddons,',') !== false) {
-			$arr = explode(",", $enabledaddons);
-			$addonid = $arr[0];
-		} else { $addonid = $enabledaddons; }
-
-				$arr = explode(".", $addonid, 2);
-				$classification = $arr[0];
-				$title = $arr[1];
-
+		$allenabledaddons = explode(",", $enabledaddons);			
+		$howmanyaddons=0;
+		foreach($allenabledaddons as $theaddon) {
+				if($theaddon == '') { break; }
+				$addonid = $theaddon;
+				$thisaddonpart = explode(".", $theaddon, 2);
+				$classification = $thisaddonpart[0];
+				$title = $thisaddonpart[1];				
 				$i = $THISROOMID;
 				$ip;
 				if(!empty($enabledaddonsarray["$i"]["$addonid"]['ADDONIP'])) {
@@ -43,6 +42,9 @@
 						   $thisip = strtok(str_replace($d, '', $ip),':');
 					    }
 				    }
+					if(strpos($thisip, "/") != false) {
+						$thisip = substr($thisip, 0, strpos($thisip, "/"));
+					}
 					if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
 						$pingresult = exec("ping -n 1 -w 1 $thisip", $output, $status);
 						// echo 'This is a server using Windows!';
@@ -56,13 +58,14 @@
 							<script>
 								$("#room-menu").load("./room-chooser.php?noreset=1");
 							</script>
-			<?php } else {					
+			<?php } else {				
 							$_SESSION[$ip] = 'alive';
 						}
 						//$status = "alive";
 						
 						$filename = $addonarray["$classification"]["$title"]['path']."addoninfo.php";
 						if (file_exists($filename)) {
+							$howmanyaddons++;
 							require $addonarray["$classification"]["$title"]['path']."addoninfo.php";
 						} else {
 							echo "<a href='#' class='pingicon'><img src='../media/cyan.png' title='online with no addons' style='height:20px;'/></a>";
@@ -83,6 +86,8 @@
 						echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('$ADDONMAC');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";
 					}
 				}
+				
+		}
 ?>
 <script>
 	function wakemachine(mac) {
@@ -109,6 +114,21 @@
 					opacity: 75,
 					overlayClose: true});
 			return false;
+		});
+	});	
+	jQuery(function ($) {
+		$('.roominfo-link').click(function (e) {
+			e.preventDefault();
+			var href = $(this).attr('href');
+			if(href == '#') { return false; }
+			href = href.replace(/#/g, "" );
+			var iframe = document.getElementById(href + 'f');
+			if (!iframe.src) {
+				$('iframe.' + href).attr('src',$('iframe.' + href).attr('data-src'));
+			}
+			$('#wrapper').scrollTo($(this).attr('href'), 0);
+			$('a.panel').removeClass('selected');
+			$('a.panel[href$="#'+href+'"]').addClass('selected');
 		});
 	});	
 </script>

@@ -58,12 +58,11 @@ $availableaddons = array();
 			}
 			$enabledaddonsarray = array();
 			$allenabledaddons = explode(",", $enabledaddons);
-									
 			foreach($allenabledaddons as $theaddon) {
 				if($theaddon == '') { break; }
-				$allenabledaddons = explode(".", $theaddon, 2);
-				$classification = $allenabledaddons[0];
-				$title = $allenabledaddons[1];
+				$thisaddonpart = explode(".", $theaddon, 2);
+				$classification = $thisaddonpart[0];
+				$title = $thisaddonpart[1];
 
 				$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid AND addonid = '$theaddon' LIMIT 1";
 				foreach ($configdb->query($sql3) as $addonSettings) {

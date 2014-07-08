@@ -213,9 +213,9 @@ li.roominfo > a { display:inline-block !important; #float:none !important; }
 
 .scrolling { overflow:hidden; white-space:nowrap;text-overflow:ellipsis; }
 
-.roominfo-modal { margin:0 !important;padding:0 !important; }
+.roominfo-modal,.roominfo-link { margin:0 !important;padding:0 !important; }
 
-.roominfo-modal > p { margin:.4em 0 1.5em; }
+.roominfo-modal > p,.roominfo-link > p { margin:.4em 0 1.5em; }
 
 
 /*---------------------/

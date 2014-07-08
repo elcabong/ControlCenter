@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon>
+	<metadata>
+		<id>utility.diskripper</id>
+		<version>0.5.0</version>
+		<name>Disk Ripper</name>
+		<author>elcabong</author>  
+		<summary>Integrates info for Disk Ripper</summary>
+		<description>this addon add the ability to view current status of a Disk Ripper installation.</description>
+	</metadata>	
+</addon>
