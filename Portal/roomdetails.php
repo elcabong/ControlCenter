@@ -32,6 +32,9 @@ require 'addons.php';
 								   $thisip = strtok(str_replace($d, '', $ip),':');
 								}
 							}
+							if(strpos($thisip, "/") != false) {
+								$thisip = substr($thisip, 0, strpos($thisip, "/"));
+							}
 							if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
 								$pingresult = exec("ping -n 1 -w 1 $thisip", $output, $status);
 								// echo 'This is a server using Windows!';
