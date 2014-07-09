@@ -128,7 +128,7 @@
 			}
 			$('#wrapper').scrollTo($(this).attr('href'), 0);
 			$('a.panel').removeClass('selected');
-			$('a.panel[href$="#'+href+'"]').addClass('selected');
+			$('a.panel[href="#'+href+'"]').addClass('selected');
 		});
 	});	
 </script>
