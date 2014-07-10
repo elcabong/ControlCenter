@@ -7,12 +7,12 @@ $options[CURLOPT_FRESH_CONNECT] = true;
 $options[CURLOPT_FOLLOWLOCATION] = false;
 $options[CURLOPT_FAILONERROR] = true;
 $options[CURLOPT_RETURNTRANSFER] = true; // curl_exec will not return true if you use this, it will instead return the request body
-$options[CURLOPT_TIMEOUT] = 10;
+$options[CURLOPT_TIMEOUT] = 2;
 $content = "";
 $response = false;
 $curl = curl_init();
 curl_setopt_array($curl, $options);
-$context = curl_exec($curl);
+$content = curl_exec($curl);
 curl_close($curl);
 if($content !== false) {
 	$content = trim(preg_replace('/\t+/', '', $content));
