@@ -380,7 +380,7 @@ $dev=1;
 						});
 					}
 					if($dev!=1) {
-						refreshtheroom$i = setTimeout(refreshRoom$i, 2500);
+						refreshtheroom$i = setTimeout(refreshRoom$i, 3500);
 					}
 				}
 				refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);";

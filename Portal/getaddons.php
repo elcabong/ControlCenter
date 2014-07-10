@@ -58,15 +58,14 @@
 							<script>
 								$("#room-menu").load("./room-chooser.php?noreset=1");
 							</script>
-			<?php } else {				
+			<?php } else {
 							$_SESSION[$ip] = 'alive';
 						}
 						//$status = "alive";
-						
 						$filename = $addonarray["$classification"]["$title"]['path']."addoninfo.php";
 						if (file_exists($filename)) {
 							$howmanyaddons++;
-							require $addonarray["$classification"]["$title"]['path']."addoninfo.php";
+							include $addonarray["$classification"]["$title"]['path']."addoninfo.php";
 						} else {
 							echo "<a href='#' class='pingicon'><img src='../media/cyan.png' title='online with no addons' style='height:20px;'/></a>";
 						}
@@ -80,8 +79,10 @@
 							$_SESSION[$ip] = 'dead';
 						}
 						//$status = "dead";
-						$sessvar = "playinginroom$THISROOMID";
-						$_SESSION[$sessvar] = 0;
+						if($classification == "mediaplayer") {
+							$sessvar = "playinginroom$THISROOMID";
+							$_SESSION[$sessvar] = 0;
+						}
 						$ADDONMAC = $enabledaddonsarray["$i"]["$addonid"]['MAC'];
 						echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('$ADDONMAC');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";
 					}
