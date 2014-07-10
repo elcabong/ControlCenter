@@ -1,7 +1,4 @@
 <?php
-if($howmanyaddons<2){
-echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";
-}
 $ip = $enabledaddonsarray["$THISROOMID"]["$addonid"]['ADDONIP'];
 $options[CURLOPT_URL] = "$ip?remotecheck=currentlyripping";
 $options[CURLOPT_PORT] = 80;
@@ -17,11 +14,18 @@ curl_setopt_array($curl, $options);
 $content = curl_exec($curl);
 curl_close($curl);
 if($content !== false) {
+	if($howmanyaddons<2){
+		echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";
+	}
 	$content = trim(preg_replace('/\t+/', '', $content));
 	echo "<span><a href='#";
 	if(isset($_COOKIE["currentRoom$usernumber"]) && $_COOKIE["currentRoom$usernumber"]=="$THISROOMID") {
 		echo "DISKRIPPER1";
 	}
 	echo "' ip='$ip' thisroom='$THISROOMID' class='roominfo-link'><p class='scrolling'>$content</p></a></span>";
+} else {
+	if($howmanyaddons<2){
+		echo "<a href='#' class='pingicon'><img src='../media/cyan.png' title='online, but cant find web server' style='height:20px;'/></a>";
+	}
 }
 ?>
