@@ -83,7 +83,11 @@
 							$sessvar = "playinginroom$THISROOMID";
 							$_SESSION[$sessvar] = 0;
 						}
-						$ADDONMAC = $enabledaddonsarray["$i"]["$addonid"]['MAC'];
+						if(isset($enabledaddonsarray["$i"]["$addonid"]['MAC'])) {
+							$ADDONMAC = $enabledaddonsarray["$i"]["$addonid"]['MAC'];
+						} else {
+							$ADDONMAC = '';
+						}
 						echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('$ADDONMAC');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";
 					}
 				}
