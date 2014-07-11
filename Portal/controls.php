@@ -363,8 +363,12 @@ $dev=1;
 				expire.setTime(today.getTime() + 3600000*24*5);
 				document.cookie="sleeping=0;expires="+expire.toGMTString()+";path=/";		
 		<?php
+			$countgroup = count($roomgroupaccessarray);
+			$resettime = 3500;
+			$count = 0;
 			foreach ($roomgroupaccessarray as $i) {
-				$thedelay = 1000 + (180 * $i);
+				$count++;
+				$thedelay = $resettime/$countgroup * $count;
 				echo "
 				var roomcheckcount$i = 0;
 				function refreshRoom$i() {
@@ -380,7 +384,7 @@ $dev=1;
 						});
 					}
 					if($dev!=1) {
-						refreshtheroom$i = setTimeout(refreshRoom$i, 3500);
+						refreshtheroom$i = setTimeout(refreshRoom$i, $resettime);
 					}
 				}
 				refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);";
