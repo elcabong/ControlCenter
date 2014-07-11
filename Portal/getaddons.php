@@ -12,8 +12,12 @@
 		foreach ($configdb->query($sql3) as $addonSettings)
 			{
 				if($addonSettings['ip'] != '') {
-					$nowplayingip = $addonSettings['ip'];
-					break;
+					$thisaddonpart = explode(".", $addonSettings['addonid'], 2);
+					$classification = $thisaddonpart[0];
+					if($classification == "mediaplayer"){
+						$nowplayingip = $addonSettings['ip'];
+						break;
+					}
 				}
 			}
 	}
