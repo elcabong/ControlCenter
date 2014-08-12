@@ -21,7 +21,7 @@ $ROOMNUMBER = "ROOM$thisroom"."N";
 <div id='roominfocontainer'>
 	<div id='logo'>
 			<div id="timeUpdateField"></div>
-		<h1>Now<span>Playing</span> in <span><?= ${$ROOMNUMBER};?></span></h1>
+		<h1>Now<span>Playing</span> in <span><?php echo ${$ROOMNUMBER};?></span></h1>
 			<?
 			/*if(!isset($jsonactiveplayer['result'])) {
 				echo "There is nothing currently playing.";

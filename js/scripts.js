@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
 	$(function(){
 		document.oncontextmenu = function() {return false;};
 	});
@@ -25,9 +24,6 @@ $(document).ready(function() {
 			myLi.removeClass('secondary');		
 			myLi.removeClass('hidden');
 		}
-	} else {
-      // No hash found
-	$('#wrapper').scrollTo(0,0);
 	}
 
 	var timeoutId = 0;
@@ -304,3 +300,131 @@ ifvisible.wakeup(function(){
 	expire.setTime(today.getTime() + 3600000*24*5);
 	document.cookie="sleeping=0;expires="+expire.toGMTString()+";path=/";					
 });
+
+
+	if (!$('a.panel').hasClass('selected')) {
+		$("#addonlinks li:first-child a:first-child").removeClass('unloaded').addClass('selected');
+	}
+	var timeoutId = 0;
+	var mouseIsHeld = false;
+
+	$('#addonlinks li a.panel.persistent').on('mousedown touchstart', function(e) {
+		mouseIsHeld = false;
+		if(!$(this).hasClass('unloaded')) { var thislink = $(this); var ee = e;
+			clearTimeout(timeoutId);
+			timeoutId = setTimeout(function(){
+				if (thislink.hasClass('selected')) {
+					mouseIsHeld = true;
+					var href = thislink.attr('href');
+					href = href.replace(/#/g, "" );
+					var iframe = document.getElementById(href + 'f');
+					iframe.src = '';
+					iframe.getAttribute("src");
+					iframe.removeAttribute("src");
+					thislink.addClass('unloaded');
+					return false;
+				}
+			},1300);
+		}
+	}).bind('mouseup mouseleave touchend', function() {
+		clearTimeout(timeoutId);
+	});
+
+	$("#addonlinks li a.panel.persistent").click(function (e) {
+	e.preventDefault();
+	if(mouseIsHeld == false) {
+
+        var href = $(this).attr('href');
+		if(href == '#') { return false; }
+				
+		href = href.replace(/#/g, "" );
+		var iframe = document.getElementById(href + 'f');
+		if (!iframe.src) {
+			$('iframe.' + href).attr('src',$('iframe.' + href).attr('data-src'));
+		}
+
+		if($(this).hasClass('selected')) {
+            var href = $(this).attr('href');
+		    href = href.replace(/#/g, "" );
+			var iframe = document.getElementById(href + 'f');
+			iframe.src = iframe.src;
+		        return false; 
+        } else {
+			$('a.panel').removeClass('selected');
+			$(this).removeClass('unloaded');
+			$(this).addClass('selected');
+		}
+		
+		$('#wrapper').scrollTo($(this).attr('href'), 0);
+
+		var myLi = $(this).parent();
+		if(myLi.hasClass("sortable")) {
+			$("li.sortable").each(function () {
+				$(this).addClass('secondary');
+			});
+			myLi.removeClass('secondary');		
+			myLi.removeClass('hidden');
+			myLi.parent().prepend(myLi);
+		}
+
+		var iframeclear = document.getElementById('nonpersistentf');
+		iframeclear.src = '';
+		$('a.panel.nonpersistent').addClass('unloaded');
+		
+		return false;
+	}
+	});
+	
+	function getCookie(cname)	{
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0; i<ca.length; i++) 
+		  {
+		  var c = ca[i].trim();
+		  if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+		  }
+		return "";
+	}
+	
+	
+	function wakemachine(mac) {
+		$.ajax({
+			   type: "POST",
+			   url: "wol-check.php?m="+mac+"",
+			   cache: false,
+			   success: function(response)
+			{
+				setTimeout(func, 35000);
+				function func() {
+					document.getElementById('loading').style.display='none';	
+				}
+		   }
+		});
+	}
+	
+	jQuery(function ($) {
+		$('.roominfo-modal').click(function (e) {
+			var thisip = $(this).attr('ip');
+			var thisroom = $(this).attr('thisroom');
+			$('#modal').load('nowplaying.php?ip='+thisip+'&thisroom='+thisroom).modal({
+					opacity: 75,
+					overlayClose: true});
+			return false;
+		});
+	});	
+	
+	jQuery(function ($) {
+		$('.roominfo-link').click(function (e) {
+			e.preventDefault();
+			var href = $(this).attr('href');
+			if(href == '#') { return false; }
+			href = href.replace(/#/g, "" );
+			var iframe = document.getElementById(href + 'f');
+			if (!iframe.src) {
+				$('iframe.' + href).attr('src',$('iframe.' + href).attr('data-src'));
+			}
+			$('#wrapper').scrollTo($(this).attr('href'), 0);
+			$('a.panel').removeClass('selected');
+			$('a.panel[href="#'+href+'"]').addClass('selected');
+		});
+	});		

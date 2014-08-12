@@ -8,7 +8,7 @@ require 'addons.php';
 <html>
 <head>
 <title>RoomDetails</title>
-<link type='text/css' href='../css/nowplaying.css?<?php echo date ("m/d/Y-H.i.s", filemtime('../css/nowplaying.css'));?>' rel='stylesheet' media='screen' />
+<link type='text/css' href='../css/nowplaying.css' rel='stylesheet' media='screen' />
 </head>
 <body>
 <div id='roominfocontainer'>
@@ -71,11 +71,9 @@ require 'addons.php';
 		$.ajax({
 			   type: "POST",
 			   url: "wol-check.php?m="+mac+"",
-			   //data: 0, // data to send to above script page if any
 			   cache: false,
 			   success: function(response)
 			{
-				// need to retry ping until successful or hit a set limit, then display none
 				setTimeout(func, 35000);
 				function func() {
 					document.getElementById('loading').style.display='none';	

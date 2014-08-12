@@ -14,6 +14,7 @@
 				if($addonSettings['ip'] != '') {
 					$thisaddonpart = explode(".", $addonSettings['addonid'], 2);
 					$classification = $thisaddonpart[0];
+					// this may cause other issues.. may need to look into this.
 					if($classification == "mediaplayer"){
 						$nowplayingip = $addonSettings['ip'];
 						break;
