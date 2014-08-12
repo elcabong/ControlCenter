@@ -49,12 +49,14 @@
 ?>
 <script type="text/javascript">
 	$(document).ready(function() {
+	<?php /*
 	// needs to set cookie for menu size, then on load see which one it is and set properly
 	//document.cookie="roomMenuSize=75;expires="+expire.toGMTString()+";path=/";
 		//var menusize = $.cookie("roomMenuSize");
 		//if(menusize != null && menusize > 0) {
 			//$('#room-menu > ul').css("width",menusize+'px');
 		//}
+	*/ ?>
 	
 		$("#room-menu > ul").touchwipe({
 			wipeLeft: function(e) {
@@ -69,7 +71,6 @@
 			}
 		});
 	});
-
 
 	jQuery(function ($) {
 		$('img.roomdetails').click(function (e) {
@@ -99,7 +100,7 @@
 		}
 		$("#room-menu").load("./room-chooser.php");
 	}
-		
+
 		var t;
 		clearTimeout(t);
 		t=setTimeout(func, 1000);

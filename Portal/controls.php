@@ -42,7 +42,7 @@ $dev=1;
 	<script type="text/javascript" src="../js/jquery.simplemodal.js"></script>
 	<script type="text/javascript" src="../js/jquery.touchwipe.js"></script>	
 	<script type="text/javascript" src="../js/ifvisible.js"></script>
-	<script type="text/javascript" src="../js/scripts.js"></script>
+	<script type="text/javascript" src="../js/scripts.js?<?php echo date ("m/d/Y-H.i.s",filemtime('../js/scripts.js'));?>"></script>
 	<script type="text/javascript">
 		if (window.navigator.standalone) {
 			var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
@@ -396,18 +396,6 @@ $dev=1;
 			}
 		});
 	<?php } ?>
-
-function getCookie(cname)
-{
-var name = cname + "=";
-var ca = document.cookie.split(';');
-for(var i=0; i<ca.length; i++) 
-  {
-  var c = ca[i].trim();
-  if (c.indexOf(name)==0) return c.substring(name.length,c.length);
-  }
-return "";
-}
 </script>
 <div id="modal"></div>
 </body>
