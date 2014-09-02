@@ -84,10 +84,10 @@
 			var thisip = $(this).attr('ip');
 			var thistype = $(this).attr('sendtype');
 			var theroomnum = $(this).attr('room');
-			var usernumber = <?echo $usernumber; ?>;
+			var usernumber = <?php echo $usernumber; ?>;
 			$.ajax({
 				type: "POST",
-				url : "<?= $addonarray["$classification"]["$title"]['path'];?>nowplayingsend.php?to="+thisip+"&from="+from+"&sendtype="+thistype+"&addon=<?php echo $classification. '.' .$title; ?>",
+				url : "<?php echo $addonarray["$classification"]["$title"]['path'];?>nowplayingsend.php?to="+thisip+"&from="+from+"&sendtype="+thistype+"&addon=<?php echo $classification. '.' .$title; ?>",
 				//data: 0, // data to send to above script page if any
 				cache: false,
 				success : function (data) {

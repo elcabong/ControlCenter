@@ -381,10 +381,10 @@ $dev=1;
 						$(\"#roominfo$i\").load(\"./getaddons.php?room=$i\", function () {
 							reSizeRoomInfo();
 							roomcheckcount$i = 0;
+							if($dev!=1) {
+								refreshtheroom$i = setTimeout(refreshRoom$i, $resettime);
+							}
 						});
-					}
-					if($dev!=1) {
-						refreshtheroom$i = setTimeout(refreshRoom$i, $resettime);
 					}
 				}
 				refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);";
