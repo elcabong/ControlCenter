@@ -5,7 +5,8 @@
 	require './config.php';
 	if ($authsecured && (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername )) {
 		header("Location: login.php");
-		exit;}
+		exit;
+	}
 	if(isset($_SESSION['room'])) {
 		$roomid = $_SESSION['room'];
 		$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid";
