@@ -378,16 +378,25 @@ $dev=1;
 					}
 					roomcheckcount$i++;
 					if(isSleeping == 0 || roomcheckcount$i > 100) {
-						$(\"#roominfo$i\").load(\"./getaddons.php?room=$i\", function () {
-							reSizeRoomInfo();
-							roomcheckcount$i = 0;
-							if($dev!=1) {
-								refreshtheroom$i = setTimeout(refreshRoom$i, $resettime);
+						$(\"#roominfo$i\").load(\"./getaddons.php?room=$i\", function ( response, status, xhr ) {
+							if ( status == \"error\" ) {
+								var msg = \"Sorry but there was an error: \";
+								$(\"#roominfo$i\").html( msg + xhr.status + \" \" + xhr.statusText );
+								if($dev!=1) {
+									refreshtheroom$i = setTimeout(refreshRoom$i, 20000);
+								}								
+							} else {
+								reSizeRoomInfo();
+								roomcheckcount$i = 0;
+								if($dev!=1) {
+									refreshtheroom$i = setTimeout(refreshRoom$i, $resettime);
+								}
 							}
 						});
 					}
 				}
-				refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);";
+				refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);
+				";
 			}
 		?>
 			setTimeout(func, 4500);
@@ -396,6 +405,36 @@ $dev=1;
 			}
 		});
 	<?php } ?>
+
+// idle timeout for network pings
+function d(el){
+    return document.getElementById(el);
+}
+ifvisible.setIdleDuration(360);
+
+ifvisible.idle(function(){
+	var today = new Date();
+	var expire = new Date();
+	expire.setTime(today.getTime() + 3600000*24*5);
+	document.cookie="sleeping=1;expires="+expire.toGMTString()+";path=/";
+});
+
+ifvisible.wakeup(function(){
+	var today = new Date();
+	var expire = new Date();
+	expire.setTime(today.getTime() + 3600000*24*5);
+	document.cookie="sleeping=0;expires="+expire.toGMTString()+";path=/";
+	<?php
+		$count=0;
+		foreach ($roomgroupaccessarray as $i) {
+			$count++;
+			$thedelay = $resettime/$countgroup * $count;		
+			echo "cleartimeout(refreshtheroom$i);";
+			echo "refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);";
+		}
+	?>	
+});
+
 </script>
 <div id="modal"></div>
 </body>
