@@ -1,6 +1,6 @@
 <?php //control center upgrade info
 //db version in config.php as well
-$DBVERSION = "1.1.1";
+$DBVERSION = "1.1.2";
 $acceptupgrade = 0;
 if(isset($_GET['newdbversion'])) {
 	$DBVERSION = $_GET['newdbversion'];
@@ -173,6 +173,7 @@ if (file_exists('./sessions/config.db')){
   // write db tables here if they dont exist
    try {
   					$thedbversion = checkDBversion();
+					$theolddbversion = $thedbversion;
 					if($thedbversion < $DBVERSION && $thedbversion != 'none') {
 						$upgrademe = checkDBupgrade($thedbversion,$DBVERSION);
 						if($upgrademe == "bigupdate") {
@@ -228,7 +229,8 @@ if (file_exists('./sessions/config.db')){
 									setting7 TEXT  NULL,
 									setting8 TEXT  NULL,
 									setting9 TEXT  NULL,
-									setting10 TEXT  NULL
+									setting10 TEXT  NULL,
+									device_alive INTEGER NULL
 									)";
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS roomgroups (roomgroupid integer PRIMARY KEY AUTOINCREMENT, roomgroupname text UNIQUE, roomaccess string, roomdeny string)";
@@ -243,7 +245,12 @@ if (file_exists('./sessions/config.db')){
 		  $execquery = $configdb->exec($query);
 			// stamp current version
 			if($thedbversion == 'none') { $thedbversion = $DBVERSION; }
+			if($thedbversion == '1.1.2' && $theolddbversion < $thedbversion) {
+				$query = "ALTER TABLE rooms_addons ADD COLUMN device_alive INTEGER NULL;"; 	
+				$execquery = $configdb->exec($query);				
+			}
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thedbversion')");
+			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (2,'0')");	
 			echo "<tr><td>DB tables checked, Version: $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 			
 			//insert all settings with default values

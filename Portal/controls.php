@@ -158,37 +158,35 @@ $dev=1;
 							$sql = "SELECT * FROM navigation WHERE navid = $x AND mobile != ''";
 							foreach ($configdb->query($sql) as $row) {
 								$navtitle = $row['navname'];
-							//	if(isset($row['navip'])) { $navdestination = $row['navip']; }
-							//	if(isset($row['mobile']) && ($row['mobile'] != '' || $row['mobile'] != '1' || $row['mobile'] != '0')) { $navdestination = $row['mobile']; }
-									if($mobileamt > '1'){
-										$tempc++;
-										echo "<li id=".$tempc." class='clear'>";
-										$filename = "../media/Programs/".$navtitle.".png";
-										if (file_exists($filename)) {
-											$linkto = "<img src=$filename height='35px'>";
-										} else {
-											$linkto = $navtitle;
-										}
-									if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
-									if($row['persistent'] == '0') {
-										if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
-										if($WANCONNECTION == '1' && isset($row['navipw']) && $row['navipw'] != '') { $loadpersistent = $row['navipw']; }
-										echo "<a href='".$loadpersistent."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
+								if($mobileamt > '1'){
+									$tempc++;
+									echo "<li id=".$tempc." class='clear'>";
+									$filename = "../media/Programs/".$navtitle.".png";
+									if (file_exists($filename)) {
+										$linkto = "<img src=$filename height='35px'>";
 									} else {
-										echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
+										$linkto = $navtitle;
 									}
-									$linkcount++;					
-										echo "</li>";
+								if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
+								if($row['persistent'] == '0') {
+									if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
+									if($WANCONNECTION == '1' && isset($row['navipw']) && $row['navipw'] != '') { $loadpersistent = $row['navipw']; }
+									echo "<a href='".$loadpersistent."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
+								} else {
+									echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
+								}
+								$linkcount++;					
+									echo "</li>";
+								} else {
+									$filename = "../media/Programs/".$navtitle.".png";
+									if (file_exists($filename)) {
+										$linkto = "<img src=$filename height='35px'>";
 									} else {
-										$filename = "../media/Programs/".$navtitle.".png";
-										if (file_exists($filename)) {
-											$linkto = "<img src=$filename height='35px'>";
-										} else {
-											$linkto = $navtitle;
-										}
-										echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";
+										$linkto = $navtitle;
 									}
-							}		
+									echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";
+								}
+							}
 						}
 					}
 				} catch(PDOException $e)
@@ -379,20 +377,20 @@ $dev=1;
 					roomcheckcount$i++;
 					if(isSleeping == 0 || roomcheckcount$i > 100) {
 						$(\"#roominfo$i\").load(\"./getaddons.php?room=$i\", function ( response, status, xhr ) {
-							if ( status == \"error\" ) {
+							roomcheckcount$i = 0;
+							if( status == \"error\" ) {
 								var msg = \"Sorry but there was an error: \";
 								$(\"#roominfo$i\").html( msg + xhr.status + \" \" + xhr.statusText );
 								if($dev!=1) {
 									refreshtheroom$i = setTimeout(refreshRoom$i, 20000);
-								}								
-							} else {
-								reSizeRoomInfo();
-								roomcheckcount$i = 0;
-								if($dev!=1) {
-									refreshtheroom$i = setTimeout(refreshRoom$i, $resettime);
 								}
+								return;
 							}
+							reSizeRoomInfo();
 						});
+					}
+					if($dev!=1) {
+						refreshtheroom$i = setTimeout(refreshRoom$i, $resettime);
 					}
 				}
 				refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);
@@ -403,38 +401,61 @@ $dev=1;
 			function func() {
 				document.getElementById('loading').style.display='none';
 			}
+			
 		});
 	<?php } ?>
+	
+	var cronkeeper = 0;
+	setTimeout(croncheck, 1000);
+	function croncheck() {
+		$.ajax({ url: './cron.php',
+				 type: 'post',
+				 success: function(output) {
+					if(output == "takeover") {
+						cronkeeper = "1";
+					}
+					if(output == "release") {
+						cronkeeper = "0";
+					}
+				},
+				complete: function() {
+					if (cronkeeper == 1) {
+						setTimeout(croncheck, 5000);
+					} else {
+						setTimeout(croncheck, 60000);
+					}
+				}
+		});
+	}
 
-// idle timeout for network pings
-function d(el){
-    return document.getElementById(el);
-}
-ifvisible.setIdleDuration(360);
+	// idle timeout for network pings
+	function d(el){
+		return document.getElementById(el);
+	}
+	ifvisible.setIdleDuration(360);
 
-ifvisible.idle(function(){
-	var today = new Date();
-	var expire = new Date();
-	expire.setTime(today.getTime() + 3600000*24*5);
-	document.cookie="sleeping=1;expires="+expire.toGMTString()+";path=/";
-});
+	ifvisible.idle(function(){
+		var today = new Date();
+		var expire = new Date();
+		expire.setTime(today.getTime() + 3600000*24*5);
+		document.cookie="sleeping=1;expires="+expire.toGMTString()+";path=/";
+	});
 
-ifvisible.wakeup(function(){
-	var today = new Date();
-	var expire = new Date();
-	expire.setTime(today.getTime() + 3600000*24*5);
-	document.cookie="sleeping=0;expires="+expire.toGMTString()+";path=/";
-	<?php
-		$count=0;
-		foreach ($roomgroupaccessarray as $i) {
-			$count++;
-			$thedelay = $resettime/$countgroup * $count;		
-			echo "cleartimeout(refreshtheroom$i);";
-			echo "refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);";
-		}
-	?>	
-});
-
+	ifvisible.wakeup(function(){
+		var today = new Date();
+		var expire = new Date();
+		expire.setTime(today.getTime() + 3600000*24*5);
+		document.cookie="sleeping=0;expires="+expire.toGMTString()+";path=/";
+		<?php
+			$count=0;
+			foreach ($roomgroupaccessarray as $i) {
+				$count++;
+				$thedelay = $resettime/$countgroup * $count;		
+				echo "cleartimeout(refreshtheroom$i);";
+				echo "refreshtheroom$i = setTimeout(refreshRoom$i, $thedelay);";
+			}
+		?>
+	});
 </script>
 <div id="modal"></div>
 </body>
