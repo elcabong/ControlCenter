@@ -387,7 +387,8 @@ function reSizeRoomInfo() {
 			var thisroom = $(this).attr('thisroom');
 			$('#modal').load('nowplaying.php?ip='+thisip+'&thisroom='+thisroom).modal({
 					opacity: 75,
-					overlayClose: true});
+					overlayClose: true
+			});
 			return false;
 		});
 	});	

@@ -1,5 +1,7 @@
 <?php
-						$ip = $enabledaddonsarray["$THISROOMID"]["$addonid"]['ADDONIP'];
+						if(isset($enabledaddonsarray) && !isset($ip)) {
+							$ip = $enabledaddonsarray["$THISROOMID"]["$addonid"]['ADDONIP'];
+						}
 						require "nowplayinginfo.php";
 						if(empty($jsoncheckxbmc['result'])) {
 							$sessvar = "playinginroom$THISROOMID";

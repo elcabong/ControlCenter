@@ -1,7 +1,7 @@
 <?php
 // this needs to be updated to current version of db.
 //db version in servercheck.php as well
-$DBVERSION = "1.1.1";
+$DBVERSION = "1.1.2";
 
 require_once "functions.php";
 require "startsession.php";
