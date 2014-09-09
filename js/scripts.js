@@ -407,4 +407,15 @@ function reSizeRoomInfo() {
 			$('a.panel').removeClass('selected');
 			$('a.panel[href="#'+href+'"]').addClass('selected');
 		});
+	});
+	
+	jQuery(function ($) {
+		$('#searchlink').click(function (e) {
+			var thisroom = $(this).attr('thisroom');
+			$('#modal').load('search.php?thisroom='+thisroom).modal({
+					opacity: 75,
+					overlayClose: true
+			});
+			return false;
+		});
 	});		

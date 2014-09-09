@@ -17,6 +17,7 @@ array_splice($addonDIRarray, 0, 1);
 	
 $addonarray = array();
 $availableaddons = array();
+$searchproviders = array();
 	
    for ($i = 0; $i < count($addonDIRarray); ++$i) {
 		$thisxml = $ADDONDIR . $addonDIRarray[$i] . "/addon.xml";
@@ -40,6 +41,9 @@ $availableaddons = array();
 
 		if($thisclassification != 'error' && $thisclassification != 'disabled') {
 			$availableaddons[] = "$result->id";
+		}
+		if($thisclassification == 'search') {
+			$searchproviders[] = "$result->id";
 		}
     }
 		if(isset($theroom) && $theroom != '' ) {
