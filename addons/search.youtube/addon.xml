@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon>
+	<metadata>
+		<id>search.youtube</id>
+		<version>1.0.0</version>
+		<name>Youtube</name>
+		<author>elcabong</author>  
+		<summary>Search Youtube and Send to a mediaplayer</summary>
+		<description>Search Youtube and Send to a mediaplayer</description>
+	</metadata>
+</addon>
