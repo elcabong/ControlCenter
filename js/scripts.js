@@ -282,7 +282,7 @@ function reSizeRoomInfo() {
 };
 
 	if (!$('a.panel').hasClass('selected')) {
-		$("#addonlinks li:first-child a:first-child").removeClass('unloaded').addClass('selected');
+		$("#addonlinks a.panel:first").removeClass('unloaded').addClass('selected');
 	}
 	var timeoutId = 0;
 	var mouseIsHeld = false;
