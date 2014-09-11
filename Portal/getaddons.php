@@ -26,8 +26,8 @@
 	}
 
 	$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $THISROOMID";
+	$howmanyaddons = 0;
 	foreach ($configdb->query($sql3) as $addonSettings) {
-		$addon_alive = $addonSettings['addon_alive'];
 		$device_alive = $addonSettings['device_alive'];
 		$thisaddonpart = explode(".", $addonSettings['addonid'], 2);
 		$classification = $thisaddonpart[0];
@@ -48,6 +48,7 @@
 			//$status = "alive";
 			$filename = $addonarray["$classification"]["$title"]['path']."addoninfo.php";
 			if (file_exists($filename)) {
+				$howmanyaddons++;
 				include $addonarray["$classification"]["$title"]['path']."addoninfo.php";
 			} else {
 				echo "<a href='#' class='pingicon'><img src='../media/cyan.png' title='online with no addons' style='height:20px;'/></a>";
