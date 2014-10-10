@@ -71,14 +71,14 @@
 								$jsonnowplaying = json_decode($output,true);
 								//print_r($jsonnowplaying);
 								if($jsonnowplaying['result']['item']['label']!='') {
-									$filepath=$jsonnowplaying['result']['item']['file'];
-									$filetype=$jsonnowplaying['result']['item']['type'];
-									$thelabel = $jsonnowplaying['result']['item']['label'];
-									$theshowtitle = $jsonnowplaying['result']['item']['showtitle'];
-									$thetitle = $jsonnowplaying['result']['item']['title'];
-									$theshowseason = $jsonnowplaying['result']['item']['season'];
-									$theshowepisode = str_pad($jsonnowplaying['result']['item']['episode'], 2, '0', STR_PAD_LEFT);
-									$theyear = $jsonnowplaying['result']['item']['year'];
+									if(isset($jsonnowplaying['result']['item']['file'])) { $filepath=$jsonnowplaying['result']['item']['file']; }
+									if(isset($jsonnowplaying['result']['item']['type'])) { $filetype=$jsonnowplaying['result']['item']['type']; }
+									if(isset($jsonnowplaying['result']['item']['label'])) { $thelabel = $jsonnowplaying['result']['item']['label']; }
+									if(isset($jsonnowplaying['result']['item']['showtitle'])) { $theshowtitle = $jsonnowplaying['result']['item']['showtitle']; }
+									if(isset($jsonnowplaying['result']['item']['title'])) { $thetitle = $jsonnowplaying['result']['item']['title']; }
+									if(isset($jsonnowplaying['result']['item']['season'])) { $theshowseason = $jsonnowplaying['result']['item']['season']; }
+									if(isset($jsonnowplaying['result']['item']['episode'])) { $theshowepisode = str_pad($jsonnowplaying['result']['item']['episode'], 2, '0', STR_PAD_LEFT); }
+									if(isset($jsonnowplaying['result']['item']['year'])) { $theyear = $jsonnowplaying['result']['item']['year']; }
 								}
 								$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Playlist.GetItems%22,%20%22params%22:%20{%20%22playlistid%22:%201%20},%20%22id%22:%20%221%22}";
 								$ch = curl_init();

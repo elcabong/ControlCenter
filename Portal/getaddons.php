@@ -76,6 +76,7 @@
 			echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('$ADDONMAC');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";
 		}
 	}
+	$log->LogDebug("Got Addons for room $THISROOMID");
 ?>
 <script>
 	function wakemachine(mac) {
