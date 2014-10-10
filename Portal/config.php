@@ -6,6 +6,7 @@ $DBVERSION = "1.1.2";
 require_once "functions.php";
 require "startsession.php";
 
+
 if(substr($path2, 0, 3) == "../") { $folderlevel = "../"; } else { $folderlevel = "./"; };
 
 $servercheckloc = $folderlevel . "servercheck.php";
@@ -113,10 +114,27 @@ $settingsarray = array();
 			foreach ($configdb->query($sql) as $row) {
 				$settingname = $row['setting'];
 				$settingsarray["$settingname"]["value1"] = $row['settingvalue1'];
-				$settingsarray["$settingname"]["value2"] = $row['settingvalue2'];
-			}
+				if(isset($row['settingvalue2'])){
+					$settingsarray["$settingname"]["value2"] = $row['settingvalue2'];
+				}
+			}	
 		} catch(PDOException $e) {
 			echo $e->getMessage();
 		}
 
+		
+require_once "KLogger.php";
+$date = date('Y-m-d');
+// klogger options: DEBUG, INFO, WARN, ERROR, FATAL, OFF
+$log = new KLogger ( $folderlevel."logs/log-$date.txt" , KLogger::INFO );
+ 
+// Do database work that throws an exception
+//$log->LogError("An exception was thrown in ThisFunction()");
+ 
+// Print out some information
+//$log->LogInfo("Internal Query Time: $time_ms milliseconds");
+ 
+// Print out the value of some variables
+//$log->LogDebug("Loaded Config.php");
+		
 ?>

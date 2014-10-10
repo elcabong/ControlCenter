@@ -413,9 +413,11 @@ $dev=1;
 				 success: function(output) {
 					if(output == "takeover") {
 						cronkeeper = "1";
+						//$log->LogDebug("Cronkeeper takeover");
 					}
 					if(output == "release") {
 						cronkeeper = "0";
+						//$log->LogDebug("Cronkeeper release");
 					}
 				},
 				complete: function() {
