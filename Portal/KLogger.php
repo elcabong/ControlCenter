@@ -31,7 +31,7 @@
 		
 		/* Public members: Not so much of an example of encapsulation, but that's okay. */
 		public $Log_Status 	= KLogger::LOG_CLOSED;
-		public $DateFormat	= "Y-m-d G:i:s";
+		public $DateFormat	= "Y-m-d h:i:s A";
 		public $MessageQueue;
 	
 		private $log_file;

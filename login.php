@@ -2,8 +2,10 @@
 if (file_exists('./sessions/firstrun.php') || !file_exists('./sessions/config.db')) { header('Location: servercheck.php');exit; }
 
 require('./Portal/config.php');
-
+$USERIP = $_SERVER['REMOTE_ADDR'];
+$log->LogInfo("User from $USERIP on Login Screen");
 	if(isset($_SESSION['usernumber']) && $_SESSION['usernumber'] != "choose" || $_GET['user'] != "choose") {
+	$log->LogInfo("User $authusername from $USERIP already logged in redirect ");
     header("Location: ./Portal/index.php");
     exit;} ?>
 <!DOCTYPE html>

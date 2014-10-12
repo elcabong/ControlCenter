@@ -19,11 +19,13 @@ if(isset($_GET['inputusername']) && $_GET['inputusername'] =='1') {
 	if(!isset($_SESSION['usernumber']) || $_SESSION['usernumber'] == 'choose') { header( "refresh: 0; url=./logout.php?loginerror=1" );exit; }
 }
 require_once('config.php');
+$USERIP = $_SERVER['REMOTE_ADDR'];
 if(isset($_GET['user']) && $_GET['user'] =='choose') {
 	header( "refresh: 0; url=../login.php?user=choose" );
 	exit;
 }
 if($WANCONNECTION == 1 && $userwanenabled != 1) {
+	$log->LogWarn("FAILED LOGIN user $authusername not allowed from WAN, $USERIP");
 	header("refresh: 0; url=./logout.php?loginerror=1");
 	exit;
 }
@@ -35,9 +37,11 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
     if ($_POST['user']==$authusername && $_POST['password']==$authpassword) {
         $_SESSION["$authusername"] = $authusername;
 		$_SESSION['loginerror'] = 0;
+		$log->LogInfo("User $authusername LOGGED IN from $USERIP");
         header( "refresh: 0; url=index.php" );
         exit;
     } else {
+		$log->LogWarn("FAILED LOGIN by $authusername from $USERIP");
 		header( "refresh: 0; url=./logout.php?loginerror=1" );
 		exit;
 	}

@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+$USERIP = $_SERVER['REMOTE_ADDR'];
 if ($authsecured && (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername )) {
     header("Location: login.php");
     exit;}
@@ -15,8 +16,10 @@ if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 require_once "mobile_device_detect.php";
 if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	$isMobile = 1;
+	$log->LogInfo("User $authusername loaded controls from $USERIP in mobile mode");
 } else {
 	$isMobile = 0;
+	$log->LogInfo("User $authusername loaded controls from $USERIP in full mode");
 }
 $dev=0;
 if(isset($_GET['dev']) && $_GET['dev'] == 1){
