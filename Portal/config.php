@@ -122,7 +122,7 @@ $settingsarray = array();
 			echo $e->getMessage();
 		}
 
-		
+$USERIP = $_SERVER['REMOTE_ADDR'];		
 require_once "KLogger.php";
 $date = date('Y-m-d');
 // klogger options: DEBUG, INFO, WARN, ERROR, FATAL, OFF

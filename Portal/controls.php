@@ -1,6 +1,5 @@
 <?php
 require_once 'config.php';
-$USERIP = $_SERVER['REMOTE_ADDR'];
 if ($authsecured && (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername )) {
     header("Location: login.php");
     exit;}
