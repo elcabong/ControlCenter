@@ -7,6 +7,7 @@
 							$sessvar = "playinginroom$THISROOMID";
 							$_SESSION[$sessvar] = 0;
 							echo "<a href='#' class='pingicon'><img src='../media/orange.png' title='online with no xbmc running' style='height:20px;'/></a>";
+							exit;
 						} else {
 							if(empty($jsonactiveplayer['result'])) {
 								echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";

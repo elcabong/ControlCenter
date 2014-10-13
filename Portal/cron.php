@@ -10,14 +10,22 @@ try {
 	//echo $lastcron;
 } catch(PDOException $e)
 	{
+	$log->LogError("$e->getMessage()");
 	//echo $e->getMessage();
 	}
 	//echo "<br>".$time;
 
+require_once "KLogger.php";
+$date = date('Y-m-d');
+// klogger options: DEBUG, INFO, WARN, ERROR, FATAL, OFF
+$log = new KLogger ( "../logs/log-$date.txt" , KLogger::INFO );	
+$USERIP = $_SERVER['REMOTE_ADDR'];
 if($lastcron < ($time - 45)) {
 echo "takeover";
+$log->LogInfo("Cron taken over by $USERIP");
 } else if(($lastcron + 5) > $time) {
 	echo "release";
+	$log->LogInfo("Cron released by $USERIP");
 	return;
 	exit;
 }
@@ -28,7 +36,6 @@ try {
 		{
 			$THISROOMID = $addonSettings['roomid'];
 			$rooms_addonsid = $addonSettings['rooms_addonsid'];
-			$THISROOMID = $addonSettings['roomid'];
 			$statusorig = $addonSettings['device_alive'];
 			if($addonSettings['ip'] != '') {
 				$disallowed = array('http://', 'https://');
@@ -62,6 +69,7 @@ try {
 		}
 } catch(PDOException $e)
 	{
+	$log->LogError("$e->getMessage()");
 	echo $e->getMessage();
 	}
 $execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (2,'$time')");
