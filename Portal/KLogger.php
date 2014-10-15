@@ -31,7 +31,7 @@
 		
 		/* Public members: Not so much of an example of encapsulation, but that's okay. */
 		public $Log_Status 	= KLogger::LOG_CLOSED;
-		public $DateFormat	= "Y-m-d h:i:s A";
+		//public $DateFormat	= "Y-m-d h:i:s:u A";
 		public $MessageQueue;
 	
 		private $log_file;
@@ -123,7 +123,13 @@
 		
 		private function getTimeLine( $level )
 		{
-			$time = date( $this->DateFormat );
+		
+			$t = microtime(true);
+			$micro = sprintf("%06d",($t - floor($t)) * 1000000);
+			$d = new DateTime( date('Y-m-d H:i:s.'.$micro,$t) );
+
+			$time = $d->format("Y-m-d h:i:s.u A");
+			//$time = date( $this->DateFormat );
 		
 			switch( $level )
 			{

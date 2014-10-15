@@ -26,7 +26,7 @@
 	require_once "./addons.php";
 
 		$ROOMNUMBER = "ROOM$roomnum"."N";
-		$log->LogInfo("User $authusername from $USERIP changed to room ${$ROOMNUMBER}");
+		$log->LogInfo("User $authusername from $USERIP loaded room ${$ROOMNUMBER}");
 		echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUMBER}</a>";
 		echo "<ul>";
 			$thisroom = 0;

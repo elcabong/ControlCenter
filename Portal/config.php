@@ -4,8 +4,7 @@
 $DBVERSION = "1.1.2";
 
 require_once "functions.php";
-require "startsession.php";
-
+require_once "startsession.php";
 
 if(substr($path2, 0, 3) == "../") { $folderlevel = "../"; } else { $folderlevel = "./"; };
 
@@ -13,6 +12,22 @@ $servercheckloc = $folderlevel . "servercheck.php";
 $thepath = $folderlevel;
 
 $ADDONDIR = $folderlevel . "addons/";
+
+$USERIP = $_SERVER['REMOTE_ADDR'];		
+require_once "KLogger.php";
+$date = date('Y-m-d');
+// klogger options: DEBUG, INFO, WARN, ERROR, FATAL, OFF
+$log = new KLogger ( $folderlevel."logs/log-$date.txt" , KLogger::INFO );
+ 
+// Do database work that throws an exception
+//$log->LogError("An exception was thrown in ThisFunction()");
+ 
+// Print out some information
+//$log->LogInfo("Internal Query Time: $time_ms milliseconds");
+ 
+// Print out the value of some variables
+//$log->LogDebug("Loaded Config.php");
+
 
 $missing = folderRequirements($folderlevel);
 if (!file_exists($sessionsloc . "/config.db") || $missing > 0) { header('Location: ' . $servercheckloc);exit; }
@@ -29,6 +44,7 @@ $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 		if($thedbversion < $DBVERSION) { header('Location: ' . $servercheckloc . '?newdbversion=' . $DBVERSION);exit; }
 	} catch(PDOException $e)
 		{
+		$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
 		echo $e->getMessage();
 		}
 
@@ -47,6 +63,7 @@ $configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
 			}
 	} catch(PDOException $e)
 		{
+		$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));		
 		echo $e->getMessage();
 		}
 
@@ -65,6 +82,7 @@ if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }
 			}
 		} catch(PDOException $e)
 			{
+			$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));			
 			echo $e->getMessage();
 			}
 			
@@ -72,8 +90,9 @@ if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }
 			if (!isset($_SESSION['usernumber']) || $_SESSION['usernumber'] == "choose") {
 				if(isset($_POST['usernumber'])) { $_SESSION['usernumber'] = $_POST['usernumber']; }
 				elseif (!$_GET['user']) {
+					$log->LogWarn("User NOUSER $authusername from $USERIP redirected to login screen from " . $_SERVER["REQUEST_URI"]);
 					header("Location: $thepath");
-						exit;
+					exit;
 				} else {
 					$_SESSION['usernumber'] = $_GET['user']; 
 				}			   
@@ -98,6 +117,7 @@ if($usernumber != "choose") {
 			}	 
 		} catch(PDOException $e)
 			{
+			$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));			
 			echo $e->getMessage();
 			}
 
@@ -119,22 +139,7 @@ $settingsarray = array();
 				}
 			}	
 		} catch(PDOException $e) {
+			$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));	
 			echo $e->getMessage();
-		}
-
-$USERIP = $_SERVER['REMOTE_ADDR'];		
-require_once "KLogger.php";
-$date = date('Y-m-d');
-// klogger options: DEBUG, INFO, WARN, ERROR, FATAL, OFF
-$log = new KLogger ( $folderlevel."logs/log-$date.txt" , KLogger::INFO );
- 
-// Do database work that throws an exception
-//$log->LogError("An exception was thrown in ThisFunction()");
- 
-// Print out some information
-//$log->LogInfo("Internal Query Time: $time_ms milliseconds");
- 
-// Print out the value of some variables
-//$log->LogDebug("Loaded Config.php");
-		
+		}		
 ?>

@@ -1,5 +1,5 @@
 <?php
-require "startsession.php";
+require_once('config.php');
 if(isset($_GET['inputusername']) && $_GET['inputusername'] =='1') {
 	if(isset($_POST['user'])) {
 		$user = $_POST['user'];
@@ -13,13 +13,15 @@ if(isset($_GET['inputusername']) && $_GET['inputusername'] =='1') {
 			}
 		} catch(PDOException $e)
 			{
+			$log->LogFatal("Fatal: User $authusername from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
 			echo $e->getMessage();
 			}
 	}
-	if(!isset($_SESSION['usernumber']) || $_SESSION['usernumber'] == 'choose') { header( "refresh: 0; url=./logout.php?loginerror=1" );exit; }
+	if(!isset($_SESSION['usernumber']) || $_SESSION['usernumber'] == 'choose') { 
+		header( "refresh: 0; url=./logout.php?loginerror=1" );
+		exit;
+	}
 }
-require_once('config.php');
-$USERIP = $_SERVER['REMOTE_ADDR'];
 if(isset($_GET['user']) && $_GET['user'] =='choose') {
 	header( "refresh: 0; url=../login.php?user=choose" );
 	exit;
