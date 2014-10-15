@@ -70,7 +70,7 @@ try {
 } catch(PDOException $e)
 	{
 	$log->LogError("$e->getMessage()");
-	echo $e->getMessage();
+	//echo $e->getMessage();
 	}
 $execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (2,'$time')");
 ?>

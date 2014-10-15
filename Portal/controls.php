@@ -193,6 +193,7 @@ $dev=1;
 					}
 				} catch(PDOException $e)
 					{
+					$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));				
 					echo $e->getMessage();
 					}				
 				echo "</ul>";
@@ -260,6 +261,7 @@ $dev=1;
 						}
 					} catch(PDOException $e)
 						{
+						$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));				
 						echo $e->getMessage();
 						}
 				}
@@ -322,6 +324,7 @@ $dev=1;
 					}
 				}
 			} catch(PDOException $e) {
+				$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
 				echo $e->getMessage();
 			}
 		if($totalnonpersistentnav > "0") {?>
@@ -415,11 +418,9 @@ $dev=1;
 				 success: function(output) {
 					if(output == "takeover") {
 						cronkeeper = "1";
-						//$log->LogDebug("Cronkeeper takeover");
 					}
 					if(output == "release") {
 						cronkeeper = "0";
-						//$log->LogDebug("Cronkeeper release");
 					}
 				},
 				complete: function() {

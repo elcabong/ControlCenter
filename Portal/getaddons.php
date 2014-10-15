@@ -49,11 +49,11 @@
 			$filename = $addonarray["$classification"]["$title"]['path']."addoninfo.php";
 			if (file_exists($filename)) {
 				$howmanyaddons++;
-				include $addonarray["$classification"]["$title"]['path']."addoninfo.php";
-				if((@include $filename) === false)
+				//include $addonarray["$classification"]["$title"]['path']."addoninfo.php";
+				if((include $filename) === false)
 					{
 						//	 handle error
-						$log->LogError("Error: $filename failed to load");
+						$log->LogError("Error: User $authusername on $USERIP failed to load file $filename from " . basename(__FILE__));
 					}
 			} else {
 				echo "<a href='#' class='pingicon'><img src='../media/cyan.png' title='online with no addons' style='height:20px;'/></a>";
@@ -81,7 +81,7 @@
 			echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('$ADDONMAC');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";
 		}
 	}
-	$log->LogDebug("User $authusername Got Addons for room $THISROOMID");
+	$log->LogDebug("User $authusername on $USERIP Got Addons for room $THISROOMID from " . basename(__FILE__));
 ?>
 <script>
 	function wakemachine(mac) {
