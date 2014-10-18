@@ -314,7 +314,7 @@ $dev=1;
 						}
 						echo "<div id='$navtitle' class='item'>";
 						echo "<div class='content'>";
-						if($navtitle == $selectedpanel) {
+						if(isset($selectedpanel) && $navtitle == $selectedpanel) {
 							echo "<iframe id='".$navtitle."f' class='$navtitle' src='".$navdestination."' data-src='".$navdestination."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
 						} else {
 							echo "<iframe id='".$navtitle."f' class='$navtitle' data-src='".$navdestination."' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
