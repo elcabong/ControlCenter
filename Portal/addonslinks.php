@@ -24,11 +24,13 @@ if($addontype == 'links') {
 	foreach($allenabledaddons as $theaddon) {
 		$allenabledaddons = explode(".", $theaddon, 2);
 		$classification = $allenabledaddons[0];
-		$title = $allenabledaddons[1];
-		$filename = $addonarray["$classification"]["$title"]['path']."addonquicklinks.php";
-		if (file_exists($filename)) {
-			include $filename;
-		}			
+		if(isset($allenabledaddons[1]) && $allenabledaddons[1] != '') {
+			$title = $allenabledaddons[1];
+			$filename = $addonarray["$classification"]["$title"]['path']."addonquicklinks.php";
+			if (file_exists($filename)) {
+				include $filename;
+			}
+		}
 	}
 }
 ?>

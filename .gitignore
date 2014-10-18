@@ -3,4 +3,4 @@ sess_*
 user*.jpg
 !user-default.jpg
 firstrun.php
-log-*.txt
+*.log
