@@ -1,7 +1,7 @@
 <?php
 if(!isset($INCLUDES)) {
 	$found = false;
-	$path = './includes';
+	$path = './CCincludes';
 	while(!$found){
 		if(file_exists($path)){ 
 			$found = true;

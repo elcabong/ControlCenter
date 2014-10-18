@@ -26,11 +26,14 @@ sudo mkdir /var/www/ControlCenter
   
 1. Download:   git clone git://github.com/elcabong/ControlCenter.git /var/www/ControlCenter/
 
+1.5 You can move /CCincludes/ out of the webroot for security as long as the script can find it by searching recursively.  ie:  /var/CCincludes/   or  /var/www/CCincludes/
 
 2. Permissions: 
 sudo chown -R www-data:www-data /var/www/ControlCenter/sessions   
 sudo chown -R www-data:www-data /var/www/ControlCenter/media/Users  
 sudo chown -R www-data:www-data /var/www/ControlCenter/media/Programs
+sudo chown -R www-data:www-data /[pathToCCincludes]/CCincludes
+
 
 3. browse to your http://[webserver]/ControlCenter/
 
