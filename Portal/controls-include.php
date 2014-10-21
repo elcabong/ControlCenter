@@ -1,4 +1,8 @@
 <?php
+if(!isset($log)) {
+	require_once "startsession.php";
+}
+$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 	try {
 	$sql = "SELECT * FROM users WHERE userid = $usernumber LIMIT 1";
 		foreach ($configdb->query($sql) as $row) {
@@ -11,7 +15,8 @@
 		}	 
 	} catch(PDOException $e)
 		{
-			echo $e->getMessage();
+			$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
+			//echo $e->getMessage();
 		}
 		
 	if($WANCONNECTION == '1') {
@@ -45,7 +50,8 @@
 			}	 
 		} catch(PDOException $e)
 			{
-			echo $e->getMessage();
+			$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
+			//echo $e->getMessage();
 			}		
 	}
 	if(isset($roomgroupaccess) && $roomgroupaccess != '' ) {

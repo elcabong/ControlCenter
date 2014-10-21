@@ -1,4 +1,6 @@
 <?php
+require_once "startsession.php";
+$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 if (file_exists('../sessions/firstrun.php') || !file_exists('../sessions/config.db')) { header('Location: ../servercheck.php');exit; }
 $configdb = new PDO('sqlite:../sessions/config.db');
 
@@ -424,7 +426,12 @@ $(document).ready(function() {
 							$settingname = $row['setting'];
 							$description = $row['description'];
 							$setting1type = $row['settingvalue1type'];
-							$settingvalue1 = $row['settingvalue1'];
+							$setting1 = '';
+							if(isset($row['settingvalue1'])) {
+								$settingvalue1 = $row['settingvalue1'];
+							} else {
+								$settingvalue1 = '0';
+							}	
 							echo "<br><hr><br>";
 							echo "<table id='settings-$settingid'>";
 							echo"<input type='hidden' name='setting' value='$settingname'>";

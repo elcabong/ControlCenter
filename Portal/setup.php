@@ -1,4 +1,8 @@
 <?php
+if(!isset($log)) {
+	require_once "startsession.php";
+}
+$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 if (file_exists('../sessions/firstrun.php') || !file_exists('../sessions/config.db')) { header('Location: ../servercheck.php');exit; }
 $configdb = new PDO('sqlite:../sessions/config.db');
     $sql = "SELECT * FROM users LIMIT 1";

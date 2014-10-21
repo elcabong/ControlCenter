@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 if ($authsecured && (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername )) {
     header("Location: login.php");
     exit;}
@@ -87,17 +88,8 @@ $dev=1;
 		echo "<nav id='addonlinks'>";
 		$addontype = 'links';
 		include"./addonslinks.php";
-		echo "</nav>";						
-			$c = 1;
-			$count = 0;
-			while($count<2 && $c<$TOTALROOMS) {
-				$user = "USRPR$c";
-				$count = $count + ${$user}; 
-				$c++;
-			}
-			if(($count) > 0) {
-			echo "<div id='multiples'>";
-			?>
+		echo "</nav>"; ?>
+			<div id='multiples'>
 			<nav>		
 				<ul>
 					<li>
@@ -111,17 +103,18 @@ $dev=1;
 						</ul>
 					</li>
 				</ul>
-			</nav><?php } ?>
+			</nav>
+			<?php //} ?>
 		</div>
 		<?php } ?>
 </div>
 <div id='nav-menu'>
 	<nav>
 		<?php
+		$allnavitems = '';
 		if(isset($NAVGROUPS) && $NAVGROUPS != '') {
 			$thenavgroups = explode(",",$NAVGROUPS);
 			$navitems = '';
-			$allnavitems = '';
 			if($isMobile == "1") {
 				try {
 					$sql = "SELECT mobile,persistent FROM navigation WHERE mobile != ''";
@@ -145,6 +138,7 @@ $dev=1;
 					$linkcount = 1;
 					$thenavitems = '';
 					$itemarray = array();
+					$allnavitems = '';
 					foreach($thenavgroups as $x) {
 						$sql = "SELECT * FROM navigationgroups WHERE navgroupid = $x";
 						foreach ($configdb->query($sql) as $row) {
@@ -208,30 +202,29 @@ $dev=1;
 						$linkcount = 1;
 						$navgroupamt = substr_count($NAVGROUPS, ",") +1;
 						foreach($thenavgroups as $x) {
-						if($x == '') { break; }
-						$sql = "SELECT * FROM navigationgroups WHERE navgroupid = $x";
-						foreach ($configdb->query($sql) as $row)
-							{
-							$navtitle = $row['navgroupname'];
-							$navgroup = $row['navgroupid'];
-							$navitems = $row['navitems'];
-							$allnavitems .= ",".$navitems;
+							if($x == '') { break; }
+							$sql = "SELECT * FROM navigationgroups WHERE navgroupid = $x";
+							foreach ($configdb->query($sql) as $row) {
+								$navtitle = $row['navgroupname'];
+								$navgroup = $row['navgroupid'];
+								$navitems = $row['navitems'];
+								$allnavitems .= ",".$navitems;
+								
+								$filename = "../media/Programs/".$navtitle.".png";
+								if (file_exists($filename)) {
+									$linkto = "<img src=$filename height='35px'>";
+								} else {
+									$linkto = $navtitle;
+								}
+								$tempc++;
+								if($tempc>1){
+									echo "</li>";
+									echo "<li id=".$tempc." class='sortable secondary clear hidden'><a href='#' class='main panel persistent title'>".$linkto."</a>";
+								} else {
+									echo "<li id=".$tempc." class='sortable clear'><a href='#' class='main panel persistent title'>".$linkto."</a>";
+								}
 							
-							$filename = "../media/Programs/".$navtitle.".png";
-							if (file_exists($filename)) {
-								$linkto = "<img src=$filename height='35px'>";
-							} else {
-								$linkto = $navtitle;
-							}
-							$tempc++;
-							if($tempc>1){
-								echo "</li>";
-								echo "<li id=".$tempc." class='sortable secondary clear hidden'><a href='#' class='main panel persistent title'>".$linkto."</a>";
-							} else {
-								echo "<li id=".$tempc." class='sortable clear'><a href='#' class='main panel persistent title'>".$linkto."</a>";
-							}
-							
-							$thenavitems = explode(",",$navitems);
+								$thenavitems = explode(",",$navitems);
 								foreach($thenavitems as $item) {
 									$sql = "SELECT navname,navip,mobile,persistent FROM navigation WHERE navid = $item";
 									foreach ($configdb->query($sql) as $row) {									
@@ -327,7 +320,7 @@ $dev=1;
 				$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
 				echo $e->getMessage();
 			}
-		if($totalnonpersistentnav > "0") {?>
+		if(isset($totalnonpersistentnav) && $totalnonpersistentnav > "0") {?>
 		<div id="nonpersistent" class="item">
 			<div class="content">
 				<iframe id='nonpersistentf' class='nonpersistent' name='nonpersistent' width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>

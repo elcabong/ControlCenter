@@ -1,5 +1,6 @@
 <?php
 require_once "startsession.php";
+$log->LogDebug("User from $USERIP loaded " . basename(__FILE__));
 $time = time();
 try {
 	$configdb = new PDO('sqlite:../sessions/config.db');

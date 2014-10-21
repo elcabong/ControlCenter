@@ -1,6 +1,9 @@
 </p>
 <?php
-
+if(!isset($log)) {
+	require_once "startsession.php";
+}
+$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 if (!empty($_FILES)) {
 $set = '';
 if(isset($_GET['user'])) {

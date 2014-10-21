@@ -5,6 +5,10 @@ if(isset($_GET['mac'])) {
 if(isset($_GET['ip'])) {
 	$ip = $_GET['ip'];
 }
+if(!isset($log)) {
+	require_once "startsession.php";
+}
+$log->LogDebug("User $authusername from $USERIP tried to wake ip $ip using mac $mac from " . basename(__FILE__));
 echo "<script type='text/javascript' src='../js/jquery-1.10.1.min.js'></script>
 			<div style='color:#eee;margin: 5% auto 0;position: relative;text-align: center;'>
 			<h1>Power On</h1>

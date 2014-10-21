@@ -1,5 +1,6 @@
 <?php
 require_once('config.php');
+$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 if(isset($_GET['inputusername']) && $_GET['inputusername'] =='1') {
 	if(isset($_POST['user'])) {
 		$user = $_POST['user'];

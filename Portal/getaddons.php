@@ -1,6 +1,7 @@
 <?php
 	require './config.php';
 	require './addons.php';
+	$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 	if ($authsecured && (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername )) {
 		header("Location: login.php");
 		exit;
