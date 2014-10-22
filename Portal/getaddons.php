@@ -1,7 +1,6 @@
 <?php
 	require './config.php';
 	require './addons.php';
-	$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 	if ($authsecured && (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername )) {
 		header("Location: login.php");
 		exit;
@@ -25,7 +24,8 @@
 				}
 			}
 	}
-
+	$ROOMNUMBER = "ROOM$THISROOMID"."N";
+	$log->LogDebug("User $authusername from $USERIP loaded the addons from room " . ${$ROOMNUMBER} . " " . basename(__FILE__));
 	$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $THISROOMID";
 	$howmanyaddons = 0;
 	foreach ($configdb->query($sql3) as $addonSettings) {
