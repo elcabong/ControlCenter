@@ -7,13 +7,12 @@ $DBVERSION = "1.1.2";
 require_once "startsession.php";
 require_once "$INCLUDES/includes/functions.php";
 
-if(!isset($INCLUDES)) {
+if(!isset($folderlevel)) {
 	$found = false;
 	$path = './Portal';
 	while(!$found){
 		if(file_exists($path)){ 
 			$found = true;
-			$INCLUDES = $path;
 		}
 		else{ $path = '../'.$path; }
 	}
