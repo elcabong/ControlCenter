@@ -8,7 +8,8 @@ if(isset($_GET['newdbversion'])) {
 if(isset($_GET['acceptupgrade'])) {
 	$acceptupgrade = '1';
 }
-require "./Portal/functions.php";
+require_once "./Portal/startsession.php";
+require_once "$INCLUDES/includes/functions.php";
 ini_set('display_errors', 'Off');
 ?>
 <html>
@@ -105,10 +106,10 @@ echo "<tr><td>";
 		}
         echo "<tr><td>Check web folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";		
 	}
-if (!file_exists('./sessions/config.db')){
+if (!file_exists("$INCLUDES/sessions/config.db")){
 echo "<tr><td>Trying to Create DB.</td></tr>";
 	try {
-		$configdb = new PDO('sqlite:./sessions/config.db');
+		$configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
 		if($configdb) { 
 		echo "<tr><td>DB created.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>"; 
 		}
@@ -117,20 +118,31 @@ echo "<tr><td>Trying to Create DB.</td></tr>";
 		$redirect = false;
     }
 }
-if (file_exists('./sessions/config.db')){
+if (file_exists("$INCLUDES/sessions/config.db")){
   $valid = true;
-  if(!is_writable('./sessions/config.db')){
-    if(@chmod("./sessions/config.db", 0777)){
+  if(!is_writable("$INCLUDES/sessions/config.db")){
+    if(@chmod("$INCLUDES/sessions/config.db", 0777)){
       echo "";
     }else{
-      echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+      echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions 1</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
       $redirect = false;
       $valid = false;
     }
   } else {
-		$configdb = new PDO('sqlite:./sessions/config.db');
+		$configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
 		function checkDBversion() {
-				if(!isset($configdb)) {	$configdb = new PDO('sqlite:./sessions/config.db'); }
+				if(!isset($INCLUDES)) {
+					$found = false;
+					$path = './CCincludes';
+					while(!$found){
+						if(file_exists($path)){ 
+							$found = true;
+							$INCLUDES = $path;
+						}
+						else{ $path = '../'.$path; }
+					}
+				}
+				if(!isset($configdb)) {	$configdb = new PDO("sqlite:" . $INCLUDES . "/sessions/config.db"); }
 				try {
 					$thedbversion = "none";
 					$sql = "SELECT dbversion FROM controlcenter LIMIT 1";
@@ -145,7 +157,18 @@ if (file_exists('./sessions/config.db')){
 				}
 		}
 		function checkDBsettings() {
-				if(!isset($configdb)) {	$configdb = new PDO('sqlite:./sessions/config.db'); }
+				if(!isset($INCLUDES)) {
+					$found = false;
+					$path = './CCincludes';
+					while(!$found){
+						if(file_exists($path)){ 
+							$found = true;
+							$INCLUDES = $path;
+						}
+						else{ $path = '../'.$path; }
+					}
+				}
+				if(!isset($configdb)) {	$configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db'); }
 				$tempsettingarray = array();
 				try {
 					$sql = "SELECT * FROM settings";
@@ -180,7 +203,7 @@ if (file_exists('./sessions/config.db')){
 							if($acceptupgrade != '1') {
 								echo "<tr><td>Major Database Upgrade Needed.</td><td><img src='media/red-cross.png' height='15px'/></td></tr><tr><td>&nbsp;</td></tr>";
 								echo "<tr><td>Export Database</td></tr><tr><td><a href=\"./Portal/exportdb.php?upgrade=1\" id=\"dlconfig\" target=\"_blank\">config.db</a></td></tr>";
-								if(file_exists("./sessions/config-bak.db")) {
+								if(file_exists("$INCLUDES/sessions/config-bak.db")) {
 									echo "<tr><td><a href=\"./Portal/exportdb.php?bak=1&upgrade=1\" id=\"dlconfig2\" target=\"_blank\">config-bak.db</a> <?php } ?></td></tr>";
 									}
 								echo "<tr><td>Database will need to be recreated.</td></tr><tr><td>&nbsp;</td></tr>";
@@ -194,18 +217,18 @@ if (file_exists('./sessions/config.db')){
 							}
 							$thedbversion = $DBVERSION;
 							$configdb = null;
-							copy('./sessions/config.db', './sessions/config-bak.db');
+							copy("$INCLUDES/sessions/config.db", "$INCLUDES/sessions/config-bak.db");
 							unset($configdb);
-							unlink('./sessions/config.db');
+							unlink("$INCLUDES/sessions/config.db");
 							
 							echo "<tr><td>Old DB backed up.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
-							$configdb = new PDO('sqlite:./sessions/config.db');
+							$configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
 						} else {
 							echo "<tr><td>Small DB upgrade Needed.</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 							$configdb = null;
-							copy('./sessions/config.db', './sessions/config-bak.db');
+							copy("$INCLUDES/sessions/config.db", "$INCLUDES/sessions/config-bak.db");
 							echo "<tr><td>Old DB backed up.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
-							$configdb = new PDO('sqlite:./sessions/config.db');
+							$configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
 							$thedbversion = $DBVERSION;							
 						}
 					}
@@ -262,6 +285,7 @@ if (file_exists('./sessions/config.db')){
 	} catch(PDOException $e)
 		{
 			  echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+			  $log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
 			  $redirect = false;
 		}
 
@@ -284,8 +308,8 @@ if($redirect){
   } else {
 	echo "<p><input type='button' onclick=\"window.location = './Portal/setup.php?setup=first';\" value='Setup Users and Configure' /></p>";
   }
-  if (file_exists('./sessions/firstrun.php')){
-    unlink('./sessions/firstrun.php');
+  if (file_exists("$INCLUDES/sessions/firstrun.php")){
+    unlink("$INCLUDES/sessions/firstrun.php");
   }
 } else {
   echo "<p>It looks like some problems were found, please fix them then <input type=\"button\" value=\"reload\" onClick=\"window.location.reload()\"> the page.</p>";

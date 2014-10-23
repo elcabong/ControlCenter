@@ -1,4 +1,8 @@
 <?php
+if(!isset($log)) {
+	require_once "startsession.php";
+}
+$log->LogINFO("User $_SESSION['username'] from $USERIP loaded " . basename(__FILE__));
 if(!isset($_GET['upgrade'])) {
 	require_once 'config.php';
 	if (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername ) {
@@ -7,7 +11,7 @@ if(!isset($_GET['upgrade'])) {
 if(!isset($folderlevel)) { $folderlevel = "../"; }
 
 if(isset($_GET['bak']) &&	$_GET['bak'] == '1') {
-	$thefile = $folderlevel."sessions/config-bak.db";
+	$thefile = $INCLUDES."/sessions/config-bak.db";
     header('Content-Type: application/download');
     header('Content-Disposition: attachment; filename="config-bak.db"');
     header("Content-Length: " . filesize("$thefile"));
@@ -17,7 +21,7 @@ if(isset($_GET['bak']) &&	$_GET['bak'] == '1') {
     fclose($fp);
 
 } else {
-	$thefile = $folderlevel."sessions/config.db";
+	$thefile = $INCLUDES."/sessions/config.db";
     header('Content-Type: application/download');
     header('Content-Disposition: attachment; filename="config.db"');
     header("Content-Length: " . filesize("$thefile"));

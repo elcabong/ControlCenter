@@ -1,9 +1,10 @@
 <?php
-require_once('config.php');
+require('config.php');
+$log->LogDebug("User from $USERIP loaded " . basename(__FILE__));
 if(isset($_GET['inputusername']) && $_GET['inputusername'] =='1') {
 	if(isset($_POST['user'])) {
 		$user = $_POST['user'];
-		$configdb = new PDO('sqlite:../sessions/config.db');
+		$configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
 		try {
 			$sql = "SELECT * FROM users WHERE username = '$user' LIMIT 1";
 			foreach ($configdb->query($sql) as $row) {
@@ -32,6 +33,7 @@ if($WANCONNECTION == 1 && $userwanenabled != 1) {
 	exit;
 }
 If (!$authsecured) {
+$_SESSION['username'] = $authusername;
 $log->LogInfo("User $authusername from $USERIP LOGGED IN with no password");
 header( "refresh: 0; url=index.php" );
     exit;
@@ -39,6 +41,7 @@ header( "refresh: 0; url=index.php" );
 if(isset($_POST['user']) && isset($_POST['password'])) {
     if ($_POST['user']==$authusername && $_POST['password']==$authpassword) {
         $_SESSION["$authusername"] = $authusername;
+		$_SESSION['username'] = $authusername;
 		$_SESSION['loginerror'] = 0;
 		$log->LogInfo("User $authusername LOGGED IN from $USERIP");
         header( "refresh: 0; url=index.php" );

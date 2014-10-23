@@ -6,6 +6,10 @@ if(!isset($ADDONDIR)) {
 		$ADDONDIR = "../addons/";
 	}
 }
+if(!isset($log)) {
+	require_once "startsession.php";
+}
+$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 if(!isset($roomid) && isset($_SESSION['room'])) {
 	$roomid = $_SESSION['room'];
 }

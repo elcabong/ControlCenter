@@ -1,1 +1,0 @@
-This page will be deleted automatically once ControlCenter is ready to go. DO NOT CHANGE IT OR DELETE IT. 

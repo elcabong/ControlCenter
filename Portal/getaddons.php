@@ -24,7 +24,8 @@
 				}
 			}
 	}
-
+	$ROOMNUMBER = "ROOM$THISROOMID"."N";
+	$log->LogDebug("User $authusername from $USERIP loaded the addons from room " . ${$ROOMNUMBER} . " " . basename(__FILE__));
 	$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $THISROOMID";
 	$howmanyaddons = 0;
 	foreach ($configdb->query($sql3) as $addonSettings) {

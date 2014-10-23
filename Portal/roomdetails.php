@@ -2,6 +2,7 @@
 if(isset($_GET['thisroom'])) { $theroom=$_GET['thisroom'];$THISROOMID=$theroom; } else { exit; }
 $ROOMNUMBER = "ROOM$theroom"."N";	
 require_once 'config.php';
+$log->LogDebug("User $authusername from $USERIP tried loading room ${$ROOMNUMBER} from " . basename(__FILE__));
 require 'addons.php';
 ?>
 <!DOCTYPE html>
@@ -24,7 +25,8 @@ require 'addons.php';
 						echo "<br>";
 						echo $addonarray["$classification"]["$title"]['name'];
 						echo "<br>";
-						if(isset($_SESSION[$ip]) && $_SESSION[$ip] == "alive") {
+						
+						if(isset($ip) && isset($_SESSION[$ip]) && $_SESSION[$ip] == "alive") {
 							$filename = $addonarray["$classification"]["$title"]['path']."details.php";
 							if (file_exists($filename)) {
 								require $filename;

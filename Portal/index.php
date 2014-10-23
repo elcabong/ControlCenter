@@ -1,5 +1,6 @@
 <?php
 require "config.php";
+$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
 	header("Location: login.php");
     exit; }
@@ -12,8 +13,10 @@ if(isset($_COOKIE["currentRoom$usernumber"])) {
 		$_SESSION['room'] = $roomnum; 
 	} 
 }
-
-if(!$_SESSION['room']) {
+if(!isset($_SESSION['username'])) {
+	$_SESSION['username'] = $authusername;
+}
+if(!isset($_SESSION['room'])) {
 	$roomnum = $HOMEROOMU; 
 	$_SESSION['room'] = $roomnum; 
 } else {

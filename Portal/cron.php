@@ -1,8 +1,9 @@
 <?php
 require_once "startsession.php";
+$log->LogDebug("User " . $_SESSION['username'] . " from $USERIP loaded " . basename(__FILE__));
 $time = time();
 try {
-	$configdb = new PDO('sqlite:../sessions/config.db');
+	$configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
 } catch(PDOException $e)
 	{
 	$log->LogError("$e->getMessage()" . basename(__FILE__));
@@ -23,7 +24,7 @@ try {
 $USERIP = $_SERVER['REMOTE_ADDR'];
 if($lastcron < ($time - 45)) {
 echo "takeover";
-$log->LogInfo("Cron taken over by $USERIP");
+$log->LogInfo("Cron taken over by user $_SESSION['username'] from $USERIP");
 } else if(($lastcron + 5) > $time) {
 	echo "release";
 	//$log->LogInfo("Cron released by $USERIP");

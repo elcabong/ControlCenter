@@ -2,6 +2,7 @@
 if(isset($_GET['thisroom'])) { $theroom=$_GET['thisroom'];$THISROOMID=$theroom; } else { exit; }
 $ROOMNUMBER = "ROOM$theroom"."N";
 require_once 'config.php';
+$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 require 'addons.php';
 $ADDONIP = $enabledaddonsarray["$THISROOMID"]["mediaplayer.xbmc"]['ADDONIP'];
 ?>
