@@ -2,5 +2,4 @@ sess_*
 *.db
 user*.jpg
 !user-default.jpg
-firstrun.php
 *.log
