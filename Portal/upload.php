@@ -16,7 +16,7 @@ $upload_dir = '../media/Programs';
 $set = "programs";
 } else if(isset($_GET['db'])) {
 $db = $_GET['db'];
-$upload_dir = '../sessions/';
+$upload_dir = "$INCLUDES/sessions/";
 $set = "db";
 } else {
 return false;exit;}
@@ -37,7 +37,7 @@ return false;exit;}
 		
 	case "db" :
 		$filename = 'config.db';
-		copy('../sessions/config.db', '../sessions/config-bak.db');
+		copy("$INCLUDES/sessions/config.db", "$INCLUDES/sessions/config-bak.db");
 		break;
  }
  

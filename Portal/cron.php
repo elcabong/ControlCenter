@@ -3,7 +3,7 @@ require_once "startsession.php";
 $log->LogDebug("User " . $_SESSION['username'] . " from $USERIP loaded " . basename(__FILE__));
 $time = time();
 try {
-	$configdb = new PDO('sqlite:../sessions/config.db');
+	$configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
 } catch(PDOException $e)
 	{
 	$log->LogError("$e->getMessage()" . basename(__FILE__));

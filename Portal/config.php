@@ -3,18 +3,30 @@
 //db version in servercheck.php as well
 $DBVERSION = "1.1.2";
 
-require_once "functions.php";
-require_once "startsession.php";
 
-if(substr($path2, 0, 3) == "../") { $folderlevel = "../"; } else { $folderlevel = "./"; };
+require_once "startsession.php";
+require_once "$INCLUDES/includes/functions.php";
+
+if(!isset($INCLUDES)) {
+	$found = false;
+	$path = './Portal';
+	while(!$found){
+		if(file_exists($path)){ 
+			$found = true;
+			$INCLUDES = $path;
+		}
+		else{ $path = '../'.$path; }
+	}
+}
+if(substr($path, 0, 3) == "../") { $folderlevel = "../"; } else { $folderlevel = "./"; };
 
 $servercheckloc = $folderlevel . "servercheck.php";
 $thepath = $folderlevel;
 $ADDONDIR = $folderlevel . "addons/";
 
 $missing = folderRequirements($folderlevel);
-if (!file_exists($sessionsloc . "/config.db") || $missing > 0) { header('Location: ' . $servercheckloc);exit; }
-$configdb = new PDO('sqlite:'.$sessionsloc.'/config.db');
+if (!file_exists($INCLUDES . "/sessions/config.db") || $missing > 0) { header('Location: ' . $servercheckloc);exit; }
+$configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
 
 	try {
 		$sql = "SELECT dbversion FROM controlcenter ORDER BY dbversion DESC LIMIT 1";
@@ -73,7 +85,7 @@ if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }
 			if (!isset($_SESSION['usernumber']) || $_SESSION['usernumber'] == "choose") {
 				if(isset($_POST['usernumber'])) { $_SESSION['usernumber'] = $_POST['usernumber']; }
 				elseif (!isset($_GET['user'])) {
-					$log->LogWarn("User NOUSER $authusername from $USERIP redirected to login screen from " . $_SERVER["REQUEST_URI"]);
+					$log->LogWarn("User NOUSER " . $_SESSION['username'] . " from $USERIP redirected to login screen from " . $_SERVER["REQUEST_URI"]);
 					header("Location: $thepath");
 					exit;
 				} else {

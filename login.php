@@ -1,5 +1,7 @@
 <?php
-if (file_exists('./sessions/firstrun.php') || !file_exists('./sessions/config.db')) { header('Location: servercheck.php');exit; }
+require('./Portal/startsession.php');
+require_once "$INCLUDES/includes/functions.php";
+if (file_exists("$INCLUDES/sessions/firstrun.php") || !file_exists("$INCLUDES/sessions/config.db")) { header('Location: servercheck.php');exit; }
 
 require('./Portal/config.php');
 $USERIP = $_SERVER['REMOTE_ADDR'];

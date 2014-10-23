@@ -1,9 +1,9 @@
 <?php
 require_once "startsession.php";
 if(isset($authusername)) { $username = $authusername; } elseif(isset($_SESSION['username'])) { $username = $_SESSION['username']; }
-$log->LogDebug("User $username from $USERIP loaded " . basename(__FILE__));
-if (file_exists('../sessions/firstrun.php') || !file_exists('../sessions/config.db')) { header('Location: ../servercheck.php');exit; }
-$configdb = new PDO('sqlite:../sessions/config.db');
+$log->LogINFO("User $username from $USERIP loaded " . basename(__FILE__));
+if (file_exists("$INCLUDES/sessions/firstrun.php") || !file_exists("$INCLUDES/sessions/config.db")) { header('Location: ../servercheck.php');exit; }
+$configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
 
 //if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings') && !isset($_GET['setup'])){
 if(!empty($_GET) && !isset($_GET['setup'])){
@@ -397,7 +397,7 @@ $(document).ready(function() {
 				<tr><td></td></tr>
 				<tr><td></td></tr>
 				<tr>
-				  <td>Export Database</td><td><a href="../Portal/exportdb.php" id="dlconfig" target="_blank">config.db</a><?php if(file_exists("../sessions/config-bak.db")) { ?> <a href="../Portal/exportdb.php?bak=1" id="dlconfig2" target="_blank">config-bak.db</a> <?php } ?></td>
+				  <td>Export Database</td><td><a href="../Portal/exportdb.php" id="dlconfig" target="_blank">config.db</a><?php if(file_exists("$INCLUDES/sessions/config-bak.db")) { ?> <a href="../Portal/exportdb.php?bak=1" id="dlconfig2" target="_blank">config-bak.db</a> <?php } ?></td>
 				</tr>
 				<tr><td></td></tr>
 				<tr>

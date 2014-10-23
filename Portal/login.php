@@ -1,10 +1,10 @@
 <?php
-require_once('config.php');
-$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
+require('config.php');
+$log->LogDebug("User from $USERIP loaded " . basename(__FILE__));
 if(isset($_GET['inputusername']) && $_GET['inputusername'] =='1') {
 	if(isset($_POST['user'])) {
 		$user = $_POST['user'];
-		$configdb = new PDO('sqlite:../sessions/config.db');
+		$configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
 		try {
 			$sql = "SELECT * FROM users WHERE username = '$user' LIMIT 1";
 			foreach ($configdb->query($sql) as $row) {
