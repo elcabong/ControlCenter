@@ -24,7 +24,7 @@ try {
 $USERIP = $_SERVER['REMOTE_ADDR'];
 if($lastcron < ($time - 45)) {
 echo "takeover";
-$log->LogInfo("Cron taken over by user $_SESSION['username'] from $USERIP");
+$log->LogInfo("Cron taken over by user " . $_SESSION['username'] . " from $USERIP");
 } else if(($lastcron + 5) > $time) {
 	echo "release";
 	//$log->LogInfo("Cron released by $USERIP");

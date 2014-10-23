@@ -10,7 +10,7 @@ if(isset($_GET['acceptupgrade'])) {
 }
 require_once "./Portal/startsession.php";
 require_once "$INCLUDES/includes/functions.php";
-ini_set('display_errors', 'Off');
+$log->LogInfo("User from $USERIP loaded " . basename(__FILE__));
 ?>
 <html>
 <head>
@@ -104,7 +104,8 @@ echo "<tr><td>";
 				 echo "<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;$thefolder is Missing.</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 			}
 		}
-        echo "<tr><td>Check web folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";		
+        echo "<tr><td>Check web folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+		$log->LogError("User from $USERIP encountered error with the folder structure or folder permissions loaded " . basename(__FILE__));		
 	}
 if (!file_exists("$INCLUDES/sessions/config.db")){
 echo "<tr><td>Trying to Create DB.</td></tr>";
@@ -114,6 +115,7 @@ echo "<tr><td>Trying to Create DB.</td></tr>";
 		echo "<tr><td>DB created.</td><td><img src='media/green-tick.png' height='15px'/></td></tr>"; 
 		}
 	} catch (PDOException $error) {
+		$log->LogError("User from $USERIP encountered errors while opening the DB: $error->getMessage() " . basename(__FILE__));
         echo "<tr><td>error connecting to the DB,  error message: , $error->getMessage(), </td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 		$redirect = false;
     }
@@ -124,6 +126,7 @@ if (file_exists("$INCLUDES/sessions/config.db")){
     if(@chmod("$INCLUDES/sessions/config.db", 0777)){
       echo "";
     }else{
+	  $log->LogError("User from $USERIP encountered error with the DB folder structure or access permissions " . basename(__FILE__));
       echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions 1</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
       $redirect = false;
       $valid = false;
@@ -153,6 +156,7 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 					}}
 					return $thedbversion;
 				} catch(PDOException $e) {
+					  $log->LogError("User from $USERIP encountered error accessing the DB: $e->getMessage() " . basename(__FILE__));
 					  return "none";
 				}
 		}
@@ -181,6 +185,7 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 					}
 					return $tempsettingarray;
 				} catch(PDOException $e) {
+					  $log->LogError("User from $USERIP encountered error accessing the DB: $e->getMessage() " . basename(__FILE__));
 					  return "none";
 				}
 		}
@@ -297,6 +302,7 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 		$totalusernum ++;
         }}
 } } else{
+	$log->LogError("User from $USERIP encountered error with the DB folder structure or access permissions " . basename(__FILE__));
     echo "sqlite db could not be created.  ensure sqlite3 is enabled.";
 	$redirect = false;
 }
