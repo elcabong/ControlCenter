@@ -1,6 +1,6 @@
 <?php
 require "startsession.php";
-$log->LogInfo("User " . $_SESSION['username'] . " from $USERIP LOGGED OUT");
+$log->LogInfo("User " . $_SESSION['username'] . " LOGGED OUT");
 session_unset();
 if(isset($_GET['loginerror']) && $_GET['loginerror'] =='1') {
 	$_SESSION['loginerror'] = 1;

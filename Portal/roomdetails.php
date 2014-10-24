@@ -2,7 +2,7 @@
 if(isset($_GET['thisroom'])) { $theroom=$_GET['thisroom'];$THISROOMID=$theroom; } else { exit; }
 $ROOMNUMBER = "ROOM$theroom"."N";	
 require_once 'config.php';
-$log->LogDebug("User $authusername from $USERIP tried loading room ${$ROOMNUMBER} from " . basename(__FILE__));
+$log->LogDebug("User $authusername tried loading room ${$ROOMNUMBER} from " . basename(__FILE__));
 require 'addons.php';
 ?>
 <!DOCTYPE html>

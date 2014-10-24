@@ -10,20 +10,24 @@ if(!isset($INCLUDES)) {
 		else{ $path = '../'.$path; }
 	}
 }
-if(!isset($_SESSION)){
-	ini_set('display_errors', 'Off');
-	ini_set('display_startup_errors', 'Off');
-	ini_set('html_errors', 'Off');
-	ini_set('log_errors', 'On');
-	ini_set('error_log', "$INCLUDES/logs/PHP_errors.log");
-	ini_set('session.gc_maxlifetime', 604800);     //  604800    >>  24 hours = 86400 sec
-	ini_set('session.gc_probability', 1);
-	ini_set('session.gc_divisor', 100	);
-	ini_set('session.save_path', "$INCLUDES/sessions");
-	ini_set('session.cookie_lifetime', 604800);
-	session_start();
-}
-$USERIP = $_SERVER['REMOTE_ADDR'];		
+try {
+	if(!isset($_SESSION)){
+		ini_set('display_errors', 'Off');
+		ini_set('display_startup_errors', 'Off');
+		ini_set('html_errors', 'Off');
+		ini_set('log_errors', 'On');
+		ini_set('error_log', "$INCLUDES/logs/PHP_errors.log");
+		ini_set('session.gc_maxlifetime', 604800);     //  604800    >>  24 hours = 86400 sec
+		ini_set('session.gc_probability', 1);
+		ini_set('session.gc_divisor', 100	);
+		ini_set('session.save_path', $INCLUDES . "/sessions");
+		ini_set('session.cookie_lifetime', 604800);
+		session_start();
+	}
+} catch(PDOException $e)
+	{
+		  $log->LogFatal("Fatal: Could NOT not start session: $e->getMessage().  from " . basename(__FILE__));
+	}
 require_once "KLogger.php";
 $date = date('Y-m-d');
 // klogger options: DEBUG, INFO, WARN, ERROR, FATAL, OFF

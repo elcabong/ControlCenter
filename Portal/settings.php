@@ -1,7 +1,7 @@
 <?php
 require_once "startsession.php";
 if(isset($authusername)) { $username = $authusername; } elseif(isset($_SESSION['username'])) { $username = $_SESSION['username']; }
-$log->LogINFO("User $username from $USERIP loaded " . basename(__FILE__));
+$log->LogINFO("User $username loaded " . basename(__FILE__));
 if (file_exists("$INCLUDES/sessions/firstrun.php") || !file_exists("$INCLUDES/sessions/config.db")) { header('Location: ../servercheck.php');exit; }
 $configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
 

@@ -2,7 +2,7 @@
 if(!isset($log)) {
 	require_once "startsession.php";
 }
-$log->LogINFO("User " . $_SESSION['username'] . " from $USERIP loaded " . basename(__FILE__));
+$log->LogWarn("User " . $_SESSION['username'] . " loaded " . basename(__FILE__));
 if(!isset($_GET['upgrade'])) {
 	require_once 'config.php';
 	if (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername ) {

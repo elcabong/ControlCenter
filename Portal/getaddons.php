@@ -25,7 +25,7 @@
 			}
 	}
 	$ROOMNUMBER = "ROOM$THISROOMID"."N";
-	$log->LogDebug("User $authusername from $USERIP loaded the addons from room " . ${$ROOMNUMBER} . " " . basename(__FILE__));
+	$log->LogDebug("User $authusername loaded the addons from room " . ${$ROOMNUMBER} . " " . basename(__FILE__));
 	$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $THISROOMID";
 	$howmanyaddons = 0;
 	foreach ($configdb->query($sql3) as $addonSettings) {
@@ -54,7 +54,7 @@
 				if((include $filename) === false)
 					{
 						//	 handle error
-						$log->LogError("Error: User $authusername on $USERIP failed to load file $filename from " . basename(__FILE__));
+						$log->LogError("Error: User $authusername failed to load file $filename from " . basename(__FILE__));
 					}
 			} else {
 				echo "<a href='#' class='pingicon'><img src='../media/cyan.png' title='online with no addons' style='height:20px;'/></a>";
@@ -82,7 +82,7 @@
 			echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('$ADDONMAC');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";
 		}
 	}
-	$log->LogDebug("User $authusername on $USERIP Got Addons for room $THISROOMID from " . basename(__FILE__));
+	$log->LogDebug("User $authusername Got Addons for room $THISROOMID from " . basename(__FILE__));
 ?>
 <script>
 	function wakemachine(mac) {
