@@ -1,6 +1,6 @@
 <?php
 require('config.php');
-$log->LogDebug("User from $USERIP loaded " . basename(__FILE__));
+$log->LogDebug("User loaded " . basename(__FILE__));
 if(isset($_GET['inputusername']) && $_GET['inputusername'] =='1') {
 	if(isset($_POST['user'])) {
 		$user = $_POST['user'];
@@ -14,7 +14,7 @@ if(isset($_GET['inputusername']) && $_GET['inputusername'] =='1') {
 			}
 		} catch(PDOException $e)
 			{
-			$log->LogFatal("Fatal: User $authusername from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
+			$log->LogFatal("Fatal: User $authusername could not open DB: $e->getMessage().  from " . basename(__FILE__));
 			//echo $e->getMessage();
 			}
 	}
@@ -28,13 +28,13 @@ if(isset($_GET['user']) && $_GET['user'] =='choose') {
 	exit;
 }
 if($WANCONNECTION == 1 && $userwanenabled != 1) {
-	$log->LogWarn("FAILED LOGIN user $authusername not allowed from WAN, $USERIP");
+	$log->LogWarn("FAILED LOGIN user $authusername not allowed from WAN");
 	header("refresh: 0; url=./logout.php?loginerror=1");
 	exit;
 }
 If (!$authsecured) {
 $_SESSION['username'] = $authusername;
-$log->LogInfo("User $authusername from $USERIP LOGGED IN with no password");
+$log->LogInfo("User $authusername LOGGED IN with no password");
 header( "refresh: 0; url=index.php" );
     exit;
 }
@@ -43,11 +43,11 @@ if(isset($_POST['user']) && isset($_POST['password'])) {
         $_SESSION["$authusername"] = $authusername;
 		$_SESSION['username'] = $authusername;
 		$_SESSION['loginerror'] = 0;
-		$log->LogInfo("User $authusername LOGGED IN from $USERIP");
+		$log->LogInfo("User $authusername LOGGED IN");
         header( "refresh: 0; url=index.php" );
         exit;
     } else {
-		$log->LogWarn("FAILED LOGIN by $authusername from $USERIP");
+		$log->LogWarn("FAILED LOGIN by $authusername");
 		header( "refresh: 0; url=./logout.php?loginerror=1" );
 		exit;
 	}

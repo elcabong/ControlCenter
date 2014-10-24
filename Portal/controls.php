@@ -1,6 +1,6 @@
 <?php
 require_once 'config.php';
-$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
+$log->LogDebug("User $authusername loaded " . basename(__FILE__));
 if ($authsecured && (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername )) {
     header("Location: login.php");
     exit;}
@@ -16,10 +16,10 @@ if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 require_once "mobile_device_detect.php";
 if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	$isMobile = 1;
-	$log->LogInfo("User $authusername loaded controls from $USERIP in mobile mode");
+	$log->LogInfo("User $authusername loaded controls in mobile mode");
 } else {
 	$isMobile = 0;
-	$log->LogInfo("User $authusername loaded controls from $USERIP in full mode");
+	$log->LogInfo("User $authusername loaded controls in full mode");
 }
 $dev=0;
 if(isset($_GET['dev']) && $_GET['dev'] == 1){
@@ -187,7 +187,7 @@ $dev=1;
 					}
 				} catch(PDOException $e)
 					{
-					$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));				
+					$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));				
 					echo $e->getMessage();
 					}				
 				echo "</ul>";
@@ -254,7 +254,7 @@ $dev=1;
 						}
 					} catch(PDOException $e)
 						{
-						$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));				
+						$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));				
 						echo $e->getMessage();
 						}
 				}
@@ -317,7 +317,7 @@ $dev=1;
 					}
 				}
 			} catch(PDOException $e) {
-				$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
+				$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 				echo $e->getMessage();
 			}
 		if(isset($totalnonpersistentnav) && $totalnonpersistentnav > "0") {?>

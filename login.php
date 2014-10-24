@@ -4,8 +4,7 @@ require_once "$INCLUDES/includes/functions.php";
 if (file_exists("$INCLUDES/sessions/firstrun.php") || !file_exists("$INCLUDES/sessions/config.db")) { header('Location: servercheck.php');exit; }
 
 require('./Portal/config.php');
-$USERIP = $_SERVER['REMOTE_ADDR'];
-$log->LogInfo("User from $USERIP on Login Screen");
+$log->LogInfo("User on Login Screen");
 	if(isset($_SESSION['usernumber']) && $_SESSION['usernumber'] != "choose" || $_GET['user'] != "choose") {
     header("Location: ./Portal/index.php");
     exit;} ?>

@@ -7,13 +7,12 @@ $DBVERSION = "1.1.2";
 require_once "startsession.php";
 require_once "$INCLUDES/includes/functions.php";
 
-if(!isset($INCLUDES)) {
+if(!isset($folderlevel)) {
 	$found = false;
 	$path = './Portal';
 	while(!$found){
 		if(file_exists($path)){ 
 			$found = true;
-			$INCLUDES = $path;
 		}
 		else{ $path = '../'.$path; }
 	}
@@ -39,7 +38,7 @@ $configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
 		if($thedbversion < $DBVERSION) { header('Location: ' . $servercheckloc . '?newdbversion=' . $DBVERSION);exit; }
 	} catch(PDOException $e)
 		{
-		$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
+		$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 		echo $e->getMessage();
 		}
 
@@ -58,7 +57,7 @@ $configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
 			}
 	} catch(PDOException $e)
 		{
-		$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));		
+		$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));		
 		echo $e->getMessage();
 		}
 
@@ -77,15 +76,16 @@ if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }
 			}
 		} catch(PDOException $e)
 			{
-			$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));			
+			$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));			
 			echo $e->getMessage();
 			}
 			
 	if($HOWMANYUSERS > 0) {
 			if (!isset($_SESSION['usernumber']) || $_SESSION['usernumber'] == "choose") {
-				if(isset($_POST['usernumber'])) { $_SESSION['usernumber'] = $_POST['usernumber']; }
-				elseif (!isset($_GET['user'])) {
-					$log->LogWarn("User NOUSER " . $_SESSION['username'] . " from $USERIP redirected to login screen from " . $_SERVER["REQUEST_URI"]);
+				if(isset($_POST['usernumber'])) {
+					$_SESSION['usernumber'] = $_POST['usernumber']; 
+				} elseif (!isset($_GET['user'])) {
+					$log->LogWarn("User NOUSER redirected to login screen from " . $_SERVER["REQUEST_URI"]);
 					header("Location: $thepath");
 					exit;
 				} else {
@@ -112,7 +112,7 @@ if($usernumber != "choose") {
 			}	 
 		} catch(PDOException $e)
 			{
-			$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));			
+			$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));			
 			echo $e->getMessage();
 			}
 
@@ -134,7 +134,7 @@ $settingsarray = array();
 				}
 			}	
 		} catch(PDOException $e) {
-			$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));	
+			$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));	
 			echo $e->getMessage();
 		}		
 ?>

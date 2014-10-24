@@ -1,6 +1,6 @@
 ﻿<?php
 	require_once "./config.php";
-	$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
+	$log->LogDebug("User $authusername loaded " . basename(__FILE__));
 	if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
 		header("Location: login.php");
 		exit;
@@ -26,7 +26,7 @@
 	require_once "./addons.php";
 
 	$ROOMNUMBER = "ROOM$roomnum"."N";
-	$log->LogInfo("User $authusername from $USERIP loaded room ${$ROOMNUMBER}");
+	$log->LogInfo("User $authusername loaded room ${$ROOMNUMBER}");
 	echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUMBER}</a>";
 	echo "<ul>";
 		$thisroom = 0;

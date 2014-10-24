@@ -2,7 +2,7 @@
 if(!isset($log)) {
 	require_once "startsession.php";
 }
-$log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
+$log->LogDebug("User $authusername loaded " . basename(__FILE__));
 	try {
 	$sql = "SELECT * FROM users WHERE userid = $usernumber LIMIT 1";
 		foreach ($configdb->query($sql) as $row) {
@@ -15,7 +15,7 @@ $log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 		}	 
 	} catch(PDOException $e)
 		{
-			$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
+			$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 			//echo $e->getMessage();
 		}
 		
@@ -50,7 +50,7 @@ $log->LogDebug("User $authusername from $USERIP loaded " . basename(__FILE__));
 			}	 
 		} catch(PDOException $e)
 			{
-			$log->LogFatal("Fatal: User from $USERIP could not open DB: $e->getMessage().  from " . basename(__FILE__));
+			$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 			//echo $e->getMessage();
 			}		
 	}
