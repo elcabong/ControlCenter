@@ -28,7 +28,7 @@ try {
 	{
 		  $log->LogFatal("Fatal: Could NOT not start session: $e->getMessage().  from " . basename(__FILE__));
 	}
-require_once "KLogger.php";
+require_once $INCLUDES."/includes/KLogger.php";
 $date = date('Y-m-d');
 // klogger options: DEBUG, INFO, WARN, ERROR, FATAL, OFF
 $log = new KLogger ( $INCLUDES."/logs/log-$date.log" , KLogger::INFO );

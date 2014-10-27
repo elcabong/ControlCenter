@@ -13,7 +13,7 @@ if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 		exit; }
 	require_once 'addons.php';
 }
-require_once "mobile_device_detect.php";
+require_once $INCLUDES."/includes/mobile_device_detect.php";
 if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 	$isMobile = 1;
 	$log->LogInfo("User $authusername loaded controls in mobile mode");
