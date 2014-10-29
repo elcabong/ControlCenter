@@ -7,23 +7,20 @@ try {
 } catch(PDOException $e)
 	{
 	$log->LogError("$e->getMessage()" . basename(__FILE__));
-	//echo $e->getMessage();
 	}
 try {
 	$sql = "SELECT dbversion FROM controlcenter WHERE CCid = 2 LIMIT 1";
 	foreach ($configdb->query($sql) as $lastcrontime) {
 		$lastcron = $lastcrontime['dbversion'];
 	}
-	//echo $lastcron;
 } catch(PDOException $e)
 	{
-	$log->LogError("$e->getMessage()" . basename(__FILE__));
-	//echo $e->getMessage();
+		$log->LogError("$e->getMessage()" . basename(__FILE__));
 	}
-	//echo "<br>".$time;
+
 if($lastcron < ($time - 45)) {
-echo "takeover";
-$log->LogInfo("Cron taken over by user " . $_SESSION['username']);
+	echo "takeover";
+	$log->LogInfo("Cron taken over by user " . $_SESSION['username']);
 } else if(($lastcron + 5) > $time) {
 	echo "release";
 	//$log->LogInfo("Cron released");
@@ -71,13 +68,11 @@ try {
 } catch(PDOException $e)
 	{
 	$log->LogError("$e->getMessage()" . basename(__FILE__));
-	//echo $e->getMessage();
 	}
 try {
 	$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (2,'$time')");
 } catch(PDOException $e)
 	{
 	$log->LogError("$e->getMessage()" . basename(__FILE__));
-	//echo $e->getMessage();
 	}
 ?>

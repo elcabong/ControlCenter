@@ -1,51 +1,51 @@
 ﻿<?php
-	require_once "./config.php";
-	$log->LogDebug("User $authusername loaded " . basename(__FILE__));
-	if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
-		header("Location: login.php");
-		exit;
-	}
-	require_once "./controls-include.php";
+require_once "./config.php";
+$log->LogDebug("User $authusername loaded " . basename(__FILE__));
+if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername )) {
+	header("Location: login.php");
+	exit;
+}
+require_once "./controls-include.php";
 
-	$noreset = 0;
-	if(isset($_GET['noreset'])) {
-		$noreset = $_GET['noreset'];
-	}
-	
-	if(isset($_COOKIE["currentRoom$usernumber"])) {
-	$roomnum = $_COOKIE["currentRoom$usernumber"];
-	$theperm = "USRPR$roomnum";
-	if(${$theperm} == "1") {
-	$_SESSION['room'] = $roomnum; } }
-	if(!$_SESSION['room']) {
-	$roomnum = $HOMEROOMU;
-	$_SESSION['room'] = $roomnum; } else {
-	$roomnum = $_SESSION['room']; }
-	$roomid = $roomnum;
-	
-	require_once "$INCLUDES/includes/addons.php";
+$noreset = 0;
+if(isset($_GET['noreset'])) {
+	$noreset = $_GET['noreset'];
+}
 
-	$ROOMNUMBER = "ROOM$roomnum"."N";
-	$log->LogInfo("User $authusername loaded room ${$ROOMNUMBER}");
-	echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUMBER}</a>";
-	echo "<ul>";
-		$thisroom = 0;
-		foreach ($roomgroupaccessarray as $i) {
-			$ROOMNUMBER = "ROOM$i"."N";
-			$theperm = "USRPR$i";
-			if(!empty(${$ROOMNUMBER}) && ${$theperm} == "1"){
-				echo "<li>";
-				if($i == $_SESSION['room']) {
-				echo "<a class='selected changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a>"; 				
-				$thisroom = 1;
-				} else {
-				echo "<a class='changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a>"; 
-				}
-				echo "<img class='roomdetails' theroom=\"$i\" src='../media/options.png'>";
-				echo "</li>";
+if(isset($_COOKIE["currentRoom$usernumber"])) {
+$roomnum = $_COOKIE["currentRoom$usernumber"];
+$theperm = "USRPR$roomnum";
+if(${$theperm} == "1") {
+$_SESSION['room'] = $roomnum; } }
+if(!$_SESSION['room']) {
+$roomnum = $HOMEROOMU;
+$_SESSION['room'] = $roomnum; } else {
+$roomnum = $_SESSION['room']; }
+$roomid = $roomnum;
+
+require_once "$INCLUDES/includes/addons.php";
+
+$ROOMNUMBER = "ROOM$roomnum"."N";
+$log->LogInfo("User $authusername loaded room ${$ROOMNUMBER}");
+echo "<a href='#' onclick=\"return false;\" class='title'>${$ROOMNUMBER}</a>";
+echo "<ul>";
+	$thisroom = 0;
+	foreach ($roomgroupaccessarray as $i) {
+		$ROOMNUMBER = "ROOM$i"."N";
+		$theperm = "USRPR$i";
+		if(!empty(${$ROOMNUMBER}) && ${$theperm} == "1"){
+			echo "<li>";
+			if($i == $_SESSION['room']) {
+			echo "<a class='selected changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a>"; 				
+			$thisroom = 1;
+			} else {
+			echo "<a class='changeroom' href='#' newroom=\"$i\" >${$ROOMNUMBER}</a>"; 
 			}
+			echo "<img class='roomdetails' theroom=\"$i\" src='../media/options.png'>";
+			echo "</li>";
 		}
-	echo "</ul>";
+	}
+echo "</ul>";
 
 ?>
 <script type="text/javascript">
@@ -102,16 +102,16 @@
 		$("#room-menu").load("./room-chooser.php");
 	}
 
-		var t;
-		clearTimeout(t);
-		t=setTimeout(func, 1000);
-		function func() {
-			document.getElementById('loading').style.display='none';	
-		}
+	var t;
+	clearTimeout(t);
+	t=setTimeout(func, 1000);
+	function func() {
+		document.getElementById('loading').style.display='none';	
+	}
 
-		$("#addonlinks").load("./addonslinks.php?addon=links");
-		$("#addonlinkspages").load("./addonslinks.php?addon=pages");
-		<?php if($noreset == 0) { ?>
-			$('#wrapper').scrollTo(0,0);
-		<?php } ?>
+	$("#addonlinks").load("./addonslinks.php?addon=links");
+	$("#addonlinkspages").load("./addonslinks.php?addon=pages");
+	<?php if($noreset == 0) { ?>
+		$('#wrapper').scrollTo(0,0);
+	<?php } ?>
 </script>

@@ -10,7 +10,8 @@ if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 	$theperm = "USRPR$theroom";
 	if (${$theperm}!="1" or !in_array($theroom, $roomgroupaccessarray)) {
 		header("Location: index.php");
-		exit; }
+		exit; 
+	}
 	require_once "$INCLUDES/includes/addons.php";
 }
 require_once $INCLUDES."/includes/mobile_device_detect.php";
@@ -23,7 +24,7 @@ if(mobile_device_detect(true,false,true,true,true,true,true,false,false) ) {
 }
 $dev=0;
 if(isset($_GET['dev']) && $_GET['dev'] == 1){
-$dev=1;
+	$dev=1;
 }
 ?>
 <!DOCTYPE html>
@@ -53,17 +54,17 @@ $dev=1;
 	</script>
 <?php if($isMobile == 1) { ?>
 	<style>
-	ul.sortable > li > a:first-child {
-	width: auto !important;
-	}
-	#nav-menu nav ul ul li {
-	float: left !important;
-	}
-	#multiples li a { padding:0 5px !important; }
-	#room-menu > a { padding:0 5px !important; }
-	#nav-menu > nav > ul > li > a { padding:5px 0; }
-	#nav-menu > nav > ul > li > a > img { margin:0;width:20px; }
-	#nav-menu > nav > ul > li > ul > li { padding-top:3px; }
+		ul.sortable > li > a:first-child {
+		width: auto !important;
+		}
+		#nav-menu nav ul ul li {
+		float: left !important;
+		}
+		#multiples li a { padding:0 5px !important; }
+		#room-menu > a { padding:0 5px !important; }
+		#nav-menu > nav > ul > li > a { padding:5px 0; }
+		#nav-menu > nav > ul > li > a > img { margin:0;width:20px; }
+		#nav-menu > nav > ul > li > ul > li { padding-top:3px; }
 	</style>
 <?php } ?>	
 </head>
@@ -301,7 +302,7 @@ $dev=1;
 										$navdestination = $row['mobilew'];
 									} else {
 										$navdestination = $mobiledestination; 
-									}	
+									}
 								}
 							}
 						}

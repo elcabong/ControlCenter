@@ -40,6 +40,6 @@ try {
 	}
 } catch(PDOException $e)
 	{
-		  $log->LogFatal("Fatal: Could NOT not start session: $e->getMessage().  from " . basename(__FILE__));
+		$log->LogFatal("Fatal: Could NOT not start session: $e->getMessage().  from " . basename(__FILE__));
 	}
 ?>
