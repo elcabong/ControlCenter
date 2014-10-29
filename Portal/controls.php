@@ -4,7 +4,7 @@ $log->LogDebug("User $authusername loaded " . basename(__FILE__));
 if ($authsecured && (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername )) {
     header("Location: login.php");
     exit;}
-require_once 'controls-include.php';
+require_once "$INCLUDES/includes/controls-include.php";
 if($TOTALROOMS>0 && $TOTALALLOWEDROOMS>0){
 	$theroom = $_SESSION['room'];
 	$theperm = "USRPR$theroom";

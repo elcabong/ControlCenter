@@ -5,7 +5,7 @@ if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authuser
 	header("Location: login.php");
 	exit;
 }
-require_once "./controls-include.php";
+require_once "$INCLUDES/includes/controls-include.php";
 
 $noreset = 0;
 if(isset($_GET['noreset'])) {
