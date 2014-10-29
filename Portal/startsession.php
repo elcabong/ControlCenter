@@ -10,6 +10,20 @@ if(!isset($INCLUDES)) {
 		else{ $path = '../'.$path; }
 	}
 }
+require_once $INCLUDES."/includes/KLogger.php";
+$date = date('Y-m-d');
+// klogger options: DEBUG, INFO, WARN, ERROR, FATAL, OFF
+$log = new KLogger ( $INCLUDES."/logs/log-$date.log" , KLogger::INFO );
+
+// Do database work that throws an exception
+//$log->LogError("An exception was thrown in ThisFunction()");
+ 
+// Print out some information
+//$log->LogInfo("Internal Query Time: $time_ms milliseconds");
+ 
+// Print out the value of some variables
+//$log->LogDebug("Loaded Config.php");
+
 try {
 	if(!isset($_SESSION)){
 		ini_set('display_errors', 'Off');
@@ -28,17 +42,4 @@ try {
 	{
 		  $log->LogFatal("Fatal: Could NOT not start session: $e->getMessage().  from " . basename(__FILE__));
 	}
-require_once $INCLUDES."/includes/KLogger.php";
-$date = date('Y-m-d');
-// klogger options: DEBUG, INFO, WARN, ERROR, FATAL, OFF
-$log = new KLogger ( $INCLUDES."/logs/log-$date.log" , KLogger::INFO );
- 
-// Do database work that throws an exception
-//$log->LogError("An exception was thrown in ThisFunction()");
- 
-// Print out some information
-//$log->LogInfo("Internal Query Time: $time_ms milliseconds");
- 
-// Print out the value of some variables
-//$log->LogDebug("Loaded Config.php");
 ?>

@@ -29,7 +29,7 @@ $log->LogDebug("User $authusername loaded " . basename(__FILE__));
 			unset($parts[$i]);
 		}
 		return implode(',', $parts);
-	}		
+	}
 	function addToString($str, $item) {
 		$parts = explode(',', $str);
 		$addtoarray = '';

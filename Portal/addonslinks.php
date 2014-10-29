@@ -1,11 +1,11 @@
 <?php
 if(!isset($log)) {
-	require_once "startsession.php";
+	require_once "./startsession.php";
 }
 if(isset($_GET['addon'])) {
 	$addontype = $_GET['addon'];
 }
-require_once "addons.php";
+require_once "$INCLUDES/includes/addons.php";
 $log->LogDebug("User $authusername tried to get $addontype from " . basename(__FILE__));
 if($addontype == 'links') {
 	if(!empty($searchproviders)) {

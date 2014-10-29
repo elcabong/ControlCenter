@@ -23,7 +23,7 @@
 	$roomnum = $_SESSION['room']; }
 	$roomid = $roomnum;
 	
-	require_once "./addons.php";
+	require_once "$INCLUDES/includes/addons.php";
 
 	$ROOMNUMBER = "ROOM$roomnum"."N";
 	$log->LogInfo("User $authusername loaded room ${$ROOMNUMBER}");

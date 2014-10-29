@@ -194,7 +194,7 @@ require './config.php';
 if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername ) || $SETTINGSACCESS != "1") {
     header("Location: login.php");
     exit;}}
-require './addons.php';	
+require_once "$INCLUDES/includes/addons.php";	
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -219,7 +219,7 @@ require './addons.php';
 		if (window.navigator.standalone) {
 			var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
 		}
-		$('.chosen-choices').sortable();
+		//$('.chosen-choices').sortable("serialize");
 	</script>		
 	<script type="text/javascript">
 		function Settingswakemachine(mac,machinename) {

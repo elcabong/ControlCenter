@@ -1,11 +1,10 @@
 <?php
 	require './config.php';
-	require './addons.php';
 	if ($authsecured && (!isset($_SESSION["$authusername"]) || $_SESSION["$authusername"] != $authusername )) {
 		header("Location: login.php");
 		exit;
 	}
-
+	require_once "$INCLUDES/includes/addons.php";
 	$THISROOMID = '';
 	if(isset($_GET['room'])) { $THISROOMID = $_GET['room']; } else { exit; }
 	if(isset($_SESSION['room'])) {

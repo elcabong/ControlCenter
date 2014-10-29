@@ -1,6 +1,6 @@
 <?php if($_GET['ip']) { $ip=$_GET['ip']; } if($_GET['thisroom']) { $thisroom=$_GET['thisroom']; }
 require 'config.php';
-require 'addons.php';
+require_once "$INCLUDES/includes/addons.php";
 if (strpos($enabledaddons,',') !== false) {
     $arr = explode(",", $enabledaddons);
 	$addonid = $arr[0];
