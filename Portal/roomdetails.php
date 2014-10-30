@@ -7,7 +7,7 @@ if(isset($_GET['thisroom'])) {
 $ROOMNUMBER = "ROOM$theroom"."N";	
 require('startsession.php');
 require_once("$INCLUDES/includes/config.php");
-$log->LogDebug("User $authusername tried loading room ${$ROOMNUMBER} from " . basename(__FILE__));
+$log->LogDebug("User $authusername tried loading room ${$ROOMNUMBER} from " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 require_once "$INCLUDES/includes/addons.php";
 ?>
 <!DOCTYPE html>

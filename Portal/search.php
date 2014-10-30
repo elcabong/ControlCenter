@@ -3,7 +3,7 @@ if(isset($_GET['thisroom'])) { $theroom=$_GET['thisroom'];$THISROOMID=$theroom; 
 $ROOMNUMBER = "ROOM$theroom"."N";
 require('startsession.php');
 require_once("$INCLUDES/includes/config.php");
-$log->LogDebug("User $authusername loaded " . basename(__FILE__));
+$log->LogDebug("User $authusername loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 require_once "$INCLUDES/includes/addons.php";
 $ADDONIP = $enabledaddonsarray["$THISROOMID"]["mediaplayer.xbmc"]['ADDONIP'];
 ?>

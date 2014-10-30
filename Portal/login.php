@@ -1,7 +1,7 @@
 <?php
 require('startsession.php');
 require("$INCLUDES/includes/config.php");
-$log->LogDebug("User $authusername loaded " . basename(__FILE__));
+$log->LogDebug("User $authusername loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 if(isset($_GET['inputusername']) && $_GET['inputusername'] =='1') {
 	if(isset($_POST['user'])) {
 		$user = $_POST['user'];

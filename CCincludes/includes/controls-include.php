@@ -2,7 +2,7 @@
 if(!isset($log)) {
 	require_once "startsession.php";
 }
-$log->LogDebug("User $authusername loaded " . basename(__FILE__));
+$log->LogDebug("User $authusername loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 	try {
 	$sql = "SELECT * FROM users WHERE userid = $usernumber LIMIT 1";
 		foreach ($configdb->query($sql) as $row) {

@@ -9,7 +9,7 @@ if(!isset($ADDONDIR)) {
 		$ADDONDIR = "../addons/";
 	}
 }
-$log->LogDebug("User $authusername loaded " . basename(__FILE__));
+$log->LogDebug("User $authusername loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 if(!isset($roomid) && isset($_SESSION['room'])) {
 	$roomid = $_SESSION['room'];
 }

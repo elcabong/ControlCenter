@@ -2,7 +2,7 @@
 if(!isset($log)) {
 	require_once "startsession.php";
 }
-$log->LogDebug("User $authusername loaded " . basename(__FILE__));
+$log->LogDebug("User $authusername loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 if (file_exists("$INCLUDES/sessions/firstrun.php") || !file_exists("$INCLUDES/sessions/config.db")) { header('Location: ../servercheck.php');exit; }
 $configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
     $sql = "SELECT * FROM users LIMIT 1";

@@ -6,7 +6,7 @@ if(isset($_GET['addon'])) {
 	$addontype = $_GET['addon'];
 }
 require_once "$INCLUDES/includes/addons.php";
-$log->LogDebug("User $authusername tried to get $addontype from " . basename(__FILE__));
+$log->LogDebug("User $authusername tried to get $addontype from " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 if($addontype == 'links') {
 	if(!empty($searchproviders)) {
 		echo "<li><a href='#' class='nopanel' id='searchlink' thisroom='$THISROOMID'><img src='../media/search.png' height='35px'></a></li>";

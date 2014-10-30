@@ -13,7 +13,7 @@ if(!isset($INCLUDES)) {
 require_once $INCLUDES."/includes/KLogger.php";
 $date = date('Y-m-d');
 // klogger options: DEBUG, INFO, WARN, ERROR, FATAL, OFF
-$log = new KLogger ( $INCLUDES."/logs/log-$date.log" , KLogger::DEBUG );
+$log = new KLogger ( $INCLUDES."/logs/log-$date.log" , KLogger::INFO );
 
 // Do database work that throws an exception
 //$log->LogError("An exception was thrown in ThisFunction()");
@@ -22,7 +22,7 @@ $log = new KLogger ( $INCLUDES."/logs/log-$date.log" , KLogger::DEBUG );
 //$log->LogInfo("Internal Query Time: $time_ms milliseconds");
  
 // Print out the value of some variables
-//$log->LogDebug("Loaded Somethings");
+//$log->LogDebug("Loaded Somethings from " . $_SERVER['SCRIPT_FILENAME']);
 
 try {
 	if(!isset($_SESSION)){

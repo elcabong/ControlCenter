@@ -131,4 +131,9 @@ try {
 	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));	
 	echo $e->getMessage();
 }
+if(isset($authusername)) {
+	$log->LogDebug("User $authusername loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
+} else {
+	$log->LogDebug("User loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
+}	
 ?>

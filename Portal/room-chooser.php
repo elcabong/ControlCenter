@@ -1,7 +1,7 @@
 ﻿<?php
 require('startsession.php');
 require_once("$INCLUDES/includes/config.php");
-$log->LogDebug("User $authusername loaded " . basename(__FILE__));
+$log->LogDebug("User $authusername loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 require_once "$INCLUDES/includes/auth.php";
 require_once "$INCLUDES/includes/controls-include.php";
 $noreset = 0;

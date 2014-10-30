@@ -8,7 +8,7 @@ if(isset($_GET['ip'])) {
 if(!isset($log)) {
 	require_once "startsession.php";
 }
-$log->LogDebug("User " . $_SESSION['username'] . " tried to wake ip $ip using mac $mac from " . basename(__FILE__));
+$log->LogDebug("User " . $_SESSION['username'] . " tried to wake ip $ip using mac $mac from " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 echo "<script type='text/javascript' src='../js/jquery-1.10.1.min.js'></script>
 			<div style='color:#eee;margin: 5% auto 0;position: relative;text-align: center;'>
 			<h1>Power On</h1>

@@ -25,7 +25,7 @@ if(isset($_SESSION['room'])) {
 	}
 }
 $ROOMNUMBER = "ROOM$THISROOMID"."N";
-$log->LogDebug("User $authusername loaded the addons from room " . ${$ROOMNUMBER} . " " . basename(__FILE__));
+$log->LogDebug("User $authusername loaded the addons from room " . ${$ROOMNUMBER} . " " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 $sql3 = "SELECT * FROM rooms_addons WHERE roomid = $THISROOMID";
 $howmanyaddons = 0;
 foreach ($configdb->query($sql3) as $addonSettings) {
@@ -83,7 +83,7 @@ foreach ($configdb->query($sql3) as $addonSettings) {
 		echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('$ADDONMAC');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";
 	}
 }
-$log->LogDebug("User $authusername Got Addons for room $THISROOMID from " . basename(__FILE__));
+$log->LogDebug("User $authusername Got Addons for room $THISROOMID from " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 ?>
 <script>
 	function wakemachine(mac) {

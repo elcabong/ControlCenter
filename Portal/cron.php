@@ -1,6 +1,6 @@
 <?php
 require_once "startsession.php";
-$log->LogDebug("User " . $_SESSION['username'] . " loaded " . basename(__FILE__));
+$log->LogDebug("User " . $_SESSION['username'] . " loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 $time = time();
 try {
 	$configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
