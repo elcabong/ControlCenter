@@ -1,6 +1,7 @@
 <?php
-require('config.php');
-$log->LogDebug("User loaded " . basename(__FILE__));
+require('startsession.php');
+require("$INCLUDES/includes/config.php");
+$log->LogDebug("User $authusername loaded " . basename(__FILE__));
 if(isset($_GET['inputusername']) && $_GET['inputusername'] =='1') {
 	if(isset($_POST['user'])) {
 		$user = $_POST['user'];
@@ -40,7 +41,6 @@ header( "refresh: 0; url=index.php" );
 }
 if(isset($_POST['user']) && isset($_POST['password'])) {
     if ($_POST['user']==$authusername && $_POST['password']==$authpassword) {
-        $_SESSION["$authusername"] = $authusername;
 		$_SESSION['username'] = $authusername;
 		$_SESSION['loginerror'] = 0;
 		$log->LogInfo("User $authusername LOGGED IN");

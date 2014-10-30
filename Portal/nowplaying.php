@@ -1,13 +1,23 @@
-<?php if($_GET['ip']) { $ip=$_GET['ip']; } if($_GET['thisroom']) { $thisroom=$_GET['thisroom']; }
-require 'config.php';
+<?php
+if($_GET['ip']) {
+	$ip=$_GET['ip'];
+}
+if($_GET['thisroom']) {
+	$thisroom=$_GET['thisroom'];
+}
+require('startsession.php');
+$log->LogDebug("User $authusername loaded $ip $thisroom from " . basename(__FILE__));
+require_once("$INCLUDES/includes/config.php");
 require_once "$INCLUDES/includes/addons.php";
 if (strpos($enabledaddons,',') !== false) {
     $arr = explode(",", $enabledaddons);
 	$addonid = $arr[0];
-} else { $addonid = $enabledaddons; }
+} else {
+	$addonid = $enabledaddons;
+}
 $arr = explode(".", $addonid, 2);
-				$classification = $arr[0];
-				$title = $arr[1];
+$classification = $arr[0];
+$title = $arr[1];
 require $addonarray["$classification"]["$title"]['path']."nowplaying.php";
 $ROOMNUMBER = "ROOM$thisroom"."N";
 ?>

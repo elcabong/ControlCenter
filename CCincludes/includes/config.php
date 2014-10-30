@@ -4,7 +4,7 @@
 $DBVERSION = "1.1.2";
 
 
-require_once "startsession.php";
+
 require_once "$INCLUDES/includes/functions.php";
 
 if(!isset($folderlevel)) {

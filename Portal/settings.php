@@ -190,10 +190,10 @@ require '../lib/class.github.php';
 		if(isset($row['navid'])) { $navisset = 1; }
         }
 if($totalusernum != 0 && !isset($_GET['setup'])) {
-require './config.php';
-if ($authsecured && (!isset($_SESSION["$authusername"]) || !$_SESSION["$authusername"] || $_SESSION["$authusername"] != $authusername ) || $SETTINGSACCESS != "1") {
-    header("Location: login.php");
-    exit;}}
+	require('startsession.php');
+	require("$INCLUDES/includes/config.php");
+	require_once "$INCLUDES/includes/auth.php";
+}
 require_once "$INCLUDES/includes/addons.php";	
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">

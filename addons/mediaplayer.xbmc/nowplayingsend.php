@@ -21,8 +21,7 @@ if($sendtype=="youtube") {
 	$jsoncontents .= "====$to/jsonrpc?request={\"jsonrpc\":\"2.0\",\"method\":\"Player.Open\",\"params\":{\"item\":{\"file\":\"plugin://plugin.video.youtube/?action=play_video%26videoid=$videoid\"}},\"id\":\"1\"}";
 } else {
 
-//require "config.php";
-require "nowplayinginfo.php";
+	require "nowplayinginfo.php";
 
 	$filepath = urlencode($filepath);
 	

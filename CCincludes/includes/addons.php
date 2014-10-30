@@ -1,13 +1,13 @@
 <?php
+if(!isset($log)) {
+	require_once "startsession.php";
+}
 if(!isset($ADDONDIR)) {
 	if(!isset($_GET['setup'])) {
-		require_once "config.php";
+		require_once "$INCLUDES/includes/config.php";
 	} else {
 		$ADDONDIR = "../addons/";
 	}
-}
-if(!isset($log)) {
-	require_once "startsession.php";
 }
 $log->LogDebug("User $authusername loaded " . basename(__FILE__));
 if(!isset($roomid) && isset($_SESSION['room'])) {
