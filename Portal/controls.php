@@ -139,48 +139,60 @@ if(isset($_GET['dev']) && $_GET['dev'] == 1){
 					$thenavitems = '';
 					$itemarray = array();
 					$allnavitems = '';
+					$navitems = '';
 					foreach($thenavgroups as $x) {
-						$sql = "SELECT * FROM navigationgroups WHERE navgroupid = $x";
-						foreach ($configdb->query($sql) as $row) {
-							$thenavitems .= ",".$row['navitems'];
+						if(!isset($x) || $x == '' || is_array($x)) { continue; }
+						$sql = "SELECT * FROM navigationgroups WHERE navgroupid = $x LIMIT 1";
+						try {
+							foreach ($configdb->query($sql) as $row) {
+								$thistemp = ",".$row['navitems'];
+								$thenavitems .= $thistemp;
+							}
+						} catch(PDOException $e) {
+							$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));		
 						}
 						$thenavitems = explode(",",$thenavitems);
-						$navitems = $row['navitems'];
+						if(isset($row['navitems'])) {
+							$navitems = $row['navitems'];
+						}
 						$allnavitems .= ",".$navitems;
 						foreach($thenavitems as $x) {
 							if($x == '') { continue; }
 							if(in_array($x, $itemarray)) { continue; }
-							array_push($itemarray, $x);								
-							$sql = "SELECT * FROM navigation WHERE navid = $x AND mobile != ''";
-							foreach ($configdb->query($sql) as $row) {
-								$navtitle = $row['navname'];
-								if($mobileamt > '1'){
-									$tempc++;
-									echo "<li id=".$tempc." class='clear'>";
-									$filename = "../media/Programs/".$navtitle.".png";
-									if (file_exists($filename)) {
-										$linkto = "<img src=$filename height='35px'>";
+							array_push($itemarray, $x);
+							$sql = "SELECT * FROM navigation WHERE navid = $x AND mobile != '' LIMIT 1";
+							$executethis = $configdb->query($sql);
+							if (is_array($executethis) || $executethis instanceof Traversable) {
+								foreach ($executethis as $row) {
+									$navtitle = $row['navname'];
+									if($mobileamt > '1'){
+										$tempc++;
+										echo "<li id=".$tempc." class='clear'>";
+										$filename = "../media/Programs/".$navtitle.".png";
+										if (file_exists($filename)) {
+											$linkto = "<img src=$filename height='35px'>";
+										} else {
+											$linkto = $navtitle;
+										}
+									if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
+									if($row['persistent'] == '0') {
+										if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
+										if($WANCONNECTION == '1' && isset($row['navipw']) && $row['navipw'] != '') { $loadpersistent = $row['navipw']; }
+										echo "<a href='".$loadpersistent."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
 									} else {
-										$linkto = $navtitle;
+										echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
 									}
-								if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
-								if($row['persistent'] == '0') {
-									if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
-									if($WANCONNECTION == '1' && isset($row['navipw']) && $row['navipw'] != '') { $loadpersistent = $row['navipw']; }
-									echo "<a href='".$loadpersistent."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
-								} else {
-									echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
-								}
-								$linkcount++;					
-									echo "</li>";
-								} else {
-									$filename = "../media/Programs/".$navtitle.".png";
-									if (file_exists($filename)) {
-										$linkto = "<img src=$filename height='35px'>";
+									$linkcount++;					
+										echo "</li>";
 									} else {
-										$linkto = $navtitle;
+										$filename = "../media/Programs/".$navtitle.".png";
+										if (file_exists($filename)) {
+											$linkto = "<img src=$filename height='35px'>";
+										} else {
+											$linkto = $navtitle;
+										}
+										echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";
 									}
-									echo "<a href='#".$navtitle."' class='main panel persistent unloaded'>".$linkto."</a>";
 								}
 							}
 						}
