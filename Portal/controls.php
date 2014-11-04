@@ -174,15 +174,15 @@ if(isset($_GET['dev']) && $_GET['dev'] == 1){
 										} else {
 											$linkto = $navtitle;
 										}
-									if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
-									if($row['persistent'] == '0') {
-										if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
-										if($WANCONNECTION == '1' && isset($row['navipw']) && $row['navipw'] != '') { $loadpersistent = $row['navipw']; }
-										echo "<a href='".$loadpersistent."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
-									} else {
-										echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
-									}
-									$linkcount++;					
+										if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadthis = "selected";$selectedpanel = $navtitle;$loadpersistent = 0; } else { $loadthis = "unloaded"; }
+										if($row['persistent'] == '0') {
+											if($linkcount == '1' && $TOTALALLOWEDROOMS<1) { $loadpersistent = $row['navip']; }
+											if($WANCONNECTION == '1' && isset($row['navipw']) && $row['navipw'] != '') { $loadpersistent = $row['navipw']; }
+											echo "<a href='".$loadpersistent."' class='panel nonpersistent main $loadthis' target='nonpersistent'>".$linkto."</a>";
+										} else {
+											echo "<a href='#".$navtitle."' class='main panel persistent $loadthis'>".$linkto."</a>";
+										}
+										$linkcount++;
 										echo "</li>";
 									} else {
 										$filename = "../media/Programs/".$navtitle.".png";
@@ -200,7 +200,6 @@ if(isset($_GET['dev']) && $_GET['dev'] == 1){
 				} catch(PDOException $e)
 					{
 					$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));				
-					echo $e->getMessage();
 					}				
 				echo "</ul>";
 				if($mobileamt > '1'){				
@@ -267,7 +266,6 @@ if(isset($_GET['dev']) && $_GET['dev'] == 1){
 					} catch(PDOException $e)
 						{
 						$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));				
-						echo $e->getMessage();
 						}
 				}
 		}
@@ -330,7 +328,6 @@ if(isset($_GET['dev']) && $_GET['dev'] == 1){
 				}
 			} catch(PDOException $e) {
 				$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
-				echo $e->getMessage();
 			}
 		if(isset($totalnonpersistentnav) && $totalnonpersistentnav > "0") {?>
 		<div id="nonpersistent" class="item">
