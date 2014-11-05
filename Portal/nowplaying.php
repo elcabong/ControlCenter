@@ -6,9 +6,9 @@ if($_GET['thisroom']) {
 	$thisroom=$_GET['thisroom'];
 }
 require('startsession.php');
-$log->LogDebug("User $authusername loaded $ip $thisroom from " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 require_once("$INCLUDES/includes/config.php");
 require_once "$INCLUDES/includes/addons.php";
+$log->LogDebug("User $authusername loaded $ip $thisroom from " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 if (strpos($enabledaddons,',') !== false) {
     $arr = explode(",", $enabledaddons);
 	$addonid = $arr[0];
