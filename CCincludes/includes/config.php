@@ -38,7 +38,6 @@ try {
 	if($thedbversion < $DBVERSION) { header('Location: ' . $servercheckloc . '?newdbversion=' . $DBVERSION);exit; }
 } catch(PDOException $e) {
 	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
-	echo $e->getMessage();
 }
 
 try {
@@ -54,8 +53,7 @@ try {
 		$USERNAMES[$userid] = ${$USERNAME};
 	}
 } catch(PDOException $e) {
-	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));		
-	echo $e->getMessage();
+	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 }
 
 if ($HOWMANYUSERS == 0) { header('Location: ' . $servercheckloc);exit; }	
@@ -72,8 +70,7 @@ try {
 			${$ROOMname} = $row['roomname'];
 		}
 } catch(PDOException $e) {
-	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));			
-	echo $e->getMessage();
+	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 }
 			
 if($HOWMANYUSERS > 0) {
@@ -107,8 +104,7 @@ if($usernumber != "choose") {
 			 $userwanenabled = $row['wanenabled'];
 		}	 
 	} catch(PDOException $e) {
-		$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));			
-		echo $e->getMessage();
+		$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 	}
 }
 
@@ -128,8 +124,7 @@ try {
 		}
 	}
 } catch(PDOException $e) {
-	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));	
-	echo $e->getMessage();
+	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 }
 if(isset($authusername)) {
 	$log->LogDebug("User $authusername loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
