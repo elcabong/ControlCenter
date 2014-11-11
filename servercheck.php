@@ -61,31 +61,38 @@ function redirect(){
 <td align=center><br>
 Something was updated.  Running checks.
   <br><br>
-  <?php if(false){
-}
-else{}
-$redirect = true;
-$version = phpversion();
+<?php
 if(false){
 ?>
   If you have no text below, your PHP is not working.
 <?php
 }
-else{}
 $redirect = true;
 $version = phpversion();
 
 echo "<tr><td>PHP Version $version</td><td>";if($version > 5){echo "<img src='media/green-tick.png' height='15px'/>";}else{echo "<img src='media/red-cross.png' height='15px'/>";$redirect = false;} echo "</td></tr>";
 if(extension_loaded('libxml')){
-  echo "<tr><td>LibXML found</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+  echo "<tr><td>LibXML Enabled</td><td><img class='greencheck' src='http://etc-mysitemyway.s3.amazonaws.com/icons/legacy-previews/icons/green-jelly-icons-symbols-shapes/019227-green-jelly-icon-symbols-shapes-check-mark5-ps.png' height='15px'/></td></tr>";
 }else{
-  echo "<tr><td>LibXML <b>NOT</b> found</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+  echo "<tr><td>LibXML <b>NOT</b> Enabled</td><td><img src='http://xqshost.ro/favicon.ico' height='15px'/></td></tr>";
+  $redirect = false;
+}
+if(extension_loaded('sqlite3')){
+  echo "<tr><td>Sqlite3 Enabled</td><td><img src='http://etc-mysitemyway.s3.amazonaws.com/icons/legacy-previews/icons/green-jelly-icons-symbols-shapes/019227-green-jelly-icon-symbols-shapes-check-mark5-ps.png' height='15px'/></td></tr>";
+}else{
+  echo "<tr><td>Sqlite3 <b>NOT</b> Enabled</td><td><img src='http://xqshost.ro/favicon.ico' height='15px'/></td></tr>";
   $redirect = false;
 }
 if(extension_loaded('curl')){
-  echo "<tr><td>cURL found </td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+  echo "<tr><td>cURL Enabled</td><td><img src='http://etc-mysitemyway.s3.amazonaws.com/icons/legacy-previews/icons/green-jelly-icons-symbols-shapes/019227-green-jelly-icon-symbols-shapes-check-mark5-ps.png' height='15px'/></td></tr>";
 }else{
-  echo "<tr><td>cURL <b>NOT</b> found</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+  echo "<tr><td>cURL <b>NOT</b> Enabled</td><td><img src='http://xqshost.ro/favicon.ico' height='15px'/></td></tr>";
+  $redirect = false;
+}
+if(extension_loaded('json')){
+  echo "<tr><td>JSON Enabled</td><td><img src='http://etc-mysitemyway.s3.amazonaws.com/icons/legacy-previews/icons/green-jelly-icons-symbols-shapes/019227-green-jelly-icon-symbols-shapes-check-mark5-ps.png' height='15px'/></td></tr>";
+}else{
+  echo "<tr><td>JSON <b>NOT</b> Enabled</td><td><img src='http://xqshost.ro/favicon.ico' height='15px'/></td></tr>";
   $redirect = false;
 }
 echo "<tr><td>";
@@ -310,8 +317,10 @@ echo '</table>';
 if($redirect){
   echo "<p>Congratulations! Everything seems to be in working order.</p>";
   if($totalusernum > 0) {
+	header( 'Location: ./index.html' ) ;
 	echo "<p><input type='button' onclick=\"window.location = './index.html';\" value='CONTINUE' /></p>";
   } else {
+	header( 'Location: ./Portal/setup.php?setup=first' ) ;
 	echo "<p><input type='button' onclick=\"window.location = './Portal/setup.php?setup=first';\" value='Setup Users and Configure' /></p>";
   }
   if (file_exists("$INCLUDES/sessions/firstrun.php")){
