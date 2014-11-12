@@ -191,22 +191,26 @@
 		
 		private function ua()
 		{
-		if(stristr($_SERVER['HTTP_USER_AGENT'],"Opera Mini"))
-		{
-		if(isset($_SERVER['HTTP_X_OPERAMINI_PHONE_UA']))
-		{
-		$browser = addslashes(strip_tags($_SERVER['HTTP_X_OPERAMINI_PHONE_UA']));
-		}
-		else
-		{
-		$browser = addslashes(strip_tags($_SERVER['HTTP_USER_AGENT']));
-		}
-		}
-		else
-		{
-		$browser = addslashes(strip_tags($_SERVER['HTTP_USER_AGENT']));
-		}
-		return $browser;
+			if(isset($_SERVER['HTTP_USER_AGENT'])) {
+				if(stristr($_SERVER['HTTP_USER_AGENT'],"Opera Mini"))
+				{
+					if(isset($_SERVER['HTTP_X_OPERAMINI_PHONE_UA']))
+					{
+						$browser = addslashes(strip_tags($_SERVER['HTTP_X_OPERAMINI_PHONE_UA']));
+					}
+					else
+					{
+						$browser = addslashes(strip_tags($_SERVER['HTTP_USER_AGENT']));
+					}
+				}
+				else
+				{
+					$browser = addslashes(strip_tags($_SERVER['HTTP_USER_AGENT']));
+				}
+			} else {
+				$browser = "not set";
+			}
+			return $browser;
 		}
 		
 		
