@@ -198,19 +198,13 @@ $(document).ready(function() {
 
 	var coveron = 0;
 	$("nav").children().hover(function(){
-		if (typeof showclearcovertimer !== 'undefined') {
-			clearInterval(showclearcovertimer);
-		}
+		clearInterval(showclearcovertimer);
 		coveron = 1;
 		var showclearcovertimer=setInterval(function(){showclearcover()},800);
     }, function(){
 		coveron = 0;
-		if (typeof showclearcovertimer !== 'undefined') {
-			clearInterval(showclearcovertimer);
-		}
-		if (typeof hideclearcovertimer !== 'undefined') {
-			clearInterval(hideclearcovertimer);
-		}
+		clearInterval(showclearcovertimer);
+		clearInterval(hideclearcovertimer);
 		var hideclearcovertimer=setInterval(function(){hideclearcover()},300);
     });
 
@@ -224,9 +218,7 @@ $(document).ready(function() {
 
 	function hideclearcover() {
 		hideclearcoverandmenus();
-		if (typeof hideclearcovertimer !== 'undefined') {
-			clearInterval(hideclearcovertimer);
-		}
+		clearInterval(hideclearcovertimer);
 	}
 
 	$(".clearcover").hover(
