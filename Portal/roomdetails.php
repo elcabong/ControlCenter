@@ -19,7 +19,7 @@ require_once "$INCLUDES/includes/addons.php";
 <body>
 <div id='roominfocontainer'>
 	<div id='logo'>
-		<h1>Details:<span><?= ${$ROOMNUMBER};?></span></h1>
+		<h1>Details:<span><?php echo ${$ROOMNUMBER}; ?></span></h1>
 	</div>
 	<div id='roominfocontent'>
 	<?php
@@ -30,16 +30,12 @@ require_once "$INCLUDES/includes/addons.php";
 			echo "<br>";
 			echo $addonarray["$classification"]["$title"]['name'];
 			echo "<br>";
-			
-			if(isset($ip) && isset($_SESSION[$ip]) && $_SESSION[$ip] == "alive") {
-				$filename = $addonarray["$classification"]["$title"]['path']."details.php";
-				if (file_exists($filename)) {
-					require $filename;
-					echo "<br><br>";
-				}
-			} else {
-				if(!empty($enabledaddonsarray["$theroom"]["$addonid"]['ADDONIP'])) {
-					$ip = $enabledaddonsarray["$theroom"]["$addonid"]['ADDONIP'];
+			if(!empty($enabledaddonsarray["$theroom"]["$addonid"]['ADDONIP'])) {
+				$ip = $enabledaddonsarray["$theroom"]["$addonid"]['ADDONIP'];
+				$status = "";
+				if(isset($_SESSION[$ip]) && $_SESSION[$ip] == "alive") {
+					$status = "0";
+				} else {
 					$disallowed = array('http://', 'https://');
 					foreach($disallowed as $d) {
 						if(strpos($ip, $d) === 0) {
@@ -56,18 +52,18 @@ require_once "$INCLUDES/includes/addons.php";
 						$pingresult = exec("/bin/ping -c1 -w1 $thisip", $outcome, $status);
 						// echo 'This is a server not using Windows!';
 					}
-					if ($status == "0") {
-						//$status = "alive";
-						$filename = $addonarray["$classification"]["$title"]['path']."details.php";
-						if (file_exists($filename)) {
-							require $filename;
-							echo "<br><br>";
-						}
-					} else {
-						//$status = "dead";
-						$ADDONMAC = $enabledaddonsarray["$theroom"]["$addonid"]['MAC'];
-						echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('$ADDONMAC');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";
+				}
+				if ($status == "0") {
+					//$status = "alive";
+					$filename = $addonarray["$classification"]["$title"]['path']."details.php";
+					if (file_exists($filename)) {
+						require $filename;
+						echo "<br><br>";
 					}
+				} else {
+					//$status = "dead";
+					$ADDONMAC = $enabledaddonsarray["$theroom"]["$addonid"]['MAC'];
+					echo "<a href='#' class='pingicon' onclick=\"document.getElementById('loading').style.display='block';wakemachine('$ADDONMAC');\"><img src='../media/red.png' title='offline - click to try to wake machine' style='height:20px;'/></a>";
 				}
 			}
 		}
