@@ -1,8 +1,19 @@
 <?php
 require_once "startsession.php";
-if(isset($authusername)) { $username = $authusername; } elseif(isset($_SESSION['username'])) { $username = $_SESSION['username']; }
-$log->LogINFO("User $username loaded " . basename(__FILE__));
-if (file_exists("$INCLUDES/sessions/firstrun.php") || !file_exists("$INCLUDES/sessions/config.db")) { header('Location: ../servercheck.php');exit; }
+if(isset($authusername)) {
+	$username = $authusername; 
+} elseif(isset($_SESSION['username'])) {
+	$username = $_SESSION['username'];
+}
+if(isset($username)) {
+	$log->LogINFO("User $username loaded " . basename(__FILE__));
+} else {
+	$log->LogINFO("User NOUSERNAME loaded " . basename(__FILE__));
+}
+if (!file_exists("$INCLUDES/sessions/config.db")) {
+	header('Location: ../servercheck.php');
+	exit;
+}
 $configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
 
 //if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings') && !isset($_GET['setup'])){

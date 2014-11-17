@@ -1,7 +1,7 @@
 <?php
 require('./Portal/startsession.php');
 require_once "$INCLUDES/includes/functions.php";
-if (file_exists("$INCLUDES/sessions/firstrun.php") || !file_exists("$INCLUDES/sessions/config.db")) {
+if (!file_exists("$INCLUDES/sessions/config.db")) {
 	header('Location: servercheck.php');
 	exit;
 }
