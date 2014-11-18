@@ -219,8 +219,8 @@ require_once "$INCLUDES/includes/addons.php";
   <script src="../js/jquery-1.10.1.min.js"></script>
   <link rel="stylesheet" type="text/css" href="../css/UI/jquery-ui-1.8.14.custom.css">
   <link href="../css/room.css" rel="stylesheet" type="text/css">
-  <link href="../css/settings.css" rel="stylesheet" type="text/css">
   <link href="../css/chosen.css" rel="stylesheet" type="text/css">
+  <link href="../css/settings.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" type="text/css" href="../css/jquery.pnotify.default.css">
   <script src="../js/jquery.pnotify.js" type="text/javascript"></script>
   <script src="../js/dropzone.js"></script>
