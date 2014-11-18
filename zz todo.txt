@@ -1,0 +1,35 @@
+settings refactor:
+	loading info per div (may suffice to do per page div insert loading)
+	saving info and refreshing saved div
+	dropdown for http://--https:// for required options
+	make several levels of "admin" some should have access to everything except users, etc
+
+	
+	
+main links dropdown (upper right and left)
+	make the overlay function better
+	better way to do this?
+
+	
+	
+server setup
+	move servercheck?
+	complete serverinstall with servercheck db upgrade part in includes per version
+	
+	
+	
+addons:
+	zoneminder
+	xbmc optimize
+	addons.php optimize
+	
+	
+notifications
+	upper right hamburger menu glow orange when notification
+	notification icon below users name in dropdown
+		goes to details osd with info for notification
+		
+
+
+per user settings
+	
