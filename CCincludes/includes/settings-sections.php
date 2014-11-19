@@ -1,107 +1,20 @@
 <?php
+/*
 if(!empty($_GET) && isset($_GET["section"])) {
 	$section = $_GET["section"];
 } else {
 	exit;
-}
-require"startsession.php";
-if(isset($authusername)) {
-	$username = $authusername; 
-} elseif(isset($_SESSION['username'])) {
-	$username = $_SESSION['username'];
-}
-if(isset($username)) {
-	$log->LogINFO("User $username loaded " . basename(__FILE__));
-} else {
-	$log->LogINFO("User NOUSERNAME loaded " . basename(__FILE__));
-}
-require("$INCLUDES/includes/config.php");
-require "$INCLUDES/includes/auth.php";
-require "$INCLUDES/includes/addons.php";	
-?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-  <script src="../js/jquery-1.10.1.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="../css/UI/jquery-ui-1.8.14.custom.css">
-  <link href="../css/room.css" rel="stylesheet" type="text/css">
-  <link href="../css/chosen.css" rel="stylesheet" type="text/css">
-  <link href="../css/settings.css" rel="stylesheet" type="text/css">
-  <link rel="stylesheet" type="text/css" href="../css/jquery.pnotify.default.css">
-  <script src="../js/jquery.pnotify.js" type="text/javascript"></script>
-  <script src="../js/dropzone.js"></script>
-  <script src="../js/chosen.jquery.min.js"></script>
-  <script src="../js/chosen.proto.min.js"></script>
-	<script type="text/javascript">
-		function Settingswakemachine(mac,machinename) {
-
-		var count=totalcount=20;
-
-		var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
-
-		function timer()
-		{
-		  count=count-1;
-		  if (count <= 0)
-		  {
-			 clearInterval(counter);
-			 //counter ended, do something here
-			 return;
-		  }
-			$.pnotify({
-				pnotify_title: 'WOL Sent to '+decodeURIComponent(machinename)+' This page will refresh in '+count+' seconds.',
-				pnotify_opacity: .75,
-				pnotify_delay: 995,
-				pnotify_animation:"none"
-			});
-		}
-			$.ajax({
-				   type: "POST",
-				   url: "wol-check.php?m="+mac+"",
-				   data: 0, // data to send to above script page if any
-				   cache: false,
-				   success: function(response)
-				{
-					// need to retry ping until successful or hit a set limit, then display none
-					var timeout = totalcount+"000";
-					setTimeout(func1, timeout);
-					function func1() {
-					window.location.href += "#ROOMS";
-						window.location.reload(true);
-						//document.getElementById("Settingsf").contentWindow.location.hash = "#ROOMS";
-						//document.getElementById('loading').style.display='none';
-					}
-			   },
-				error: function(response) {
-				$.pnotify({
-				  pnotify_title: 'Error!',
-				  pnotify_text: "Could Not Send WOL Packet, or there was an error communicating with destination machine",
-				  pnotify_type: 'error'
-			  });
-				}
-			});				
-		}
+}*/
+if(isset($linkto)) {
+	if($linkto === "About" || $linkto === "0") {
+		if($getinfo === "yes") { ?>
 		
-$(document).ready(function() {
-  $(".inputcheck.nospaces").keyup(function(){
-        var t = $(this);
-		if( !/[^a-zA-Z0-9]/.test( t.val() ) && t.val().length > 2) {
-		t.css({'background-color' : 'rgb(224, 255, 224)'});
-		} else {
-		t.css({'background-color' : 'rgb(255, 204, 207)'});
-		}
-  });
-});
-
-	$(function(){
-		document.oncontextmenu = function() {return false;};
-	});
-	</script>
-</head>
-<body>		  
-	  
-<?php
-if($section === "About") { ?>
+		
+		
+		
+		
+		
+		<?php } else { ?>
             <div id="ABOUT" class="panel">
               <table cellpadding="5px">
                 <tr>
@@ -194,7 +107,16 @@ if($section === "About") { ?>
 				</tr>				
               </table>
             </div>
-<?php } elseif($section === "Settings") { ?>
+<?php	}
+	} elseif(isset($linkto) && $linkto === "Settings") {
+		if($getinfo === "yes") { ?>
+				
+				
+				
+				
+				
+				
+		<?php } else { ?>
 			<div id="SETTINGS" class="panel">
               <h3>Settings</h3>
 			    <p>Global Settings that effect the all users and the overall use of the Control Center</p>			  
@@ -240,12 +162,11 @@ if($section === "About") { ?>
 					}
 				?>
             </div>
-<?php } elseif($section === "Users") { ?>
-            <div id="USERS" class="panel">
-              <h3>User List</h3>
-			  <p>Control who has access to what in your Control Center.</p>	
-				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
-				<a href="#" class='showhidebutton orange'>info</a><br>
+<?php	}
+	} elseif(isset($linkto) && $linkto === "Users") {
+		if($getinfo === "yes") { ?>
+		
+				<p align="justify">
 				    <b>Username:</b>  The username/login name for each user
 	<br><br><b>Password:</b>  Optional.  if not set auth is disabled for this user
 	<br><br><b>App Groups:</b>  Adds Application group(s) for the user which are available in the upper left menu bar.  Add the groups in the order you want them to be displayed in.
@@ -256,7 +177,15 @@ if($section === "About") { ?>
 	<br><br><b>Settings:</b>  This allows or denies the user to this settings area. DO NOT FORGET TO GIVE ACCESS TO AT LEAST 1 USER.
 	<br><br><b>WAN Enabled:</b>  This allows or denies the user when connecting from a different subnet from the server. ie: the internet.
 	<br><br><b>Icon:</b>  After users are created, drag a .jpg image into the designated area to assign each user avatar.<br>
-				</p>			  
+				</p>			
+		
+		
+		
+		
+		<?php } else { ?>
+            <div id="USERS" class="panel">
+              <h3>User List</h3>
+			  <p>Control who has access to what in your Control Center.</p>
                 <?php
 				try {
 					$sql = "SELECT * FROM rooms";
@@ -431,17 +360,18 @@ if($section === "About") { ?>
 				?>
 			<br><br>	
             </div>
-<?php } elseif($section === "Rooms") { ?>
+<?php	}
+	} elseif(isset($linkto) && $linkto === "Rooms") {
+		if($getinfo === "yes") { ?>
+				<p align="justify" >
+				    <b>Room Name:</b>  The title of the room/set of devices
+			<br><b>Addons:</b>  The list of addons assignable to this room.  each addon will add any settings they need to the assigned room. (ensure the addon you want info displaying for is first in the list.  usually the mediaplayer.addon)
+			<br>
+				</p>
+		<?php } else { ?>
             <div id="ROOMS" class="panel">
               <h3>Room List</h3>
 			   <p>Rooms are like groups for your digital equipment.  Additional addons can be created to interact with more equipment.</p>	
-				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
-				<a href="#" class='showhidebutton orange'>info</a><br>
-				    <b>Room Name:</b>  The title of the room/set of devices
-			<br><b>Addons:</b>  The list of addons assignable to this room.  each addon will add any settings they need to the assigned room. (ensure the addon you want info displaying for is first in the list.  usually the mediaplayer.addon)
-
-				<br>
-				</p>
                 <?php
 				echo "<table id='rooms-new'>";
 				echo "<tr><td class='title'>Room Name</td><td><input size='10' name='roomname' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"rooms-new\");' /></td></tr>";
@@ -541,16 +471,18 @@ if($section === "About") { ?>
 					}
                 ?>
            </div>
-<?php } elseif($section === "Roomgroups") { ?>
-			<div id="ROOMGROUPS" class="panel">
-              <h3>Room Permission Groups</h3>
-			    <p>Create a group of permissions for easy multiple user permissions.  Individual permissions override these.</p>			  
-				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
-				<a href="#" class='showhidebutton orange'>info</a><br>
+<?php	}
+	} elseif(isset($linkto) && $linkto === "Roomgroups") {
+		if($getinfo === "yes") { ?>
+				<p align="justify" >
 				  <b>Group Name:</b> the name of the permission group
 	<br><br><b>Allow:</b>  gives this group access to the room
 	<br><br><b>Deny:</b>  removes group access to this room<br>
-				</p>					  
+				</p>		
+		<?php } else { ?>
+			<div id="ROOMGROUPS" class="panel">
+              <h3>Room Permission Groups</h3>
+			    <p>Create a group of permissions for easy multiple user permissions.  Individual permissions override these.</p>			  
                 <?php
 				echo "<table id='roomgroups-new'>";
 				echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='roomgroupname' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"roomgroups-new\");' /></td></tr>
@@ -612,12 +544,10 @@ if($section === "About") { ?>
 					}
 				?>
             </div>			
-<?php } elseif($section === "Navigation") { ?>
-			<div id="NAVIGATION" class="panel">
-              <h3>Applications</h3>
-			    <p>These Application links will be available in the upper left menu</p>
-				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
-				<a href="#" class='showhidebutton orange'>info</a><br>
+<?php	}
+	} elseif(isset($linkto) && $linkto === "Navigation") {
+		if($getinfo === "yes") { ?>
+				<p align="justify" >
 				<b>Title:</b>  The title of the link unless an icon is uploaded (see below).  Please no spaces in the title.
 	<br><br><b>Full LAN IP:</b>  The complete LOCAL address to the link.  Can include username and password which is masked in the browser unless the source is viewed when those pages have already been accessed.  ie:  http://name:pass@ip:port
 	<br><br><b>Full WAN IP:</b>  The complete address to the link from the INTERNET.  wouldnt recomment putting username and password outside your network, but you can. ie:  http://name:pass@ip:port
@@ -625,7 +555,11 @@ if($section === "About") { ?>
 	<br><br><b>M WAN IP:</b>  Adds this link to the mobile specific site for INTERNET connections. set to 1 if the ip source scales on its own, or specify the full address here of the mobile site.  ie  http://m.ip:port  or   http://ip:port/m/ 
 	<br><br><b>Persistent:</b>  Persistent links will keep their frame state once loaded until individually reset (clicking on the link while the link is selected), individually unload page (click and hold the link while the link is selected) or until the whole control center is refreshed. Non-Persistent links will close the frame connection to the site when a different link is chosen (this is for security camera feeds or other highly active content you do not want running unless your viewing it)
 	<br><br><b>Icon:</b>  Drag a .png image to the designated area to replace the Title in the top navigation bar   <br>
-				</p>
+				</p>		
+		<?php } else { ?>
+			<div id="NAVIGATION" class="panel">
+              <h3>Applications</h3>
+			    <p>These Application links will be available in the upper left menu</p>
 				<?php
 				echo "<table id='navigation-new'>";
 				echo "<tr><td></td><td></td><td class='title'>Title</td><td><input class='inputcheck nospaces' size='20' name='navname' value=''></td><td class='title'>Persistent</td><td><select name='persistent'><option selected='selected' value='1'>Yes</option><option value='0'>No</option></select></td><td colspan='2' style='text-align:center;'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Add' onclick='updateSettings(\"navigation-new\");' /></td></tr>";
@@ -665,15 +599,17 @@ if($section === "About") { ?>
 					}
                 ?>
            </div>
-<?php } elseif($section === "Navigationgroups") { ?>
+<?php	}
+	} elseif(isset($linkto) && $linkto === "Navigationgroups") {
+		if($getinfo === "yes") { ?>
+				<p align="justify" >
+				  <b>Group Name:</b> the name of the permission group
+	<br><br><b>Apps:</b>  From the Application page
+				</p>			
+		<?php } else { ?>
 			<div id="NAVIGATIONGROUPS" class="panel">
               <h3>Application Groups</h3>
 			    <p>Create groups for Applications to easily control user access.</p>			  
-				<p align="justify" style="width: 500px;height:20px;overflow:hidden;">
-				<a href="#" class='showhidebutton orange'>info</a><br>
-				  <b>Group Name:</b> the name of the permission group
-	<br><br><b>Apps:</b>  From the Application page
-				</p>					  
                 <?php
 				echo "<table id='navgroups-new'>";
 				echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='navgroupname' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"navgroups-new\");' /></td></tr>
@@ -715,7 +651,7 @@ if($section === "About") { ?>
 					{
 					echo $e->getMessage();
 					}
-				?>
-            </div>
-<?php } ?>
-</body>
+		}
+	}
+}
+?>

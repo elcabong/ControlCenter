@@ -15,9 +15,12 @@ if (!file_exists("$INCLUDES/sessions/config.db")) {
 	exit;
 }
 $configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
-
+$linkto = "0";
+if(isset($_GET['linkto'])){
+	$linkto = $_GET['linkto'];
+}
 //if(!empty($_GET) && strpos($_SERVER['HTTP_REFERER'],'settings') && !isset($_GET['setup'])){
-if(!empty($_GET) && !isset($_GET['setup'])){
+if(!empty($_GET) && !isset($_GET['setup']) && !isset($_GET['linkto'])){
 	//if there is no section parameter, we will not do anything.
   if(isset($_GET['remove']) && $_GET['remove'] == 'yes' && isset($_GET['table']) && $_GET['table'] != '' && isset($_GET['rowid']) && $_GET['rowid'] != ''){
 	$theidtodelete = $_GET['rowid'];
@@ -205,7 +208,8 @@ if($totalusernum != 0 && !isset($_GET['setup'])) {
 	require("$INCLUDES/includes/config.php");
 	require_once "$INCLUDES/includes/auth.php";
 }
-require_once "$INCLUDES/includes/addons.php";	
+require_once "$INCLUDES/includes/addons.php";
+$getinfo = "";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -220,7 +224,7 @@ require_once "$INCLUDES/includes/addons.php";
   <link rel="stylesheet" type="text/css" href="../css/UI/jquery-ui-1.8.14.custom.css">
   <link href="../css/room.css" rel="stylesheet" type="text/css">
   <link href="../css/chosen.css" rel="stylesheet" type="text/css">
-  <link href="../css/settings.css" rel="stylesheet" type="text/css">
+  <link href="../css/settings.css?2" rel="stylesheet" type="text/css">
   <link rel="stylesheet" type="text/css" href="../css/jquery.pnotify.default.css">
   <script src="../js/jquery.pnotify.js" type="text/javascript"></script>
   <script src="../js/dropzone.js"></script>
@@ -300,7 +304,7 @@ $(document).ready(function() {
 </head>
 <body style="overflow: hidden;color:#666;">
   <center>
-    <div style="width:90%; height:95%;" class="widget">
+    <div style="width:100%; height:100%;position:relative;" class="widget">
       <div class="widget-head">
 <?php	if(isset($_GET['setup'])){ ?>
   <h3>First Time Configuration</h3>	
@@ -311,13 +315,13 @@ $(document).ready(function() {
           <br />
       <div id="slider">
         <ul class="navigation">
-          <li><a class="settings" section="About" href="#ABOUT">About</a></li>|
-          <li><a class="settings" section="Settings" href="#SETTINGS">Settings</a></li>|
-          <li><a class="settings" section="Rooms" href="#ROOMS" <?php if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
-         <li><a class="settings" section="Roomgroups" href="#ROOMGROUPS">Room Groups</a></li>|
-         <li><a class="settings" section="Navigation" href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Applications</a></li>
-         <li><a class="settings" section="Navigationgroups" href="#NAVIGATIONGROUPS" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>App Groups</a></li>|
-		 <li><a class="settings" section="Users" href="#USERS" <?php if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
+          <li><a class="settings<?php if($linkto === "0" || $linkto === "About") { echo " selected"; }?>" section="About" href="#About">About</a></li>|
+          <li><a class="settings<?php if($linkto === "Settings") { echo " selected"; }?>" section="Settings" href="#SETTINGS">Settings</a></li>|
+          <li><a class="settings<?php if($linkto === "Rooms") { echo " selected"; }?>" section="Rooms" href="#ROOMS" <?php if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
+         <li><a class="settings<?php if($linkto === "Roomgroups") { echo " selected"; }?>" section="Roomgroups" href="#ROOMGROUPS">Room Groups</a></li>|
+         <li><a class="settings<?php if($linkto === "Navigation") { echo " selected"; }?>" section="Navigation" href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Applications</a></li>
+         <li><a class="settings<?php if($linkto === "Navigationgroups") { echo " selected"; }?>" section="Navigationgroups" href="#NAVIGATIONGROUPS" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>App Groups</a></li>|
+		 <li><a class="settings<?php if($linkto === "Users") { echo " selected"; }?>" section="Users" href="#USERS" <?php if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
  	  </ul>
 				<?php $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 					if (false !== strpos($url,'setup')) {
@@ -332,31 +336,30 @@ $(document).ready(function() {
       <!-- element with overflow applied -->
         <div class="scroll">
           <!-- the element that will be scrolled during the effect -->
+		<div id="info">
+			<a href="#" class='showhidebutton orange'>info</a><br>
+			<div class="scrollContainer">
+				<?php $getinfo = "yes"; include "$INCLUDES/includes/settings-sections.php"; $getinfo = "";?>
+			</div>
+		</div>			  
           <div class="scrollContainer">
+			<?php include "$INCLUDES/includes/settings-sections.php";?>
           </div>
-        </div>
+		</div>
       </div>
     </div>
   </center>
   <script type="text/javascript" src="../js/settings.js?<?php echo date ("m/d/Y-H.i.s", filemtime('../js/settings.js'));?>"></script>
-<?php /*   <script src="../js/jquery.sortable.min.js"></script>
-    <script type="text/javascript">
-	$( document ).ready(function() {
-		$('.chosen-choices').sortable();
-	});
-	</script> */ ?>
 <script>
 $( "a.settings" ).click(function() {
-
 	var linkto = $(this).attr("section");
-	$( ".scrollContainer" ).load( "./settings-sections.php?section=" + linkto );
-event.preventDefault();
-//var htmlString = $( this ).html();
-//$( this ).text( htmlString );
+	var url = window.location.href;
+	var goingto = url.split('#')[0];
+	var goingto = url.split('?')[0];
+	
+	 window.location.href = goingto + "?linkto=" + linkto;
+	event.preventDefault();
 });
-
-
-
 </script>	
 </body>
 </html>

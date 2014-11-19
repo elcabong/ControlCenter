@@ -1,3 +1,11 @@
+first time configure:
+	steps to complete setup like dropbox.. check off when done..  
+		add room
+		group room
+		apps if needed
+		userlist
+
+		
 settings refactor:
 	loading info per div (may suffice to do per page div insert loading)
 	saving info and refreshing saved div
@@ -5,7 +13,9 @@ settings refactor:
 	make several levels of "admin" some should have access to everything except users, etc
 	addons page
 	import/export db, restrict to super admin and remove "about" settings page
-	
+	set log level
+	change user picture naming scheme so there are no collisions
+	*check where variables are set now that settings pages are broken up for drop downs
 	
 	
 main links dropdown (upper right and left)
@@ -13,27 +23,31 @@ main links dropdown (upper right and left)
 	better way to do this?
 
 	
-	
 server setup
 	move servercheck?
 	complete serverinstall with servercheck db upgrade part in includes per version
-	
 	
 	
 addons:
 	zoneminder
 	xbmc optimize
 	addons.php optimize
+	screen for device on but app not responding (orange) like the wol screen
 	
 	
 notifications
 	upper right hamburger menu glow orange when notification
 	notification icon below users name in dropdown
 		goes to details osd with info for notification
-		
-
 
 		
 users		
 	per user settings
 	add user picture when logged in to menu
+	
+	
+logging:
+	servercheck logging
+	what page they load from upper left menu
+	
+	ccmaster logging	

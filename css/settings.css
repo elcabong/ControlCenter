@@ -4,10 +4,10 @@ html {
 }
 
 input:not([type="button"]):not([type="image"]),select,.chosen-choices,.chosen-container-multi .chosen-choices,.chosen-choices .search-choice{
-    border-radius: 2.5px;
+    border-radius: 5px;
     border: 0px none !important;
     outline: 0px none !important;
-    padding: 4px;
+    padding: 9px;
     color: #EEE !important;
     background-color: rgba(10, 10, 10, 0.7) !important;
 	background-image:none !important;
@@ -39,15 +39,28 @@ input:not([type="button"]):not([type="image"]),select,.chosen-choices,.chosen-co
     padding-bottom: 10px;
 }
 
+#info {
+	width: 23%;
+	margin: 0 auto;
+	position: absolute;
+	left: 0;
+	padding: 15px;
+	margin-top: 40px;
+}
+#info > .scrollContainer {
+	display:none;
+}
+
 #slider {
     width: 100%;
     margin: 0 auto;
     position: relative;
+	left:0;
 }
 
 .scroll {
-    height: 83%;
-    width: 1000px;
+    height: 88%;
+    width: 100%;
     overflow: hidden;
 	overflow-y:auto !important;
     position: relative;
