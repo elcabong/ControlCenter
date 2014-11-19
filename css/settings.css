@@ -3,7 +3,7 @@ html {
     height: 100%;
 }
 
-input,select,.chosen-choices,.chosen-container-multi .chosen-choices,.chosen-choices .search-choice{
+input:not([type="button"]):not([type="image"]),select,.chosen-choices,.chosen-container-multi .chosen-choices,.chosen-choices .search-choice{
     border-radius: 2.5px;
     border: 0px none !important;
     outline: 0px none !important;

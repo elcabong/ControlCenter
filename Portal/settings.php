@@ -418,7 +418,7 @@ $(document).ready(function() {
 						enctype="multipart/form-data">
 						<label for="file">Filename:</label>
 						<input type="file" name="file" id="file">
-						<input type="submit" name="submit" value="Submit" id="dbuploadsubmit">
+						<input type="button" name="submit" value="Submit" class="ui-button ui-widget ui-state-default ui-corner-all" id="dbuploadsubmit">
 						</form>					
 					</td>
 				  </td>				

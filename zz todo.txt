@@ -3,7 +3,9 @@ settings refactor:
 	saving info and refreshing saved div
 	dropdown for http://--https:// for required options
 	make several levels of "admin" some should have access to everything except users, etc
-
+	addons page
+	import/export db, restrict to super admin and remove "about" settings page
+	
 	
 	
 main links dropdown (upper right and left)
@@ -31,5 +33,7 @@ notifications
 		
 
 
-per user settings
-	
+		
+users		
+	per user settings
+	add user picture when logged in to menu
