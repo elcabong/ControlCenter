@@ -28,17 +28,18 @@ if (!file_exists($INCLUDES . "/sessions/config.db") || $missing > 0) { header('L
 $configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
 
 try {
-	$sql = "SELECT dbversion FROM controlcenter ORDER BY dbversion DESC LIMIT 1";
+	$sql = "SELECT * FROM controlcenter";
 	foreach ($configdb->query($sql) as $row)
 	{
-		if(isset($row['dbversion'])) {
-		$thedbversion = $row['dbversion'];
-		}
+		$thesetting = $row['CCsetting'];
+		${$thesetting} = $row['CCvalue'];
 	}
-	if($thedbversion < $DBVERSION) { header('Location: ' . $servercheckloc . '?newdbversion=' . $DBVERSION);exit; }
 } catch(PDOException $e) {
 	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 }
+
+//check db version for updates
+if(${'dbversion'} < $DBVERSION) { header('Location: ' . $servercheckloc . '?newdbversion=' . $DBVERSION);exit; }
 
 try {
 	$sql = "SELECT * FROM users";
@@ -126,6 +127,13 @@ try {
 } catch(PDOException $e) {
 	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 }
+
+if($settingsarray['LogLevel']['value1'] !== "INFO") {
+	$loglevel = "KLogger::${'loglevel'}";
+	$log = new KLogger ( $INCLUDES."/logs/log-$date.log" , $loglevel );
+}
+
+
 if(isset($authusername)) {
 	$log->LogDebug("User $authusername loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 } else {

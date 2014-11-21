@@ -9,9 +9,9 @@ try {
 	$log->LogError("$e->getMessage()" . basename(__FILE__));
 	}
 try {
-	$sql = "SELECT dbversion FROM controlcenter WHERE CCid = 2 LIMIT 1";
+	$sql = "SELECT CCvalue FROM controlcenter WHERE CCsetting = 'lastcrontime' LIMIT 1";
 	foreach ($configdb->query($sql) as $lastcrontime) {
-		$lastcron = $lastcrontime['dbversion'];
+		$lastcron = $lastcrontime['CCvalue'];
 	}
 } catch(PDOException $e)
 	{
@@ -70,7 +70,7 @@ try {
 	$log->LogError("$e->getMessage()" . basename(__FILE__));
 	}
 try {
-	$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (2,'$time')");
+	$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (2,'lastcrontime','$time')");
 } catch(PDOException $e)
 	{
 	$log->LogError("$e->getMessage()" . basename(__FILE__));

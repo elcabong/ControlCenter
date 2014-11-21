@@ -155,11 +155,11 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				if(!isset($configdb)) {	$configdb = new PDO("sqlite:" . $INCLUDES . "/sessions/config.db"); }
 				try {
 					$thedbversion = "none";
-					$sql = "SELECT dbversion FROM controlcenter LIMIT 1";
+					$sql = "SELECT CCvalue FROM controlcenter WHERE CCsetting = 'dbversion' LIMIT 1";
 					foreach ($configdb->query($sql) as $row)
 					{
-						if(isset($row['dbversion'])) {
-						$thedbversion = $row['dbversion'];
+						if(isset($row['CCvalue'])) {
+						$thedbversion = $row['CCvalue'];
 					}}
 					return $thedbversion;
 				} catch(PDOException $e) {
@@ -276,7 +276,7 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS settings (settingid integer PRIMARY KEY AUTOINCREMENT, setting text UNIQUE, description text, settingvalue1type text, settingvalue1 text)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT, dbversion TEXT)";
+		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, CCsetting TEXT UNIQUE, CCvalue TEXT)";
 		  $execquery = $configdb->exec($query);
 			// stamp current version
 			if($thedbversion == 'none') { $thedbversion = $DBVERSION; }
@@ -284,8 +284,8 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				$query = "ALTER TABLE rooms_addons ADD COLUMN device_alive INTEGER NULL;"; 	
 				$execquery = $configdb->exec($query);				
 			}
-			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (1,'$thedbversion')");
-			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, dbversion) VALUES (2,'0')");	
+			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (1,'dbversion','$thedbversion')");
+			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (2,'lastcrontime','0')");
 			echo "<tr><td>DB tables checked, Version: $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 			
 			//insert all settings with default values
@@ -293,6 +293,10 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 			if(!isset($thedbsettings["InputUserName"]['1']) || $thedbsettings["InputUserName"]['1'] == '') {
 				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (1, 'InputUserName','Requires user to type username instead of showing list for login','boolean','0')");
 			}
+			if(!isset($thedbsettings["LogLevel"]['1']) || $thedbsettings["LogLevel"]['1'] == '') {
+				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (2, 'LogLevel','Set Log Level. Options: DEBUG, INFO, WARN, ERROR, FATAL, OFF','TEXT','INFO')");
+			}
+			
 			
 	} catch(PDOException $e)
 		{

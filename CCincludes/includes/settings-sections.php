@@ -165,7 +165,6 @@ if(isset($linkto)) {
 <?php	}
 	} elseif(isset($linkto) && $linkto === "Users") {
 		if($getinfo === "yes") { ?>
-		
 				<p align="justify">
 				    <b>Username:</b>  The username/login name for each user
 	<br><br><b>Password:</b>  Optional.  if not set auth is disabled for this user
@@ -178,10 +177,6 @@ if(isset($linkto)) {
 	<br><br><b>WAN Enabled:</b>  This allows or denies the user when connecting from a different subnet from the server. ie: the internet.
 	<br><br><b>Icon:</b>  After users are created, drag a .jpg image into the designated area to assign each user avatar.<br>
 				</p>			
-		
-		
-		
-		
 		<?php } else { ?>
             <div id="USERS" class="panel">
               <h3>User List</h3>
