@@ -303,26 +303,25 @@ $(document).ready(function() {
 	</script>
 </head>
 <body style="overflow: hidden;color:#666;">
-  <center>
-    <div style="width:100%; height:100%;position:relative;" class="widget">
-      <div class="widget-head">
-<?php	if(isset($_GET['setup'])){ ?>
-  <h3>First Time Configuration</h3>	
-	<?php } else { ?>
-  <h3>Settings</h3>
-  <?php } ?>	  
-      </div>
-          <br />
-      <div id="slider">
-        <ul class="navigation">
-          <li><a class="settings<?php if($linkto === "0" || $linkto === "About") { echo " selected"; }?>" section="About" href="#About">About</a></li>|
-          <li><a class="settings<?php if($linkto === "Settings") { echo " selected"; }?>" section="Settings" href="#SETTINGS">Settings</a></li>|
-          <li><a class="settings<?php if($linkto === "Rooms") { echo " selected"; }?>" section="Rooms" href="#ROOMS" <?php if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
-         <li><a class="settings<?php if($linkto === "Roomgroups") { echo " selected"; }?>" section="Roomgroups" href="#ROOMGROUPS">Room Groups</a></li>|
-         <li><a class="settings<?php if($linkto === "Navigation") { echo " selected"; }?>" section="Navigation" href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Applications</a></li>
-         <li><a class="settings<?php if($linkto === "Navigationgroups") { echo " selected"; }?>" section="Navigationgroups" href="#NAVIGATIONGROUPS" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>App Groups</a></li>|
-		 <li><a class="settings<?php if($linkto === "Users") { echo " selected"; }?>" section="Users" href="#USERS" <?php if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
- 	  </ul>
+<center>
+<div style="width:100%; height:100%;position:relative;" class="widget">
+	<div class="widget-head">
+	<?php	if(isset($_GET['setup'])){ ?>
+	  <h3>First Time Configuration</h3>	
+		<?php } else { ?>
+	  <h3>Settings</h3>
+	  <?php } ?>	  
+	</div><br />
+	<div id="slider">
+		<ul class="navigation">
+			<li><a class="settings<?php if($linkto === "0" || $linkto === "About") { echo " selected"; }?>" section="About" href="#About">About</a></li>|
+			<li><a class="settings<?php if($linkto === "Settings") { echo " selected"; }?>" section="Settings" href="#SETTINGS">Settings</a></li>|
+			<li><a class="settings<?php if($linkto === "Rooms") { echo " selected"; }?>" section="Rooms" href="#ROOMS" <?php if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
+			<li><a class="settings<?php if($linkto === "Roomgroups") { echo " selected"; }?>" section="Roomgroups" href="#ROOMGROUPS">Room Groups</a></li>|
+			<li><a class="settings<?php if($linkto === "Navigation") { echo " selected"; }?>" section="Navigation" href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Applications</a></li>
+			<li><a class="settings<?php if($linkto === "Navigationgroups") { echo " selected"; }?>" section="Navigationgroups" href="#NAVIGATIONGROUPS" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>App Groups</a></li>|
+			<li><a class="settings<?php if($linkto === "Users") { echo " selected"; }?>" section="Users" href="#USERS" <?php if($totalusernum==0 && isset($roomsareset) && isset($navisset)) { echo "id='blink'"; } ?>>User List</a></li>		 
+		</ul>
 				<?php $url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 					if (false !== strpos($url,'setup')) {
 						if($totalusernum>0) {
@@ -333,23 +332,21 @@ $(document).ready(function() {
 						}
 					}
 				?>
-      <!-- element with overflow applied -->
         <div class="scroll">
-          <!-- the element that will be scrolled during the effect -->
-		<div id="info">
-			<a href="#" class='showhidebutton orange'>info</a><br>
+			<div id="info">
+				<a href="#" class='showhidebutton orange'>info</a><br>
+				<div class="scrollContainer">
+					<?php $getinfo = "yes"; include "$INCLUDES/includes/settings-sections.php"; $getinfo = "";?>
+				</div>
+			</div>			  
 			<div class="scrollContainer">
-				<?php $getinfo = "yes"; include "$INCLUDES/includes/settings-sections.php"; $getinfo = "";?>
+				<?php include "$INCLUDES/includes/settings-sections.php";?>
 			</div>
-		</div>			  
-          <div class="scrollContainer">
-			<?php include "$INCLUDES/includes/settings-sections.php";?>
-          </div>
 		</div>
-      </div>
-    </div>
-  </center>
-  <script type="text/javascript" src="../js/settings.js?<?php echo date ("m/d/Y-H.i.s", filemtime('../js/settings.js'));?>"></script>
+	</div>
+</div>
+</center>
+<script type="text/javascript" src="../js/settings.js?<?php echo date ("m/d/Y-H.i.s", filemtime('../js/settings.js'));?>"></script>
 <script>
 $( "a.settings" ).click(function() {
 	var linkto = $(this).attr("section");

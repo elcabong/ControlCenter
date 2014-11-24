@@ -108,7 +108,7 @@ if(isset($linkto)) {
               </table>
             </div>
 <?php	}
-	} elseif(isset($linkto) && $linkto === "Settings") {
+	} elseif($linkto === "Settings") {
 		if($getinfo === "yes") { ?>
 				
 				
@@ -163,7 +163,7 @@ if(isset($linkto)) {
 				?>
             </div>
 <?php	}
-	} elseif(isset($linkto) && $linkto === "Users") {
+	} elseif($linkto === "Users") {
 		if($getinfo === "yes") { ?>
 				<p align="justify">
 				    <b>Username:</b>  The username/login name for each user
@@ -356,7 +356,7 @@ if(isset($linkto)) {
 			<br><br>	
             </div>
 <?php	}
-	} elseif(isset($linkto) && $linkto === "Rooms") {
+	} elseif($linkto === "Rooms") {
 		if($getinfo === "yes") { ?>
 				<p align="justify" >
 				    <b>Room Name:</b>  The title of the room/set of devices
@@ -467,7 +467,7 @@ if(isset($linkto)) {
                 ?>
            </div>
 <?php	}
-	} elseif(isset($linkto) && $linkto === "Roomgroups") {
+	} elseif($linkto === "Roomgroups") {
 		if($getinfo === "yes") { ?>
 				<p align="justify" >
 				  <b>Group Name:</b> the name of the permission group
@@ -540,7 +540,7 @@ if(isset($linkto)) {
 				?>
             </div>			
 <?php	}
-	} elseif(isset($linkto) && $linkto === "Navigation") {
+	} elseif($linkto === "Navigation") {
 		if($getinfo === "yes") { ?>
 				<p align="justify" >
 				<b>Title:</b>  The title of the link unless an icon is uploaded (see below).  Please no spaces in the title.
@@ -595,7 +595,7 @@ if(isset($linkto)) {
                 ?>
            </div>
 <?php	}
-	} elseif(isset($linkto) && $linkto === "Navigationgroups") {
+	} elseif($linkto === "Navigationgroups") {
 		if($getinfo === "yes") { ?>
 				<p align="justify" >
 				  <b>Group Name:</b> the name of the permission group
