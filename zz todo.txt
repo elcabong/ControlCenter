@@ -24,7 +24,10 @@ settings refactor:
 	import/export db, restrict to super admin and remove "about" settings page
 	change user picture naming scheme so there are no collisions
 	*check where variables are set now that settings pages are broken up for drop downs
-
+	users
+		per user settings
+		add user picture when logged in to menu
+	
 
 main links dropdown (upper right and left)
 	make the overlay function better
@@ -43,11 +46,6 @@ notifications
 	notification icon below users name in dropdown
 		goes to details osd with info for notification
 	how are notifications stored for user access.. how will page update when notified..
-
-
-users		
-	per user settings
-	add user picture when logged in to menu
 
 
 logging:

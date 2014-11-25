@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon>
+	<metadata>
+		<id>mediaplayer.kodi</id>
+		<version>0.5.0</version>
+		<name>KODI Connector</name>
+		<author>elcabong</author>  
+		<summary>KODI player integration</summary>
+		<description>this addon add the ability to control and pull/push media to a single KODI installation.</description>
+	</metadata>	
+</addon>

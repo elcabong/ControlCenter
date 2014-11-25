@@ -18,6 +18,10 @@ if (!empty($_FILES)) {
 		$db = $_GET['db'];
 		$upload_dir = "$INCLUDES/sessions/";
 		$set = "db";
+	} else if(isset($_GET['addon'])) {
+		$addon = $_GET['addon'];
+		$upload_dir = "../addons";
+		$set = "addons";
 	} else {
 		return false;
 		exit;
@@ -41,10 +45,21 @@ if (!empty($_FILES)) {
 			$filename = 'config.db';
 			copy("$INCLUDES/sessions/config.db", "$INCLUDES/sessions/config-bak.db");
 			break;
+			
+		case "addons" :
+			//$filename = 'temp.zip';
+			break;			
 	}
 
 	$mainFile = $targetPath.$filename;
 	move_uploaded_file($tempFile,$mainFile);
+	
+	switch ($set) {
+		case "addons" :
+			// unzip new file and overwrite addon folder if exists.
+			break;
+	}
+	
 
 	if($set="db"){ ?>
 		<script>

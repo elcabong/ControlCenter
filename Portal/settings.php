@@ -315,7 +315,8 @@ $(document).ready(function() {
 	<div id="slider">
 		<ul class="navigation">
 			<li><a class="settings<?php if($linkto === "0" || $linkto === "About") { echo " selected"; }?>" section="About" href="#About">About</a></li>|
-			<li><a class="settings<?php if($linkto === "Settings") { echo " selected"; }?>" section="Settings" href="#SETTINGS">Settings</a></li>|
+			<li><a class="settings<?php if($linkto === "Settings") { echo " selected"; }?>" section="Settings" href="#SETTINGS">Settings</a></li>
+			<li><a class="settings<?php if($linkto === "Addons") { echo " selected"; }?>" section="Addons" href="#ADDONS">Addons</a></li>|
 			<li><a class="settings<?php if($linkto === "Rooms") { echo " selected"; }?>" section="Rooms" href="#ROOMS" <?php if(!isset($roomsareset)) { echo "id='blink'"; } ?>>Room List</a></li>
 			<li><a class="settings<?php if($linkto === "Roomgroups") { echo " selected"; }?>" section="Roomgroups" href="#ROOMGROUPS">Room Groups</a></li>|
 			<li><a class="settings<?php if($linkto === "Navigation") { echo " selected"; }?>" section="Navigation" href="#NAVIGATION" <?php if(isset($roomsareset) && !isset($navisset)) { echo "id='blink'"; } ?>>Applications</a></li>
