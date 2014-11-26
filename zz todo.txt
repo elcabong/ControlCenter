@@ -20,15 +20,21 @@ settings refactor:
 	dropdown for http://--https:// for required options
 	add ip2wan options for those that have iplan/wan options
 	make several levels of "admin" some should have access to everything except users, etc
-	addons page
 	import/export db, restrict to super admin and remove "about" settings page
+	import/export addons
 	change user picture naming scheme so there are no collisions
 	*check where variables are set now that settings pages are broken up for drop downs
 	users
 		per user settings
 		add user picture when logged in to menu
 	
-
+	
+alerts
+	alerts table in db
+		userid - message - viewed (0 or 1) - 
+	possibly in cron thread, check db for unviewed alerts, and notify user	
+	
+	
 main links dropdown (upper right and left)
 	make the overlay function better
 	better way to do this?

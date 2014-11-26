@@ -650,110 +650,55 @@ if(isset($linkto)) {
 	} elseif($linkto === "Addons") {
 		if($getinfo === "yes") { ?>
 				<p align="justify" >
-				  <b>Addon Type:</b> The addon type or class
-	<br><br><b>Addon Name:</b>  The addon name
-	<br><br><b>Addon Description:</b>  the addon description
+				  <b>General:</b> The addons are grouped by type or class
+	<br><br><b>Title:</b>  The addon name
+	<br><br><b>Version:</b>  The current addon version
+	<br><br><b>Author:</b>  The creator of the addon
+	<br><br><b>Description:</b>  The addon description
 				</p>			
 		<?php } else { ?>
 			<div id="ADDONS" class="panel">
-              <h3>Addons</h3>
-			    <p>Addons communicate with other services and hardware.</p>			  
-				<tr>
-				  <td>Import Addon</td>
-					<td>
-						<form action="upload.php?addon=upload<?php	if(isset($_GET['setup'])){ echo "&setup=first"; }?>" method="post"
-						enctype="multipart/form-data">
+            <h3>Addons</h3>
+			<p>Addons communicate with other services and hardware.</p>			  
+			<tr>
+				<td>Import Addon</td>
+				<td>
+					<form action="upload.php?addon=upload<?php	if(isset($_GET['setup'])){ echo "&setup=first"; }?>" method="post" enctype="multipart/form-data">
 						<label for="file">Addon Package:</label>
 						<input type="file" name="file" id="file">
-						<input type="button" name="submit" value="Submit" class="ui-button ui-widget ui-state-default ui-corner-all" id="addonuploadsubmit">
-						</form>					
-					</td>
-				  </td>				
-				</tr>	
-                <?php				
+						<input type="button" name="submit" value="Upload Addon" class="ui-button ui-widget ui-state-default ui-corner-all" id="addonuploadsubmit">
+					</form>					
+				</td>
+			</tr>	
+			<?php				
+			include "$INCLUDES/includes/addons.php";
+			
+			/*
+			echo"<pre>";
+			print_r($addonarray);
+			echo "</pre>";
+			
+			echo "<br>--<br>";
+			*/
+			
+			echo "<br><br><br>";
+			foreach ($addonarray as $i => $values) {
+				echo "<div class='addonclass'><h3>$i</h3>";
+				foreach ($values as $key => $value) {
 				
-				
-				
-				include "$INCLUDES/includes/addons.php";
-				
-				/*
-				echo"<pre>";
-				print_r($addonarray);
-				echo "</pre>";
-				
-				echo "<br>--<br>";
-				*/
-				
-				
-				foreach ($addonarray as $i => $values) {
-					echo "$i <br>";
-					foreach ($values as $key => $value) {
-						echo "$key 1<br>";
-						
-						
-						echo "3<br>";
-						foreach ($value as $thiskey => $thisvalue) {
-						echo "$thiskey => $thisvalue <br>";
-						}
-					}
-					echo "<br>";
+					echo "<table><tr><td>";
+							echo "<img src='$value[path]/media/icon.png' /><br><br>";
+						echo "</td><td>";
+							echo "Title: $value[name]<br>";
+							echo "Version: $value[version]<br>";
+							echo "Author: $value[author]<br>";
+							echo "Description: $value[description]<br>";
+						echo "</td><td>";	
+							echo "<input type='button' name='submit' item='$i.$key' value='Download' class='ui-button ui-widget ui-state-default ui-corner-all addonExport'>";
+					echo "</td></tr></table>";
 				}
-				
-				/*
-				foreach($addonarray as $thisaddon) {
-					
-					
-					echo $addonarray['0'];
-				echo "<br>++<br>";
-					print_r($thisaddon);
-					echo "<br><br>";					
-				}
-				*/
-				
-				
-				/*
-				echo "<table id='navgroups-new'>";
-				echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='navgroupname' value=''></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='ADD' onclick='updateSettings(\"navgroups-new\");' /></td></tr>
-									<tr><td class='title'>Apps</td><td colspan=3><select class='chosen-select multiple' id='navgroupaccessnew' data-placeholder='Navigation Links' multiple='multiple'>".$navlist."</select><input size='10' class='navgroupaccessnew' type='hidden' name='navitems' value=''></td>
-								</tr>";
-				echo "</table><br><br><br>";
-				try {
-					$sql = "SELECT * FROM navigationgroups";
-					$navgroupid = 0;
-					foreach ($configdb->query($sql) as $row)
-						{
-							$thenavitems = '';						
-							$theallownav ='';
-							if(isset($row['navitems']) && $row['navitems'] != '') {
-								$tempnavitems = explode(',',$row['navitems']);
-								foreach($tempnavitems	as $item) {
-									$sql3 = "SELECT * FROM navigation WHERE navid = $item";
-									foreach ($configdb->query($sql3) as $row3) {
-									$thenavitems .= "<option selected='selected' value=".$row3['navid'].">".$row3['navname']."</option>"; 
-									}
-								}
-									$sql3 = "SELECT * FROM navigation WHERE navid NOT IN (".$row['navitems'].")";
-									foreach ($configdb->query($sql3) as $row3) {
-									$theallownav .= "<option value=".$row3['navid'].">".$row3['navname']."</option>"; 
-									}
-							} else {
-								$thenavitems = '';
-								$theallownav = '';
-								$theallownav = $navlist;
-							}
-							$navgroupid = $row['navgroupid'];
-							echo "<table id='navgroups-$navgroupid'>";					
-							echo "<tr><td class='title'>Group Name</td><td colspan=2><input size='20' name='navgroupname' value='" . $row['navgroupname'] . "'></td><td class='button right'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"navgroups-$navgroupid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"navigationgroups\"," . $row['navgroupid'] . ");' /></td></tr>
-										<tr><td class='title'>Apps</td><td colspan=3><select class='chosen-select multiple' id='navgroupaccess$navgroupid' data-placeholder='Applications' multiple='multiple'>".$thenavitems.$theallownav."</select><input size='10' class='navgroupaccess$navgroupid' type='hidden' name='navitems' value=" . $row['navitems'] . "></td>
-										</tr>";
-							echo "</table><br><br><br>";
-						}
-				} catch(PDOException $e)
-					{
-					echo $e->getMessage();
-					}
-			*/		
-					
+				echo "</div>";
+			}
 		}
 	}
 }
