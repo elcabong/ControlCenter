@@ -11,6 +11,11 @@ server setup
 	move servercheck?
 	complete serverinstall with servercheck db upgrade part in includes per version		
 
+	
+server upgrade/install
+	upgrade process
+		setversion number in db
+	install process
 
 settings refactor:
 	current save function, add return to page info in request
@@ -43,6 +48,7 @@ addons:
 notifications
 	display for alerts in popup
 	marking 'read' for alerts (timestamp)
+	ability to send alerts to groups
 	
 
 logging:

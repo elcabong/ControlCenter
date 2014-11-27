@@ -1,6 +1,4 @@
-<?php //control center upgrade info
-//db version in config.php as well
-$DBVERSION = "1.1.2";
+<?php
 $acceptupgrade = 0;
 if(isset($_GET['newdbversion'])) {
 	$DBVERSION = $_GET['newdbversion'];
@@ -10,6 +8,8 @@ if(isset($_GET['acceptupgrade'])) {
 }
 require_once "./Portal/startsession.php";
 require_once "$INCLUDES/includes/functions.php";
+$getversion = "yes";
+require "$INCLUDES/includes/config.php";
 $log->LogInfo("User loaded " . basename(__FILE__));
 ?>
 <html>
@@ -286,6 +286,12 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				$query = "ALTER TABLE rooms_addons ADD COLUMN device_alive INTEGER NULL;"; 	
 				$execquery = $configdb->exec($query);				
 			}
+			if($thedbversion == '1.1.3' && $theolddbversion < $thedbversion) {
+				$query = "DROP TABLE IF EXISTS controlcenter;"; 	
+				$execquery = $configdb->exec($query);
+				$query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, CCsetting TEXT UNIQUE, CCvalue TEXT)";
+				$execquery = $configdb->exec($query);				
+			}			
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (1,'dbversion','$thedbversion')");
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (2,'lastcrontime','0')");
 			echo "<tr><td>DB tables checked, Version: $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
