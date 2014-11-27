@@ -72,9 +72,10 @@ if(isset($_GET['dev']) && $_GET['dev'] == 1){
 	<div id='nav-menu2'>
 		<nav id="navsettings">
 			<ul>
-				<li><a href='#' class='navsettings panel'><img src="../media/options.png"></a>
+				<li><a href='#' class='navsettings panel'><img id="navsettingsicon" src="../media/options.png"></a>
 					<ul>
 						<li><a href="#" class="title"><?php echo $USERNAMES[$usernumber];?></a></li>
+						<li><a class="alertbutton" href="#">Alerts</a></li>
 						<?php if($SETTINGSACCESS == "1" && $isMobile == "0") { ?>
 						<li><a href='#Settings' class='panel2nd'>Settings</a></li> <?php } ?>
 						<li><a href="#">&nbsp;</a></li>
@@ -434,6 +435,55 @@ if(isset($_GET['dev']) && $_GET['dev'] == 1){
 				}
 		});
 	}
+	
+	var alertstatus = 0;
+	var isSleeping2 = 0;
+	setTimeout(alertcheck, 1000);
+	function alertcheck() {
+		if (document.cookie.indexOf("sleeping") >= 0) {
+			var isSleeping2 = getCookie('sleeping');
+		}
+		if(isSleeping2 == 0) {
+			$.ajax({ url: './alerts.php',
+					 type: 'post',
+					 success: function(output) {
+						if(output == "newalert") {
+							// change icon to show alert option
+							if(alertstatus == '0') {
+								alertstatus = 1;
+								$("#navsettingsicon").attr('src', '../media/options-alert.png');
+								$(".alertbutton").addClass( "orange" );
+							}
+						}
+						if(output == "none") {
+							// no alerts, ensure icon is normal
+							if(alertstatus == '1') {
+								alertstatus = 0;
+								$("#navsettingsicon").attr('src', '../media/options.png');
+								$(".alertbutton").removeClass( "orange" );
+							}
+						}
+					},
+					complete: function() {
+						setTimeout(alertcheck, 5000);
+					}
+			});
+		} else {
+			setTimeout(alertcheck, 50000);
+		}
+	}
+	
+	jQuery(function ($) {
+		$('.alertbutton').click(function (e) {
+			$('#modal').load('alerts.php?getalerts=1').modal({
+				opacity: 75,
+				overlayClose: true
+			});
+			return false;
+		});
+	});
+
+
 
 	// idle timeout for network pings
 	function d(el){

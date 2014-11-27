@@ -1,11 +1,6 @@
 <?php
-/*
-if(!empty($_GET) && isset($_GET["section"])) {
-	$section = $_GET["section"];
-} else {
-	exit;
-}*/
 if(isset($linkto)) {
+	include "$INCLUDES/includes/addons.php";
 	if($linkto === "About" || $linkto === "0") {
 		if($getinfo === "yes") { ?>
 		
@@ -671,7 +666,7 @@ if(isset($linkto)) {
 				</td>
 			</tr>	
 			<?php				
-			include "$INCLUDES/includes/addons.php";
+
 			
 			/*
 			echo"<pre>";
@@ -689,12 +684,12 @@ if(isset($linkto)) {
 					echo "<table><tr><td>";
 							echo "<img src='$value[path]/media/icon.png' /><br><br>";
 						echo "</td><td>";
-							echo "Title: $value[name]<br>";
+							echo "<b>$value[name]</b><br>";
 							echo "Version: $value[version]<br>";
 							echo "Author: $value[author]<br>";
 							echo "Description: $value[description]<br>";
 						echo "</td><td>";	
-							echo "<input type='button' name='submit' item='$i.$key' value='Download' class='ui-button ui-widget ui-state-default ui-corner-all addonExport'>";
+							echo "<input type='button' name='submit' addon='$i.$key' version='$value[version]' value='Download' class='ui-button ui-widget ui-state-default ui-corner-all addonExport'>";
 					echo "</td></tr></table>";
 				}
 				echo "</div>";

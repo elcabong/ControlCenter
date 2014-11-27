@@ -14,7 +14,6 @@ server setup
 
 settings refactor:
 	current save function, add return to page info in request
-	size and zoom? of settings pane needs to be fixed... maybe set bottom to 0..
 	loading info per div (may suffice to do per page div insert loading)
 	saving info and refreshing saved div
 	dropdown for http://--https:// for required options
@@ -27,14 +26,8 @@ settings refactor:
 	users
 		per user settings
 		add user picture when logged in to menu
-	
-	
-alerts
-	alerts table in db
-		userid - message - viewed (0 or 1) - 
-	possibly in cron thread, check db for unviewed alerts, and notify user	
-	
-	
+
+
 main links dropdown (upper right and left)
 	make the overlay function better
 	better way to do this?
@@ -48,13 +41,12 @@ addons:
 	
 	
 notifications
-	upper right hamburger menu glow orange when notification
-	notification icon below users name in dropdown
-		goes to details osd with info for notification
-	how are notifications stored for user access.. how will page update when notified..
-
+	display for alerts in popup
+	marking 'read' for alerts (timestamp)
+	
 
 logging:
+	alerts
 	servercheck logging
 	what page they load from upper left menu
 

@@ -276,6 +276,8 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS settings (settingid integer PRIMARY KEY AUTOINCREMENT, setting text UNIQUE, description text, settingvalue1type text, settingvalue1 text)";
 		  $execquery = $configdb->exec($query);
+		  $query = "CREATE TABLE IF NOT EXISTS alerts (alert_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL, viewed INTEGER NOT NULL DEFAULT '0', message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0')";
+		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, CCsetting TEXT UNIQUE, CCvalue TEXT)";
 		  $execquery = $configdb->exec($query);
 			// stamp current version

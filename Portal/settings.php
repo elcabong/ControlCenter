@@ -208,7 +208,6 @@ if($totalusernum != 0 && !isset($_GET['setup'])) {
 	require("$INCLUDES/includes/config.php");
 	require_once "$INCLUDES/includes/auth.php";
 }
-require_once "$INCLUDES/includes/addons.php";
 $getinfo = "";
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -224,7 +223,7 @@ $getinfo = "";
   <link rel="stylesheet" type="text/css" href="../css/UI/jquery-ui-1.8.14.custom.css">
   <link href="../css/room.css" rel="stylesheet" type="text/css">
   <link href="../css/chosen.css" rel="stylesheet" type="text/css">
-  <link href="../css/settings.css" rel="stylesheet" type="text/css">
+  <link href="../css/settings.css?5" rel="stylesheet" type="text/css">
   <link rel="stylesheet" type="text/css" href="../css/jquery.pnotify.default.css">
   <script src="../js/jquery.pnotify.js" type="text/javascript"></script>
   <script src="../js/dropzone.js"></script>
@@ -304,14 +303,14 @@ $(document).ready(function() {
 </head>
 <body style="overflow: hidden;color:#666;">
 <center>
-<div style="width:100%; height:100%;position:relative;" class="widget">
+<div class="widget">
 	<div class="widget-head">
 	<?php	if(isset($_GET['setup'])){ ?>
 	  <h3>First Time Configuration</h3>	
 		<?php } else { ?>
 	  <h3>Settings</h3>
 	  <?php } ?>	  
-	</div><br />
+	</div>
 	<div id="slider">
 		<ul class="navigation">
 			<li><a class="settings<?php if($linkto === "0" || $linkto === "About") { echo " selected"; }?>" section="About" href="#About">About</a></li>|

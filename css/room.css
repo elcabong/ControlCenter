@@ -33,6 +33,11 @@ iframe {
   border: 0px none #D0D0D0;
 }
 
+.orange {
+    color: #FF9522 !important;
+    text-decoration: none;
+}
+
 /*---------------------/
   BASE STYLES         /
 --------------------*/
