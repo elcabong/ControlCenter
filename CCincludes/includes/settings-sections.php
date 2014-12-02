@@ -1,6 +1,43 @@
 <?php
 if(isset($linkto)) {
 	include "$INCLUDES/includes/addons.php";
+	
+	try {
+		$sql = "SELECT * FROM rooms";
+		$roomlist = '';
+		foreach ($configdb->query($sql) as $row)
+			{
+			$roomlist .= "<option value=".$row['roomid'].">".$row['roomname']."</option>";
+			}
+	} catch(PDOException $e)
+		{
+		echo $e->getMessage();
+		}
+	try {
+		$sql5 = "SELECT * FROM roomgroups";
+		$roomgrouplist = '';
+		foreach ($configdb->query($sql5) as $row5)
+			{
+			$roomgrouplist .= "<option value=".$row5['roomgroupid'].">".$row5['roomgroupname']."</option>";
+			}
+	} catch(PDOException $e)
+		{
+		echo $e->getMessage();
+		}
+		
+	try {
+		$sql = "SELECT * FROM navigation";
+		$navlist = '';
+		foreach ($configdb->query($sql) as $row)
+			{
+			$navlist .= "<option value=".$row['navid'].">".$row['navname']."</option>";
+			}
+	} catch(PDOException $e)
+		{
+		echo $e->getMessage();
+		}	
+	
+	
 	if($linkto === "About" || $linkto === "0") {
 		if($getinfo === "yes") { ?>
 		
@@ -177,41 +214,6 @@ if(isset($linkto)) {
               <h3>User List</h3>
 			  <p>Control who has access to what in your Control Center.</p>
                 <?php
-				try {
-					$sql = "SELECT * FROM rooms";
-					$roomlist = '';
-					foreach ($configdb->query($sql) as $row)
-						{
-						$roomlist .= "<option value=".$row['roomid'].">".$row['roomname']."</option>";
-						}
-				} catch(PDOException $e)
-					{
-					echo $e->getMessage();
-					}
-				try {
-					$sql5 = "SELECT * FROM roomgroups";
-					$roomgrouplist = '';
-					foreach ($configdb->query($sql5) as $row5)
-						{
-						$roomgrouplist .= "<option value=".$row5['roomgroupid'].">".$row5['roomgroupname']."</option>";
-						}
-				} catch(PDOException $e)
-					{
-					echo $e->getMessage();
-					}
-					
-				try {
-					$sql = "SELECT * FROM navigation";
-					$navlist = '';
-					foreach ($configdb->query($sql) as $row)
-						{
-						$navlist .= "<option value=".$row['navid'].">".$row['navname']."</option>";
-						}
-				} catch(PDOException $e)
-					{
-					echo $e->getMessage();
-					}
-
 							$setnavgroups = '';
 							$thenavgroups = '';
 							$allnavgroups = '';

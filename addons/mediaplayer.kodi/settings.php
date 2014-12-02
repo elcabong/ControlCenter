@@ -1,17 +1,17 @@
 <?php
-$ADDONIP = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['ADDONIP'];
-$ADDONIPW = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['ADDONIPW'];
-$ADDONMAC = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['MAC'];
-$setting1 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting1'];
-$setting2 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting2'];
-$setting3 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting3'];
-$setting4 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting4'];
-$setting5 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting5'];
-$setting6 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting6'];
-$setting7 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting7'];
-$setting8 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting8'];
-$setting9 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting9'];
-$setting10 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.xbmc']['setting10'];
+$ADDONIP = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['ADDONIP'];
+$ADDONIPW = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['ADDONIPW'];
+$ADDONMAC = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['MAC'];
+$setting1 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['setting1'];
+$setting2 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['setting2'];
+$setting3 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['setting3'];
+$setting4 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['setting4'];
+$setting5 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['setting5'];
+$setting6 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['setting6'];
+$setting7 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['setting7'];
+$setting8 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['setting8'];
+$setting9 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['setting9'];
+$setting10 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['setting10'];
 
 echo "<tr><td>&nbsp;</td></tr><tr><td></td><td colspan=5>$title</td></tr>
 		<tr><td class='title'>IP LAN</td><td colspan=5><input size='80' name='ip' value='$ADDONIP'></td></tr>
