@@ -22,7 +22,7 @@
 								$sessvar = "playinginroom$THISROOMID";
 								$_SESSION[$sessvar] = 1;
 								if($activeplayerid=='0' || $activeplayerid=='1' || $activeplayerid=='2') {
-									echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' thisroom='$THISROOMID' class='roominfo-modal'><p class='scrolling'>";
+									echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' thisroom='$THISROOMID' class='roominfo-modal $THISROOMID'><p class='scrolling'>";
 									if($activeplayerid==0) {
 										if($filetype=="unknown") {
 											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";

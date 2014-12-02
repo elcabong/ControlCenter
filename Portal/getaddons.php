@@ -103,7 +103,7 @@ $log->LogDebug("User $authusername Got Addons for room $THISROOMID from " . base
 		});
 	}
 	jQuery(function ($) {
-		$('.roominfo-modal').click(function (e) {
+		$('.roominfo-modal.<?php echo $THISROOMID;?>').click(function (e) {
 			var thisip = $(this).attr('ip');
 			var thisroom = $(this).attr('thisroom');
 			$('#modal').load('nowplaying.php?ip='+thisip+'&thisroom='+thisroom).modal({
@@ -113,7 +113,7 @@ $log->LogDebug("User $authusername Got Addons for room $THISROOMID from " . base
 		});
 	});	
 	jQuery(function ($) {
-		$('.roominfo-link').click(function (e) {
+		$('.roominfo-link.<?php echo $THISROOMID;?>').click(function (e) {
 			e.preventDefault();
 			var href = $(this).attr('href');
 			if(href == '#') { return false; }

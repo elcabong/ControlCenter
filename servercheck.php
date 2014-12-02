@@ -281,6 +281,9 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, CCsetting TEXT UNIQUE, CCvalue TEXT)";
 		  $execquery = $configdb->exec($query);
 			// stamp current version
+			
+			// need to check current version vs the new db version and run all updates in order to get current
+			
 			if($thedbversion == 'none') { $thedbversion = $DBVERSION; }
 			if($thedbversion == '1.1.2' && $theolddbversion < $thedbversion) {
 				$query = "ALTER TABLE rooms_addons ADD COLUMN device_alive INTEGER NULL;"; 	

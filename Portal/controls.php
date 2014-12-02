@@ -39,13 +39,13 @@ if(isset($_GET['dev']) && $_GET['dev'] == 1){
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Control Center</title>
-	<link rel='stylesheet' type='text/css' href="../css/room.css?<?php echo date ("m/d/Y-H.i.s", filemtime('../css/room.css'));?>">
+	<link rel='stylesheet' type='text/css' href="../css/room.css">
 	<script type="text/javascript" src="../js/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="../js/jquery.scrollTo.js"></script>
 	<script type="text/javascript" src="../js/jquery.simplemodal.js"></script>
 	<script type="text/javascript" src="../js/jquery.touchwipe.js"></script>	
 	<script type="text/javascript" src="../js/ifvisible.js"></script>
-	<script type="text/javascript" src="../js/scripts.js?<?php echo date ("m/d/Y-H.i.s",filemtime('../js/scripts.js'));?>"></script>
+	<script type="text/javascript" src="../js/scripts.js"></script>
 	<script type="text/javascript">
 		if (window.navigator.standalone) {
 			var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}

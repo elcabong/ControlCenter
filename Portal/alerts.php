@@ -65,14 +65,18 @@ if($getalerts == 0) {
 				<div id="content">
 				<?php
 					// unread content
-					print_r($alertarray['unread']);
+					if(!empty($alertarray['unread'])) {
+						print_r($alertarray['unread']);
+					}
 					echo "<br><br><br>";
 						
 						
 						
 						
 					// read content
-					print_r($alertarray['read']);
+					if(!empty($alertarray['read'])) {
+						print_r($alertarray['read']);
+					}
 					echo "<br><br><br>";
 				?>
 				</div>

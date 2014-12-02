@@ -9,7 +9,7 @@
 							} else {
 								if($activeplayerid=='0' || $activeplayerid=='1' || $activeplayerid=='2') {
 									echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><br>";
-									echo "<a href='#' ip='$ip' thisroom='$THISROOMID' class='roominfo-modal'>";
+									echo "<a href='#' ip='$ip' thisroom='$THISROOMID' class='roominfo-modal $THISROOMID'>";
 									if($activeplayerid==0) {
 										if($filetype=="unknown") {
 											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";

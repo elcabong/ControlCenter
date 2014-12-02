@@ -22,7 +22,7 @@ if($content !== false) {
 	if(isset($_COOKIE["currentRoom$usernumber"]) && $_COOKIE["currentRoom$usernumber"]=="$THISROOMID") {
 		echo "DISKRIPPER1";
 	}
-	echo "' ip='$ip' thisroom='$THISROOMID' class='roominfo-link'><p class='scrolling'>$content</p></a></span>";
+	echo "' ip='$ip' thisroom='$THISROOMID' class='roominfo-link $THISROOMID'><p class='scrolling'>$content</p></a></span>";
 } else {
 	if($howmanyaddons<2){
 		echo "<a href='#' class='pingicon'><img src='../media/cyan.png' title='online, but cant find web server' style='height:20px;'/></a>";
