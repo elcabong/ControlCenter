@@ -70,7 +70,7 @@ try {
 	$log->LogError("$e->getMessage()" . basename(__FILE__));
 	}
 try {
-	$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (2,'lastcrontime','$time')");
+	$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (3,'lastcrontime','$time')");
 } catch(PDOException $e)
 	{
 	$log->LogError("$e->getMessage()" . basename(__FILE__));

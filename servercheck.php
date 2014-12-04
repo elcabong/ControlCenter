@@ -276,7 +276,7 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS settings (settingid integer PRIMARY KEY AUTOINCREMENT, setting text UNIQUE, description text, settingvalue1type text, settingvalue1 text)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS alerts (alert_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL, viewed INTEGER NOT NULL DEFAULT '0', message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0')";
+		  $query = "CREATE TABLE IF NOT EXISTS alerts (alert_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', viewed INTEGER NOT NULL DEFAULT '0', message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created INTEGER NOT NULL DEFAULT current_timestamp)";
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, CCsetting TEXT UNIQUE, CCvalue TEXT)";
 		  $execquery = $configdb->exec($query);
@@ -286,17 +286,24 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 			
 			if($thedbversion == 'none') { $thedbversion = $DBVERSION; }
 			if($thedbversion == '1.1.2' && $theolddbversion < $thedbversion) {
-				$query = "ALTER TABLE rooms_addons ADD COLUMN device_alive INTEGER NULL;"; 	
-				$execquery = $configdb->exec($query);				
+				$query = "ALTER TABLE rooms_addons ADD COLUMN device_alive INTEGER NULL;";
+				$execquery = $configdb->exec($query);
 			}
 			if($thedbversion == '1.1.3' && $theolddbversion < $thedbversion) {
-				$query = "DROP TABLE IF EXISTS controlcenter;"; 	
+				$query = "DROP TABLE IF EXISTS controlcenter;";
 				$execquery = $configdb->exec($query);
 				$query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, CCsetting TEXT UNIQUE, CCvalue TEXT)";
-				$execquery = $configdb->exec($query);				
-			}			
-			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (1,'dbversion','$thedbversion')");
-			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (2,'lastcrontime','0')");
+				$execquery = $configdb->exec($query);
+			}
+			if($thedbversion == '1.1.4' && $theolddbversion < $thedbversion) {
+				$query = "DROP TABLE IF EXISTS alerts;";
+				$execquery = $configdb->exec($query);
+				$query = "CREATE TABLE IF NOT EXISTS alerts (alert_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', viewed INTEGER NOT NULL DEFAULT '0', message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created INTEGER NOT NULL DEFAULT current_timestamp)";
+				$execquery = $configdb->exec($query);
+			}
+			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (1,'ccversion','$CCVERSION')");
+			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (2,'dbversion','$thedbversion')");
+			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (3,'lastcrontime','0')");
 			echo "<tr><td>DB tables checked, Version: $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 			
 			//insert all settings with default values

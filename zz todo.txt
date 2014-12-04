@@ -1,38 +1,38 @@
-first time configure:
-	steps to complete setup like dropbox.. check off when done..  
-		add room
-		group room
-		apps if needed
-		userlist
-	how to use popup for first time user log in..  transparent overlay with arrows and comments for various sections... should be available again from users individual settings area
-
-
-server setup
-	move servercheck?
-	complete serverinstall with servercheck db upgrade part in includes per version		
-
-	
 server upgrade/install
 	upgrade process
-		setversion number in db
 	install process
+		server setup
+			move servercheck?
+			complete serverinstall with servercheck db upgrade part in includes per version
+		first time configure:
+			steps to complete setup like dropbox.. check off when done..  
+				add room
+				group room
+				apps if needed
+				userlist
+			how to use popup for first time user log in(mark in userpref/settings table)..  transparent overlay with arrows and comments for various sections... should be available again from users individual settings area
+
 
 settings refactor:
-	settings-section.php -- pull more global scope variables to top of page (may be complete)
-	current save function, add return to page info in request
-	loading info per div (may suffice to do per page div insert loading)
-	saving info and refreshing saved div
+	ready for testing
+		settings-section.php -- pull more global scope variables to top of page (may be complete)
+		current save function, add return to page info in request
+		loading info per div (may suffice to do per page div insert loading)
+		saving info and refreshing saved div
 	dropdown for http://--https:// for required options
 	add ip2wan options for those that have iplan/wan options
 	make several levels of "admin" some should have access to everything except users, etc
 	import/export db, restrict to super admin and remove "about" settings page
 	import/export addons
 	change user picture naming scheme so there are no collisions
-	users
-		per user settings
-		add user picture when logged in to menu
+	add user picture when logged in to menu
 	screen resize function doesnt work for settings page
 
+	
+settings - per user
+	create db for individual settings
+	what settings/prefs to include here
+	
 
 main links dropdown (upper right and left)
 	make the overlay function better
@@ -40,6 +40,7 @@ main links dropdown (upper right and left)
 	
 
 addons:
+	update/disable/enable on settings page
 	zoneminder
 	xbmc/kodi optimize
 	addons.php optimize  --> load to db? or keep as php scan file tree?
@@ -49,7 +50,9 @@ addons:
 notifications
 	display for alerts in popup
 	marking 'read' for alerts (timestamp)
+	fix timestamp for alert create/display of this field
 	ability to send alerts to groups
+	include username/user picture when alert sent from person
 	
 
 logging:
@@ -59,3 +62,18 @@ logging:
 	what page they load from upper left menu
 
 	ccmaster logging
+	
+	
+	
+	
+////
+total project things:
+
+forum setup
+	areas for general/admin users
+	wiki for faq
+	
+crowdfunding
+	requirements for posting
+	about us
+	about the product

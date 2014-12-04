@@ -1,7 +1,8 @@
 <?php
 // this needs to be updated to current version of db.
 // gets called in servercheck.php
-$DBVERSION = "1.1.3";
+$DBVERSION = "1.1.4";
+$CCVERSION = "1.0.1";
 if(isset($getversion) && $getversion == "yes") {
 	return $DBVERSION;
 } else {
@@ -26,7 +27,12 @@ if(isset($getversion) && $getversion == "yes") {
 
 	$missing = folderRequirements($folderlevel);
 	if (!file_exists($INCLUDES . "/sessions/config.db") || $missing > 0) { header('Location: ' . $servercheckloc);exit; }
-	$configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
+
+	try {
+		$configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
+	} catch (PDOException $e) {
+		$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
+	}
 
 	try {
 		$sql = "SELECT * FROM controlcenter";
@@ -39,8 +45,11 @@ if(isset($getversion) && $getversion == "yes") {
 		$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 	}
 
-	//check db version for updates
-	if(${'dbversion'} < $DBVERSION) { header('Location: ' . $servercheckloc . '?newdbversion=' . $DBVERSION);exit; }
+	//check cc/db version for updates
+	//will have to run check against mainserver for new version
+	//will need db area for last update check date, if longer than x, check for updates, if x too far away (longer than 24 hours) check for udpates and reset value
+	if(!isset(${'ccversion'}) || ${'ccversion'} < $CCVERSION) { header('Location: ' . $servercheckloc);exit; }
+	if(!isset(${'dbversion'}) || ${'dbversion'} < $DBVERSION) { header('Location: ' . $servercheckloc . '?newdbversion=' . $DBVERSION);exit; }
 
 	try {
 		$sql = "SELECT * FROM users";

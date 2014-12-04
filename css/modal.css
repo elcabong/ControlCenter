@@ -10,6 +10,14 @@ a:hover > p {
 color: #0099ff !important;
 }
 
+.clear {
+	clear:both;
+}
+
+.clearl{
+	clear:left;
+}
+
 /* Overlay */
 #simplemodal-overlay {background-color:#000;}
 
@@ -54,7 +62,28 @@ img {border:0;}
 	width: 220px;
 }
 
+.alert {
+	color:#eee;
+	margin: 5px 0;
+	border: 1px #EEE solid;
+	padding: 5px;
+}
 
+.alert span.from, .alert span.message {
+	float:left;
+}
+
+.alert span.dates {
+	float:right;
+	text-align:right;
+}
+
+.alert.read {
+	color:grey;
+	margin: 5px 0;
+	border: 1px grey solid;
+	padding: 5px;	
+}
 	
 @media all and (max-width: 675px) {
 #logo > h1 { font-size:23pt;line-height:30px !important; }
