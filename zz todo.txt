@@ -48,11 +48,10 @@ addons:
 	
 	
 notifications
-	display for alerts in popup
-	marking 'read' for alerts (timestamp)
 	fix timestamp for alert create/display of this field
-	ability to send alerts to groups
+		initial timestamp on create is UTC but mark read timestamp is local php server time.  need to reconcile
 	include username/user picture when alert sent from person
+	create/edit/markread for alerts should be put in a class so alerts can be created like/with logs
 	
 
 logging:

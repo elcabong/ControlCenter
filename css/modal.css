@@ -73,6 +73,10 @@ img {border:0;}
 	float:left;
 }
 
+span input,span select{
+	vertical-align:middle;
+}
+
 .alert span.dates {
 	float:right;
 	text-align:right;
