@@ -380,7 +380,7 @@ function reSizeRoomInfo() {
 		   }
 		});
 	}
-	
+/*	
 	jQuery(function ($) {
 		$('.roominfo-modal').click(function (e) {
 			var thisip = $(this).attr('ip');
@@ -407,7 +407,7 @@ function reSizeRoomInfo() {
 			$('a.panel').removeClass('selected');
 			$('a.panel[href="#'+href+'"]').addClass('selected');
 		});
-	});
+	});*/
 	
 	jQuery(function ($) {
 		$('#searchlink').click(function (e) {
@@ -418,4 +418,4 @@ function reSizeRoomInfo() {
 			});
 			return false;
 		});
-	});		
+	});

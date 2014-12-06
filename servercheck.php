@@ -276,7 +276,9 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS settings (settingid integer PRIMARY KEY AUTOINCREMENT, setting text UNIQUE, description text, settingvalue1type text, settingvalue1 text)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS alerts (alert_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, viewed INTEGER NOT NULL DEFAULT '0', message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created INTEGER NOT NULL DEFAULT current_timestamp)";
+		  $query = "CREATE TABLE IF NOT EXISTS alerts (alert_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created INTEGER NOT NULL DEFAULT current_timestamp)";
+		  $execquery = $configdb->exec($query);
+		  $query = "CREATE TABLE IF NOT EXISTS alerts_viewed (alerts_viewed_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', alert_id INTEGER NOT NULL DEFAULT '0', viewed INTEGER NOT NULL DEFAULT current_timestamp)";
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, CCsetting TEXT UNIQUE, CCvalue TEXT)";
 		  $execquery = $configdb->exec($query);
@@ -298,9 +300,11 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 			if($thedbversion == '1.1.4' && $theolddbversion < $thedbversion) {
 				$query = "DROP TABLE IF EXISTS alerts;";
 				$execquery = $configdb->exec($query);
-				$query = "CREATE TABLE IF NOT EXISTS alerts (alert_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, viewed INTEGER NOT NULL DEFAULT '0', message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created INTEGER NOT NULL DEFAULT current_timestamp)";
+				$query = "CREATE TABLE IF NOT EXISTS alerts (alert_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created INTEGER NOT NULL DEFAULT current_timestamp)";
 				$execquery = $configdb->exec($query);
 				$query = "ALTER TABLE users ADD COLUMN userlevel INTEGER NOT NULL DEFAULT '1';";
+				$execquery = $configdb->exec($query);
+				$query = "CREATE TABLE IF NOT EXISTS alerts_viewed (alerts_viewed_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', alert_id INTEGER NOT NULL DEFAULT '0', viewed INTEGER NOT NULL DEFAULT current_timestamp)";
 				$execquery = $configdb->exec($query);
 			}
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (1,'ccversion','$CCVERSION')");

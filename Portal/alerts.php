@@ -24,22 +24,24 @@ try {
 	}
 if(!empty($_POST["markread"])) {
 	$alertid = $_POST["markread"];
-	$timenow = date("Y-m-d H:i:s");
-	echo "this returned with $alertid at $timenow";
-	$configdb->exec("UPDATE alerts SET viewed = '$timenow' WHERE alert_id = $alertid");
+	$configdb->exec("INSERT INTO alerts_viewed (userid,alert_id) VALUES ($usernumber,$alertid)");
 	exit;
 }
 try {
 	$sql = "SELECT * FROM users";
 	$userid = 0;
+	$USERIDS = array();
 	$USERNAMES = array("none");
 	$USERLEVEL = array("none");
+	$HOWMANYUSERS = 0;
 	foreach ($configdb->query($sql) as $row) {
 		$userid = $row['userid'];
+		$USERIDS[] = "$userid";
 		$USERNAME = "USERNAME$userid";
 		${$USERNAME} = $row['username'];
 		$USERNAMES[$userid] = ${$USERNAME};
 		$USERLEVEL[$userid] = $row['userlevel'];
+		$HOWMANYUSERS++;
 	}
 } catch(PDOException $e) {
 	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
@@ -63,11 +65,27 @@ if($submitAlert == 1) {
 	}
 	$submitAlert = 2;
 }
+$viewedalerts = array();
+$viewedalertsdate = array();
+$thisviewedalert = '';
+try {
+	$sql = "SELECT alert_id,viewed FROM alerts_viewed WHERE userid = '$usernumber'";
+	foreach ($configdb->query($sql) as $thisviewedalert) {
+		$viewedalerts[] = $thisviewedalert['alert_id'];
+		$viewedalertsdate[$thisviewedalert['alert_id']] = $thisviewedalert['viewed'];
+	}
+} catch(PDOException $e)
+	{
+		$log->LogError("$e->getMessage()" . basename(__FILE__));
+	}
 if($getalerts == 0) {
 	try {
-		$sql = "SELECT alert_id FROM alerts WHERE (userid = '$usernumber' OR userlevel <= '$USERLEVEL[$usernumber]') AND viewed = '0' ORDER BY alert_id DESC LIMIT 1";
-		foreach ($configdb->query($sql) as $lastalert) {
-			$alertexists = $lastalert['alert_id'];
+		$sql = "SELECT * FROM alerts WHERE (userid = '$usernumber' OR userlevel <= '$USERLEVEL[$usernumber]') ORDER BY alert_id DESC";
+		foreach ($configdb->query($sql) as $recentalerts) {
+			if(!in_array($recentalerts['alert_id'], $viewedalerts)) {
+				$alertexists = $recentalerts['alert_id'];
+				break;
+			}
 		}
 	} catch(PDOException $e)
 		{
@@ -85,7 +103,7 @@ if($getalerts == 0) {
 	try {
 		$sql = "SELECT * FROM alerts WHERE userid = '$usernumber' OR userlevel <= '$USERLEVEL[$usernumber]' ORDER BY alert_id DESC";
 		foreach ($configdb->query($sql) as $thisalert) {
-			if($thisalert['viewed']==0) {
+			if(!in_array($thisalert['alert_id'], $viewedalerts)) {
 				$alertarray['unread'][$thisalert['alert_id']]['message'] = $thisalert['message'];
 				if($thisalert['from_userid'] == 0) {
 					$alertarray['unread'][$thisalert['alert_id']]['from_userid'] = "System";
@@ -105,7 +123,7 @@ if($getalerts == 0) {
 				} else {
 					$alertarray['read'][$thisalert['alert_id']]['from_userid'] = $USERNAMES[$thisalert['from_userid']];
 				}
-				$alertarray['read'][$thisalert['alert_id']]['viewed'] = $thisalert['viewed'];
+				$alertarray['read'][$thisalert['alert_id']]['viewed'] = $viewedalertsdate[$thisalert['alert_id']];
 				$alertarray['read'][$thisalert['alert_id']]['created'] = $thisalert['created'];
 				if(isset($thisalert['userlevel']) && $thisalert['userlevel'] != '') {
 					$alertarray['read'][$thisalert['alert_id']]['togroup'] = $grouplevels[$thisalert['userlevel']];
@@ -136,9 +154,8 @@ if($getalerts == 0) {
 							<span>For User:
 								<select id="AlertUser">
 									<option value="">Choose</option>
-									<?php for($i=1; $i<10000; $i++) {
-										if(!isset($USERNAMES[$i])) { break; }
-										echo "<option value=\"user:$i\">$USERNAMES[$i]</option>";
+									<?php	foreach($USERIDS as $thisuserid) {
+										echo "<option value=\"user:$thisuserid\">$USERNAMES[$thisuserid]</option>";
 									}?>
 									<option value="" disabled>======</option>
 									<option value="userlevel:1"><?php echo "$grouplevels[1]";?></option>
@@ -171,7 +188,7 @@ if($getalerts == 0) {
 					if(!empty($alertarray['read'])) {
 						foreach($alertarray['read'] as $read) {
 							echo "<div class='alert read'>";
-								echo "<span class='from'>".$read['from_userid']." Alerted ".$unread['togroup']."</span>";
+								echo "<span class='from'>".$read['from_userid']." Alerted ".$read['togroup']."</span>";
 								echo "<span class='dates'>Created:".$read['created']."<br />Viewed:".$read['viewed']."</span>";
 								echo "<span class='message clearl'>".$read['message']."</span>";
 								echo "<br class='clear' />";
@@ -197,7 +214,7 @@ if($getalerts == 0) {
 							alert("Alert message is blank");
 						} else {
 							safemessage = encodeURIComponent(message);
-							safetouser = encodeURIComponent(user);
+							safetouser = user;
 							$('#modal').load('alerts.php?submitAlert=1&message='+safemessage+'&toUser='+safetouser+'&fromUser=<?php echo $usernumber; ?>&getalerts=1').modal({
 								opacity: 75,
 								overlayClose: true
