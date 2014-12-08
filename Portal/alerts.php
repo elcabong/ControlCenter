@@ -141,7 +141,7 @@ if($getalerts == 0) {
 	<html>
 		<head>
 			<title>Alerts</title>
-			<link type='text/css' href='../css/modal.css' rel='stylesheet' />
+			<link type='text/css' href='../css/modal.css?2' rel='stylesheet' />
 		</head>
 		<body>
 			<div id='alertcontainer'>
