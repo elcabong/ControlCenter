@@ -4,6 +4,13 @@ $grouplevels[1] = "All Users";
 $grouplevels[3] = "Admins";
 $grouplevels[5] = "Super Admins";
 require_once "startsession.php";
+if(isset($_SESSION['usernumber'])) {
+	$usernumber = $_SESSION['usernumber'];
+} else {
+	$log->LogWarn("User Redirected to Login Page, No usernumber in SESSION info. From " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
+	header("Location: login.php");
+    exit;
+}
 $log->LogDebug("User " . $_SESSION['username'] . " loaded " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 
 $getalerts = 0;
@@ -15,7 +22,6 @@ if(isset($_GET['submitAlert'])) {
 	$submitAlert = 1;
 }
 $alertexists = 0;
-$usernumber = $_SESSION['usernumber'];
 try {
 	$configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
 } catch(PDOException $e)

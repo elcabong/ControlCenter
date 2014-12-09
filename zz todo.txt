@@ -1,5 +1,6 @@
 server upgrade/install
 	upgrade process
+		create "needs update" overlay to refresh page and load servercheck when upgrades are needed.
 	install process
 		server setup
 			move servercheck?
@@ -28,16 +29,16 @@ settings refactor:
 	add user picture when logged in to menu
 	screen resize function doesnt work for settings page
 
-	
+
 settings - per user
 	create db for individual settings
 	what settings/prefs to include here
-	
+
 
 main links dropdown (upper right and left)
 	make the overlay function better
 	better way to do this?
-	
+
 
 addons:
 	update/disable/enable on settings page
@@ -45,15 +46,14 @@ addons:
 	xbmc/kodi optimize
 	addons.php optimize  --> load to db? or keep as php scan file tree?
 	screen for device on but app not responding (orange) like the wol screen
-	
-	
+
+
 notifications
 	fix timestamp for alert create/display of this field
 		initial timestamp on create is UTC but mark read timestamp is local php server time.  need to reconcile
 	include username/user picture when alert sent from person
 	create/edit/markread for alerts should be put in a class so alerts can be created like/with logs
-	read table needs to be different and account for each userid and each item
-	
+
 
 logging:
 	settings page
@@ -62,10 +62,10 @@ logging:
 	what page they load from upper left menu
 
 	ccmaster logging
-	
-	
-	
-	
+
+
+
+
 ////
 total project things:
 
