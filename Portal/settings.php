@@ -354,7 +354,7 @@ $( "a.settings" ).click(function() {
 	var goingto = url.split('#')[0];
 	var goingto = url.split('?')[0];
 	
-	 window.location.href = goingto + "?linkto=" + linkto;
+	 window.location.href = goingto + "?linkto=" + linkto	<?php	if(isset($_GET['setup'])){ echo "+ '&setup=first'"; }?>;
 	event.preventDefault();
 });
 </script>	
