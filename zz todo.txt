@@ -12,7 +12,10 @@ server upgrade/install
 				apps if needed
 				userlist
 			how to use popup for first time user log in(mark in userpref/settings table)..  transparent overlay with arrows and comments for various sections... should be available again from users individual settings area
-
+	when to phone home and check for updates/license
+		what calls this?
+		display update to users (notification?)
+		
 
 settings refactor:
 	ready for testing
@@ -24,7 +27,6 @@ settings refactor:
 	add ip2wan options for those that have iplan/wan options
 	make several levels of "admin" some should have access to everything except users, etc
 	import/export db, restrict to super admin and remove "about" settings page
-	import/export addons
 	change user picture naming scheme so there are no collisions
 	add user picture when logged in to menu
 	screen resize function doesnt work for settings page
@@ -42,6 +44,7 @@ main links dropdown (upper right and left)
 
 addons:
 	update/disable/enable on settings page
+		import/export addons
 	zoneminder
 	xbmc/kodi optimize
 	addons.php optimize  --> load to db? or keep as php scan file tree?
@@ -53,6 +56,8 @@ notifications
 		initial timestamp on create is UTC but mark read timestamp is local php server time.  need to reconcile
 	include username/user picture when alert sent from person
 	create/edit/markread for alerts should be put in a class so alerts can be created like/with logs
+	need to limit total notifications shown.  maybe 10/20 with a load more function 
+		http://www.umair.io/how-to-create-news-feed-like-facebook-with-php-and-jquery/
 
 
 logging:
