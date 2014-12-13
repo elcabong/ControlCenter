@@ -333,16 +333,21 @@ if(isset($linkto)) {
 						}						
 						echo "<div class='container'><form action='upload.php?user=$userid' class='dropzone' id='user$userid' style='position:relative;z-index:1;background-color:rgba(0,0,0,.5);color:#eee;'><input type='file' name='user$userid' /></form><span class='text'>" . $row['username'] . "</span><img src='$theuserpic' class='image' /></div>";
 						echo "<table id='users-$userid'>";
-						echo "<tr><td class='title'>Username</td><td><input class='inputcheck nospaces' size='10' name='username' value='" . $row['username'] . "'></td>
-										<td class='title'>Password</td><td><input size='10' type='password' name='password' value='" . $row['password'] . "'></td>
-										<td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"users\"," . $row['userid'] . ");' /></td></tr>
+						echo "<tr><td class='title'>Username</td><td><input class='inputcheck nospaces' size='10' name='username' value='" . $row['username'] . "'></td>";
+										//<td class='title'>Password</td><td><input size='10' type='password' name='password' value='" . $row['password'] . "'></td>
+						echo "<td></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"users-$userid\");' /><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all remove' value='Remove' onclick='deleteRecord(\"users\"," . $row['userid'] . ");' /></td></tr>
 								  <tr><td class='title'>Homeroom</td><td><select name='homeroom'>".$thehomeroom.$roomlist."</select></td>
 										<td class='title'>App Groups</td><td colspan=2><select class='chosen-select multiple' id='navgroupaccess$userid' data-placeholder='Add Apps' multiple='multiple'>".$setnavgroups.$thenavgroups."</select><input size='10' class='navgroupaccess$userid' type='hidden' name='navgroupaccess' value=" . $row['navgroupaccess'] . "></td></tr>
 									<tr><td class='title'>Room Group</td><td><select name='roomgroupaccess'>".$theroomgroup.$roomgrouplist."></td>
 										<td class='title'>Room Allow</td><td colspan=2><select class='chosen-select multiple' id='roomaccess$userid' data-placeholder='Allow Overrides' multiple='multiple'>".$theroomaccess.$theallowrooms."</select><input size='10' class='roomaccess$userid' type='hidden' name='roomaccess' value=" . $row['roomaccess'] . "></td></tr>
 									<tr><td class='title'>Settings</td><td><select name='settingsaccess'>".$accesstosettings."</select></td>
 										<td class='title'>Room Deny</td><td colspan=2><select class='chosen-select multiple' id='roomdeny$userid' data-placeholder='Deny Overrides' multiple='multiple'>".$theroomdeny.$thedenyrooms."</select><input size='10' class='roomdeny$userid' type='hidden' name='roomdeny' value=" . $row['roomdeny'] . "></td></tr>
-									<tr><td class='title'>WAN Enabled</td><td><select name='wanenabled'>".$accesswanenabled."</select></td><tr>";
+									<tr><td class='title'>WAN Enabled</td><td><select name='wanenabled'>".$accesswanenabled."</select></td>";
+						if($row['password'] == '') {
+							echo "<td></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Set Password' onclick='changepassword(\"$userid\");' /><tr>";
+						} else {
+							echo "<td></td><td class='button right'><input type='button'class='ui-button ui-widget ui-state-default ui-corner-all' value='Change Password' onclick='changepassword(\"$userid\");' /><tr>";
+						}
 						echo "</table><br><br><br>";
 						}
 				} catch(PDOException $e)
@@ -350,7 +355,7 @@ if(isset($linkto)) {
 					echo $e->getMessage();
 					}
 				?>
-			<br><br>	
+			<br><br>
             </div>
 <?php	}
 	} elseif($linkto === "Rooms") {

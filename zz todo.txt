@@ -23,6 +23,7 @@ settings refactor:
 		current save function, add return to page info in request
 		loading info per div (may suffice to do per page div insert loading)
 		saving info and refreshing saved div
+			need to check saving function now that tables have been changed
 	dropdown for http://--https:// for required options
 	add ip2wan options for those that have iplan/wan options
 	make several levels of "admin" some should have access to everything except users, etc
@@ -30,7 +31,18 @@ settings refactor:
 	change user picture naming scheme so there are no collisions
 	add user picture when logged in to menu
 	screen resize function doesnt work for settings page
+	user password hashing -- done initial setup
+		need to separate out password set/change from rest of user settings
+			the reset page needs to check current pass then set new. or if super admin they can set a new one without auth old.
 
+
+functions.php
+	sanitize input/strip special characters
+
+
+auth.php -- updated need to test.
+	need to figure out better way then checking for if $authsecured is set..  it doesnt get set for users with no passwords
+	
 
 settings - per user
 	create db for individual settings
@@ -62,6 +74,7 @@ notifications
 
 logging:
 	settings page
+		password or any important value change
 	alerts
 	servercheck logging
 	what page they load from upper left menu

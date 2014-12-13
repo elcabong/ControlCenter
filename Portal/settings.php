@@ -60,6 +60,15 @@ if(!empty($_GET) && !isset($_GET['setup']) && !isset($_GET['linkto'])){
 		  //Here we go through all $_GET variables and add the values one by one.
 			$var = urlencode($var);
 			$value = ltrim($value, ',');
+			if($section_name == "users" && $section_unique == "new" && $var == "password" && $value != '') {
+				require "$INCLUDES/includes/PasswordHash.php";
+				$hasher = new PasswordHash(8, false);
+				$password = $value;
+				if (strlen($password) > 72) { $password = substr($password,0,72); }
+				$hash = $hasher->HashPassword($password);
+				$value = $hash;
+			}
+			// if value or var == password, run hash function
 			$vararray .= $var.",,";
 			$valuearray .= "'".$value."',,";
 	  }
@@ -75,7 +84,7 @@ if(!empty($_GET) && !isset($_GET['setup']) && !isset($_GET['linkto'])){
 			if(strstr($section_unique,'new')) {
 				$configdb->exec("INSERT INTO users ($vararray) VALUES ($valuearray)");
 			} else {
-				$configdb->exec("UPDATE users SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4],$vararraye[5]=$valuearraye[5],$vararraye[6]=$valuearraye[6],$vararraye[7]=$valuearraye[7],$vararraye[8]=$valuearraye[8] WHERE userid=$section_unique");
+				$configdb->exec("UPDATE users SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1],$vararraye[2]=$valuearraye[2],$vararraye[3]=$valuearraye[3],$vararraye[4]=$valuearraye[4],$vararraye[5]=$valuearraye[5],$vararraye[6]=$valuearraye[6],$vararraye[7]=$valuearraye[7] WHERE userid=$section_unique");
 			}
 		} else if($section_name == "rooms") {
 			if(strstr($section_unique,'new')) {
@@ -229,6 +238,7 @@ $getinfo = "";
   <script src="../js/dropzone.js"></script>
   <script src="../js/chosen.jquery.min.js"></script>
   <script src="../js/chosen.proto.min.js"></script>
+  <script type="text/javascript" src="../js/jquery.simplemodal.js"></script>
   <script type="text/javascript">
 		if (window.navigator.standalone) {
 			var iWebkit;if(!iWebkit){iWebkit=window.onload=function(){function fullscreen(){var a=document.getElementsByTagName("a");for(var i=0;i<a.length;i++){if(a[i].className.match("noeffect")){}else{a[i].onclick=function(){window.location=this.getAttribute("href");return false}}}}function hideURLbar(){window.scrollTo(0,0.9)}iWebkit.init=function(){fullscreen();hideURLbar()};iWebkit.init()}}
@@ -357,7 +367,16 @@ $( "a.settings" ).click(function() {
 	 window.location.href = goingto + "?linkto=" + linkto	<?php	if(isset($_GET['setup'])){ echo "+ '&setup=first'"; }?>;
 	event.preventDefault();
 });
-</script>	
+
+
+function changepassword(user){
+	$('#settingsmodal').load('changepassword.php?user=' + user).modal({
+		opacity: 75,
+		overlayClose: true
+	});
+}
+</script>
+<div id="settingsmodal"></div>
 </body>
 </html>
 <?php } ?>

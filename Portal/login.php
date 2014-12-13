@@ -44,7 +44,21 @@ header( "refresh: 0; url=index.php" );
     exit;
 }
 if(isset($_POST['user']) && isset($_POST['password'])) {
-    if ($_POST['user']==$authusername && $_POST['password']==$authpassword) {
+	$check=false;
+	$password = $_POST['password'];
+	if(0 === strpos($authpassword,"$2a")) {
+		require "$INCLUDES/includes/PasswordHash.php";
+		$hasher = new PasswordHash(8, false);
+		if (strlen($password) > 72) { $password = substr($password,0,72); }
+		$stored_hash = "*";
+		$stored_hash = "$authpassword";
+		$check = $hasher->CheckPassword($password, $stored_hash);
+	} else {
+		if($password == $authpassword) {
+			$check=true;
+		}
+	}
+    if ($_POST['user']==$authusername && $check==true) {
 		$_SESSION['username'] = $authusername;
 		$_SESSION['loginerror'] = 0;
 		$log->LogInfo("User $authusername LOGGED IN");
