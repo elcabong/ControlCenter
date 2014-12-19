@@ -21,7 +21,7 @@ if(isset($_GET['user'])) {
 // check if usernumber == usernum or if user is superadmin else exit;
 //if the user, give current pass check, and 2 new fields for new password
 //if superadmin, just give the 2 new fields for new password
-//if not the user, or superadmin, exit;
+
 
 $getalerts = 1;
 
@@ -112,6 +112,7 @@ if($getalerts == 0) {
 	}
 	exit;
 } else {
+/*
 	$log->LogInfo("User " . $_SESSION['username'] . " checked alerts from " . $_SERVER['SCRIPT_FILENAME']);
 	$alertarray = array();
 	try {
@@ -149,9 +150,8 @@ if($getalerts == 0) {
 	} catch(PDOException $e)
 		{
 			$log->LogError("$e->getMessage()" . basename(__FILE__));
-		}
-	?>
-	
+		}*/
+?>
 	
 	
 	
@@ -168,67 +168,62 @@ if($getalerts == 0) {
 			<link type='text/css' href='../css/modal.css?2' rel='stylesheet' />
 		</head>
 		<body>
-			<div id='alertcontainer'>
+			<div id='passwordcontainer'>
 				<div id='logo'>
 					<h1>Password Update for user: <?php echo $USERNAMES[$usernum]; ?></h1>
 				</div>
 				<div id="content"><br><br>
-					<div id='SendNew'>
-						<h1>Create New Alert: <span><input id="AlertMessage" name="AlertMessage" type="text" size="35" placeholder="Alert Message"></span>
-							<span>For User:
-								<select id="AlertUser">
-									<option value="">Choose</option>
-									<?php	foreach($USERIDS as $thisuserid) {
-										echo "<option value=\"user:$thisuserid\">$USERNAMES[$thisuserid]</option>";
-									}?>
-									<option value="" disabled>======</option>
-									<option value="userlevel:1"><?php echo "$grouplevels[1]";?></option>
-									<option value="userlevel:3"><?php echo "$grouplevels[3]";?></option>
-									<option value="userlevel:5"><?php echo "$grouplevels[5]";?></option>
-								</select>
-							</span>
-							<span>
-								<input name="submit" value="Submit" class="ui-button ui-widget ui-state-default ui-corner-all" id="newalertsubmit" type="button">
-							</span>
-						</h1>
+					<div id='UpdatePassword'>
+						<?php // if($usernumber != $usernum && $usernumber not admin) { ?>
+							<!--  message that they do not have access to update this item             
+							-->
+						<?php // exit; } ?>
+						<table>
+						<?php // if usernumber = usernum and has password set in db { 
+							if($usernumber == $usernum) { ?>
+							<tr><td><h1>Current Password:</h1> </td><td><input id="CurrentPassword" name="CurrentPassword" type="password" size="35" placeholder="Current Password"></td></tr>
+							<tr><td>&nbsp;</td><td></td></tr>
+						<?php } ?>
+							<tr><td><h1>New Password:</h1> </td><td><input id="NewPassword" name="NewPassword" type="password" size="35" placeholder="New Password"></td></tr>
+							<tr><td><h1>Confirm Password:</h1> </td><td><input id="ConfirmPassword" name="ConfirmPassword" type="password" size="35" placeholder="Confirm Password"></td></tr>
+							<tr><td>&nbsp;</td><td></td></tr>
+							<tr><td>&nbsp;</td><td><input name="submit" value="Set Password" class="ui-button ui-widget ui-state-default ui-corner-all" id="SetPassword" type="button"></td></tr>
+						</table>					
 					</div><br>
+					<span id="error"></span>
 					<?php if($submitAlert == 2) { echo "<span>alert created</span>"; } ?>
-					<hr><br>
-				<?php
-					// unread content
-					if(!empty($alertarray['unread'])) {
-						foreach($alertarray['unread'] as $thisid => $unread) {
-							echo "<div class='alert' id='$thisid'>";
-								echo "<span class='from'>".$unread['from_userid']." Alerted ".$unread['togroup']."</span>";
-								echo "<span class='dates'>Created:".$unread['created']."<br /><span class='markread'>mark read</span></span>";
-								echo "<span class='message clearl'>".$unread['message']."</span>";
-								echo "<br class='clear' />";
-							echo "</div>";
-						}
-					}
-					echo "<br><br>";
-						
-					// read content
-					if(!empty($alertarray['read'])) {
-						foreach($alertarray['read'] as $read) {
-							echo "<div class='alert read'>";
-								echo "<span class='from'>".$read['from_userid']." Alerted ".$read['togroup']."</span>";
-								echo "<span class='dates'>Created:".$read['created']."<br />Viewed:".$read['viewed']."</span>";
-								echo "<span class='message clearl'>".$read['message']."</span>";
-								echo "<br class='clear' />";
-							echo "</div>";
-						}						
-					}
-					echo "<br><br><br>";
-				?>
+					<?php if($submitError == 1) { echo "<span>Current Password Did Not Match</span>"; } ?>
 				</div>
 				<script>
-					$(".markread").click(function() {
-						$(this).parent().parent().addClass('read');
-						$(this).text('Viewed: Just Now');
-						var thisid = $(this).parent().parent().attr('id');
-						$.post( "./alerts.php", { markread: thisid } );
+					$("#SetPassword").click(function() {
+						if($("#CurrentPassword").length > 0) {
+							var cp = $("#CurrentPassword").val();
+						} else {
+							var cp = 'none';
+						}
+						if(cp == '') {
+							$("span#error").text("Please enter your current password");
+							return;
+						}						
+						var np = $("#NewPassword").val();
+						var cnp = $("#ConfirmPassword").val();
+						if(np != cnp) {
+							$("span#error").text("New Password does not match Confirm Password");
+							return;
+						} else if(np == '') {
+							// if keeping this check, then will need a way to remove passwords for a user
+							$("span#error").text("New Password cannot be blank");
+							return;
+						} else {
+							// else post current (if set) and new password to this page for submitError checking
+							// $.post( "./changepassword.php", { newpass: np, currentpass: cp } );
+						}
+						//alert(cp + " -- " + np + " -- " + cnp);
+						
+						//var thisid = $(this).parent().parent().attr('id');
+						//$.post( "./alerts.php", { markread: thisid } );
 					});
+					/*
 					$("#newalertsubmit").click(function() {
 						var message = $("#AlertMessage").val();
 						var user = $("#AlertUser option:selected").val();
@@ -245,7 +240,7 @@ if($getalerts == 0) {
 							});
 							return false;
 						}
-					});
+					});*/
 				</script>
 			</div>
 		</body>
