@@ -24,6 +24,9 @@ settings refactor:
 		loading info per div (may suffice to do per page div insert loading)
 		saving info and refreshing saved div
 			need to check saving function now that tables have been changed
+		user password hashing -- done initial setup
+			need to separate out password set/change from rest of user settings
+				the reset page needs to check current pass then set new. or if super admin they can set a new one without auth old.
 	dropdown for http://--https:// for required options
 	add ip2wan options for those that have iplan/wan options
 	make several levels of "admin" some should have access to everything except users, etc
@@ -31,9 +34,6 @@ settings refactor:
 	change user picture naming scheme so there are no collisions
 	add user picture when logged in to menu
 	screen resize function doesnt work for settings page
-	user password hashing -- done initial setup
-		need to separate out password set/change from rest of user settings
-			the reset page needs to check current pass then set new. or if super admin they can set a new one without auth old.
 
 
 functions.php
@@ -45,8 +45,10 @@ auth.php -- updated need to test.
 	
 
 settings - per user
+	where to put on page.. subsection for normal settings, or in modul
 	create db for individual settings
 	what settings/prefs to include here
+		password change
 
 
 main links dropdown (upper right and left)
