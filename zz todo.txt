@@ -1,6 +1,10 @@
 server upgrade/install
 	upgrade process
 		create "needs update" overlay to refresh page and load servercheck when upgrades are needed.
+		check for updates (phone home) every 24 hours?  this will also perform auth check for registered instances
+		when to phone home and check for updates/license
+			what calls this?
+			display update to users (notification?)
 	install process
 		server setup
 			move servercheck?
@@ -12,10 +16,7 @@ server upgrade/install
 				apps if needed
 				userlist
 			how to use popup for first time user log in(mark in userpref/settings table)..  transparent overlay with arrows and comments for various sections... should be available again from users individual settings area
-	when to phone home and check for updates/license
-		what calls this?
-		display update to users (notification?)
-		
+
 
 settings refactor:
 	ready for testing
@@ -38,6 +39,13 @@ settings refactor:
 
 functions.php
 	sanitize input/strip special characters
+		need to identify all areas that require sanitized input
+			login (password)
+			alerts
+			password reset
+			any get/post variables?  or atleast make sure the script fails if they are not expected
+			settings?  this is only used by admins, may not need here, or atleast implement last
+		
 
 
 auth.php -- updated need to test.
@@ -63,6 +71,16 @@ addons:
 	xbmc/kodi optimize
 	addons.php optimize  --> load to db? or keep as php scan file tree?
 	screen for device on but app not responding (orange) like the wol screen
+	avr
+	create controller page that replaces connecting to xbmc control page
+		this will pull items from addons within a room for various control features
+		add function to assign addon for control functions
+			set vol control to send through thisroom > avr.addon
+			interface control to send through thisroom > mediaplayer.addon
+			figure out OOP way of doing this?
+			styling
+				http://www.avsforum.com/forum/93-remote-control-area/1503480-quick-irule-review-few-pics-those-thinking-about.html
+				http://forum.kodi.tv/showthread.php?tid=208371
 
 
 notifications
