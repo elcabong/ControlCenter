@@ -37,27 +37,29 @@ settings refactor:
 	screen resize function doesnt work for settings page
 
 
-functions.php
-	sanitize input/strip special characters
-		need to identify all areas that require sanitized input
-			login (password)
-			alerts
-			password reset
-			any get/post variables?  or atleast make sure the script fails if they are not expected
-			settings?  this is only used by admins, may not need here, or atleast implement last
-		
-
-
-auth.php -- updated need to test.
-	need to figure out better way then checking for if $authsecured is set..  it doesnt get set for users with no passwords
-	
-
 settings - per user
 	where to put on page.. subsection for normal settings, or in modul
 	create db for individual settings
 	what settings/prefs to include here
 		password change
+		timezone (should autodetect on first connect?)
+	if user password is changed their current session should be destroyed. (need to test)
 
+
+functions.php
+	sanitize input/strip special characters
+		need to identify all areas that require sanitized input
+			login (password)
+				login username needs to be checked for sql injection (needs to be letter/number only, no special character.  this needs to be checked when creating user names as well)
+			alerts
+			password reset
+			any get/post variables?  or atleast make sure the script fails if they are not expected
+			settings?  this is only used by admins, may not need here, or atleast implement last
+
+
+auth.php -- updated need to test.
+	need to figure out better way then checking for if $authsecured is set..  it doesnt get set for users with no passwords
+	
 
 main links dropdown (upper right and left)
 	make the overlay function better
@@ -84,7 +86,7 @@ addons:
 
 
 notifications
-	fix timestamp for alert create/display of this field
+	fix timestamp for alert create/display of this field based on user view timezone
 		initial timestamp on create is UTC but mark read timestamp is local php server time.  need to reconcile
 	include username/user picture when alert sent from person
 	create/edit/markread for alerts should be put in a class so alerts can be created like/with logs
