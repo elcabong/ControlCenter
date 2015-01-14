@@ -43,6 +43,7 @@ settings - per user
 	what settings/prefs to include here
 		password change
 		timezone (should autodetect on first connect?)
+			http://www.westy92.com/?p=54
 	if user password is changed their current session should be destroyed. (need to test)
 
 
@@ -86,7 +87,7 @@ addons:
 
 
 notifications
-	fix timestamp for alert create/display of this field based on user view timezone
+	fix timestamp for alert create/display of this field based on user view timezone (link in settings - per user for timezone
 		initial timestamp on create is UTC but mark read timestamp is local php server time.  need to reconcile
 	include username/user picture when alert sent from person
 	create/edit/markread for alerts should be put in a class so alerts can be created like/with logs
@@ -100,6 +101,7 @@ logging:
 	alerts
 	servercheck logging
 	what page they load from upper left menu
+	add more verbose logging for debug.  debug log at all exit points for script to know when it completes and how each script completes.
 
 	ccmaster logging
 
