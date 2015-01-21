@@ -25,9 +25,6 @@ settings refactor:
 		loading info per div (may suffice to do per page div insert loading)
 		saving info and refreshing saved div
 			need to check saving function now that tables have been changed
-		user password hashing -- done initial setup
-			need to separate out password set/change from rest of user settings
-				the reset page needs to check current pass then set new. or if super admin they can set a new one without auth old.
 	dropdown for http://--https:// for required options
 	add ip2wan options for those that have iplan/wan options
 	make several levels of "admin" some should have access to everything except users, etc
@@ -38,14 +35,28 @@ settings refactor:
 
 
 settings - per user
-	where to put on page.. subsection for normal settings, or in modul
-	create db for individual settings
+	where to put on page.. in modal
+	create db for individual settings 
+		>>  user_preferences (table)  
+			>>  userid  (row needs to be created for each user when user gets created...
+			>>	timezone
+			>>
 	what settings/prefs to include here
 		password change
 		timezone (should autodetect on first connect?)
 			http://www.westy92.com/?p=54
-	if user password is changed their current session should be destroyed. (need to test)
 
+
+notifications
+	fix timestamp for alert create/display of this field based on user view timezone (link in settings - per user for timezone
+		initial timestamp on create is UTC but mark read timestamp is local php server time.  need to reconcile
+		php should set time in UTC, then save to DB..  then convert UTC to current offset for display
+	include username/user picture when alert sent from person
+	create/edit/markread for alerts should be put in a class so alerts can be created like/with logs
+	need to limit total notifications shown.  maybe 10/20 with a load more function 
+		http://www.umair.io/how-to-create-news-feed-like-facebook-with-php-and-jquery/	
+	
+	
 
 functions.php
 	sanitize input/strip special characters
@@ -84,15 +95,6 @@ addons:
 			styling
 				http://www.avsforum.com/forum/93-remote-control-area/1503480-quick-irule-review-few-pics-those-thinking-about.html
 				http://forum.kodi.tv/showthread.php?tid=208371
-
-
-notifications
-	fix timestamp for alert create/display of this field based on user view timezone (link in settings - per user for timezone
-		initial timestamp on create is UTC but mark read timestamp is local php server time.  need to reconcile
-	include username/user picture when alert sent from person
-	create/edit/markread for alerts should be put in a class so alerts can be created like/with logs
-	need to limit total notifications shown.  maybe 10/20 with a load more function 
-		http://www.umair.io/how-to-create-news-feed-like-facebook-with-php-and-jquery/
 
 
 logging:

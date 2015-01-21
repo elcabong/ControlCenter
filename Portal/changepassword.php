@@ -76,7 +76,11 @@ if(isset($_POST['newpass']) && isset($_POST['currentpass']) && isset($_POST['use
 		if (strlen($newpass) > 72) { $newpass = substr($newpass,0,72); }
 		$hash = $hasher->HashPassword($newpass);
 		try {
-			$configdb->exec("UPDATE users SET password='".$hash."' WHERE userid='".$usernum."'");
+			if($usernumber == $usernum) {
+				$configdb->exec("UPDATE users SET password='".$hash."' WHERE userid='".$usernum."'");
+			} else {
+				$configdb->exec("UPDATE users SET password='".$hash."', passwordreset='1' WHERE userid='".$usernum."'");
+			}
 		} catch(PDOException $e) {
 			$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 		}

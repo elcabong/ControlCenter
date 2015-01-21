@@ -22,6 +22,7 @@ if(isset($_GET['submitAlert'])) {
 	$submitAlert = 1;
 }
 $alertexists = 0;
+require_once "$INCLUDES/includes/functions.php";
 try {
 	$configdb = new PDO("sqlite:$INCLUDES/sessions/config.db");
 } catch(PDOException $e)
@@ -39,7 +40,6 @@ try {
 	$USERIDS = array();
 	$USERNAMES = array("none");
 	$USERLEVEL = array("none");
-	$HOWMANYUSERS = 0;
 	foreach ($configdb->query($sql) as $row) {
 		$userid = $row['userid'];
 		$USERIDS[] = "$userid";
@@ -47,7 +47,6 @@ try {
 		${$USERNAME} = $row['username'];
 		$USERNAMES[$userid] = ${$USERNAME};
 		$USERLEVEL[$userid] = $row['userlevel'];
-		$HOWMANYUSERS++;
 	}
 } catch(PDOException $e) {
 	$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
@@ -64,6 +63,11 @@ if($submitAlert == 1) {
 		$fromUser = $_GET['fromUser'];
 	}
 	$toUser = explode(":",$toUser);
+	
+	// get UTC timestamp here and insert into db instead of using sqlite timestamp.
+	// this is needed to it is consistent independant of server settings for sqlite/php
+	// echo gmdate("Y-m-d H:i:s"); <<  this is in UTC
+	
 	if($toUser[0] == 'user') {
 		$configdb->exec("INSERT INTO alerts (userid,message,from_userid) VALUES ($toUser[1],\"$message\",$fromUser)");
 	} elseif($toUser[0] == 'userlevel') {
@@ -180,9 +184,11 @@ if($getalerts == 0) {
 					// unread content
 					if(!empty($alertarray['unread'])) {
 						foreach($alertarray['unread'] as $thisid => $unread) {
+							$createdtime = date_convert($unread['created'], 'UTC', 'Y-m-d H:i:s', 'America/Los_Angeles', 'Y-m-d H:i:s');
+					
 							echo "<div class='alert' id='$thisid'>";
 								echo "<span class='from'>".$unread['from_userid']." Alerted ".$unread['togroup']."</span>";
-								echo "<span class='dates'>Created:".$unread['created']."<br /><span class='markread'>mark read</span></span>";
+								echo "<span class='dates'>Created:".$createdtime."<br /><span class='markread'>Mark Viewed</span></span>";
 								echo "<span class='message clearl'>".$unread['message']."</span>";
 								echo "<br class='clear' />";
 							echo "</div>";
@@ -193,15 +199,24 @@ if($getalerts == 0) {
 					// read content
 					if(!empty($alertarray['read'])) {
 						foreach($alertarray['read'] as $read) {
+							//date_convert('20131028000000', 'UTC', 'YmdHis', 'Europe/Athens', 'd/m/Y H:i:s');
+							//$testtime = date_convert('2013-10-28 00:00:00', 'UTC', 'Y-m-d H:i:s', 'America/Los_Angeles', 'd/m/Y H:i:s');
+							//echo $testtime;
+							//$createdtime = $read['created'];
+							//America/Los_Angeles needs to be a variable, that gets pulled from user_preferences table
+							$createdtime = date_convert($read['created'], 'UTC', 'Y-m-d H:i:s', 'America/Los_Angeles', 'Y-m-d H:i:s');
+							$readtime = date_convert($read['viewed'], 'UTC', 'Y-m-d H:i:s', 'America/Los_Angeles', 'Y-m-d H:i:s');
+						
 							echo "<div class='alert read'>";
 								echo "<span class='from'>".$read['from_userid']." Alerted ".$read['togroup']."</span>";
-								echo "<span class='dates'>Created:".$read['created']."<br />Viewed:".$read['viewed']."</span>";
+								echo "<span class='dates'>Created:".$createdtime."<br />Viewed:".$readtime."</span>";
 								echo "<span class='message clearl'>".$read['message']."</span>";
 								echo "<br class='clear' />";
 							echo "</div>";
 						}						
 					}
 					echo "<br><br><br>";
+					//print_r(timezone_identifiers_list());
 				?>
 				</div>
 				<script>

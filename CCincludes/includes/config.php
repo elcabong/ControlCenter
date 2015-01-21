@@ -1,7 +1,7 @@
 <?php
 // this needs to be updated to current version of db.
 // gets called in servercheck.php
-$DBVERSION = "1.1.4";
+$DBVERSION = "1.1.5";
 $CCVERSION = "1.0.1";
 if(isset($getversion) && $getversion == "yes") {
 	return $DBVERSION;
@@ -113,7 +113,12 @@ if(isset($getversion) && $getversion == "yes") {
 				 $authsecured            = $AUTH_ON;
 				 if(isset($row['navgroupaccess'])) { $NAVGROUPS              = $row['navgroupaccess']; }
 				 $userwanenabled = $row['wanenabled'];
-			}	 
+				 if(isset($row['passwordreset']) && $row['passwordreset'] == '1') {
+					$log->LogInfo("User $authusername had password reset.  Auto Logout from " . $_SERVER['SCRIPT_FILENAME']);
+					$configdb->exec("UPDATE users SET passwordreset='0' WHERE userid='".$usernumber."'");
+					header('Location: ./logout.php');exit;
+				 }
+			}
 		} catch(PDOException $e) {
 			$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 		}
