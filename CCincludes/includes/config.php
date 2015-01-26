@@ -1,7 +1,7 @@
 <?php
 // this needs to be updated to current version of db.
 // gets called in servercheck.php
-$DBVERSION = "1.1.5";
+$DBVERSION = "1.1.6";
 $CCVERSION = "1.0.1";
 if(isset($getversion) && $getversion == "yes") {
 	return $DBVERSION;
