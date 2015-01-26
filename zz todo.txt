@@ -32,7 +32,7 @@ settings refactor:
 	change user picture naming scheme so there are no collisions
 	add user picture when logged in to menu
 	screen resize function doesnt work for settings page
-
+	
 
 settings - per user
 	where to put on page.. in modal

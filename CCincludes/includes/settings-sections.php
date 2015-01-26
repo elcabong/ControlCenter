@@ -394,27 +394,17 @@ if(isset($linkto)) {
 						$addonids = '';
 						$theenabledaddons = '';
 						$enabledaddons = '';
-						$sql2 = "SELECT addons FROM rooms WHERE roomid = $roomid LIMIT 1";
+						$sql2 = "SELECT addonid FROM rooms_addons WHERE roomid = $roomid AND enabled = 1";
 							foreach ($configdb->query($sql2) as $row2)
 								{
-									$addonid = $row2['addons'];
-								//	echo $addonid."<br>";
-									
-									$arr = explode(",", $addonid);
-									
-									foreach($arr as $thearr) {
-										if($thearr == '') { break; }
-										$arr = explode(".", $thearr, 2);
-										$classification = $arr[0];
-										$title = $arr[1];
-										
-									//	echo $addonarray["$classification"]["$title"]['path'];
-										
-										$enabledaddons .= "<option selected='selected' value=".$thearr.">".$thearr."</option>"; 
-										if($thearr != '') { $theenabledaddons .= $thearr.","; }
-									}
+									$addonid = $row2['addonid'];
+									$addonide = explode(".", $addonid, 2);
+									$classification = $addonide[0];
+									$title = $addonide[1];
+									$enabledaddons .= "<option selected='selected' value=".$addonid.">".$addonid."</option>"; 
+									if($addonid != '') { $theenabledaddons .= $addonid.","; }
 								}
-
+								
 						$theavailableaddons = '';
 						$theseenabledaddons = explode(',',$theenabledaddons);
 						for ($i = 0; $i < count($availableaddons); ++$i) {
@@ -426,42 +416,39 @@ if(isset($linkto)) {
 						}
 						echo "<tr><td class='title'>Addons</td><td colspan=2><select class='chosen-select multiple' id='addons$roomid' data-placeholder='Choose' multiple='multiple' onchange='addonselect($roomid)'>".$enabledaddons.$theavailableaddons."</select></td><input size='10' class='addons$roomid' type='hidden' name='addons' value=" . $theenabledaddons . "></td></tr>";
 						 echo "</table><table id='roomsaddons-$roomid'>";
-							for ($i = 0; $i < count($theseenabledaddons); ++$i) {
-									$addonid = $theseenabledaddons[$i];
-									if($addonid != '') {
-									
-										$arr = explode(".", $addonid, 2);
-										$classification = $arr[0];
-										$title = $arr[1];
-
-										$THISROOMID = $roomid;
-										$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid AND addonid = '$addonid' LIMIT 1";
-											foreach ($configdb->query($sql3) as $addonSettings)
-												{
-												$enabledaddonsarray["$roomid"]["$addonid"]['classification'] = $classification;
-												$enabledaddonsarray["$roomid"]["$addonid"]['title'] = $title;
-												$enabledaddonsarray["$roomid"]["$addonid"]['ADDONIP'] = $addonSettings['ip'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['ADDONIPW'] = $addonSettings['ipw'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['MAC'] = $addonSettings['mac'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['setting1'] = $addonSettings['setting1'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['setting2'] = $addonSettings['setting2'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['setting3'] = $addonSettings['setting3'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['setting4'] = $addonSettings['setting4'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['setting5'] = $addonSettings['setting5'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['setting6'] = $addonSettings['setting6'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['setting7'] = $addonSettings['setting7'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['setting8'] = $addonSettings['setting8'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['setting9'] = $addonSettings['setting9'];
-												$enabledaddonsarray["$roomid"]["$addonid"]['setting10'] = $addonSettings['setting10'];
-												}
-										echo "<input type='hidden' size='80' name='roomid' value='$roomid'>";
-										echo "<input type='hidden' size='80' name='addonid' value='$addonid'>";
-										include  $addonarray["$classification"]["$title"]['path'] . "settings.php";
-						
-									}
-							}
-						 echo "</table><br><br>";
-						 }
+					$THISROOMID = $roomid;
+					$sql3 = "SELECT * FROM rooms_addons WHERE roomid = $roomid";
+						foreach ($configdb->query($sql3) as $addonSettings)
+							{
+							$addonid = $addonSettings['addonid'];
+							$arr = explode(".", $addonid, 2);
+							$classification = $arr[0];
+							$title = $arr[1];
+							$enabledaddonsarray["$roomid"]["$addonid"]['classification'] = $classification;
+							$enabledaddonsarray["$roomid"]["$addonid"]['title'] = $title;
+							$enabledaddonsarray["$roomid"]["$addonid"]['ADDONIP'] = $addonSettings['ip'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['ADDONIPW'] = $addonSettings['ipw'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['MAC'] = $addonSettings['mac'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['setting1'] = $addonSettings['setting1'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['setting2'] = $addonSettings['setting2'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['setting3'] = $addonSettings['setting3'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['setting4'] = $addonSettings['setting4'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['setting5'] = $addonSettings['setting5'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['setting6'] = $addonSettings['setting6'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['setting7'] = $addonSettings['setting7'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['setting8'] = $addonSettings['setting8'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['setting9'] = $addonSettings['setting9'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['setting10'] = $addonSettings['setting10'];
+							$enabledaddonsarray["$roomid"]["$addonid"]['enabled'] = $addonSettings['enabled'];
+							echo "<input type='hidden' size='80' name='roomid' value='$roomid'>";
+							echo "<input type='hidden' size='80' name='addonid' value='$addonid'>";
+							if($addonSettings['enabled'] == 1) { $checkthis = "checked"; } else { $checkthis = ""; }
+							echo "<tr><td>&nbsp;</td></tr><tr><td></td><td colspan='4'>$title</td><td>Enabled:<input type='checkbox' name='enable' value='1' $checkthis></td></tr>";
+							
+							include  $addonarray["$classification"]["$title"]['path'] . "settings.php";
+						}
+					echo "</table><br><br>";
+					}	
 				} catch(PDOException $e)
 					{
 					echo $e->getMessage();

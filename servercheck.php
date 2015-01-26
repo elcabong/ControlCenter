@@ -246,12 +246,13 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 					}
 		  $query = "CREATE TABLE IF NOT EXISTS users (userid integer PRIMARY KEY AUTOINCREMENT, username text UNIQUE NOT NULL, password text, passwordreset INTEGER NOT NULL DEFAULT 0, navgroupaccess string, homeroom integer, roomgroupaccess string, roomaccess string, roomdeny string, settingsaccess integer NOT NULL, wanenabled integer DEFAULT '0' NOT NULL, userlevel INTEGER NOT NULL DEFAULT '1')";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS rooms (roomid integer PRIMARY KEY AUTOINCREMENT, roomname text UNIQUE NOT NULL, addons TEXT NULL)";
+		  $query = "CREATE TABLE IF NOT EXISTS rooms (roomid integer PRIMARY KEY AUTOINCREMENT, roomname text UNIQUE NOT NULL)";
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS rooms_addons (
 									rooms_addonsid INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
 									roomid INTEGER  NOT NULL,
 									addonid TEXT  NOT NULL,
+									enabled INTEGER NOT NULL DEFAULT 0,
 									ip TEXT  NULL,
 									ipw TEXT  NULL,
 									mac TEXT  NULL,
@@ -310,7 +311,12 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 			if($thedbversion == '1.1.5' && $theolddbversion < $thedbversion) {
 				$query = "ALTER TABLE users ADD COLUMN passwordreset INTEGER NOT NULL DEFAULT 0;";
 				$execquery = $configdb->exec($query);
-			}			
+			}
+			if($thedbversion == '1.1.6' && $theolddbversion < $thedbversion) {
+				$query = "ALTER TABLE rooms_addons ADD COLUMN enabled INTEGER NOT NULL DEFAULT 0;";
+				$execquery = $configdb->exec($query);
+				$configdb->exec("UPDATE rooms_addons SET enabled=1;");
+			}				
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (1,'ccversion','$CCVERSION')");
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (2,'dbversion','$thedbversion')");
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (3,'lastcrontime','0')");

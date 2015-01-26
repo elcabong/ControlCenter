@@ -93,7 +93,7 @@ if(!empty($_GET) && !isset($_GET['setup']) && !isset($_GET['linkto'])){
 							$section_unique = "$row15[0]";
 						}				
 			} else {
-				$configdb->exec("UPDATE rooms SET $vararraye[0]=$valuearraye[0],$vararraye[1]=$valuearraye[1] WHERE roomid=$section_unique");
+				$configdb->exec("UPDATE rooms SET $vararraye[0]=$valuearraye[0] WHERE roomid=$section_unique");
 				}
 				
 				$checkthisshit = explode(',',ltrim(rtrim($valuearraye[1], "'"), "'"));
