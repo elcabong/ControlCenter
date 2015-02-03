@@ -31,7 +31,8 @@ try {
 	}
 if(!empty($_POST["markread"])) {
 	$alertid = $_POST["markread"];
-	$configdb->exec("INSERT INTO alerts_viewed (userid,alert_id) VALUES ($usernumber,$alertid)");
+	$datenow = gmdate("Y-m-d H:i:s");
+	$configdb->exec("INSERT INTO alerts_viewed (userid,alert_id,viewed) VALUES ($usernumber,$alertid,\"$datenow\")");
 	exit;
 }
 try {

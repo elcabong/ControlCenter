@@ -1,7 +1,7 @@
 <?php
 // this needs to be updated to current version of db.
 // gets called in servercheck.php
-$DBVERSION = "1.1.7";
+$DBVERSION = "1.1.8";
 $CCVERSION = "1.0.1";
 if(isset($getversion) && $getversion == "yes") {
 	return $DBVERSION;
@@ -144,7 +144,8 @@ if(isset($getversion) && $getversion == "yes") {
 	}
 
 	if($settingsarray['LogLevel']['value1'] !== "INFO") {
-		$loglevel = "KLogger::${'loglevel'}";
+		$thisloglevel = $settingsarray['LogLevel']['value1'];
+		$loglevel = "KLogger::$thisloglevel";
 		$log = new KLogger ( $INCLUDES."/logs/log-$date.log" , $loglevel );
 	}
 

@@ -33,7 +33,7 @@ settings refactor:
 	add user picture when logged in to menu
 	screen resize function doesnt work for settings page
 	enable/disable function for addons in each room
-	global settings, update timezone dropdown save
+
 	
 
 settings - per user
@@ -50,9 +50,8 @@ settings - per user
 
 
 notifications
-	fix timestamp for alert create/display of this field based on user view timezone (link in settings - per user for timezone
-		initial timestamp on create is UTC but mark read timestamp is local php server time.  need to reconcile
-		php should set time in UTC, then save to DB..  then convert UTC to current offset for display
+	fix timestamp for alert create/display of this field based on user view timezone (link in settings - per user for timezone)
+		just need to implement user timezone check..  also user settings for timezone input
 	include username/user picture when alert sent from person
 	create/edit/markread for alerts should be put in a class so alerts can be created like/with logs
 	need to limit total notifications shown.  maybe 10/20 with a load more function 

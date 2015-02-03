@@ -277,9 +277,9 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS settings (settingid integer PRIMARY KEY AUTOINCREMENT, setting text UNIQUE, description text, settingvalue1type text, settingvalue1 text)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS alerts (alert_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created INTEGER NOT NULL DEFAULT current_timestamp)";
+		  $query = "CREATE TABLE IF NOT EXISTS alerts (alert_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created TEXT NOT NULL DEFAULT '0-0-0 00:00:00')";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS alerts_viewed (alerts_viewed_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', alert_id INTEGER NOT NULL DEFAULT '0', viewed INTEGER NOT NULL DEFAULT current_timestamp)";
+		  $query = "CREATE TABLE IF NOT EXISTS alerts_viewed (alerts_viewed_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', alert_id INTEGER NOT NULL DEFAULT '0', viewed TEXT NOT NULL DEFAULT '0-0-0 00:00:00')";
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, CCsetting TEXT UNIQUE, CCvalue TEXT)";
 		  $execquery = $configdb->exec($query);
@@ -329,6 +329,18 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				$query = "DROP TABLE IF EXISTS _alerts_old;";
 				$execquery = $configdb->exec($query);
 			}
+			if($thedbversion == '1.1.8' && $theolddbversion < $thedbversion) {
+				$query = "ALTER TABLE alerts_viewed RENAME to _alerts_viewed_old;";
+				$execquery = $configdb->exec($query);
+				$query = "CREATE TABLE IF NOT EXISTS alerts_viewed (alerts_viewed_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', alert_id INTEGER NOT NULL DEFAULT '0', viewed TEXT NOT NULL DEFAULT '0-0-0 00:00:00')";
+				$execquery = $configdb->exec($query);
+				$query = "INSERT INTO alerts_viewed (alerts_viewed_id, userid, alert_id, viewed)
+						  SELECT alerts_viewed_id, userid, alert_id, viewed
+						  FROM _alerts_viewed_old;";
+				$execquery = $configdb->exec($query);
+				$query = "DROP TABLE IF EXISTS _alerts_viewed_old;";
+				$execquery = $configdb->exec($query);
+			}			
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (1,'ccversion','$CCVERSION')");
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (2,'dbversion','$thedbversion')");
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (3,'lastcrontime','0')");
