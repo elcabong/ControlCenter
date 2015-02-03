@@ -182,9 +182,21 @@ if(isset($linkto)) {
 								$setting1 .= "<option selected='selected' value='0'>no</option><option value='1'>Required</option>"; 
 								}
 								echo "<td><select name='settingvalue1'>".$setting1."</select></td>";
+							} elseif($setting1type == "dropdown") {
+								if($settingname == "TimeZone") {
+									echo "<td><select name='timezonepick' id='timezonepick'>
+									  <option selected='selected' value='$settingvalue1'>$settingvalue1</option>";
+										foreach(timezone_identifiers_list() as $id => $timezone) {
+										  echo "<option value='$timezone'>$timezone</option>";
+										}
+									echo "</select></td>";
+							
+							
+								}
+								// echo "<td><input class='inputcheck nospaces' size='10' name='settingvalue1' value='$settingvalue1'></td>";							
 							} else {
 								echo "<td><input class='inputcheck nospaces' size='10' name='settingvalue1' value='$settingvalue1'></td>";							
-							}
+							}							
 							echo "<td class='button right'><input type='button' class='ui-button ui-widget ui-state-default ui-corner-all' value='Save' onclick='updateSettings(\"settings-$settingid\");' /></td></tr>";
 							echo "</table><br><br><br>";
 						}

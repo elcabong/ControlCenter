@@ -316,7 +316,19 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				$query = "ALTER TABLE rooms_addons ADD COLUMN enabled INTEGER NOT NULL DEFAULT 0;";
 				$execquery = $configdb->exec($query);
 				$configdb->exec("UPDATE rooms_addons SET enabled=1;");
-			}				
+			}
+			if($thedbversion == '1.1.7' && $theolddbversion < $thedbversion) {
+				$query = "ALTER TABLE alerts RENAME to _alerts_old;";
+				$execquery = $configdb->exec($query);
+				$query = "CREATE TABLE IF NOT EXISTS alerts (alert_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created TEXT NOT NULL DEFAULT '0-0-0 00:00:00')";
+				$execquery = $configdb->exec($query);
+				$query = "INSERT INTO alerts (alert_id, userid, userlevel, message, from_userid, created)
+						  SELECT alert_id, userid, userlevel, message, from_userid, created
+						  FROM _alerts_old;";
+				$execquery = $configdb->exec($query);
+				$query = "DROP TABLE IF EXISTS _alerts_old;";
+				$execquery = $configdb->exec($query);
+			}
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (1,'ccversion','$CCVERSION')");
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (2,'dbversion','$thedbversion')");
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (3,'lastcrontime','0')");
@@ -330,8 +342,9 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 			if(!isset($thedbsettings["LogLevel"]['1']) || $thedbsettings["LogLevel"]['1'] == '') {
 				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (2, 'LogLevel','Set Log Level. Options: DEBUG, INFO, WARN, ERROR, FATAL, OFF','TEXT','INFO')");
 			}
-			
-			
+			if(!isset($thedbsettings["TimeZone"]['1']) || $thedbsettings["TimeZone"]['1'] == '') {
+				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (3, 'TimeZone','Set Global Application Timezone','dropdown','America/Los_Angeles')");
+			}
 	} catch(PDOException $e)
 		{
 			  echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";

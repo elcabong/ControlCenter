@@ -32,12 +32,14 @@ settings refactor:
 	change user picture naming scheme so there are no collisions
 	add user picture when logged in to menu
 	screen resize function doesnt work for settings page
+	enable/disable function for addons in each room
+	global settings, update timezone dropdown save
 	
 
 settings - per user
 	where to put on page.. in modal
 	create db for individual settings 
-		>>  user_preferences (table)  
+		>>  users_preferences (table)  <<  or just add to users table?
 			>>  userid  (row needs to be created for each user when user gets created...
 			>>	timezone
 			>>

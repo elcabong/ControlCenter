@@ -63,15 +63,11 @@ if($submitAlert == 1) {
 		$fromUser = $_GET['fromUser'];
 	}
 	$toUser = explode(":",$toUser);
-	
-	// get UTC timestamp here and insert into db instead of using sqlite timestamp.
-	// this is needed to it is consistent independant of server settings for sqlite/php
-	// echo gmdate("Y-m-d H:i:s"); <<  this is in UTC
-	
+	$datenow = gmdate("Y-m-d H:i:s");
 	if($toUser[0] == 'user') {
-		$configdb->exec("INSERT INTO alerts (userid,message,from_userid) VALUES ($toUser[1],\"$message\",$fromUser)");
+		$configdb->exec("INSERT INTO alerts (userid,message,from_userid,created) VALUES ($toUser[1],\"$message\",$fromUser,\"$datenow\")");
 	} elseif($toUser[0] == 'userlevel') {
-		$configdb->exec("INSERT INTO alerts (userlevel,message,from_userid) VALUES ($toUser[1],\"$message\",$fromUser)");
+		$configdb->exec("INSERT INTO alerts (userlevel,message,from_userid,created) VALUES ($toUser[1],\"$message\",$fromUser,\"$datenow\")");
 	}
 	$submitAlert = 2;
 }
@@ -181,10 +177,24 @@ if($getalerts == 0) {
 					<?php if($submitAlert == 2) { echo "<span>alert created</span>"; } ?>
 					<hr><br>
 				<?php
+					//if user timezone = 0, then use global app time zone
+					//$usertimezone = "America/Los_Angeles";
+					
+					try {
+						$sql = "SELECT settingvalue1 FROM settings WHERE setting = 'TimeZone' LIMIT 1";
+						foreach ($configdb->query($sql) as $thissetting) {
+							$usertimezone = $thissetting['settingvalue1'];
+						}
+					} catch(PDOException $e)
+						{
+							$log->LogError("$e->getMessage()" . basename(__FILE__));
+						}
+				
+				
 					// unread content
 					if(!empty($alertarray['unread'])) {
 						foreach($alertarray['unread'] as $thisid => $unread) {
-							$createdtime = date_convert($unread['created'], 'UTC', 'Y-m-d H:i:s', 'America/Los_Angeles', 'Y-m-d H:i:s');
+							$createdtime = date_convert($unread['created'], 'UTC', 'Y-m-d H:i:s', $usertimezone, 'Y-m-d H:i:s');
 					
 							echo "<div class='alert' id='$thisid'>";
 								echo "<span class='from'>".$unread['from_userid']." Alerted ".$unread['togroup']."</span>";
@@ -204,8 +214,8 @@ if($getalerts == 0) {
 							//echo $testtime;
 							//$createdtime = $read['created'];
 							//America/Los_Angeles needs to be a variable, that gets pulled from user_preferences table
-							$createdtime = date_convert($read['created'], 'UTC', 'Y-m-d H:i:s', 'America/Los_Angeles', 'Y-m-d H:i:s');
-							$readtime = date_convert($read['viewed'], 'UTC', 'Y-m-d H:i:s', 'America/Los_Angeles', 'Y-m-d H:i:s');
+							$createdtime = date_convert($read['created'], 'UTC', 'Y-m-d H:i:s', $usertimezone, 'Y-m-d H:i:s');
+							$readtime = date_convert($read['viewed'], 'UTC', 'Y-m-d H:i:s', $usertimezone, 'Y-m-d H:i:s');
 						
 							echo "<div class='alert read'>";
 								echo "<span class='from'>".$read['from_userid']." Alerted ".$read['togroup']."</span>";
@@ -218,6 +228,22 @@ if($getalerts == 0) {
 					echo "<br><br><br>";
 					//print_r(timezone_identifiers_list());
 				?>
+				
+				<?php
+				
+				// timezone select
+				
+				/*
+				echo "<select name='timezonepick' id='timezonepick'>
+				  <option selected='selected'>Choose one</option>";
+					foreach(timezone_identifiers_list() as $id => $timezone) {
+					  echo "<option value='$timezone'>$timezone</option>";
+					}
+				echo "</select>";
+				*/
+				?>
+				
+				
 				</div>
 				<script>
 					$(".markread").click(function() {
