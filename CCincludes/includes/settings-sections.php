@@ -190,8 +190,14 @@ if(isset($linkto)) {
 										  echo "<option value='$timezone'>$timezone</option>";
 										}
 									echo "</select></td>";
-							
-							
+								} elseif($settingname == "LogLevel") {
+									echo "<td><select name='settingvalue1'>
+									  <option selected='selected'>$settingvalue1</option>";
+										$logoptions = array(DEBUG,INFO,WARN,ERROR,FATAL,OFF);
+										foreach($logoptions as $thislogoption) {
+										  echo "<option value='$thislogoption'>$thislogoption</option>";
+										}
+									echo "</select></td>";
 								}
 							} else {
 								echo "<td><input class='inputcheck nospaces' size='10' name='settingvalue1' placeholder='$settingvalue1'></td>";							

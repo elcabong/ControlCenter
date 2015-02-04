@@ -128,17 +128,17 @@ echo "<tr><td>Trying to Create DB.</td></tr>";
     }
 }
 if (file_exists("$INCLUDES/sessions/config.db")){
-  $valid = true;
-  if(!is_writable("$INCLUDES/sessions/config.db")){
-    if(@chmod("$INCLUDES/sessions/config.db", 0777)){
-      echo "";
-    }else{
-	  $log->LogError("User encountered error with the DB folder structure or access permissions " . basename(__FILE__));
-      echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions 1</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
-      $redirect = false;
-      $valid = false;
-    }
-  } else {
+	$valid = true;
+	if(!is_writable("$INCLUDES/sessions/config.db")){
+		if(@chmod("$INCLUDES/sessions/config.db", 0777)){
+		  echo "";
+		}else{
+		  $log->LogError("User encountered error with the DB folder structure or access permissions " . basename(__FILE__));
+		  echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions 1</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
+		  $redirect = false;
+		  $valid = false;
+		}
+	} else {
 		$configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
 		function checkDBversion() {
 				if(!isset($INCLUDES)) {
@@ -205,8 +205,8 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 			}
 			return $thisupgrade;
 		}
-  // write db tables here if they dont exist
-   try {
+		// write db tables here if they dont exist
+		try {
   					$thedbversion = checkDBversion();
 					$theolddbversion = $thedbversion;
 					if($thedbversion < $DBVERSION && $thedbversion != 'none') {
@@ -244,9 +244,24 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 							$thedbversion = $DBVERSION;							
 						}
 					}
-		  $query = "CREATE TABLE IF NOT EXISTS users (userid integer PRIMARY KEY AUTOINCREMENT, username text UNIQUE NOT NULL, password text, passwordreset INTEGER NOT NULL DEFAULT 0, navgroupaccess string, homeroom integer, roomgroupaccess string, roomaccess string, roomdeny string, settingsaccess integer NOT NULL, wanenabled integer DEFAULT '0' NOT NULL, userlevel INTEGER NOT NULL DEFAULT '1')";
+		  $query = "CREATE TABLE IF NOT EXISTS users (
+									userid integer PRIMARY KEY AUTOINCREMENT, 
+									username text UNIQUE NOT NULL, 
+									password text, 
+									passwordreset INTEGER NOT NULL DEFAULT 0, 
+									navgroupaccess string, 
+									homeroom integer, 
+									roomgroupaccess string, 
+									roomaccess string, 
+									roomdeny string, 
+									settingsaccess integer NOT NULL, 
+									wanenabled integer DEFAULT '0' NOT NULL, 
+									userlevel INTEGER NOT NULL DEFAULT '1'
+									)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS rooms (roomid integer PRIMARY KEY AUTOINCREMENT, roomname text UNIQUE NOT NULL)";
+		  $query = "CREATE TABLE IF NOT EXISTS rooms (
+									roomid integer PRIMARY KEY AUTOINCREMENT, 
+									roomname text UNIQUE NOT NULL)";
 		  $execquery = $configdb->exec($query);
 		  $query = "CREATE TABLE IF NOT EXISTS rooms_addons (
 									rooms_addonsid INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -269,36 +284,74 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 									device_alive INTEGER NULL
 									)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS roomgroups (roomgroupid integer PRIMARY KEY AUTOINCREMENT, roomgroupname text UNIQUE, roomaccess string, roomdeny string)";
+		  $query = "CREATE TABLE IF NOT EXISTS roomgroups (
+									roomgroupid integer PRIMARY KEY AUTOINCREMENT,
+									roomgroupname text UNIQUE, 
+									roomaccess string, 
+									roomdeny string
+									)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS navigation (navid integer PRIMARY KEY AUTOINCREMENT, navname text NULL, navip text, navipw text, mobilew text, mobile text, persistent integer DEFAULT '1' NOT NULL, autorefresh integer DEFAULT '0' NOT NULL)";
+		  $query = "CREATE TABLE IF NOT EXISTS navigation (
+									navid integer PRIMARY KEY AUTOINCREMENT, 
+									navname text NULL, 
+									navip text, 
+									navipw text, 
+									mobilew text, 
+									mobile text, 
+									persistent integer DEFAULT '1' NOT NULL, 
+									autorefresh integer DEFAULT '0' NOT NULL
+									)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS navigationgroups (navgroupid integer PRIMARY KEY AUTOINCREMENT, navgroupname text UNIQUE, navitems string)";
+		  $query = "CREATE TABLE IF NOT EXISTS navigationgroups (
+									navgroupid integer PRIMARY KEY AUTOINCREMENT, 
+									navgroupname text UNIQUE, 
+									navitems string
+									)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS settings (settingid integer PRIMARY KEY AUTOINCREMENT, setting text UNIQUE, description text, settingvalue1type text, settingvalue1 text)";
+		  $query = "CREATE TABLE IF NOT EXISTS settings (
+									settingid integer PRIMARY KEY AUTOINCREMENT, 
+									setting text UNIQUE, 
+									description text, 
+									settingvalue1type text, 
+									settingvalue1 text
+									)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS alerts (alert_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created TEXT NOT NULL DEFAULT '0-0-0 00:00:00')";
+		  $query = "CREATE TABLE IF NOT EXISTS alerts (
+									alert_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, 
+									userid INTEGER NOT NULL DEFAULT '0', 
+									userlevel INTEGER, 
+									message TEXT NOT NULL, 
+									from_userid INTEGER NOT NULL DEFAULT '0', 
+									created TEXT NOT NULL DEFAULT '0-0-0 00:00:00'
+									)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS alerts_viewed (alerts_viewed_id	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', alert_id INTEGER NOT NULL DEFAULT '0', viewed TEXT NOT NULL DEFAULT '0-0-0 00:00:00')";
+		  $query = "CREATE TABLE IF NOT EXISTS alerts_viewed (
+									alerts_viewed_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, 
+									userid INTEGER NOT NULL DEFAULT '0', 
+									alert_id INTEGER NOT NULL DEFAULT '0', 
+									viewed TEXT NOT NULL DEFAULT '0-0-0 00:00:00'
+									)";
 		  $execquery = $configdb->exec($query);
-		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, CCsetting TEXT UNIQUE, CCvalue TEXT)";
+		  $query = "CREATE TABLE IF NOT EXISTS controlcenter (
+									CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, 
+									CCsetting TEXT UNIQUE, 
+									CCvalue TEXT
+									)";
 		  $execquery = $configdb->exec($query);
-			// stamp current version
-			
-			// need to check current version vs the new db version and run all updates in order to get current
-			
 			if($thedbversion == 'none') { $thedbversion = $DBVERSION; }
-			if($thedbversion == '1.1.2' && $theolddbversion < $thedbversion) {
+			if($thedbversion >= '1.1.2' && $theolddbversion < $thedbversion) {
 				$query = "ALTER TABLE rooms_addons ADD COLUMN device_alive INTEGER NULL;";
 				$execquery = $configdb->exec($query);
+				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.2 " . basename(__FILE__));
 			}
-			if($thedbversion == '1.1.3' && $theolddbversion < $thedbversion) {
+			if($thedbversion >= '1.1.3' && $theolddbversion < $thedbversion) {
 				$query = "DROP TABLE IF EXISTS controlcenter;";
 				$execquery = $configdb->exec($query);
 				$query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, CCsetting TEXT UNIQUE, CCvalue TEXT)";
 				$execquery = $configdb->exec($query);
+				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.3 " . basename(__FILE__));
 			}
-			if($thedbversion == '1.1.4' && $theolddbversion < $thedbversion) {
+			if($thedbversion >= '1.1.4' && $theolddbversion < $thedbversion) {
 				$query = "DROP TABLE IF EXISTS alerts;";
 				$execquery = $configdb->exec($query);
 				$query = "CREATE TABLE IF NOT EXISTS alerts (alert_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created INTEGER NOT NULL DEFAULT current_timestamp)";
@@ -307,17 +360,20 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				$execquery = $configdb->exec($query);
 				$query = "CREATE TABLE IF NOT EXISTS alerts_viewed (alerts_viewed_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', alert_id INTEGER NOT NULL DEFAULT '0', viewed INTEGER NOT NULL DEFAULT current_timestamp)";
 				$execquery = $configdb->exec($query);
+				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.4 " . basename(__FILE__));
 			}
-			if($thedbversion == '1.1.5' && $theolddbversion < $thedbversion) {
+			if($thedbversion >= '1.1.5' && $theolddbversion < $thedbversion) {
 				$query = "ALTER TABLE users ADD COLUMN passwordreset INTEGER NOT NULL DEFAULT 0;";
 				$execquery = $configdb->exec($query);
+				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.5 " . basename(__FILE__));
 			}
-			if($thedbversion == '1.1.6' && $theolddbversion < $thedbversion) {
+			if($thedbversion >= '1.1.6' && $theolddbversion < $thedbversion) {
 				$query = "ALTER TABLE rooms_addons ADD COLUMN enabled INTEGER NOT NULL DEFAULT 0;";
 				$execquery = $configdb->exec($query);
 				$configdb->exec("UPDATE rooms_addons SET enabled=1;");
+				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.6 " . basename(__FILE__));
 			}
-			if($thedbversion == '1.1.7' && $theolddbversion < $thedbversion) {
+			if($thedbversion >= '1.1.7' && $theolddbversion < $thedbversion) {
 				$query = "ALTER TABLE alerts RENAME to _alerts_old;";
 				$execquery = $configdb->exec($query);
 				$query = "CREATE TABLE IF NOT EXISTS alerts (alert_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created TEXT NOT NULL DEFAULT '0-0-0 00:00:00')";
@@ -328,8 +384,9 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				$execquery = $configdb->exec($query);
 				$query = "DROP TABLE IF EXISTS _alerts_old;";
 				$execquery = $configdb->exec($query);
+				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.7 " . basename(__FILE__));
 			}
-			if($thedbversion == '1.1.8' && $theolddbversion < $thedbversion) {
+			if($thedbversion >= '1.1.8' && $theolddbversion < $thedbversion) {
 				$query = "ALTER TABLE alerts_viewed RENAME to _alerts_viewed_old;";
 				$execquery = $configdb->exec($query);
 				$query = "CREATE TABLE IF NOT EXISTS alerts_viewed (alerts_viewed_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', alert_id INTEGER NOT NULL DEFAULT '0', viewed TEXT NOT NULL DEFAULT '0-0-0 00:00:00')";
@@ -340,38 +397,44 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				$execquery = $configdb->exec($query);
 				$query = "DROP TABLE IF EXISTS _alerts_viewed_old;";
 				$execquery = $configdb->exec($query);
-			}			
+				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.8 " . basename(__FILE__));
+			}
+			if($thedbversion >= '1.1.9' && $theolddbversion < $thedbversion) {
+				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (2, 'LogLevel','Set Log Level. Options: DEBUG, INFO, WARN, ERROR, FATAL, OFF','dropdown','INFO')");
+				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.9 " . basename(__FILE__));
+			}
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (1,'ccversion','$CCVERSION')");
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (2,'dbversion','$thedbversion')");
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (3,'lastcrontime','0')");
-			echo "<tr><td>DB tables checked, Version: $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
-			
-			//insert all settings with default values
+
+			//insert all settings with default values if not exist
 			$thedbsettings = checkDBsettings();
 			if(!isset($thedbsettings["InputUserName"]['1']) || $thedbsettings["InputUserName"]['1'] == '') {
 				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (1, 'InputUserName','Requires user to type username instead of showing list for login','boolean','0')");
 			}
 			if(!isset($thedbsettings["LogLevel"]['1']) || $thedbsettings["LogLevel"]['1'] == '') {
-				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (2, 'LogLevel','Set Log Level. Options: DEBUG, INFO, WARN, ERROR, FATAL, OFF','TEXT','INFO')");
+				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (2, 'LogLevel','Set Log Level. Options: DEBUG, INFO, WARN, ERROR, FATAL, OFF','dropdown','INFO')");
 			}
 			if(!isset($thedbsettings["TimeZone"]['1']) || $thedbsettings["TimeZone"]['1'] == '') {
 				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (3, 'TimeZone','Set Global Application Timezone','dropdown','America/Los_Angeles')");
 			}
-	} catch(PDOException $e)
-		{
+			echo "<tr><td>DB tables checked, Version: $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
+			$log->LogINFO("DB tables checked, current version: $thedbversion " . basename(__FILE__));
+		} catch(PDOException $e)
+			{
 			  echo "<tr><td>Can <b>NOT</b> edit db.  check /sessions/ folder permissions</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
 			  $log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 			  $redirect = false;
+			}
+		$totalusernum = 0;
+		$sql = "SELECT * FROM users LIMIT 1";
+		foreach ($configdb->query($sql) as $row) {
+			if(isset($row['userid'])) {
+				$totalusernum ++;
+			}
 		}
-
-	$totalusernum = 0;
-    $sql = "SELECT * FROM users LIMIT 1";
-    foreach ($configdb->query($sql) as $row)
-        {
-		if(isset($row['userid'])) {
-		$totalusernum ++;
-        }}
-} } else{
+	}
+} else{
 	$log->LogError("User encountered error with the DB folder structure or access permissions " . basename(__FILE__));
     echo "sqlite db could not be created.  ensure sqlite3 is enabled.";
 	$redirect = false;
@@ -388,7 +451,6 @@ if($redirect){
   }
 } else {
   echo "<p>It looks like some problems were found, please fix them then <input type=\"button\" value=\"reload\" onClick=\"window.location.reload()\"> the page.</p>";
- // echo "<p>If further assistance is needed, please visit the <a href='http://forum.xbmc.org/showthread.php?t=83304' target='_blank'>forum</a> or our <a href='http://mediafrontpage.lighthouseapp.com' target='_blank'>project page</a>.</p>";
 }
 ?>
 </body>
