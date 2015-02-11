@@ -21,8 +21,6 @@ server upgrade/install
 settings refactor:
 	ready for testing
 		settings-section.php -- pull more global scope variables to top of page (may be complete)
-		current save function, add return to page info in request
-		loading info per div (may suffice to do per page div insert loading)
 		saving info and refreshing saved div
 			need to check saving function now that tables have been changed
 	dropdown for http://--https:// for required options
@@ -56,6 +54,7 @@ notifications
 	create/edit/markread for alerts should be put in a class so alerts can be created like/with logs
 	need to limit total notifications shown.  maybe 10/20 with a load more function 
 		http://www.umair.io/how-to-create-news-feed-like-facebook-with-php-and-jquery/	
+	notifications for updates or other system changes
 	
 	
 
