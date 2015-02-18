@@ -36,6 +36,7 @@ settings refactor:
 
 settings - per user
 	where to put on page.. in modal
+		can create a Preferences tab/page in the normal setting, make the other settings tab require a certain admin level to show/be available
 	create db for individual settings 
 		>>  users_preferences (table)  <<  or just add to users table?
 			>>  userid  (row needs to be created for each user when user gets created...
@@ -55,6 +56,12 @@ notifications
 	need to limit total notifications shown.  maybe 10/20 with a load more function 
 		http://www.umair.io/how-to-create-news-feed-like-facebook-with-php-and-jquery/	
 	notifications for updates or other system changes
+
+
+modal
+	create tabbed layout
+		tabs only show if multiple tabs are needed
+		can add tabs on the fly with an addtab content load into an already opened modal
 	
 	
 
