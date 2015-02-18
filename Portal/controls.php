@@ -78,6 +78,7 @@ if(isset($_GET['dev']) && $_GET['dev'] == 1){
 						<li><a class="alertbutton" href="#">Alerts</a></li>
 						<?php if($SETTINGSACCESS == "1" && $isMobile == "0") { ?>
 						<li><a href='#Settings' class='panel2nd'>Settings</a></li> <?php } ?>
+						<li><a href='#' id='preferences' class='panel2nd'>Preferences</a></li>
 						<li><a href="#">&nbsp;</a></li>
 						<li><a href='logout.php' />Logout</a></li>
 					</ul>
@@ -483,7 +484,15 @@ if(isset($_GET['dev']) && $_GET['dev'] == 1){
 		});
 	});
 
-
+	jQuery(function ($) {
+		$('#preferences').click(function (e) {
+			$('#modal').load('preferences.php').modal({
+				opacity: 75,
+				overlayClose: true
+			});
+			return false;
+		});
+	});
 
 	// idle timeout for network pings
 	function d(el){

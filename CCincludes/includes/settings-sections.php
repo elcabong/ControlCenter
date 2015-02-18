@@ -193,7 +193,7 @@ if(isset($linkto)) {
 								} elseif($settingname == "LogLevel") {
 									echo "<td><select name='settingvalue1'>
 									  <option selected='selected'>$settingvalue1</option>";
-										$logoptions = array(DEBUG,INFO,WARN,ERROR,FATAL,OFF);
+										$logoptions = array('DEBUG','INFO','WARN','ERROR','FATAL','OFF');
 										foreach($logoptions as $thislogoption) {
 										  echo "<option value='$thislogoption'>$thislogoption</option>";
 										}

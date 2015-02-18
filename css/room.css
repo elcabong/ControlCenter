@@ -198,9 +198,9 @@ ul.sortable > li > a:first-child { width: 105px; }
 
 #navsettings > ul > li > ul { right:100px;position:relative;position:absolute;top:48px;right:0; }
   
-#nav-menu2 > nav ul li ul a { background:url(../media/bgNav.png);width:90px; }
+#nav-menu2 > nav ul li ul a { background:url(../media/bgNav.png);width:90%; }
 
-#navsettings > ul > li > ul > li { position:relative;width:120px; }
+#navsettings > ul > li > ul > li { position:relative;width:150px; }
 
 #roomList { position:absolute !important;top:50px;right:185px;width:50px; }
 

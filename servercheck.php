@@ -72,27 +72,27 @@ $version = phpversion();
 
 echo "<tr><td>PHP Version $version</td><td>";if($version > 5){echo "<img src='media/green-tick.png' height='15px'/>";}else{echo "<img src='media/red-cross.png' height='15px'/>";$redirect = false;} echo "</td></tr>";
 if(extension_loaded('libxml')){
-  echo "<tr><td>LibXML Enabled</td><td><img class='greencheck' src='http://etc-mysitemyway.s3.amazonaws.com/icons/legacy-previews/icons/green-jelly-icons-symbols-shapes/019227-green-jelly-icon-symbols-shapes-check-mark5-ps.png' height='15px'/></td></tr>";
+  echo "<tr><td>LibXML Enabled</td><td><img class='greencheck' src='media/green-tick.png' height='15px'/></td></tr>";
 }else{
-  echo "<tr><td>LibXML <b>NOT</b> Enabled</td><td><img src='http://xqshost.ro/favicon.ico' height='15px'/></td></tr>";
+  echo "<tr><td>LibXML <b>NOT</b> Enabled</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
   $redirect = false;
 }
 if(extension_loaded('sqlite3')){
-  echo "<tr><td>Sqlite3 Enabled</td><td><img src='http://etc-mysitemyway.s3.amazonaws.com/icons/legacy-previews/icons/green-jelly-icons-symbols-shapes/019227-green-jelly-icon-symbols-shapes-check-mark5-ps.png' height='15px'/></td></tr>";
+  echo "<tr><td>Sqlite3 Enabled</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 }else{
-  echo "<tr><td>Sqlite3 <b>NOT</b> Enabled</td><td><img src='http://xqshost.ro/favicon.ico' height='15px'/></td></tr>";
+  echo "<tr><td>Sqlite3 <b>NOT</b> Enabled</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
   $redirect = false;
 }
 if(extension_loaded('curl')){
-  echo "<tr><td>cURL Enabled</td><td><img src='http://etc-mysitemyway.s3.amazonaws.com/icons/legacy-previews/icons/green-jelly-icons-symbols-shapes/019227-green-jelly-icon-symbols-shapes-check-mark5-ps.png' height='15px'/></td></tr>";
+  echo "<tr><td>cURL Enabled</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 }else{
-  echo "<tr><td>cURL <b>NOT</b> Enabled</td><td><img src='http://xqshost.ro/favicon.ico' height='15px'/></td></tr>";
+  echo "<tr><td>cURL <b>NOT</b> Enabled</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
   $redirect = false;
 }
 if(extension_loaded('json')){
-  echo "<tr><td>JSON Enabled</td><td><img src='http://etc-mysitemyway.s3.amazonaws.com/icons/legacy-previews/icons/green-jelly-icons-symbols-shapes/019227-green-jelly-icon-symbols-shapes-check-mark5-ps.png' height='15px'/></td></tr>";
+  echo "<tr><td>JSON Enabled</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 }else{
-  echo "<tr><td>JSON <b>NOT</b> Enabled</td><td><img src='http://xqshost.ro/favicon.ico' height='15px'/></td></tr>";
+  echo "<tr><td>JSON <b>NOT</b> Enabled</td><td><img src='media/red-cross.png' height='15px'/></td></tr>";
   $redirect = false;
 }
 echo "<tr><td>";
@@ -207,7 +207,12 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 		}
 		// write db tables here if they dont exist
 		try {
+			$theolddbversion = checkDBversion();
+			//  needs some major updates to this logic
+			/*
   					$thedbversion = checkDBversion();
+					echo $thedbversion."<br>";
+					echo $DBVERSION;
 					$theolddbversion = $thedbversion;
 					if($thedbversion < $DBVERSION && $thedbversion != 'none') {
 						$upgrademe = checkDBupgrade($thedbversion,$DBVERSION);
@@ -243,7 +248,7 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 							$configdb = new PDO('sqlite:' . $INCLUDES . '/sessions/config.db');
 							$thedbversion = $DBVERSION;							
 						}
-					}
+					}*/
 		  $query = "CREATE TABLE IF NOT EXISTS users (
 									userid integer PRIMARY KEY AUTOINCREMENT, 
 									username text UNIQUE NOT NULL, 
@@ -338,7 +343,19 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 									CCvalue TEXT
 									)";
 		  $execquery = $configdb->exec($query);
-			if($thedbversion == 'none') { $thedbversion = $DBVERSION; }
+		  $query = "CREATE TABLE IF NOT EXISTS `preferences` (
+									`prefid`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+									`prefoptionid`	INTEGER NOT NULL,
+									`userid`	INTEGER NOT NULL,
+									`preference`	TEXT NOT NULL
+									)";
+		  $execquery = $configdb->exec($query);
+		  $query = "CREATE TABLE IF NOT EXISTS `preferences_options` (
+									`prefoptionid`	INTEGER PRIMARY KEY AUTOINCREMENT,
+									`preftitle`	TEXT NOT NULL
+									)";
+		  $execquery = $configdb->exec($query);			  
+			if(!isset($thedbversion) || $thedbversion == 'none' || $thedbversion < $DBVERSION) { $thedbversion = $DBVERSION; }
 			if($thedbversion >= '1.1.2' && $theolddbversion < $thedbversion) {
 				$query = "ALTER TABLE rooms_addons ADD COLUMN device_alive INTEGER NULL;";
 				$execquery = $configdb->exec($query);
@@ -403,6 +420,11 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (2, 'LogLevel','Set Log Level. Options: DEBUG, INFO, WARN, ERROR, FATAL, OFF','dropdown','INFO')");
 				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.9 " . basename(__FILE__));
 			}
+			if($thedbversion >= '1.1.10' && $theolddbversion < $thedbversion) {
+				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.10 " . basename(__FILE__));
+			}
+			
+			// update CC version and DB version in database and reset last cron time after udpates
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (1,'ccversion','$CCVERSION')");
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (2,'dbversion','$thedbversion')");
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO controlcenter (CCid, CCsetting, CCvalue) VALUES (3,'lastcrontime','0')");
@@ -418,6 +440,11 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 			if(!isset($thedbsettings["TimeZone"]['1']) || $thedbsettings["TimeZone"]['1'] == '') {
 				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (3, 'TimeZone','Set Global Application Timezone','dropdown','America/Los_Angeles')");
 			}
+			
+			// insert all default User Preferences Options
+			$execquery = $configdb->exec("INSERT OR REPLACE INTO preferences_options (prefoptionid, preftitle) VALUES (1,'TimeZone')");
+			//$execquery = $configdb->exec("INSERT OR REPLACE INTO preferences_options (prefoptionid, preftitle) VALUES (2,'Theme')");
+			
 			echo "<tr><td>DB tables checked, Version: $thedbversion</td><td><img src='media/green-tick.png' height='15px'/></td></tr>";
 			$log->LogINFO("DB tables checked, current version: $thedbversion " . basename(__FILE__));
 		} catch(PDOException $e)
@@ -443,7 +470,7 @@ echo '</table>';
 if($redirect){
   echo "<p>Congratulations! Everything seems to be in working order.</p>";
   if($totalusernum > 0) {
-	header( 'Location: ./index.html' ) ;
+	//header( 'Location: ./index.html' ) ;
 	echo "<p><input type='button' onclick=\"window.location = './index.html';\" value='CONTINUE' /></p>";
   } else {
 	header( 'Location: ./Portal/setup.php?setup=first' ) ;

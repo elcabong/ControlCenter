@@ -1,4 +1,6 @@
 server upgrade/install
+	servercheck
+		need to go over db upgrade check and process
 	upgrade process
 		create "needs update" overlay to refresh page and load servercheck when upgrades are needed.
 		check for updates (phone home) every 24 hours?  this will also perform auth check for registered instances
@@ -31,26 +33,16 @@ settings refactor:
 	add user picture when logged in to menu
 	screen resize function doesnt work for settings page
 	enable/disable function for addons in each room
-
 	
 
-settings - per user
-	where to put on page.. in modal
-		can create a Preferences tab/page in the normal setting, make the other settings tab require a certain admin level to show/be available
-	create db for individual settings 
-		>>  users_preferences (table)  <<  or just add to users table?
-			>>  userid  (row needs to be created for each user when user gets created...
-			>>	timezone
-			>>
-	what settings/prefs to include here
-		password change
-		timezone (should autodetect on first connect?)
-			http://www.westy92.com/?p=54
+settings - per user (preferences)
+	choose how to display time..  24h vs 12h am/pm
+	create preferences_options_allowed table
+		this can hold all the options for dropdown menus or acceptable options for user preferences (can have something similar for general settings if needed)
+	need to implement save funtion for these preferences
 
 
 notifications
-	fix timestamp for alert create/display of this field based on user view timezone (link in settings - per user for timezone)
-		just need to implement user timezone check..  also user settings for timezone input
 	include username/user picture when alert sent from person
 	create/edit/markread for alerts should be put in a class so alerts can be created like/with logs
 	need to limit total notifications shown.  maybe 10/20 with a load more function 
@@ -62,7 +54,7 @@ modal
 	create tabbed layout
 		tabs only show if multiple tabs are needed
 		can add tabs on the fly with an addtab content load into an already opened modal
-	
+			maybe each time modal is called, it creates a tab for the option..  dont destroy tabs on modal close..
 	
 
 functions.php

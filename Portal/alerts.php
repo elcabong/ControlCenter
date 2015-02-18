@@ -55,7 +55,7 @@ try {
 	
 if($submitAlert == 1) {
 	if(isset($_GET['message'])) {
-		$message = urlencode($_GET['message']);
+		$message = $_GET['message'];
 	}
 	if(isset($_GET['toUser'])) {
 		$toUser = $_GET['toUser'];
@@ -180,17 +180,30 @@ if($getalerts == 0) {
 				<?php
 					//if user timezone = 0, then use global app time zone
 					//$usertimezone = "America/Los_Angeles";
-					
+					$usertimezone = 0;
 					try {
-						$sql = "SELECT settingvalue1 FROM settings WHERE setting = 'TimeZone' LIMIT 1";
-						foreach ($configdb->query($sql) as $thissetting) {
-							$usertimezone = $thissetting['settingvalue1'];
-						}
+						$sql = "SELECT p.preference FROM preferences_options AS po LEFT JOIN preferences AS p ON p.prefoptionid = po.prefoptionid AND p.userid = $usernumber OR p.userid is NULL WHERE po.preftitle = 'TimeZone'";
+						foreach ($configdb->query($sql) as $row)
+							{
+								if(isset($row['preference']) && $row['preference'] != '') {
+									$usertimezone = $row['preference'];
+								}
+							}
 					} catch(PDOException $e)
 						{
-							$log->LogError("$e->getMessage()" . basename(__FILE__));
+						echo $e->getMessage();
 						}
-				
+					if($usertimezone == '0') {
+						try {
+							$sql = "SELECT settingvalue1 FROM settings WHERE setting = 'TimeZone' LIMIT 1";
+							foreach ($configdb->query($sql) as $thissetting) {
+								$usertimezone = $thissetting['settingvalue1'];
+							}
+						} catch(PDOException $e)
+							{
+								$log->LogError("$e->getMessage()" . basename(__FILE__));
+							}
+					}
 				
 					// unread content
 					if(!empty($alertarray['unread'])) {
