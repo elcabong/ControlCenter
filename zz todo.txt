@@ -39,7 +39,6 @@ settings - per user (preferences)
 	choose how to display time..  24h vs 12h am/pm
 	create preferences_options_allowed table
 		this can hold all the options for dropdown menus or acceptable options for user preferences (can have something similar for general settings if needed)
-	need to implement save funtion for these preferences
 
 
 notifications
