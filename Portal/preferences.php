@@ -20,6 +20,9 @@ if(isset($_POST['params']) && isset($_POST['usernumber'])) {
 		$thisparam = explode('=',$thisparam);
 		$poid = $preferencearray[$thisparam[0]];
 		$pref = $thisparam[1];
+		if($pref == 'None') {
+			continue;
+		}
 		try {
 			$execquery = $configdb->exec("INSERT OR REPLACE INTO preferences (prefid, prefoptionid, userid, preference) VALUES ((SELECT prefid FROM preferences WHERE userid = $usernumber AND prefoptionid = $poid),$poid,$usernumber,'$pref')");
 		} catch(PDOException $e) {
