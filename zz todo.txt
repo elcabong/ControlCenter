@@ -36,6 +36,8 @@ settings refactor:
 	
 
 settings - per user (preferences)
+	ready for testing:
+		make sure that the user can only set preferences for themselves.. or make an admin sub option		
 	choose how to display time..  24h vs 12h am/pm
 	create preferences_options_allowed table
 		this can hold all the options for dropdown menus or acceptable options for user preferences (can have something similar for general settings if needed)
@@ -54,6 +56,7 @@ modal
 		tabs only show if multiple tabs are needed
 		can add tabs on the fly with an addtab content load into an already opened modal
 			maybe each time modal is called, it creates a tab for the option..  dont destroy tabs on modal close..
+	update css for modal. currently is nowplaying.css..  needs to be changed to modal.css and all moved into that		
 	
 
 functions.php

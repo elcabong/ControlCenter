@@ -3,7 +3,7 @@ require('startsession.php');
 require_once("$INCLUDES/includes/config.php");
 $log->LogDebug("User $authusername loading Preferences from " . basename(__FILE__) . " from " . $_SERVER['SCRIPT_FILENAME']);
 
-if(isset($_POST['params']) && isset($_POST['usernumber'])) {
+if(isset($_POST['params']) && isset($usernumber)) {
 	$preferencearray = array();
 	try {
 		$sql = "SELECT * FROM preferences_options";
@@ -14,7 +14,6 @@ if(isset($_POST['params']) && isset($_POST['usernumber'])) {
 		$log->LogFatal("Fatal: User could not open DB: $e->getMessage().  from " . basename(__FILE__));
 	}	
 	$params = $_POST['params'];
-	$usernumber = $_POST['usernumber'];
 	$theparams = explode('&',$params);
 	foreach($theparams as $thisparam) {
 		$thisparam = explode('=',$thisparam);
@@ -167,7 +166,7 @@ if(isset($_POST['params']) && isset($_POST['usernumber'])) {
 		
 		//alert(params);
 		$.post( "./preferences.php", {
-			params: params, usernumber: <?php echo $usernumber; ?> 
+			params: params
 		}).done(function(data){
 			if (data != "err"){
 				$("span#error").text(data);
