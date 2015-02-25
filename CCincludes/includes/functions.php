@@ -35,4 +35,17 @@ function date_convert($dt, $tz1, $df1, $tz2, $df2) {
   }
   return $res;
 }
+
+function ThisBiggerThanThat($thisbigger, $thatbigger) {
+	$thisbigger = explode(".",$thisbigger);
+	$thatbigger = explode(".",$thatbigger);
+	$isthisbigger = "no";
+	for($i=0; $i<10; $i++) {
+		if(!isset($thisbigger[$i]) || !isset($thatbigger[$i])) { break; } 
+		if($thisbigger[$i] > $thatbigger[$i]) {
+			$isthisbigger = "yes";
+		}
+	}
+	return $isthisbigger;
+}
 ?>

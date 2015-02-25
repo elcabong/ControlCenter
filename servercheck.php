@@ -356,19 +356,22 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 									)";
 		  $execquery = $configdb->exec($query);			  
 			if(!isset($thedbversion) || $thedbversion == 'none' || $thedbversion < $DBVERSION) { $thedbversion = $DBVERSION; }
-			if($thedbversion >= '1.1.2' && $theolddbversion < $thedbversion) {
+			$thisupgradeversion = '1.1.2';
+			if(ThisBiggerThanThat($thedbversion,$thisupgradeversion) == "yes" && ThisBiggerThanThat($thedbversion,$theolddbversion) == "yes") {
 				$query = "ALTER TABLE rooms_addons ADD COLUMN device_alive INTEGER NULL;";
 				$execquery = $configdb->exec($query);
-				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.2 " . basename(__FILE__));
+				$log->LogINFO("DB upgraded from version $theolddbversion to version $thisupgradeversion " . basename(__FILE__));
 			}
-			if($thedbversion >= '1.1.3' && $theolddbversion < $thedbversion) {
+			$thisupgradeversion = '1.1.3';			
+			if(ThisBiggerThanThat($thedbversion,$thisupgradeversion) == "yes" && ThisBiggerThanThat($thedbversion,$theolddbversion) == "yes") {
 				$query = "DROP TABLE IF EXISTS controlcenter;";
 				$execquery = $configdb->exec($query);
 				$query = "CREATE TABLE IF NOT EXISTS controlcenter (CCid integer PRIMARY KEY AUTOINCREMENT UNIQUE, CCsetting TEXT UNIQUE, CCvalue TEXT)";
 				$execquery = $configdb->exec($query);
-				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.3 " . basename(__FILE__));
+				$log->LogINFO("DB upgraded from version $theolddbversion to version $thisupgradeversion " . basename(__FILE__));
 			}
-			if($thedbversion >= '1.1.4' && $theolddbversion < $thedbversion) {
+			$thisupgradeversion = '1.1.4';
+			if(ThisBiggerThanThat($thedbversion,$thisupgradeversion) == "yes" && ThisBiggerThanThat($thedbversion,$theolddbversion) == "yes") {
 				$query = "DROP TABLE IF EXISTS alerts;";
 				$execquery = $configdb->exec($query);
 				$query = "CREATE TABLE IF NOT EXISTS alerts (alert_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created INTEGER NOT NULL DEFAULT current_timestamp)";
@@ -377,20 +380,23 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				$execquery = $configdb->exec($query);
 				$query = "CREATE TABLE IF NOT EXISTS alerts_viewed (alerts_viewed_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', alert_id INTEGER NOT NULL DEFAULT '0', viewed INTEGER NOT NULL DEFAULT current_timestamp)";
 				$execquery = $configdb->exec($query);
-				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.4 " . basename(__FILE__));
+				$log->LogINFO("DB upgraded from version $theolddbversion to version $thisupgradeversion " . basename(__FILE__));
 			}
-			if($thedbversion >= '1.1.5' && $theolddbversion < $thedbversion) {
+			$thisupgradeversion = '1.1.5';
+			if(ThisBiggerThanThat($thedbversion,$thisupgradeversion) == "yes" && ThisBiggerThanThat($thedbversion,$theolddbversion) == "yes") {
 				$query = "ALTER TABLE users ADD COLUMN passwordreset INTEGER NOT NULL DEFAULT 0;";
 				$execquery = $configdb->exec($query);
-				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.5 " . basename(__FILE__));
+				$log->LogINFO("DB upgraded from version $theolddbversion to version $thisupgradeversion " . basename(__FILE__));
 			}
-			if($thedbversion >= '1.1.6' && $theolddbversion < $thedbversion) {
+			$thisupgradeversion = '1.1.6';
+			if(ThisBiggerThanThat($thedbversion,$thisupgradeversion) == "yes" && ThisBiggerThanThat($thedbversion,$theolddbversion) == "yes") {
 				$query = "ALTER TABLE rooms_addons ADD COLUMN enabled INTEGER NOT NULL DEFAULT 0;";
 				$execquery = $configdb->exec($query);
 				$configdb->exec("UPDATE rooms_addons SET enabled=1;");
-				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.6 " . basename(__FILE__));
+				$log->LogINFO("DB upgraded from version $theolddbversion to version $thisupgradeversion " . basename(__FILE__));
 			}
-			if($thedbversion >= '1.1.7' && $theolddbversion < $thedbversion) {
+			$thisupgradeversion = '1.1.7';
+			if(ThisBiggerThanThat($thedbversion,$thisupgradeversion) == "yes" && ThisBiggerThanThat($thedbversion,$theolddbversion) == "yes") {
 				$query = "ALTER TABLE alerts RENAME to _alerts_old;";
 				$execquery = $configdb->exec($query);
 				$query = "CREATE TABLE IF NOT EXISTS alerts (alert_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', userlevel INTEGER, message TEXT NOT NULL, from_userid INTEGER NOT NULL DEFAULT '0', created TEXT NOT NULL DEFAULT '0-0-0 00:00:00')";
@@ -401,9 +407,10 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				$execquery = $configdb->exec($query);
 				$query = "DROP TABLE IF EXISTS _alerts_old;";
 				$execquery = $configdb->exec($query);
-				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.7 " . basename(__FILE__));
+				$log->LogINFO("DB upgraded from version $theolddbversion to version $thisupgradeversion " . basename(__FILE__));
 			}
-			if($thedbversion >= '1.1.8' && $theolddbversion < $thedbversion) {
+			$thisupgradeversion = '1.1.8';
+			if(ThisBiggerThanThat($thedbversion,$thisupgradeversion) == "yes" && ThisBiggerThanThat($thedbversion,$theolddbversion) == "yes") {
 				$query = "ALTER TABLE alerts_viewed RENAME to _alerts_viewed_old;";
 				$execquery = $configdb->exec($query);
 				$query = "CREATE TABLE IF NOT EXISTS alerts_viewed (alerts_viewed_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, userid INTEGER NOT NULL DEFAULT '0', alert_id INTEGER NOT NULL DEFAULT '0', viewed TEXT NOT NULL DEFAULT '0-0-0 00:00:00')";
@@ -414,14 +421,16 @@ if (file_exists("$INCLUDES/sessions/config.db")){
 				$execquery = $configdb->exec($query);
 				$query = "DROP TABLE IF EXISTS _alerts_viewed_old;";
 				$execquery = $configdb->exec($query);
-				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.8 " . basename(__FILE__));
+				$log->LogINFO("DB upgraded from version $theolddbversion to version $thisupgradeversion " . basename(__FILE__));
 			}
-			if($thedbversion >= '1.1.9' && $theolddbversion < $thedbversion) {
+			$thisupgradeversion = '1.1.9';
+			if(ThisBiggerThanThat($thedbversion,$thisupgradeversion) == "yes" && ThisBiggerThanThat($thedbversion,$theolddbversion) == "yes") {
 				$execquery = $configdb->exec("INSERT OR REPLACE INTO settings (settingid, setting, description, settingvalue1type, settingvalue1) VALUES (2, 'LogLevel','Set Log Level. Options: DEBUG, INFO, WARN, ERROR, FATAL, OFF','dropdown','INFO')");
-				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.9 " . basename(__FILE__));
+				$log->LogINFO("DB upgraded from version $theolddbversion to version $thisupgradeversion " . basename(__FILE__));
 			}
-			if($thedbversion >= '1.1.10' && $theolddbversion < $thedbversion) {
-				$log->LogINFO("DB upgraded from version $theolddbversion to version 1.1.10 " . basename(__FILE__));
+			$thisupgradeversion = '1.1.10';
+			if(ThisBiggerThanThat($thedbversion,$thisupgradeversion) == "yes" && ThisBiggerThanThat($thedbversion,$theolddbversion) == "yes") {
+				$log->LogINFO("DB upgraded from version $theolddbversion to version $thisupgradeversion " . basename(__FILE__));
 			}
 			
 			// update CC version and DB version in database and reset last cron time after udpates

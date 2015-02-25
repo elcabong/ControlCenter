@@ -48,8 +48,8 @@ if(isset($getversion) && $getversion == "yes") {
 	//check cc/db version for updates
 	//will have to run check against mainserver for new version
 	//will need db area for last update check date, if longer than x, check for updates, if x too far away (longer than 24 hours) check for udpates and reset value
-	if(!isset(${'ccversion'}) || ${'ccversion'} < $CCVERSION) { header('Location: ' . $servercheckloc);exit; }
-	if(!isset(${'dbversion'}) || ${'dbversion'} < $DBVERSION) { header('Location: ' . $servercheckloc . '?newdbversion=' . $DBVERSION);exit; }
+	if(!isset(${'ccversion'}) || ThisBiggerThanThat($CCVERSION,${'ccversion'}) == "yes") { header('Location: ' . $servercheckloc);exit; }
+	if(!isset(${'dbversion'}) || ThisBiggerThanThat($DBVERSION,${'dbversion'}) == "yes") { header('Location: ' . $servercheckloc . '?newdbversion=' . $DBVERSION);exit; }
 
 	try {
 		$sql = "SELECT * FROM users";
