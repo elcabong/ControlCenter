@@ -43,12 +43,27 @@ settings - per user (preferences)
 		this can hold all the options for dropdown menus or acceptable options for user preferences (can have something similar for general settings if needed)
 
 
+user sessions
+	see what info can be pulled from individual sessions and kept in the db..
+		playstate for each room
+		alive for each room
+	create user_connected tabled in db and keep track of live sessions..
+		last page reload or use of cron to set recent timestamp so users can be sorted by online vs offline
+		eventually, can create fields for users, ie: lunch, break, meeting, back in x minutes or back at x time
+	see notifications - marking for users status, online/offline/break/etc
+		color ball (green/yellow/red) then user name followed by (online) or (break) or (offline) etc.
+		
+
 notifications
 	include username/user picture when alert sent from person
 	create/edit/markread for alerts should be put in a class so alerts can be created like/with logs
 	need to limit total notifications shown.  maybe 10/20 with a load more function 
 		http://www.umair.io/how-to-create-news-feed-like-facebook-with-php-and-jquery/	
 	notifications for updates or other system changes
+	see modal tabs here.  tab for inbox, read, sent
+		possible tab just for ongoing group chat, available to all?  time to keep?  export of discussion?
+	check groups for sending.  need to be able to send to custom groups..  maybe room groups(will need to name)?
+	classify..  look into reload for new items
 
 
 modal
@@ -84,10 +99,10 @@ addons:
 		import/export addons
 	zoneminder
 	xbmc/kodi optimize
-	addons.php optimize  --> load to db? or keep as php scan file tree?
+	addons.php optimize  --> load to db? or keep as php scan file tree?  classify
 	screen for device on but app not responding (orange) like the wol screen
 	avr
-	create controller page that replaces connecting to xbmc control page
+	create controller page that replaces connecting to xbmc control page (maybe tabbed modal?)
 		this will pull items from addons within a room for various control features
 		add function to assign addon for control functions
 			set vol control to send through thisroom > avr.addon
