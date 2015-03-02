@@ -21,11 +21,17 @@ if($sendtype=="youtube") {
 	$jsoncontents .= "====$to/jsonrpc?request={\"jsonrpc\":\"2.0\",\"method\":\"Player.Open\",\"params\":{\"item\":{\"file\":\"plugin://plugin.video.youtube/?action=play_video%26videoid=$videoid\"}},\"id\":\"1\"}";
 } else {
 
-	require "nowplayinginfo.php";
-
+	require "class.php";
+	$KODI = new KODI();
+	$activeplayerid = $KODI->GetActivePlayer("$from");
+		if(!isset($activeplayerid) || $activeplayerid == "none") {
+			exit; 
+		}
+	$jsonnowplaying = $KODI->GetPlayingItemInfo("$from","$activeplayerid");
+	
 	$filepath = urlencode($filepath);
 	
-	require "nowplayingtime.php";	
+	require "nowplayingtime.php";
 	$jsoncontents = '';	
 
 	if($activeplayerid==0) {

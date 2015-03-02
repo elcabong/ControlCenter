@@ -80,6 +80,7 @@
 											if(isset($jsonnowplaying['result']['item']['season'])) { $theshowseason = $jsonnowplaying['result']['item']['season']; }
 											if(isset($jsonnowplaying['result']['item']['episode'])) { $theshowepisode = str_pad($jsonnowplaying['result']['item']['episode'], 2, '0', STR_PAD_LEFT); }
 											if(isset($jsonnowplaying['result']['item']['year'])) { $theyear = $jsonnowplaying['result']['item']['year']; }
+											if(isset($jsonnowplaying['result']['item']['firstaired'])) { $firstaired = $jsonnowplaying['result']['item']['firstaired']; }
 										}
 										$jsoncontents = "$ip/jsonrpc?request={%22jsonrpc%22:%20%222.0%22,%20%22method%22:%20%22Playlist.GetItems%22,%20%22params%22:%20{%20%22playlistid%22:%201%20},%20%22id%22:%20%221%22}";
 										$ch = curl_init();

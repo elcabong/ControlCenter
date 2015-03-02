@@ -2,16 +2,23 @@
 						if(isset($enabledaddonsarray) && !isset($ip)) {
 							$ip = $enabledaddonsarray["$THISROOMID"]["$addonid"]['ADDONIP'];
 						}
-						require "nowplayinginfo.php";
-						if(empty($jsoncheckxbmc['result'])) {
-							$sessvar = "playinginroom$THISROOMID";
-							$_SESSION[$sessvar] = 0;
-							echo "<a href='#' class='pingicon'><img src='../media/orange.png' title='online with no xbmc running' style='height:20px;'/></a>";
-							exit;
-						} else {
-							if(empty($jsonactiveplayer['result'])) {
+					require "class.php";
+					$KODI = new KODI();
+					$kodialive = $KODI->Ping("$ip");
+					$sessvar = "playinginroom$THISROOMID";
+							if($kodialive == "alive") {
+								$filetype='';
+								// get active player
+								$activeplayerid = $KODI->GetActivePlayer("$ip");
+								$nowplayingarray = $KODI->GetPlayingItemInfo("$ip","$activeplayerid");
+									
+							} elseif($kodialive != "alive") {
+								$_SESSION[$sessvar] = 0;
+								echo "<a href='#' class='pingicon'><img src='../media/orange.png' title='online with no xbmc running' style='height:20px;'/></a>";
+								exit;
+							}
+							if(!isset($activeplayerid) || $activeplayerid == "none") {
 								echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a>";
-								$sessvar = "playinginroom$THISROOMID";
 								$_SESSION[$sessvar] = 0;
 								$thissessvar = "playinginroom$_SESSION[room]";
 								if(isset($_SESSION[$thissessvar])) { $checkstillplaying = $_SESSION[$thissessvar]; } else { $checkstillplaying = 0; }
@@ -19,7 +26,6 @@
 									echo "<span class='sendcontrols'><a href='#' ip='$ip' class='sendnowplaying' sendtype='start' room='$THISROOMID'>start</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='send' room='$THISROOMID'>send</a><a href='#' ip='$ip' class='sendnowplaying' sendtype='clone' room='$THISROOMID'>clone</a></span>";
 								}
 							} else {
-								$sessvar = "playinginroom$THISROOMID";
 								$_SESSION[$sessvar] = 1;
 								if($activeplayerid=='0' || $activeplayerid=='1' || $activeplayerid=='2') {
 									echo "<a href='#' class='pingicon'><img src='../media/green.png' title='online' style='height:20px;'/></a><span><a href='#' ip='$ip' thisroom='$THISROOMID' class='roominfo-modal $THISROOMID'><p class='scrolling'>";
@@ -35,50 +41,34 @@
 											echo " - ".$thetitle;
 										}
 									} elseif($activeplayerid==1) {
-										if($filetype=="unknown") {
-											$ext = pathinfo($filepath, PATHINFO_EXTENSION);
-											$file = basename($filepath, ".".$ext);
-											$needles = $movieneedles;
-											foreach($needles as $needle) {
-												if (strpos($file,$needle) !== false) {
-													$filetype = "amovie";
-												}
-											}
-											$needles = $tvshowneedles;
-											foreach($needles as $needle) {
-												if (strpos($file,$needle) !== false) {
-													$filetype = "atvshow";
-													break;
-												}
-											}
-											if($filetype == "amovie") {
+										$filetype = $nowplayingarray['type'];
+										if($filetype == "amovie") {
 												echo "<img src='../media/DefaultMovies.png' height='35px' style='float:left;margin-top:-3px;'>";
-												echo "$file";
-											}											
-											if($filetype == "atvshow") {
+												echo $nowplayingarray['title'];
+										} elseif($filetype == "atvshow") {
 												echo "<img src='../media/DefaultTVShows.png' height='35px' style='float:left;margin-top:-3px;'>";
-												echo "$file";
-											}
-										}							
-									
-										if($filetype=="unknown") {
-											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
-											echo $thelabel;
+												echo $nowplayingarray['title'];
 										} elseif($filetype=="movie") {
 											echo "<img src='../media/DefaultMovies.png' height='35px' style='float:left;margin-top:-3px;'>";
-											echo $thetitle;
+											echo $nowplayingarray['title'];
 											if(false !== stripos($thetitle, '$theyear')) { } else { echo " ($theyear)"; }
 										} elseif($filetype=="episode") {
 											echo "<img src='../media/DefaultTVShows.png' height='35px' style='float:left;margin-top:-3px;'>";
 											echo "$theshowtitle - $theshowseason$theshowepisode - $thetitle";
+										} elseif($filetype=="channel") {
+											echo "<img src='../media/DefaultTVShows.png' height='35px' style='float:left;margin-top:-3px;'>";
+											echo  $nowplayingarray['title'] . " - " . $nowplayingarray['firstaired'];
+										} else {
+												echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
+												echo $nowplayingarray['title'];
 										}
 									} elseif($activeplayerid==2) {
 										echo "pics";
 									}
 									echo "</p></a></span>";
+								
 								}
 							}
-						}
 ?>
 <script>
 	var from = "<?php echo $nowplayingip; ?>";

@@ -1,10 +1,12 @@
 <?php if($_GET['ip']) { $ip=$_GET['ip']; } // if($_GET['addon']) { $addonid=$_GET['addon']; } 
 $nowplayingarray = array();
-			require $addonarray["$classification"]["$title"]['path']."nowplayinginfo.php";
+
+			require "nowplayinginfo.php";
 			if(!isset($jsonactiveplayer['result'])) {
 				echo "There is nothing currently playing.";
 				return;
 			}
+
 			if(!isset($activeplayerid)) { exit; }
 			if($activeplayerid==0) {
 				$jsonmusicinfo = "$ip/jsonrpc?request={%22jsonrpc%22%3A%20%222.0%22%2C%20%22method%22%3A%20%22AudioLibrary.GetSongDetails%22%2C%20%22params%22%3A%20%7B%20%22songid%22%3A%20$thesongid%2C%20%22properties%22%3A%20%5B%20%22fanart%22%2C%20%22genre%22%2C%20%22title%22%2C%20%22year%22%2C%20%22rating%22%2C%20%22thumbnail%22%5D%20%7D%2C%20%22id%22%3A%201}";
@@ -90,7 +92,12 @@ $nowplayingarray = array();
 						if(isset($jsontvshowinfo['result']['tvshowdetails']['fanart']) && $jsontvshowinfo['result']['tvshowdetails']['fanart'] != '') {
 							$fanart =  "<img src='$ip/image/".urlencode($jsontvshowinfo['result']['tvshowdetails']['fanart'])."'/>";
 						}
-					} else{
+					} elseif($filetype == "channel") {
+						$nowplayingarray['Series'] = $jsonnowplaying['result']['item']['title'];
+						$nowplayingarray['Channel'] = $jsonnowplaying['result']['item']['label'];
+						$nowplayingarray['Air Date'] = $jsonnowplaying['result']['item']['firstaired'];
+						$nowplayingarray['Runtime'] = $jsonnowplaying['result']['item']['runtime'] . " minutes";
+					} else {
 						$nowplayingarray['Movie'] = $jsonnowplaying['result']['item']['title'];
 						$nowplayingarray['Genre'] = implode(', ', $jsonnowplaying['result']['item']['genre']);
 						$nowplayingarray['Year'] = $jsonnowplaying['result']['item']['year'];
@@ -100,12 +107,14 @@ $nowplayingarray = array();
 							$fanart =  "<img src='$ip/image/".urlencode($jsonnowplaying['result']['item']['fanart'])."'/>";
 						}
 					}
-					if(isset($jsonnowplaying['result']['item']['runtime']) && $jsonnowplaying['result']['item']['runtime'] != 0) {
-						$nowplayingarray['Runtime'] = round($jsonnowplaying['result']['item']['runtime']/60)." minutes";
-					} else {
-						require $addonarray["$classification"]["$title"]['path']."nowplayingtime.php";
-						$howmanyminutes = round($thetotaltimesec / 60,0);
-						$nowplayingarray['Runtime'] = $howmanyminutes." minutes";
+					if($filetype != "channel") {
+						if(isset($jsonnowplaying['result']['item']['runtime']) && $jsonnowplaying['result']['item']['runtime'] != '0') {
+							$nowplayingarray['Runtime'] = round($jsonnowplaying['result']['item']['runtime']/60)." minutes";
+						} else {
+							//require "nowplayingtime.php";
+						//	$howmanyminutes = round($thetotaltimesec / 60,0);
+						//	$nowplayingarray['Runtime'] = $howmanyminutes." minutes";
+						}
 					}
 					$nowplayingarray['User Rating'] = round($jsonnowplaying['result']['item']['rating'],2)."/10";
 					

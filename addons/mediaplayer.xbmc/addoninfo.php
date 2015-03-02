@@ -54,23 +54,23 @@
 											if($filetype == "amovie") {
 												echo "<img src='../media/DefaultMovies.png' height='35px' style='float:left;margin-top:-3px;'>";
 												echo "$file";
-											}											
-											if($filetype == "atvshow") {
+											} elseif($filetype == "atvshow") {
 												echo "<img src='../media/DefaultTVShows.png' height='35px' style='float:left;margin-top:-3px;'>";
 												echo "$file";
+											} else {
+												echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
+												echo "$thelabel";
 											}
-										}							
-									
-										if($filetype=="unknown") {
-											echo "<img src='../media/DefaultPlaying.png' height='35px' style='float:left;margin-top:-3px;'>";
-											echo $thelabel;
 										} elseif($filetype=="movie") {
 											echo "<img src='../media/DefaultMovies.png' height='35px' style='float:left;margin-top:-3px;'>";
-											echo $thetitle;
+											echo "$thetitle";
 											if(false !== stripos($thetitle, '$theyear')) { } else { echo " ($theyear)"; }
 										} elseif($filetype=="episode") {
 											echo "<img src='../media/DefaultTVShows.png' height='35px' style='float:left;margin-top:-3px;'>";
 											echo "$theshowtitle - $theshowseason$theshowepisode - $thetitle";
+										} elseif($filetype=="channel") {
+											echo "<img src='../media/DefaultTVShows.png' height='35px' style='float:left;margin-top:-3px;'>";
+											echo  "$thetitle - $firstaired";
 										}
 									} elseif($activeplayerid==2) {
 										echo "pics";

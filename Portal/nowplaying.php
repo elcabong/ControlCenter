@@ -32,36 +32,37 @@ $ROOMNUMBER = "ROOM$thisroom"."N";
 	<div id='logo'>
 			<div id="timeUpdateField"></div>
 		<h1>Now<span>Playing</span> in <span><?php echo ${$ROOMNUMBER};?></span></h1>
-			<?
-			/*if(!isset($jsonactiveplayer['result'])) {
-				echo "There is nothing currently playing.";
-				return;
-			}*/
-			?>
 	</div>
 	<div id='roominfocontent'>
 			<div class='title'>
 			<?
-			if(isset($thumbnail) && $thumbnail != '') {
-			echo $thumbnail;
+			if(isset($nowplayingarray['thumbnail']) && $nowplayingarray['thumbnail'] != '') {
+			echo $nowplayingarray['thumbnail'];
 			}
 			echo "<table>";
+			if(isset($nowplayingarray['title']) && $nowplayingarray['title'] != '') {
+				echo "<th colspan=2><b>" . $nowplayingarray['title'] . "</b></th>";		
+			}elseif(isset($nowplayingarray['label']) && $nowplayingarray['label'] != '') {
+				echo "<th colspan=2><b>" . $nowplayingarray['label'] . "</b></th>";
+			}
 			foreach($nowplayingarray as $item=>$value) {
-				if($value == "" || $value == "0") { continue; }
-				echo "<tr><td><b>".$item.":</b></td><td> ".$value."</td></tr>";
+				$itembl = array("file","fanart","thumbnail","thumbnail","label","title","id","type","plot","series");
+				$valuebl = array("''","0","-1");
+				if(in_array($value, $valuebl) || in_array($item, $itembl)) { continue; }
+				echo "<tr><td><b>".ucwords($item).":</b></td><td> ".$value."</td></tr>";
 			}
 			echo "</table>";?>
 		</div>
-		<?php if(isset($fanart) && $fanart != '') { ?>
+		<?php if(isset($nowplayingarray['fanart']) && $nowplayingarray['fanart'] != '') { ?>
 		<div id="images">
-			<?php echo $fanart;?>
+			<?php echo $nowplayingarray['fanart'];?>
 		</div>
 		<?php
 		}
-		if(isset($plot) && $plot != '') {?>
+		if(isset($nowplayingarray['plot']) && $nowplayingarray['plot'] != '') {?>
 			<br>
 			<div class='plot'>
-			<b>Plot:</b> <?php echo $plot; ?>
+			<b>Plot:</b> <?php echo $nowplayingarray['plot']; ?>
 			</div>
 		<?php } ?>
 	</div>
