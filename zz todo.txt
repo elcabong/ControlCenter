@@ -28,11 +28,14 @@ settings refactor:
 	dropdown for http://--https:// for required options
 	add ip2wan options for those that have iplan/wan options
 	make several levels of "admin" some should have access to everything except users, etc
-	import/export db, restrict to super admin and remove "about" settings page
+		import/export db, restrict to super admin and remove "about" settings page
+		the about page should have current CCversion and DBversion as well as current live available update version
 	change user picture naming scheme so there are no collisions
 	add user picture when logged in to menu
 	screen resize function doesnt work for settings page
 	enable/disable function for addons in each room
+	update/disable/enable addons plus import/export addons
+	
 	
 
 settings - per user (preferences)
@@ -47,7 +50,9 @@ user sessions
 	see what info can be pulled from individual sessions and kept in the db..
 		playstate for each room
 		alive for each room
-	create user_connected tabled in db and keep track of live sessions..
+	create user_connected table in db and keep track of live sessions..
+		should have userid, device info, last connection time  (be trimmed at some point?)
+			each userid from the same device will update the connection time field..  a userid with a new device will create a new entry.
 		last page reload or use of cron to set recent timestamp so users can be sorted by online vs offline
 		eventually, can create fields for users, ie: lunch, break, meeting, back in x minutes or back at x time
 	see notifications - marking for users status, online/offline/break/etc
@@ -95,13 +100,12 @@ main links dropdown (upper right and left)
 
 
 addons:
-	update/disable/enable on settings page
-		import/export addons
-	zoneminder
-	xbmc/kodi optimize
+	xbmc/kodi optimize (started)
+		create search for connected devices for each addon.  this can find kodi clients on the network to add to new rooms?  maybe from room area,  maybe this can be in the addons class
 	addons.php optimize  --> load to db? or keep as php scan file tree?  classify
-	screen for device on but app not responding (orange) like the wol screen
-	avr
+	new addons:
+		avr
+		zoneminder
 	create controller page that replaces connecting to xbmc control page (maybe tabbed modal?)
 		this will pull items from addons within a room for various control features
 		add function to assign addon for control functions
@@ -111,8 +115,9 @@ addons:
 			styling
 				http://www.avsforum.com/forum/93-remote-control-area/1503480-quick-irule-review-few-pics-those-thinking-about.html
 				http://forum.kodi.tv/showthread.php?tid=208371
+	screen for device on but app not responding (orange) like the wol screen
 
-
+	
 logging:
 	settings page
 		password or any important value change
@@ -120,7 +125,7 @@ logging:
 	servercheck logging
 	what page they load from upper left menu
 	add more verbose logging for debug.  debug log at all exit points for script to know when it completes and how each script completes.
-
+		debug: beginning and each end point for every script
 	ccmaster logging
 
 
@@ -137,3 +142,19 @@ crowdfunding
 	requirements for posting
 	about us
 	about the product
+	
+	
+	
+
+	
+software first
+15 - lifetime license when software gets released
+50 - beta access and lifetime license when software released
+200 - limited to 20 cuboxes 
+
+
+
+extended milestone or second kickstarter starting associated hardware
+40 - rpi sheild for network bridge
+	
+	
