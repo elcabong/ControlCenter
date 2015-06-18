@@ -81,6 +81,7 @@ if(isset($roomid)) {
 		$enabledaddonsarray["$roomid"]["$theaddon"]['setting8'] = $addonSettings['setting8'];
 		$enabledaddonsarray["$roomid"]["$theaddon"]['setting9'] = $addonSettings['setting9'];
 		$enabledaddonsarray["$roomid"]["$theaddon"]['setting10'] = $addonSettings['setting10'];
+		$enabledaddonsarray["$roomid"]["$theaddon"]['device_alive'] = $addonSettings['device_alive'];
 	}
 	$enabledaddons = ltrim($enabledaddons,',');
 }

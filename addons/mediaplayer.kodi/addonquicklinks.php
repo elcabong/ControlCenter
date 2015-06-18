@@ -4,6 +4,7 @@
 //  $enabledaddonsarray["$THISROOMID"]['test.addon5']        >    where "test.addon5" is your addons name and $THISROOMID is the room the addon is associated with.  $THISROOMID is already set.
 
 $wanip = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['ADDONIPW'];
+$device_alive = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['device_alive'];
 if($WANCONNECTION == '1' && isset($wanip) && $wanip != '') {
 	$ADDONIP = $wanip; 
 } else { $ADDONIP = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['ADDONIP']; }
@@ -30,7 +31,7 @@ $setting1 = $enabledaddonsarray["$THISROOMID"]['mediaplayer.kodi']['setting1'];
 	
 		echo "<div id='KODICONTROL1' class='item'>
 			<div class='content'>";
-			if(!isset($_SESSION[$ADDONIP]) || $_SESSION[$ADDONIP] != 'alive') {
+			if($device_alive != '1') {
 				echo "<iframe id='KODICONTROL1f' src=\"wakemachine.php?ip=$ADDONIP&mac=$ADDONMAC\" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
 			} else {
 				echo "<iframe id='KODICONTROL1f' src=\"$ADDONIP\" data-src=\"$ADDONIP\" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";

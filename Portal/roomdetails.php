@@ -33,7 +33,7 @@ require_once "$INCLUDES/includes/addons.php";
 			if(!empty($enabledaddonsarray["$theroom"]["$addonid"]['ADDONIP'])) {
 				$ip = $enabledaddonsarray["$theroom"]["$addonid"]['ADDONIP'];
 				$status = "";
-				if(isset($_SESSION[$ip]) && $_SESSION[$ip] == "alive") {
+				if(isset($enabledaddonsarray["$theroom"]["$addonid"]['device_alive']) && $enabledaddonsarray["$theroom"]["$addonid"]['device_alive'] == "1") {
 					$status = "0";
 				} else {
 					$disallowed = array('http://', 'https://');

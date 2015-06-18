@@ -1,4 +1,33 @@
 <?php
+/*
+
+users_rooms
+user_roomid   userid    roomid
+// to replace SESSION[room]
+// all users will now be able to see what room the other users are in...
+//  this may not work, should stay in session...  different devices in different rooms will contantly be updating this...
+//  the only work around would be the below table:
+user_roomid   userid    roomid   deviceid
+//  deviceid will need to be added, and can be used for authcheck against session
+//  
+
+users_auth
+authid      userid    deviceid    lastcheckin
+// this will help authenticate people and give the option to show who is online and last time online
+// lastcheckin can be formatted as time since epoc and compared against current time()
+//  can add settings on how long it takes to log user out..  can compare against lastcheckin
+
+rooms_addons
+all +   displayinfo
+///  this will replace SESSION[playinginroom#]
+///  it will display 0 or the "nowplaying" or sendmedia type info for addons
+
+// need for class...  room class, addon class?
+
+// need class users
+
+*/
+
 require('startsession.php');
 require("$INCLUDES/includes/config.php");
 require_once "$INCLUDES/includes/auth.php";
@@ -37,15 +66,12 @@ foreach ($configdb->query($sql3) as $addonSettings) {
 	if($device_alive == 1) {
 		if(!isset($_SESSION[$ip])) { $_SESSION[$ip] = 'alive'; }
 		if($_SESSION[$ip] == "dead" && $ip == $nowplayingip) {
-			$_SESSION[$ip] = 'alive';
 ?>
 			<script>
 				$("#room-menu").load("./room-chooser.php?noreset=1");
 			</script>
-<?php 	} else {
-			$_SESSION[$ip] = 'alive';
-		}
-		//$status = "alive";
+<?php 	}
+		$_SESSION[$ip] = 'alive';
 		$filename = $addonarray["$classification"]["$title"]['path']."addoninfo.php";
 		if (file_exists($filename)) {
 			$howmanyaddons++;
@@ -63,14 +89,12 @@ foreach ($configdb->query($sql3) as $addonSettings) {
 			$_SESSION[$ip] = 'dead';
 		}
 		if($_SESSION[$ip] == "alive" && $ip == $nowplayingip) {
-			$_SESSION[$ip] = 'dead'; ?>
+			?>
 			<script>
 				$("#room-menu").load("./room-chooser.php?noreset=1");
 			</script>
-<?php	} else {
-			$_SESSION[$ip] = 'dead';
-		}
-		//$status = "dead";
+<?php	}
+		$_SESSION[$ip] = 'dead';
 		if($classification == "mediaplayer") {
 			$sessvar = "playinginroom$THISROOMID";
 			$_SESSION[$sessvar] = 0;

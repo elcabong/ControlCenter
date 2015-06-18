@@ -4,6 +4,7 @@
 //  $enabledaddonsarray["$THISROOMID"]['test.addon5']        >    where "test.addon5" is your addons name and $THISROOMID is the room the addon is associated with.  $THISROOMID is already set.
 
 $wanip = $enabledaddonsarray["$THISROOMID"]['utility.diskripper']['ADDONIPW'];
+$device_alive = $enabledaddonsarray["$THISROOMID"]['utility.diskripper']['device_alive'];
 if($WANCONNECTION == '1' && isset($wanip) && $wanip != '') {
 	$ADDONIP = $wanip; 
 } else { $ADDONIP = $enabledaddonsarray["$THISROOMID"]['utility.diskripper']['ADDONIP']; }
@@ -30,7 +31,7 @@ $setting1 = $enabledaddonsarray["$THISROOMID"]['utility.diskripper']['setting1']
 	
 		echo "<div id='DISKRIPPER1' class='item'>
 			<div class='content'>";
-			if($_SESSION[$ADDONIP] != 'alive') {
+			if($device_alive != '1') {
 				echo "<iframe id='DISKRIPPER1f' src=\"wakemachine.php?ip=$ADDONIP&mac=$ADDONMAC\" width='100%' height='100%' scrolling='no'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
 			} else {
 				echo "<iframe id='DISKRIPPER1f' src=\"$ADDONIP\" data-src=\"$ADDONIP\" width='100%' height='100%' scrolling='auto'> Sorry your browser does not support frames or is currently not set to accept them.</iframe>";
