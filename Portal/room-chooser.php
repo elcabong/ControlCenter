@@ -83,7 +83,7 @@ echo "</ul>";
 	
 	$('a.changeroom').click(function () {
         var thenewroom = $(this).attr('newroom');
-		changeroom(thenewroom,<?echo $usernumber; ?>);
+		changeroom(thenewroom,<?php echo $usernumber; ?>);
 		return false;
 	});	
 
